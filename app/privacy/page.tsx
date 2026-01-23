@@ -5,7 +5,7 @@ export default function PrivacyPolicy() {
           <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
   
           <p className="mb-4">
-            ZenPath AI respects your privacy and is committed to protecting your personal data.
+            Zanpath AI respects your privacy and is committed to protecting your personal data.
           </p >
   
           <p className="mb-4">
@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
           </p >
   
           <p className="text-sm text-gray-600 mt-10">
-            Contact: support@zenpath.ai
+            Contact: alaricegaye@gmail.com
           </p >
         </div>
       </div>

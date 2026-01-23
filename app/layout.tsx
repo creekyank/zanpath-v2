@@ -7,11 +7,19 @@ const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
-};
+  export const metadata: Metadata = {
+    metadataBase: new URL("https://zanpath.com"),
+    title: "ZanPath | AI-Powered Personality & Life Insight Tool",
+    description: "ZanPath provides AI-generated personality insights and cultural analysis based on traditional Eastern philosophy, designed for self-reflection and personal exploration. For entertainment and educational purposes only.",
+    keywords: [
+      "AI personality analysis",
+      "self discovery tool",
+      "personal insight",
+      "cultural psychology",
+      "AI life analysis",
+      "entertainment analysis"
+    ],
+  };
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

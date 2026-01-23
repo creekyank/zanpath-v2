@@ -2,10 +2,13 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { birthData } = await req.json();
-    const apiKey = process.env.DEEPSEEK_API_KEY;
+    const { prompt } = await req.json();
+    const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY;
 
-    // 这里是直接呼叫 DeepSeek 的服务器
+    if (!apiKey) {
+      return NextResponse.json({ error: "API Key missing" }, { status: 500 });
+    }
+
     const response = await fetch("https://api.deepseek.com/chat/completions", {
       method: "POST",
       headers: {
@@ -15,28 +18,23 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         model: "deepseek-chat",
         messages: [
-          { 
-            role: "system", 
-            content: "You are a professional Bazi (Eastern Astrology) master. Based on the user's birth data, provide an insightful, encouraging, and professional 150-word destiny overview in English." 
-          },
-          { 
-            role: "user", 
-            content: `My birth info is: ${birthData}. Please give me a reading.` 
-          }
+          { role: "system", content: "You are a professional Chinese Culture & Naming master." },
+          { role: "user", content: prompt }
         ],
-        stream: false
+        stream: true // 开启流式
       })
     });
 
-    const data = await response.json();
-    
-    if (data.error) {
-      return NextResponse.json({ error: data.error.message }, { status: 500 });
-    }
+    // 返回流式响应
+    return new Response(response.body, {
+      headers: { 
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
 
-    return NextResponse.json({ result: data.choices[0].message.content });
-  } catch (err) {
-    console.error("API Error:", err);
-    return NextResponse.json({ error: "Failed to connect to the cosmos" }, { status: 500 });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
