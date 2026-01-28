@@ -1,0 +1,38 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id               String   @id @default(cuid())
+  email            String
+  status           String   @default("pending") 
+  // 🟢 核心：标记是哪个模块 (naming, bazi, dream, face, fengshui)
+  moduleType       String   
+  paddleOrderId    String?  @unique
+  recoveryCode     String?
+  codeExpiresAt    DateTime?
+  lastCodeSentAt   DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  result           Result?
+}
+
+model Result {
+  id         String   @id @default(cuid())
+  // 🟢 核心：保存用户输入的所有原始数据（姓名、梦境、生辰等）
+  // 使用 Json 类型可以兼容不同模块的不同字段
+  inputData  Json?    
+  content    String   @db.Text
+  isComplete Boolean  @default(false)
+  orderId    String   @unique
+  order      Order    @relation(fields: [orderId], references: [id])
+  createdAt  DateTime @default(now())
+}
