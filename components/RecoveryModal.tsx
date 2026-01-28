@@ -7,7 +7,7 @@ interface RecoveryModalProps {
   moduleType: string;
   // onResultFound 现在支持传入 content 和历史输入数据 inputData
   onResultFound: (content: string, inputData?: any) => void;
-  onNeedsReRun: () => void;
+  onNeedsReRun?: (inputData?: any) => void;
 }
 
 export default function RecoveryModal({ locale, moduleType, onResultFound, onNeedsReRun }: RecoveryModalProps) {
@@ -96,7 +96,7 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
           handleClose();
         } else {
           // 情况 2：已付钱无结果，触发免费重刷
-          onNeedsReRun();
+          onNeedsReRun?.();
           handleClose();
           alert(data.message);
         }

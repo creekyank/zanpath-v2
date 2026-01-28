@@ -336,7 +336,7 @@ while (true) {
             <p className="text-sm text-gray-500/80 leading-relaxed">{foot.about}</p>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2">
-            <p className="text-sm text-gray-400">© 2026 Zanpath AI. <Link href="/wisdom" className="hover:text-[#0f3d2e]">{foot.copyright}</Link></p>
+            <p className="text-sm text-gray-400">© 2026 Zanpath AI. </p>
             {foot.links.map(link => (
               <Link key={link.name} href={link.href} className="text-sm text-[#356f5b] hover:text-[#0f3d2e] transition-colors">{link.name}</Link>
             ))}

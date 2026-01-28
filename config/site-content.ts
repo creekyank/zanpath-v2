@@ -417,6 +417,8 @@ face: {
         male: "Male",
         female: "Female",
         email: "Email for Report Delivery",
+        pref: "Additional Notes",                 // ✅ 新增
+        prefPh: "Any extra details you want the AI to consider", // ✅ 新增
         uploadBtn: "Upload Photo",
         uploadTip: "Select a clear facial photo (Max 5MB)",
         btnNormal: "Generate My Reflection $12.90",
@@ -444,6 +446,9 @@ face: {
         male: "Masculino",
         female: "Femenino",
         email: "Correo electrónico para la entrega",
+        pref: "Notas adicionales",
+        prefPh: "Cualquier detalle extra que desee que la IA considere",
+
         uploadBtn: "Subir Foto",
         uploadTip: "Seleccione una foto clara del rostro (Máx 5MB)",
         btnNormal: "Generar mi reflexión $12.90",
@@ -474,6 +479,8 @@ face: {
         male: "Residential",
         female: "Commercial",
         email: "Email for Report Delivery",
+        pref: "Description / Focus",
+        prefPh: "Describe what you'd like the analysis to focus on",
         uploadBtn: "Upload Layout/Photo",
         uploadTip: "Select a photo or floor plan (Max 5MB)",
         btnNormal: "Generate My Reflection $14.90",
@@ -501,6 +508,8 @@ face: {
         male: "Residencial",
         female: "Comercial",
         email: "Correo electrónico para la entrega",
+        pref: "Descripción / Enfoque",
+        prefPh: "Describa en qué desea que se centre el análisis",  
         uploadBtn: "Subir Plano/Foto",
         uploadTip: "Seleccione una foto o plano (Máx 5MB)",
         btnNormal: "Generar mi reflexión $14.90",
