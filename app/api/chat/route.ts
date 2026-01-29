@@ -10,12 +10,16 @@ export const runtime = 'nodejs';
 
 async function callGemini(prompt: string, imageBase64?: string, preferences?: string) {
   const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
+  
+  // 🟢 核心修改：在初始化時強制指定使用 'v1' 版本
   const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
   
-  // 🟢 1. 配置模型 (SDK 會自動處理 v1/v1beta 和 models/ 前綴)
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  // 🟢 指定模型時，確保不帶額外的前綴，讓 SDK 自己處理
+  const model = genAI.getGenerativeModel(
+    { model: "gemini-1.5-flash" },
+    { apiVersion: 'v1' } // <-- 強制切換到 v1
+  );
 
-  // 🟢 2. 拼接 Prompt
   let finalPrompt = prompt;
   if (preferences && preferences.trim() !== "") {
     finalPrompt = `${prompt}\n\n[User's Personal Preferences]: ${preferences}`;
@@ -23,7 +27,6 @@ async function callGemini(prompt: string, imageBase64?: string, preferences?: st
 
   const parts: any[] = [{ text: finalPrompt }];
 
-  // 🟢 3. 處理圖片
   if (imageBase64) {
     const base64Data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
     parts.push({
@@ -34,21 +37,25 @@ async function callGemini(prompt: string, imageBase64?: string, preferences?: st
     });
   }
 
-  console.log("🚀 Calling Gemini via Official SDK...");
+  console.log("🚀 Calling Gemini via Official SDK (Forced v1)...");
 
-  // 🟢 4. 執行流式生成
-  const result = await model.generateContentStream({
-    contents: [{ role: "user", parts }],
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 4096,
-    }
-  });
+  try {
+    const result = await model.generateContentStream({
+      contents: [{ role: "user", parts }],
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 4096,
+      }
+    });
 
-  // 🟢 5. 將 SDK 的流轉換為 Web 標準流返回給前端
-  return new Response(result.stream as any, {
-    headers: { 'Content-Type': 'text/event-stream; charset=utf-8' },
-  });
+    // 這裡需要等待流的初始化，避免 Vercel 提前關閉連接
+    return new Response(result.stream as any, {
+      headers: { 'Content-Type': 'text/event-stream; charset=utf-8' },
+    });
+  } catch (err: any) {
+    console.error("🔥 SDK 內部錯誤:", err);
+    throw new Error(`Gemini SDK Error: ${err.message}`);
+  }
 }
 
 export async function POST(req: Request) {
@@ -65,19 +72,17 @@ export async function POST(req: Request) {
     }
 
     // 2. 視覺分析 (Gemini)
-    if (image) {
-      console.log("📸 正在使用 Gemini 進行視覺分析...");
-      try {
-        const geminiRes = await callGemini(prompt, image, preferences);
-        return new Response(geminiRes.body, {
-          headers: { 'Content-Type': 'text/event-stream; charset=utf-8' },
-        });
-      } catch (e: any) {
-        console.error("❌ Gemini 視覺分析失敗:", e.message);
-        // 返回具體錯誤給前端
-        return NextResponse.json({ error: e.message }, { status: 500 });
-      }
-    }
+// 2. 視覺分析 (Gemini)
+if (image) {
+  console.log("📸 正在使用 Gemini 進行視覺分析...");
+  try {
+    // 直接返回 callGemini 返回的 Response 對象
+    return await callGemini(prompt, image, preferences); 
+  } catch (e: any) {
+    console.error("❌ Gemini 視覺分析失敗:", e.message);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
 
     // 3. 文本分析 (DeepSeek)
     try {
