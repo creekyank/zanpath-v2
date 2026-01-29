@@ -25,8 +25,8 @@ if (!GOOGLE_API_KEY) {
   
   // 🟢 嘗試最標準的 v1 組合
   const model = genAI.getGenerativeModel(
-    { model: "gemini-1.5-flash" }, 
-    { apiVersion: 'v1' } 
+    { model: "gemini-2.0-flash" }, 
+    { apiVersion: 'v1beta' } 
   );
 
   let finalPrompt = prompt;
