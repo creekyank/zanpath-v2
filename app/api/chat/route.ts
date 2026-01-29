@@ -9,53 +9,55 @@ export const maxDuration = 60;
 export const runtime = 'nodejs';
 
 async function callGemini(prompt: string, imageBase64?: string, preferences?: string) {
-  const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
+  const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   
-  // 🟢 核心修改：在初始化時強制指定使用 'v1' 版本
+  // 🟢 殺手鐧 Log：檢查 Vercel 到底讀到了哪把 Key，防止環境變量未生效
+  console.log("🔑 [Diagnostic] Key prefix:", GOOGLE_API_KEY?.substring(0, 4), "Length:", GOOGLE_API_KEY?.length);
+
+  if (!GOOGLE_API_KEY) {
+    throw new Error("Missing GOOGLE_GENERATIVE_AI_API_KEY in environment variables");
+  }
+
   const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
   
-  // 🟢 指定模型時，確保不帶額外的前綴，讓 SDK 自己處理
+  // 🟢 殺手鐧 1：使用 -latest 穩定版別名，並指定 v1beta
+  // 這是目前解決「Model not found」最有效的路徑配置
   const model = genAI.getGenerativeModel(
-    { model: "gemini-1.5-flash" },
-    { apiVersion: 'v1' } // <-- 強制切換到 v1
+    { model: "gemini-1.5-flash-latest" }, 
+    { apiVersion: 'v1beta' }
   );
 
   let finalPrompt = prompt;
-  if (preferences && preferences.trim() !== "") {
-    finalPrompt = `${prompt}\n\n[User's Personal Preferences]: ${preferences}`;
+  if (preferences?.trim()) {
+    finalPrompt += `\n\n[Additional Context/Preferences]: ${preferences}`;
   }
 
   const parts: any[] = [{ text: finalPrompt }];
 
   if (imageBase64) {
-    const base64Data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
+    // 兼容處理 Base64 格式
+    const data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
     parts.push({
       inlineData: {
         mimeType: "image/jpeg",
-        data: base64Data
+        data: data
       }
     });
   }
 
-  console.log("🚀 Calling Gemini via Official SDK (Forced v1)...");
+  console.log("🚀 SDK Attempt: gemini-1.5-flash-latest via v1beta...");
 
-  try {
-    const result = await model.generateContentStream({
-      contents: [{ role: "user", parts }],
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 4096,
-      }
-    });
+  const result = await model.generateContentStream({
+    contents: [{ role: "user", parts }],
+    generationConfig: {
+      temperature: 0.7,
+      maxOutputTokens: 4096,
+    }
+  });
 
-    // 這裡需要等待流的初始化，避免 Vercel 提前關閉連接
-    return new Response(result.stream as any, {
-      headers: { 'Content-Type': 'text/event-stream; charset=utf-8' },
-    });
-  } catch (err: any) {
-    console.error("🔥 SDK 內部錯誤:", err);
-    throw new Error(`Gemini SDK Error: ${err.message}`);
-  }
+  return new Response(result.stream as any, {
+    headers: { 'Content-Type': 'text/event-stream; charset=utf-8' },
+  });
 }
 
 export async function POST(req: Request) {
