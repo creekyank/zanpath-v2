@@ -34,7 +34,7 @@ async function callGroq(prompt: string, imageBase64?: string, preferences?: stri
 
   // 使用 Groq 的流式輸出
   const response = await groq.chat.completions.create({
-    model: "llama-3.2-11b-vision-preview",
+    model: "meta-llama/llama-4-scout-17b-16e-instruct",
     messages: [
       {
         role: "user",
