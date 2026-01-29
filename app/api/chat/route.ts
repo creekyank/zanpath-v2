@@ -9,7 +9,12 @@ export const maxDuration = 60;
 export const runtime = 'nodejs';
 
 async function callGemini(prompt: string, imageBase64?: string, preferences?: string) {
-  const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
+  const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY; 
+
+if (!GOOGLE_API_KEY) {
+  console.error("API Key 缺失！"); // 這行會出現在 Vercel Logs 裡
+}
   
   // 診斷 Log：確保我們知道到底是哪個環節出錯
   console.log("🔑 [Diagnostic] Key prefix:", GOOGLE_API_KEY?.substring(0, 4));
