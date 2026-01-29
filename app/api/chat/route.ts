@@ -6,10 +6,17 @@ import { isAdminEmail } from "@/config/admin";
 export const maxDuration = 60;
 export const runtime = 'nodejs';
 
-async function callGemini(prompt: string, imageBase64?: string) {
+async function callGemini(prompt: string, imageBase64?: string, preferences?: string) {
   const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   
-  const parts: any[] = [{ text: prompt }];
+  // 🟢 自動拼接 preferences 到 prompt 中，確保 AI 能讀到
+  let finalPrompt = prompt;
+  if (preferences && preferences.trim() !== "") {
+    finalPrompt = `${prompt}\n\n[User's Personal Preferences / Additional Context]:\n${preferences}`;
+  }
+
+  const parts: any[] = [{ text: finalPrompt }];
+  
   if (imageBase64) {
     const base64Data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
     parts.push({
@@ -17,12 +24,12 @@ async function callGemini(prompt: string, imageBase64?: string) {
     });
   }
 
-  console.log("🚀 嘗試調用 Gemini API (v1)...");
+  console.log("🚀 Calling Gemini API (v1beta)...");
 
-  // 🟢 核心修改點：將 v1beta 改為 v1 (正式版)，模型標識符使用最兼容的格式
-  const modelId = "gemini-1.5-flash"; 
+  // ✅ 這裡使用了最穩定的 v1beta 端點和正確的模型路徑格式
+  const modelId = "models/gemini-1.5-flash"; 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1/models/${modelId}:streamGenerateContent?alt=sse&key=${GOOGLE_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/${modelId}:streamGenerateContent?alt=sse&key=${GOOGLE_API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,8 +45,7 @@ async function callGemini(prompt: string, imageBase64?: string) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error("❌ Gemini 錯誤詳情:", errorText);
-    // 這裡會把 Google 返回的錯誤直接拋出，方便我們在日誌中查看
+    console.error("❌ Gemini API Error:", errorText);
     throw new Error(`Gemini Error: ${response.status} - ${errorText}`);
   }
 
@@ -63,7 +69,7 @@ export async function POST(req: Request) {
     if (image) {
       console.log("📸 正在使用 Gemini 進行視覺分析...");
       try {
-        const geminiRes = await callGemini(prompt, image);
+        const geminiRes = await callGemini(prompt, image, preferences);
         return new Response(geminiRes.body, {
           headers: { 'Content-Type': 'text/event-stream; charset=utf-8' },
         });
