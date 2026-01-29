@@ -9,14 +9,12 @@ export const runtime = 'nodejs';
 async function callGemini(prompt: string, imageBase64?: string, preferences?: string) {
   const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   
-  // 🟢 自動拼接 preferences 到 prompt 中，確保 AI 能讀到
   let finalPrompt = prompt;
   if (preferences && preferences.trim() !== "") {
-    finalPrompt = `${prompt}\n\n[User's Personal Preferences / Additional Context]:\n${preferences}`;
+    finalPrompt = `${prompt}\n\n[User's Personal Preferences]: ${preferences}`;
   }
 
   const parts: any[] = [{ text: finalPrompt }];
-  
   if (imageBase64) {
     const base64Data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
     parts.push({
@@ -24,24 +22,23 @@ async function callGemini(prompt: string, imageBase64?: string, preferences?: st
     });
   }
 
-  console.log("🚀 Calling Gemini API (v1beta)...");
+  console.log("🚀 Trying Gemini v1beta REST endpoint...");
 
-  // ✅ 這裡使用了最穩定的 v1beta 端點和正確的模型路徑格式
-  const modelId = "models/gemini-1.5-flash"; 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/${modelId}:streamGenerateContent?alt=sse&key=${GOOGLE_API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts }],
-        generationConfig: { 
-          temperature: 0.7, 
-          maxOutputTokens: 4096 
-        }
-      })
-    }
-  );
+  // ✅ 注意這裡的 URL 結構：v1beta/models/gemini-1.5-flash:streamGenerateContent
+  // 不要用變量拼接，直接寫死路徑最保險
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?alt=sse&key=${GOOGLE_API_KEY}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts }],
+      generationConfig: { 
+        temperature: 0.7, 
+        maxOutputTokens: 4096 
+      }
+    })
+  });
 
   if (!response.ok) {
     const errorText = await response.text();
