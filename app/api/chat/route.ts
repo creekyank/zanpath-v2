@@ -9,50 +9,38 @@ export const maxDuration = 60;
 export const runtime = 'nodejs';
 
 async function callGemini(prompt: string, imageBase64?: string, preferences?: string) {
-  const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const GOOGLE_API_KEY = "AIzaSyC0LOir7GZYKH5H-GY3no7HUpU8lp3pA0s";
   
-  // 🟢 殺手鐧 Log：檢查 Vercel 到底讀到了哪把 Key，防止環境變量未生效
-  console.log("🔑 [Diagnostic] Key prefix:", GOOGLE_API_KEY?.substring(0, 4), "Length:", GOOGLE_API_KEY?.length);
+  // 診斷 Log：確保我們知道到底是哪個環節出錯
+  console.log("🔑 [Diagnostic] Key prefix:", GOOGLE_API_KEY?.substring(0, 4));
 
-  if (!GOOGLE_API_KEY) {
-    throw new Error("Missing GOOGLE_GENERATIVE_AI_API_KEY in environment variables");
-  }
+  if (!GOOGLE_API_KEY) throw new Error("Missing API KEY");
 
   const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
   
-  // 🟢 殺手鐧 1：使用 -latest 穩定版別名，並指定 v1beta
-  // 這是目前解決「Model not found」最有效的路徑配置
+  // 🟢 嘗試最標準的 v1 組合
   const model = genAI.getGenerativeModel(
-    { model: "gemini-1.5-flash-latest" }, 
-    { apiVersion: 'v1beta' }
+    { model: "gemini-1.5-flash" }, 
+    { apiVersion: 'v1' } 
   );
 
   let finalPrompt = prompt;
   if (preferences?.trim()) {
-    finalPrompt += `\n\n[Additional Context/Preferences]: ${preferences}`;
+    finalPrompt += `\n\nUser Preferences: ${preferences}`;
   }
 
   const parts: any[] = [{ text: finalPrompt }];
-
   if (imageBase64) {
-    // 兼容處理 Base64 格式
     const data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
     parts.push({
-      inlineData: {
-        mimeType: "image/jpeg",
-        data: data
-      }
+      inlineData: { mimeType: "image/jpeg", data: data }
     });
   }
 
-  console.log("🚀 SDK Attempt: gemini-1.5-flash-latest via v1beta...");
+  console.log("🚀 SDK Final Attempt: gemini-1.5-flash via v1...");
 
   const result = await model.generateContentStream({
-    contents: [{ role: "user", parts }],
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 4096,
-    }
+    contents: [{ role: "user", parts }]
   });
 
   return new Response(result.stream as any, {
