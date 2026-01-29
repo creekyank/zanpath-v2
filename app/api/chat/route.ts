@@ -20,50 +20,38 @@ async function callGroq(prompt: string, imageBase64?: string, preferences?: stri
     finalPrompt += `\n\nUser Preferences: ${preferences}`;
   }
 
-  const response = await groq.chat.completions.create({
-    // 確保這裡的模型 ID 是有效的，如 llama-3.2-11b-vision-preview 或最新版
-    model: "meta-llama/llama-4-scout-17b-16e-instruct", 
-    messages: [
-      {
-        role: "user",
-        content: imageBase64 
-          ? [
-              { type: "text", text: finalPrompt },
-              { type: "image_url", image_url: { url: `data:image/jpeg;base64,${imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64}` } }
-            ]
-          : [{ type: "text", text: finalPrompt }],
-      },
-    ],
-    stream: true,
-  });
+  console.log("🚀 正在發送請求至 Groq (meta-llama/llama-4-scout-17b-16e-instruct)...");
 
-  // 使用更標準的轉換方式，確保每一塊 (chunk) 都能即時推送到前端
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    async start(controller) {
-      try {
-        for await (const chunk of response) {
-          const content = chunk.choices[0]?.delta?.content || "";
-          if (content) {
-            // 寫入純文字給前端
-            controller.enqueue(encoder.encode(content));
-          }
-        }
-        controller.close();
-      } catch (err) {
-        console.error("Stream Error:", err);
-        controller.error(err);
-      }
-    },
-  });
+  try {
+    const response = await groq.chat.completions.create({
+      model: "meta-llama/llama-4-scout-17b-16e-instruct", // 請確認此 ID 在 Groq 後台是 Active 狀態
+      messages: [
+        {
+          role: "user",
+          content: imageBase64 
+            ? [
+                { type: "text", text: finalPrompt },
+                { type: "image_url", image_url: { url: `data:image/jpeg;base64,${imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64}` } }
+              ]
+            : [{ type: "text", text: finalPrompt }],
+        },
+      ],
+      // 🟢 先關閉流模式，確認能拿到數據
+      stream: false, 
+    });
 
-  return new Response(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream; charset=utf-8',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    },
-  });
+    const content = response.choices[0]?.message?.content || "AI 沒有回傳任何內容";
+    console.log("✅ Groq 回應成功，長度:", content.length);
+
+    // 返回一個前端能識別的 Response
+    return new Response(content, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
+
+  } catch (error: any) {
+    console.error("❌ Groq 請求出錯:", error.message);
+    throw error;
+  }
 }
 
 export async function POST(req: Request) {
