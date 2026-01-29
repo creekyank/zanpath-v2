@@ -20,38 +20,47 @@ async function callGroq(prompt: string, imageBase64?: string, preferences?: stri
     finalPrompt += `\n\nUser Preferences: ${preferences}`;
   }
 
-  console.log("🚀 正在發送請求至 Groq (meta-llama/llama-4-scout-17b-16e-instruct)...");
+  const response = await groq.chat.completions.create({
+    model: "llama-3.2-11b-vision-preview",
+    messages: [
+      {
+        role: "user",
+        content: imageBase64 
+          ? [
+              { type: "text", text: finalPrompt },
+              { type: "image_url", image_url: { url: `data:image/jpeg;base64,${imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64}` } }
+            ]
+          : [{ type: "text", text: finalPrompt }],
+      },
+    ],
+    stream: true, // 開啟流式
+  });
 
-  try {
-    const response = await groq.chat.completions.create({
-      model: "meta-llama/llama-4-scout-17b-16e-instruct", // 請確認此 ID 在 Groq 後台是 Active 狀態
-      messages: [
-        {
-          role: "user",
-          content: imageBase64 
-            ? [
-                { type: "text", text: finalPrompt },
-                { type: "image_url", image_url: { url: `data:image/jpeg;base64,${imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64}` } }
-              ]
-            : [{ type: "text", text: finalPrompt }],
-        },
-      ],
-      // 🟢 先關閉流模式，確認能拿到數據
-      stream: false, 
-    });
+  // 🔴 關鍵點：創建一個 ReadableStream 並格式化數據
+  const stream = new ReadableStream({
+    async start(controller) {
+      const encoder = new TextEncoder();
+      try {
+        for await (const chunk of response) {
+          const content = chunk.choices[0]?.delta?.content || "";
+          if (content) {
+            // 直接傳送文字內容，這是最通用的方式
+            controller.enqueue(encoder.encode(content));
+          }
+        }
+        controller.close();
+      } catch (err) {
+        controller.error(err);
+      }
+    },
+  });
 
-    const content = response.choices[0]?.message?.content || "AI 沒有回傳任何內容";
-    console.log("✅ Groq 回應成功，長度:", content.length);
-
-    // 返回一個前端能識別的 Response
-    return new Response(content, {
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-    });
-
-  } catch (error: any) {
-    console.error("❌ Groq 請求出錯:", error.message);
-    throw error;
-  }
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream; charset=utf-8',
+      'Cache-Control': 'no-cache',
+    },
+  });
 }
 
 export async function POST(req: Request) {
