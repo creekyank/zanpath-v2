@@ -48,7 +48,7 @@ async function callGemini(prompt: string, imageBase64?: string) {
 
 export async function POST(req: Request) {
   try {
-    const { prompt, email, source, image } = await req.json();
+    const { prompt, email, source, image, preferences } = await req.json();
     const userEmail = email?.toLowerCase().trim();
 
     // 1. 權限檢查

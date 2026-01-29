@@ -27,7 +27,7 @@ export default function FengShuiPage() {
     surname: "",      // 此處代表空間名稱
     gender: "Male",   // 映射：Male -> Residential, Female -> Commercial
     email: "",
-    description: "",
+    preferences: "",
     imageData: ""     // 存儲處理後的 Base64
   });
 
@@ -88,7 +88,7 @@ export default function FengShuiPage() {
         .replace("${outputLanguage}", currentLangName)
         .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
         .replace("${spaceContext}", spaceContext)
-        .replace("${spaceDescription}", `Target Name: ${formDataState.surname}. Context: ${spaceContext}. User Notes: ${formDataState.description}`);
+        .replace("${spaceDescription}", `Target Name: ${formDataState.surname}. Context: ${spaceContext}. User Notes: ${formDataState.preferences}`);
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -290,7 +290,7 @@ while (true) {
 
                 <div className="flex flex-col space-y-1">
                   <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.pref}</label>
-                  <textarea name="description" value={formDataState.description} onChange={(e) => setFormDataState({...formDataState, description: e.target.value})} required onInvalid={handleInvalid} onInput={handleInput} rows={3} placeholder={mid.fields.prefPh} className="p-4 rounded-xl bg-gray-50 border-none outline-none text-sm" />
+                  <textarea name="preferences" value={formDataState.preferences} onChange={(e) => setFormDataState({...formDataState, preferences: e.target.value})} required onInvalid={handleInvalid} onInput={handleInput} rows={3} placeholder={mid.fields.prefPh} className="p-4 rounded-xl bg-gray-50 border-none outline-none text-sm" />
                 </div>
 
                 <div className="space-y-4">

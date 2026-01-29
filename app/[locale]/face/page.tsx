@@ -27,7 +27,7 @@ export default function FaceReflectionPage() {
     surname: "",      // 此處代表姓名
     gender: "Male",   // 男性 (Yang) / 女性 (Yin)
     email: "",
-    description: "",
+    preferences: "",
     imageData: ""     // 存儲處理後的 Base64
   });
 
@@ -85,7 +85,7 @@ export default function FaceReflectionPage() {
       const finalPrompt = VISUAL_PROMPT_TEMPLATE
         .replace("${outputLanguage}", currentLangName)
         .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
-        .replace("${visualInputData}", `Name: ${formDataState.surname}. Gender: ${formDataState.gender}. User Context: ${formDataState.description}`);
+        .replace("${visualInputData}", `Name: ${formDataState.surname}. Gender: ${formDataState.gender}. User Context: ${formDataState.preferences}`);
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -282,7 +282,7 @@ while (true) {
 
                 <div className="flex flex-col space-y-1">
                   <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.pref}</label>
-                  <textarea name="description" value={formDataState.description} onChange={(e) => setFormDataState({...formDataState, description: e.target.value})} rows={3} placeholder={mid.fields.prefPh} className="p-4 rounded-xl bg-gray-50 border-none outline-none text-sm" />
+                  <textarea name="preferences" value={formDataState.preferences} onChange={(e) => setFormDataState({...formDataState, preferences: e.target.value})} rows={3} placeholder={mid.fields.prefPh} className="p-4 rounded-xl bg-gray-50 border-none outline-none text-sm" />
                 </div>
 
                 <div className="space-y-4">

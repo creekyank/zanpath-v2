@@ -1,3 +1,28 @@
+
+site-content.ts  中  測臉與風水 中 增加的  ，請根據這個新增的  幫把 es.json  en.json  改出完整版
+
+face: {
+    en: {
+
+        pref: "Additional Notes",                 // ✅ 新增
+        prefPh: "Any extra details you want the AI to consider", // ✅ 新增
+
+    es: {
+        pref: "Notas adicionales",
+        prefPh: "Cualquier detalle extra que desee que la IA considere",
+
+
+  space: {
+    en: {
+        pref: "Description / Focus",
+        prefPh: "Describe what you'd like the analysis to focus on",
+
+        pref: "Descripción / Enfoque",
+        prefPh: "Describa en qué desea que se centre el análisis", 
+
+------------------
+en.json--------------------
+
 {
   "Common": {
     "nav_bazi": "Life Path",
@@ -179,5 +204,191 @@
     "reCalculate": "Payment confirmed, but data was lost. Regenerate for free.",
     "sentEmail": "The report has been sent to your email.",
     "systemBusy": "System busy, please try again later."
+  }
+}
+
+es.json-------------
+
+{
+  "Common": {
+    "nav_bazi": "Camino de Vida",
+    "nav_naming": "Nombres",
+    "nav_dream": "Sueños",
+    "nav_space": "Espacio",
+    "nav_visual": "Visual",
+    "nav_wisdom": "Sabiduría",
+    "nav_human": "Servicio Experto",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "refund": "Reembolsos",
+    "contact": "Contacto",
+    "footer_about": "Zanpath AI proporciona contenido de reflexión personal y cultural generado por IA.",
+    "footer_disclaimer": "Solo para fines de entretenimiento y autoexploración. Este servicio no proporciona asesoramiento médico, legal o financiero.",
+    "disclaimer_all": "Este análisis es generado por IA, destinado únicamente a la autoexploración y referencia. No garantiza efectos en el mundo real ni éxito financiero."
+  },
+  "Bazi": {
+    "title": "Zanpath AI",
+    "subtitle": "Análisis Personalizado de Carrera y Personalidad (Entrega Digital AI)",
+    "intro": "Esta función está diseñada para generar contenido de reflexión personalizado utilizando modelos de IA y análisis de patrones temporales.",
+    "features": [
+      "Perspectivas de reflexión sobre carrera y personalidad",
+      "Marcos culturales tradicionales e interpretación simbólica",
+      "Resúmenes narrativos generados por IA"
+    ],
+    "fields": {
+      "surname": "Nombre",
+      "surnamePh": "Tu Nombre",
+      "gender": "Género",
+      "male": "Masculino",
+      "female": "Femenino",
+      "email": "Correo Electrónico",
+      "birthTime": "Fecha y Hora de Nacimiento (Hora Local)",
+      "btnNormal": "Generar mi reflexión $9.9",
+      "btnPaid": "Generar ahora",
+      "btnVip": "Acceso VIP (Solo Admin)",
+      "thinking": "Analizando tu camino de vida...",
+      "reportTitle": "Informe de Reflexión de Vida",
+      "newAnalysis": "Nuevo Análisis",
+      "requiredTip": "Por favor, complete este campo."
+    },
+    "notice": {
+      "title": "Importante: Hora de Nacimiento y Zonas Horarias",
+      "content": "Por favor, introduzca su hora de nacimiento en su hora estándar local. Nuestro sistema analiza la información basándose estrictamente en la hora que usted proporcione."
+    }
+  },
+  "Naming": {
+    "title": "Nombres IA",
+    "subtitle": "Inspiración de nombres generada por IA para la exploración creativa y cultural.",
+    "intro": "Esta función está diseñada para generar ideas de nombres creativos utilizando modelos de lenguaje de IA y análisis contextual.",
+    "features": [
+      "Inspiración de nombres para personas y proyectos",
+      "Explicaciones de contexto lingüístico y cultural",
+      "Resúmenes descriptivos generados por IA"
+    ],
+    "fields": {
+      "surname": "Apellido",
+      "surnamePh": "Ingrese el apellido (Obligatorio)",
+      "gender": "Género",
+      "male": "Masculino",
+      "female": "Femenino",
+      "email": "Correo electrónico para la entrega",
+      "birthTime": "Fecha de nacimiento (Calendario Solar)",
+      "pref": "Preferencias personales",
+      "prefPh": "Ej: Elegante, fuerte, tradicional...",
+      "btnNormal": "Curar mis nombres ($12.90)",
+      "btnPaid": "Regenerar informe (Pagado)",
+      "btnVip": "Acceso VIP (Solo Admin)",
+      "reportTitle": "Su informe de nombres",
+      "newAnalysis": "Nuevo análisis",
+      "thinking": "Pensando... Analizando en Español...",
+      "requiredTip": "Por favor, complete este campo."
+    }
+  },
+  "Dream": {
+    "title": "Reflexión de Sueños IA",
+    "subtitle": "Esta función está diseñada para generar reflexiones narrativas y simbólicas utilizando modelos de lenguaje de IA e interpretación contextual.",
+    "intro": "Explore las profundidades ocultas de su subconsciente a través de nuestro análisis de sueños impulsado por IA.",
+    "features": [
+      "Exploración de temas y simbolismo de los sueños",
+      "Resúmenes reflexivos de estilo narrativo",
+      "Perspectivas desde ángulos culturales y literarios"
+    ],
+    "fields": {
+      "surname": "Nombre",
+      "surnamePh": "Tu Nombre",
+      "gender": "Género",
+      "male": "Masculino",
+      "female": "Femenino",
+      "email": "Correo electrónico para la entrega",
+      "pref": "Descripción del Contenido del Sueño",
+      "prefPh": "Cuanto más detalle, más profunda será la interpretación...",
+      "btnNormal": "Generar mi reflexión $6.9",
+      "btnPaid": "Generar ahora",
+      "btnVip": "Acceso VIP (Solo Admin)",
+      "thinking": "Interpretando tu sueño...",
+      "reportTitle": "Informe de Reflexión de Sueños",
+      "newAnalysis": "Analizar otro sueño",
+      "requiredTip": "Por favor, complete este campo."
+    }
+  },
+  "Face": {
+    "title": "Reflexión Facial IA",
+    "subtitle": "Reflexiones de rasgos faciales generadas por IA para fines de exploración cultural y personal.",
+    "intro": "Esta función explora las estructuras faciales y las interpretaciones simbólicas inspiradas en textos tradicionales.",
+    "features": [
+      "Observación de rasgos y estructura facial",
+      "Interpretación simbólica inspirada en textos tradicionales",
+      "Resúmenes reflexivos generados por IA"
+    ],
+    "fields": {
+      "surname": "Nombre",
+      "surnamePh": "Su Nombre",
+      "gender": "Género",
+      "male": "Masculino",
+      "female": "Femenino",
+      "email": "Correo electrónico para la entrega",
+      "pref": "Notas adicionales",
+      "prefPh": "Cualquier detalle extra que desee que la IA considere",
+      "uploadBtn": "Subir Foto",
+      "uploadTip": "Seleccione una foto clara del rostro (Máx 5MB)",
+      "btnNormal": "Generar mi reflexión $12.90",
+      "btnPaid": "Regenerar informe",
+      "btnVip": "Acceso VIP (Solo Admin)",
+      "thinking": "Analizando rasgos faciales...",
+      "reportTitle": "Informe de Reflexión Facial",
+      "newAnalysis": "Analizar otro rostro",
+      "requiredTip": "Por favor, complete este campo y suba una imagen."
+    },
+    "guidelines": {
+      "title": "Guía de Análisis Facial",
+      "content": "Por favor, suba una foto clara de un rostro humano. Un rostro por imagen, preferiblemente de frente."
+    }
+  },
+  "Space": {
+    "title": "Reflexión Feng Shui IA",
+    "subtitle": "Reflexiones espaciales y ambientales generadas por IA inspiradas en conceptos tradicionales.",
+    "intro": "Explore la distribución espacial y la armonía ambiental a través de principios clásicos y análisis de IA.",
+    "features": [
+      "Observación de la distribución espacial y el entorno",
+      "Interpretación simbólica inspirada en principios clásicos",
+      "Resúmenes reflexivos generados por IA"
+    ],
+    "fields": {
+      "surname": "Nombre / Propiedad",
+      "surnamePh": "Ej: Mi Sala de Estar",
+      "gender": "Contexto",
+      "male": "Residencial",
+      "female": "Comercial",
+      "email": "Correo electrónico para la entrega",
+      "pref": "Descripción / Enfoque",
+      "prefPh": "Describa en qué desea que se centre el análisis",
+      "uploadBtn": "Subir Plano/Foto",
+      "uploadTip": "Seleccione una foto o plano (Máx 5MB)",
+      "btnNormal": "Generar mi reflexión $14.90",
+      "btnPaid": "Regenerar informe",
+      "btnVip": "Acceso VIP (Solo Admin)",
+      "thinking": "Analizando energía espacial...",
+      "reportTitle": "Informe de Reflexión Espacial",
+      "newAnalysis": "Analizar otro espacio",
+      "requiredTip": "Por favor, complete este campo y suba una imagen."
+    },
+    "guidelines": {
+      "title": "Guía de Análisis Espacial",
+      "content": "Imágenes Recomendadas: Diseños interiores, vistas exteriores o planos."
+    }
+  },
+  "Recovery": {
+    "title": "Restaurar Informe",
+    "emailPlaceholder": "Correo usado",
+    "codePlaceholder": "Código de 6 dígitos",
+    "sendCode": "Enviar código",
+    "verify": "Verificar y restaurar",
+    "wait": "Espere...",
+    "resendIn": "Reenviar en ",
+    "noOrder": "Orden no encontrada. Si acaba de pagar, espere 1-2 min.",
+    "codeSent": "¡Código enviado a su correo!",
+    "reCalculate": "Pago confirmado, pero los datos se perdieron. Regenerarlo gratis.",
+    "sentEmail": "El informe ha sido enviado a su correo electrónico.",
+    "systemBusy": "Sistema ocupado, intente más tarde."
   }
 }
