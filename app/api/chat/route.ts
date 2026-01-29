@@ -9,7 +9,7 @@ export const maxDuration = 60;
 export const runtime = 'nodejs';
 
 async function callGemini(prompt: string, imageBase64?: string, preferences?: string) {
-  const GOOGLE_API_KEY = "AIzaSyC0LOir7GZYKH5H-GY3no7HUpU8lp3pA0s";
+  const GOOGLE_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   
   // 診斷 Log：確保我們知道到底是哪個環節出錯
   console.log("🔑 [Diagnostic] Key prefix:", GOOGLE_API_KEY?.substring(0, 4));
