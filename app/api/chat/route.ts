@@ -21,7 +21,7 @@ async function callGroq(prompt: string, imageBase64?: string, preferences?: stri
   }
 
   const response = await groq.chat.completions.create({
-    model: "meta-llama/llama-4-scout-17b-16e-instruct",
+    model: "llama-3.2-11b-vision-preview",
     messages: [
       {
         role: "user",
@@ -33,21 +33,30 @@ async function callGroq(prompt: string, imageBase64?: string, preferences?: stri
           : [{ type: "text", text: finalPrompt }],
       },
     ],
-    stream: true, // 開啟流式
+    stream: true,
   });
 
-  // 🔴 關鍵點：創建一個 ReadableStream 並格式化數據
+  const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
-      const encoder = new TextEncoder();
       try {
         for await (const chunk of response) {
           const content = chunk.choices[0]?.delta?.content || "";
           if (content) {
-            // 直接傳送文字內容，這是最通用的方式
-            controller.enqueue(encoder.encode(content));
+            // 🔴 關鍵：包裝成前端期待的 SSE JSON 格式
+            const payload = {
+              choices: [
+                {
+                  delta: { content: content }
+                }
+              ]
+            };
+            // 寫入格式：data: {"choices":[{"delta":{"content":"..."}}]}\n\n
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
           }
         }
+        // 傳送結束標誌
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
         controller.close();
       } catch (err) {
         controller.error(err);
@@ -59,6 +68,7 @@ async function callGroq(prompt: string, imageBase64?: string, preferences?: stri
     headers: {
       'Content-Type': 'text/event-stream; charset=utf-8',
       'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
     },
   });
 }
