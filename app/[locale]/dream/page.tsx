@@ -82,9 +82,7 @@ while (true) {
       try {
         const json = JSON.parse(trimmed.substring(6));
         
-        // ✨ 核心兼容邏輯：同時支援 DeepSeek (choices) 和 Gemini (candidates)
-        const text = json.choices?.[0]?.delta?.content || 
-                     json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        const text = json.choices?.[0]?.delta?.content || "";
         
         if (text) {
           fullResult += text;

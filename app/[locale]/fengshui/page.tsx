@@ -97,7 +97,8 @@ export default function FengShuiPage() {
           prompt: finalPrompt, 
           source: source, 
           email: email,
-          image: formDataState.imageData // 如果你的 API 支持傳入圖片數據
+          image: formDataState.imageData, // 如果你的 API 支持傳入圖片數據
+          preferences: formDataState.preferences
         }),
       });
 
@@ -116,6 +117,7 @@ export default function FengShuiPage() {
       if (!reader) throw new Error("No reader");
 
 // --- 修改開始 ---
+// --- 修改後的循環邏輯 ---
 while (true) {
   const { done, value } = await reader.read();
   if (done) break;
@@ -123,20 +125,16 @@ while (true) {
   const lines = chunk.split("\n");
   for (const line of lines) {
     const trimmed = line.trim();
-    if (!trimmed || trimmed === "data: [DONE]") continue;
-    if (trimmed.startsWith("data: ")) {
+    if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
       try {
         const json = JSON.parse(trimmed.substring(6));
-        
-        // ✨ 核心兼容邏輯：同時支援 DeepSeek (choices) 和 Gemini (candidates)
-        const text = json.choices?.[0]?.delta?.content || 
-                     json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        // 核心：直接讀取 OpenAI/DeepSeek 標準的 choices 結構
+        const text = json.choices?.[0]?.delta?.content || "";
         
         if (text) {
           fullResult += text;
           setResult((prev) => {
             const newRes = prev + text;
-            // 每 50 個字符備份一次
             if (newRes.length % 50 === 0) {
               localStorage.setItem("space_backup_content", newRes);
             }
@@ -144,8 +142,7 @@ while (true) {
           });
         }
       } catch (e) { 
-        // 忽略解析錯誤（部分流塊可能不完整）
-        console.error("Parse error:", e); 
+        // 忽略不完整的 JSON 塊
       }
     }
   }
@@ -277,7 +274,7 @@ while (true) {
                     className={`relative h-40 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${selectedImage ? 'border-[#0f3d2e] bg-gray-50' : 'border-gray-200 hover:border-[#0f3d2e] bg-gray-50/50'}`}
                   >
                     {selectedImage ? (
-                      <img src={selectedImage} className="h-full w-full object-cover rounded-2xl" alt="Preview" />
+                      <img src={selectedImage} className="h-full w-full object-contain rounded-2xl" alt="Preview" />
                     ) : (
                       <>
                         <span className="text-2xl mb-2">📸</span>

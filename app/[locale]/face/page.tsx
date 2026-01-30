@@ -87,6 +87,8 @@ export default function FaceReflectionPage() {
         .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
         .replace("${visualInputData}", `Name: ${formDataState.surname}. Gender: ${formDataState.gender}. User Context: ${formDataState.preferences}`);
 
+// ... 原有的 finalPrompt 定義 ...
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,7 +96,9 @@ export default function FaceReflectionPage() {
           prompt: finalPrompt, 
           source: source, 
           email: email,
-          image: formDataState.imageData 
+          image: formDataState.imageData,
+          // 🔴 新增：顯式傳遞用戶備註，讓 Groq 視覺掃描時能參考
+          preferences: formDataState.preferences 
         }),
       });
 
@@ -112,6 +116,7 @@ export default function FaceReflectionPage() {
       if (!reader) throw new Error("No reader");
 
 // --- 修改開始 ---
+// 修改後
 while (true) {
   const { done, value } = await reader.read();
   if (done) break;
@@ -119,30 +124,16 @@ while (true) {
   const lines = chunk.split("\n");
   for (const line of lines) {
     const trimmed = line.trim();
-    if (!trimmed || trimmed === "data: [DONE]") continue;
-    if (trimmed.startsWith("data: ")) {
+    if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
       try {
         const json = JSON.parse(trimmed.substring(6));
-        
-        // ✨ 核心兼容邏輯：同時支援 DeepSeek (choices) 和 Gemini (candidates)
-        const text = json.choices?.[0]?.delta?.content || 
-                     json.candidates?.[0]?.content?.parts?.[0]?.text || "";
-        
+        // 統一讀取標準的 content 字段
+        const text = json.choices?.[0]?.delta?.content || "";
         if (text) {
           fullResult += text;
-          setResult((prev) => {
-            const newRes = prev + text;
-            // 每 50 個字符備份一次
-            if (newRes.length % 50 === 0) {
-              localStorage.setItem("face_backup_content", newRes);
-            }
-            return newRes;
-          });
+          setResult(prev => prev + text);
         }
-      } catch (e) { 
-        // 忽略解析錯誤（部分流塊可能不完整）
-        console.error("Parse error:", e); 
-      }
+      } catch (e) { /* 靜默處理分段數據解析錯誤 */ }
     }
   }
 }

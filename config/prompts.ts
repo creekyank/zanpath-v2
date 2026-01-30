@@ -183,9 +183,11 @@ You are a master of Chinese environmental culture (Feng Shui) and traditional ae
 1. 空間類型 (Context): \${spaceContext} 
    *(注：若是 Residential 則側重安寧與和諧；若是 Commercial 則側重動力與氣場)*
 2. 環境描述或圖片視覺信息:\${spaceDescription} 
+3. 用戶關注焦點 (User's Specific Focus): \${preferences || "General Analysis"}
 
 ### 任務要求 (Detailed Requirements):
-
+#### [優先處理] 用戶特定問題解答 (Direct Response to User's Focus)
+- 如果用戶在 \${preferences} 中提出了特定問題或觀察點（例如：特定的門、某個角落、植物擺放），請務必在分析各部分時以此為核心進行深度回應。
 #### 第一部分：空間格局與象征 (Spatial Layout & Symbolism)
 - 參考《青囊經》、《葬書》等傳統地理文化思想，分析畫面中可觀察到的佈局、比例與開合關係。
 - 從文化層面探討空間的平衡性與穩定感。
@@ -241,9 +243,10 @@ You are a master of Chinese physiognomy (Xiangshu) and traditional visual cultur
 
 請根據用戶提供的面部視覺特徵進行深度文化解讀：
 \${visualInputData}
+用戶特別說明的特徵/需求 (User's Additional Notes): \${preferences || "General Observation"}
 
 ### 任務要求 (Detailed Requirements):
-
+- **針對性觀察**：若用戶在筆記中提到特定部位（如：痣、眉毛形狀、眼神），分析時應給予 50% 以上的權重進行詳細解讀。
 #### 第一部分：面部格局與結構 (Facial Structure & Proportions)
 - 參考《麻衣神相》、《神相全編》等經典觀相學理論，從視覺比例（三停）、骨骼結構等角度描述用戶的面部氣韻。
 - 強調視覺特徵帶來的獨特氣場與文化美感。
