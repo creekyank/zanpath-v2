@@ -307,6 +307,7 @@ while (true) {
                     <ul className="text-xs text-[#356f5b] space-y-2 list-disc ml-4 font-normal">
                       {mid.features.map(item => <li key={item}>{item}</li>)}
                     </ul>
+                    <p className="text-[11px] text-gray-500 border-t border-gray-200/60 pt-3 italic leading-snug">{foot.disclaimer}</p>
                   </div>
                 </div>
 
