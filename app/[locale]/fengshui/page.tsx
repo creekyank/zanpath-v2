@@ -230,12 +230,10 @@ while (true) {
               ))}
             </div>
             {/* 🟢 隱藏語言切換，但保留代碼以便未來開啟 */}
-            {/*
             <div className="flex items-center bg-white/50 rounded-full px-3 py-1 border border-gray-200 text-xs">
               <button onClick={() => router.push(pathname, { locale: 'en' })} className={`px-2 py-1 rounded-full ${locale === 'en' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>EN</button>
               <button onClick={() => router.push(pathname, { locale: 'es' })} className={`px-2 py-1 rounded-full ${locale === 'es' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>ES</button>
             </div>
-            */}
           </div>
         </div>
       </nav>
