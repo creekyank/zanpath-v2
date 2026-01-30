@@ -184,10 +184,13 @@ while (true) {
                 </Link>
               ))}
             </div>
+            {/* 🟢 隱藏語言切換，但保留代碼以便未來開啟 */}
+            {/*
             <div className="flex items-center bg-white/50 rounded-full px-3 py-1 border border-gray-200 text-xs">
               <button onClick={() => router.push(pathname, { locale: 'en' })} className={`px-2 py-1 rounded-full ${locale === 'en' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>EN</button>
               <button onClick={() => router.push(pathname, { locale: 'es' })} className={`px-2 py-1 rounded-full ${locale === 'es' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>ES</button>
             </div>
+            */}
           </div>
         </div>
       </nav>
@@ -238,9 +241,10 @@ while (true) {
     <p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
       Payments are currently being finalized. All features are available for exploration during this period.
     </p>
-    <p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
+    {/* 🟢 隱藏西班牙語提示 */}
+    {/*<p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
       Los pagos se están finalizando actualmente. Todas las funciones están disponibles para exploración durante este período.
-    </p>
+    </p>*/}
   </div>
 )}
 {/* --- 插入結束 --- */}
@@ -257,9 +261,11 @@ while (true) {
                   </div>
                 </div>
 
-                <button type="button" onClick={(e) => handleSubmit(e as any, 'VIP')} className="w-full py-3 rounded-xl border-2 border-[#c6a355] text-[#c6a355] font-bold text-sm">
+                {/* 🟢 隱藏 VIP 按鈕 */}
+                {/*<button type="button" onClick={(e) => handleSubmit(e as any, 'VIP')} className="w-full py-3 rounded-xl border-2 border-[#c6a355] text-[#c6a355] font-bold text-sm">
                   {mid.fields.btnVip}
                 </button>
+                */}
               </form>
             ) : (
               <div className="py-10">

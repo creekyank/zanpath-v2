@@ -408,7 +408,13 @@ face: {
       features: [
         "Facial feature and structure observation",
         "Symbolic interpretation inspired by traditional texts",
-        "AI-generated reflective summaries"
+        "AI-generated reflective summaries",
+        "This service processes uploaded images only for the purpose of generating AI-based visual reflections.",
+        "We do not store, retain, or build personal identity profiles from uploaded images.",
+        "If you are sensitive about uploading personal images, please consider carefully before using this feature.",
+        "For entertainment and self-exploration purposes only.",
+        "This service does not provide medical, legal, or professional advice."
+
       ],
       fields: {
         surname: "Name",
@@ -428,6 +434,7 @@ face: {
         reportTitle: "Facial Reflection Report",
         newAnalysis: "Analyze Another Face",
         requiredTip: "Please fill out this field and upload an image."
+
       }
     },
     es: {
@@ -437,7 +444,12 @@ face: {
       features: [
         "Observación de rasgos y estructura facial",
         "Interpretación simbólica inspirada en textos tradicionales",
-        "Resúmenes reflexivos generados por IA"
+        "Resúmenes reflexivos generados por IA",
+        "Este servicio procesa las imágenes cargadas exclusivamente con el fin de generar reflexiones visuales basadas en IA.",
+        "No almacenamos, retenemos ni creamos perfiles de identidad personal a partir de las imágenes subidas.",
+        "Las imágenes se utilizan de forma temporal durante el proceso de análisis y no se emplean para el reconocimiento facial, la verificación de identidad ni la identificación biométrica.",
+        "Si le preocupa cargar imágenes personales, le recomendamos que lo considere cuidadosamente antes de utilizar esta función.",
+        "Este servicio tiene únicamente fines de entretenimiento y autoexploración. No proporciona asesoramiento médico, legal ni profesional."
       ],
       fields: {
         surname: "Nombre",
