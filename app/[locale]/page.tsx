@@ -194,7 +194,7 @@ while (true) {
             <span className="font-bold text-lg">Zanpath AI</span>
           </div>
           <div className="flex items-center space-x-6">
-            <div className="hidden md:flex space-x-6 text-sm font-medium text-[#356f5b]">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-[13px] md:text-sm font-medium text-[#356f5b]">
               {menuItems.map(item => (
                 <Link key={item.href} href={item.href} className={item.href === "/" || item.href === "" ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1" : "hover:text-[#0f3d2e]"}>
                   {item.name}
