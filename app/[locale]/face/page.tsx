@@ -85,8 +85,12 @@ export default function FaceReflectionPage() {
       const finalPrompt = VISUAL_PROMPT_TEMPLATE
         .replace("${outputLanguage}", currentLangName)
         .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
-        .replace("${visualInputData}", `Name: ${formDataState.surname}. Gender: ${formDataState.gender}. User Context: ${formDataState.preferences}`);
-
+        .replace(
+          "${visualInputData}", 
+          `Name: ${formDataState.surname}. Gender: ${formDataState.gender}.${
+            formDataState.preferences.trim() ? ` User Context: ${formDataState.preferences}` : ""
+          }`
+        );
 // ... 原有的 finalPrompt 定義 ...
 
       const response = await fetch("/api/chat", {
@@ -272,7 +276,7 @@ while (true) {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.pref}</label>
+                  <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.pref}{locale === "es" ? "(Opcional)" : "(Optional)"}</label>
                   <textarea name="preferences" value={formDataState.preferences} onChange={(e) => setFormDataState({...formDataState, preferences: e.target.value})} rows={3} placeholder={mid.fields.prefPh} className="p-4 rounded-xl bg-gray-50 border-none outline-none text-sm" />
                 </div>
 

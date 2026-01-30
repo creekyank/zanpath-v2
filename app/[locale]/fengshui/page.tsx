@@ -286,8 +286,15 @@ while (true) {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.pref}</label>
-                  <textarea name="preferences" value={formDataState.preferences} onChange={(e) => setFormDataState({...formDataState, preferences: e.target.value})} required onInvalid={handleInvalid} onInput={handleInput} rows={3} placeholder={mid.fields.prefPh} className="p-4 rounded-xl bg-gray-50 border-none outline-none text-sm" />
+                  <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.pref}{locale === "es" ? "(Opcional)" : "(Optional)"}</label>
+                  <textarea 
+                    name="preferences" 
+                    value={formDataState.preferences} 
+                    onChange={(e) => setFormDataState({...formDataState, preferences: e.target.value})} 
+                    rows={3} 
+                    placeholder={mid.fields.prefPh} 
+                    className="p-4 rounded-xl bg-gray-50 border-none outline-none text-sm" 
+                  />
                 </div>
 
                 <div className="space-y-4">
