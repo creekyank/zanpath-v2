@@ -214,45 +214,56 @@ while (true) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
-      {/* 導航欄 - 與起名一致 */}
-      <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
-        <div className="w-full max-w-5xl flex justify-between items-center px-6 py-4">
-          <div className="flex items-center space-x-2">
-            <img src="/logo.png" className="w-8 h-8" alt="Logo" />
-            <span className="font-bold text-lg">Zanpath AI</span>
-          </div>
-          <div className="flex items-center space-x-6">
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-[13px] md:text-sm font-medium text-[#356f5b]">
+    <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
+    <div className="w-full max-w-5xl flex flex-col md:flex-row justify-between items-center px-6 py-4 gap-y-3">
+              <div className="flex items-center space-x-2">
+                <img src="/logo.png" className="w-8 h-8" alt="Logo" />
+                <span className="font-bold text-lg">Zanpath AI</span>
+              </div>
+    {/* 🟢 關鍵修改：將所有導航項與下拉框放在同一個容器內，並使用 flex-wrap */}
+    <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 md:space-x-6">
+          
+          {/* 直接循環導航項 */}
           {menuItems.map((item) => {
-          // 🟢 統一動態判斷邏輯
-          // 1. 如果 item.href 是空或 "/"，則判斷 pathname 是否為 "/"
-          // 2. 否則判斷 pathname 是否包含 item.href
-          const isActive = item.href === "/" || item.href === ""
-            ? pathname === "/" || pathname === ""
-            : pathname.startsWith(item.href);
+            const isActive = item.href === "/" || item.href === ""
+              ? pathname === "/" || pathname === ""
+              : pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`text-[13px] md:text-sm font-medium transition-colors ${
+                  isActive
+                    ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1"
+                    : "text-[#356f5b] hover:text-[#0f3d2e]"
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={isActive
-                ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1" // 激活狀態
-                : "hover:text-[#0f3d2e] transition-colors"          // 未激活狀態
-              }
+          {/* 🟢 語言下拉框：現在它是導航隊列的「最後一個元素」 */}
+          <div className="relative inline-flex items-center ml-1">
+            <select
+              value={locale}
+              onChange={(e) => router.push(pathname, { locale: e.target.value as 'en' | 'es' })}
+              className="appearance-none bg-white/40 border border-[#356f5b]/20 text-[#0f3d2e] text-[11px] font-bold rounded-md px-2 py-0.5 pr-6 cursor-pointer focus:outline-none transition-all hover:bg-white/60"
             >
-              {item.name}
-            </Link>
-          );
-        })}
-            </div>
-            {/* 🟢 隱藏語言切換，但保留代碼以便未來開啟 */}
-            <div className="flex items-center bg-white/50 rounded-full px-3 py-1 border border-gray-200 text-xs">
-              <button onClick={() => router.push(pathname, { locale: 'en' })} className={`px-2 py-1 rounded-full ${locale === 'en' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>EN</button>
-              <button onClick={() => router.push(pathname, { locale: 'es' })} className={`px-2 py-1 rounded-full ${locale === 'es' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>ES</button>
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+            {/* 箭頭圖標稍微縮小一點以配合文字 */}
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-[#0f3d2e]">
+              <svg className="fill-current h-3 w-3" viewBox="0 0 20 20">
+                <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+              </svg>
             </div>
           </div>
+
         </div>
-      </nav>
+      </div>
+    </nav>
 
       <main className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 order-1">
