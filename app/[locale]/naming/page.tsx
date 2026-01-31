@@ -7,6 +7,7 @@ import { NAMING_PROMPT_TEMPLATE } from "@/config/prompts";
 import { TIME_ZONE_NOTICE, NAV_MENU, PAGE_SPECIFIC_CONTENT, COMMON_FOOTER, DISCLAIMER_TEXT } from "@/config/site-content";
 import { ADMIN_CONFIG, isAdminEmail } from "@/config/admin";
 import RecoveryModal from "@/components/RecoveryModal";
+import { openPaddleCheckout } from "@/lib/paddle"; // 引入公共函數
 
 export default function NamingPage() {
   const locale = useLocale() as "en" | "es";
@@ -179,71 +180,71 @@ while (true) {
       // 传递一个空的 FormData 仅为保持函数签名一致，逻辑内部已改用 state
       processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
     } else {
-      if (window.Paddle) {
-        window.Paddle.Checkout.open({
-          product: "PRI_REAL_PRODUCT_ID_FOR_NAMING", 
-          email: email,
-          passthrough: JSON.stringify({ source: "naming_module", locale: locale }),
-          successCallback: () => processAiGeneration(new FormData(), "naming_module")
-        });
-      } else {
-        alert("Payment system is loading, please refresh.");
-      }
-    }
+// 使用我們封裝的公共函數
+openPaddleCheckout(
+  email, 
+  "naming_module", 
+  locale
+);
+
+// 注意：這裡暫時不需要 successCallback，因為我們之後會通過 Webhook 或 
+// Paddle 的 Event Listener 來觸發 processAiGeneration。
+// 如果你現在想「先測試彈窗」，到這一步就可以了。
+}
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
-<nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
-<div className="w-full max-w-5xl flex flex-col md:flex-row justify-between items-center px-6 py-4 gap-y-3">
-          <div className="flex items-center space-x-2">
-            <img src="/logo.png" className="w-8 h-8" alt="Logo" />
-            <span className="font-bold text-lg">Zanpath AI</span>
-          </div>
-{/* 🟢 關鍵修改：將所有導航項與下拉框放在同一個容器內，並使用 flex-wrap */}
-<div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 md:space-x-6">
-      
-      {/* 直接循環導航項 */}
-      {menuItems.map((item) => {
-        const isActive = item.href === "/" || item.href === ""
-          ? pathname === "/" || pathname === ""
-          : pathname.startsWith(item.href);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`text-[13px] md:text-sm font-medium transition-colors ${
-              isActive
-                ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1"
-                : "text-[#356f5b] hover:text-[#0f3d2e]"
-            }`}
-          >
-            {item.name}
-          </Link>
-        );
-      })}
+    <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
+    <div className="w-full max-w-5xl flex flex-col md:flex-row justify-between items-center px-6 py-4 gap-y-3">
+              <div className="flex items-center space-x-2">
+                <img src="/logo.png" className="w-8 h-8" alt="Logo" />
+                <span className="font-bold text-lg">Zanpath AI</span>
+              </div>
+    {/* 🟢 關鍵修改：將所有導航項與下拉框放在同一個容器內，並使用 flex-wrap */}
+    <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 md:space-x-6">
+          
+          {/* 直接循環導航項 */}
+          {menuItems.map((item) => {
+            const isActive = item.href === "/" || item.href === ""
+              ? pathname === "/" || pathname === ""
+              : pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`text-[13px] md:text-sm font-medium transition-colors ${
+                  isActive
+                    ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1"
+                    : "text-[#356f5b] hover:text-[#0f3d2e]"
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
 
-      {/* 🟢 語言下拉框：現在它是導航隊列的「最後一個元素」 */}
-      <div className="relative inline-flex items-center ml-1">
-        <select
-          value={locale}
-          onChange={(e) => router.push(pathname, { locale: e.target.value as 'en' | 'es' })}
-          className="appearance-none bg-white/40 border border-[#356f5b]/20 text-[#0f3d2e] text-[11px] font-bold rounded-md px-2 py-0.5 pr-6 cursor-pointer focus:outline-none transition-all hover:bg-white/60"
-        >
-          <option value="en">EN</option>
-          <option value="es">ES</option>
-        </select>
-        {/* 箭頭圖標稍微縮小一點以配合文字 */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-[#0f3d2e]">
-          <svg className="fill-current h-3 w-3" viewBox="0 0 20 20">
-            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-          </svg>
+          {/* 🟢 語言下拉框：現在它是導航隊列的「最後一個元素」 */}
+          <div className="relative inline-flex items-center ml-1">
+            <select
+              value={locale}
+              onChange={(e) => router.push(pathname, { locale: e.target.value as 'en' | 'es' })}
+              className="appearance-none bg-white/40 border border-[#356f5b]/20 text-[#0f3d2e] text-[11px] font-bold rounded-md px-2 py-0.5 pr-6 cursor-pointer focus:outline-none transition-all hover:bg-white/60"
+            >
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+            {/* 箭頭圖標稍微縮小一點以配合文字 */}
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-[#0f3d2e]">
+              <svg className="fill-current h-3 w-3" viewBox="0 0 20 20">
+                <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+              </svg>
+            </div>
+          </div>
+
         </div>
       </div>
-
-    </div>
-  </div>
-</nav>
+    </nav>
 
       <main className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 order-1">
