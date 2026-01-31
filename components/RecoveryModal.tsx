@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react";
 
 interface RecoveryModalProps {
-  locale: "en" | "es";
+  locale: string; // 修改為 string 以兼容可能的其他語言輸入
   moduleType: string;
-  // onResultFound 现在支持传入 content 和历史输入数据 inputData
   onResultFound: (content: string, inputData?: any) => void;
   onNeedsReRun?: (inputData?: any) => void;
 }
@@ -14,11 +13,12 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
-  const [step, setStep] = useState(1); // 1: 输入邮箱, 2: 输入验证码
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
 
-  const t = {
+  // 1. 定義翻譯資源
+  const translations = {
     en: {
       title: "Order Recovery",
       btn: "Already Paid? Recover Report",
@@ -43,9 +43,11 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
       error: "Error al recuperar. Inténtelo de nuevo.",
       close: "Cerrar"
     }
-  }[locale];
+  };
 
-  // 倒计时逻辑
+  // 2. 🟢 關鍵修復行：根據 locale 獲取翻譯，若無匹配則默認英文 (防止紅色波浪線)
+  const t = translations[locale as keyof typeof translations] || translations.en;
+
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -53,7 +55,6 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
     }
   }, [countdown]);
 
-  // 第一步：发送/请求验证码
   const handleSendCode = async () => {
     if (!email || !email.includes('@')) return alert("Please enter a valid email.");
     setLoading(true);
@@ -61,7 +62,7 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
       const res = await fetch("/api/orders/recover", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, moduleType, locale }), // 不传 code，后端自动识别为发送阶段
+        body: JSON.stringify({ email, moduleType, locale }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -77,7 +78,6 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
     }
   };
 
-  // 第二步：验证并获取结果
   const handleVerify = async () => {
     if (code.length < 4) return;
     setLoading(true);
@@ -85,17 +85,15 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
       const res = await fetch("/api/orders/recover", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code, moduleType, locale }), // 传 code，后端识别为校验阶段
+        body: JSON.stringify({ email, code, moduleType, locale }),
       });
       const data = await res.json();
 
       if (res.ok) {
         if (data.hasResult) {
-          // 情况 1：已有报告，直接传递内容和输入数据
           onResultFound(data.content, data.inputData);
           handleClose();
         } else {
-          // 情况 2：已付钱无结果，触发免费重刷
           onNeedsReRun?.();
           handleClose();
           alert(data.message);
@@ -112,7 +110,6 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
 
   const handleClose = () => {
     setIsOpen(false);
-    // 重置状态方便下次使用
     setTimeout(() => {
       setStep(1);
       setCode("");
