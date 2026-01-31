@@ -211,7 +211,7 @@ while (true) {
                 <span className="font-bold text-lg">Zanpath AI</span>
               </div>
     {/* 🟢 關鍵修改：將所有導航項與下拉框放在同一個容器內，並使用 flex-wrap */}
-    <div className="flex flex-wrap bg-green-500/10 justify-center items-center gap-x-4 gap-y-2 md:space-x-6">
+    <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 md:space-x-6">
           
           {/* 直接循環導航項 */}
           {menuItems.map((item) => {
