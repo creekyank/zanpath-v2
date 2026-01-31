@@ -31,7 +31,7 @@ export default function ArticlePage({ params }: PageProps) {
   const foot = COMMON_FOOTER[locale as "en" | "es"] || COMMON_FOOTER.en;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8faf9] to-[#ffffff] text-[#0f3d2e]">
+      <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
       
       {/* 頂部導航欄 */}
       <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
