@@ -195,11 +195,23 @@ while (true) {
           </div>
           <div className="flex items-center space-x-6">
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-[13px] md:text-sm font-medium text-[#356f5b]">
-              {menuItems.map(item => (
-                <Link key={item.href} href={item.href} className={item.href === "/" || item.href === "" ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1" : "hover:text-[#0f3d2e]"}>
-                  {item.name}
-                </Link>
-              ))}
+            {menuItems.map((item) => {
+          const isActive = item.href === "/" || item.href === ""
+            ? pathname === "/" || pathname === ""
+            : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={isActive
+                ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1" // 激活狀態
+                : "hover:text-[#0f3d2e] transition-colors"          // 未激活狀態
+              }
+            >
+              {item.name}
+            </Link>
+          );
+        })}
             </div>
             {/* 🟢 隱藏語言切換，但保留代碼以便未來開啟 */}
             <div className="flex items-center bg-white/50 rounded-full px-3 py-1 border border-gray-200 text-xs">
