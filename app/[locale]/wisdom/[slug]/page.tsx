@@ -1,88 +1,127 @@
+"use client";
+
 import { ARTICLES, ArticleSlug } from "@/content/articles";
 import { notFound } from "next/navigation";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation"; // 加上 useRouter
+import { NAV_MENU, COMMON_FOOTER } from "@/config/site-content";
+import { use } from "react"; // 🟢 引入 React 的 use 鈎子
 
-export default function ArticlePage({ params }: { params: { slug: string; locale: string } }) {
-  const { slug, locale } = params;
+interface PageProps {
+  params: Promise<{ slug: string; locale: string }>;
+}
+
+export default function ArticlePage({ params }: PageProps) {
+  // 🟢 在客戶端組件中，使用 use(params) 來解開 Promise
+  const resolvedParams = use(params);
+  const { slug, locale } = resolvedParams;
   
+  const pathname = usePathname();
+  const router = useRouter();
+
   // 獲取數據
   const articleEntry = ARTICLES[slug as ArticleSlug];
 
-  // 如果 slug 不在 articles.ts 的 key 裡面，直接返回 404
+  // 如果 slug 不存在，返回 404
   if (!articleEntry) {
     notFound();
   }
 
   const content = articleEntry[locale as "en" | "es"] || articleEntry.en;
+  const menuItems = NAV_MENU[locale as "en" | "es"] || NAV_MENU.en;
+  const foot = COMMON_FOOTER[locale as "en" | "es"] || COMMON_FOOTER.en;
 
   return (
-    <div className="min-h-screen bg-[#f8faf9] text-[#0f3d2e]">
-      {/* 文章頂部導航 */}
-      <nav className="max-w-3xl mx-auto pt-12 px-6">
-        <Link 
-          href="/wisdom" 
-          className="text-sm font-medium text-[#356f5b] hover:text-[#0f3d2e] transition-colors flex items-center gap-2"
-        >
-          ← {locale === 'es' ? 'Volver a Sabiduría' : 'Back to Wisdom'}
-        </Link>
+    <div className="min-h-screen bg-gradient-to-b from-[#f8faf9] to-[#ffffff] text-[#0f3d2e]">
+      
+      {/* 頂部導航欄 */}
+      <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
+        <div className="w-full max-w-5xl flex justify-between items-center px-6 py-4">
+          <div className="flex items-center space-x-2">
+            <img src="/logo.png" className="w-8 h-8" alt="Logo" />
+            <span className="font-bold text-lg">Zanpath AI</span>
+          </div>
+          <div className="flex items-center space-x-6">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-[13px] md:text-sm font-medium text-[#356f5b]">
+              {menuItems.map((item) => {
+                const isActive = item.href === "/" || item.href === ""
+                  ? pathname === "/" || pathname === ""
+                  : pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={isActive
+                      ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1"
+                      : "hover:text-[#0f3d2e] transition-colors"
+                    }
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </div>
+            {/* 語言切換 */}
+            <div className="flex items-center bg-white/50 rounded-full px-3 py-1 border border-gray-200 text-xs">
+              <button onClick={() => router.push(pathname, { locale: 'en' })} className={`px-2 py-1 rounded-full ${locale === 'en' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>EN</button>
+              <button onClick={() => router.push(pathname, { locale: 'es' })} className={`px-2 py-1 rounded-full ${locale === 'es' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>ES</button>
+            </div>
+          </div>
+        </div>
       </nav>
 
       <main className="max-w-3xl mx-auto py-12 px-6 pb-24">
-        {/* 文章頭部元數據 */}
+        {/* 返回按鈕 */}
+        <div className="mb-12">
+          <Link 
+            href="/wisdom" 
+            className="text-sm font-bold text-[#356f5b] hover:text-[#0f3d2e] flex items-center gap-2 transition-transform hover:-translate-x-1"
+          >
+            ← {locale === 'es' ? 'Volver a Sabiduría' : 'Back to Wisdom'}
+          </Link>
+        </div>
+
+        {/* 文章頭部 */}
         <header className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="px-3 py-1 bg-[#0f3d2e] text-white text-xs font-bold rounded-full uppercase tracking-wider">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="px-3 py-1 bg-[#0f3d2e] text-white text-[10px] font-black rounded-full uppercase tracking-tighter">
               {content.category}
             </span>
-            <span className="text-sm text-gray-400 font-medium">
+            <span className="text-xs text-gray-400 font-medium">
               {content.date}
             </span>
           </div>
           
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-8 tracking-tight text-[#0f3d2e]">
             {content.title}
           </h1>
           
-          <p className="text-lg md:text-xl text-[#356f5b] leading-relaxed italic border-l-4 border-[#0f3d2e]/30 pl-6 py-2">
+          <p className="text-xl text-[#4a7c6d] leading-relaxed italic border-l-4 border-[#0f3d2e]/20 pl-6 py-2 bg-[#dff3ee]/30 rounded-r-xl">
             {content.desc}
           </p>
         </header>
 
-        {/* 文章正文內容 */}
-        <article className="prose prose-slate lg:prose-xl max-w-none">
-          <div className="text-[#0f3d2e] leading-loose space-y-6 whitespace-pre-line text-base md:text-lg">
-            {/* 這裡渲染 content.ts 裡的內容 */}
+        {/* 文章正文 */}
+        <article className="prose prose-slate max-w-none">
+          <div className="text-[#0f3d2e] leading-[1.8] space-y-8 whitespace-pre-line text-lg font-normal">
             {content.content}
           </div>
         </article>
 
-        {/* 底部行動呼籲 (CTA) */}
-        <footer className="mt-20 pt-10 border-t border-gray-200">
-          <div className="bg-[#0f3d2e] rounded-3xl p-8 text-center text-white shadow-xl">
-            <h3 className="text-2xl font-bold mb-4">
-              {locale === 'es' ? '¿Listo para descubrir tu propio mapa?' : 'Ready to decode your own map?'}
-            </h3>
-            <p className="text-gray-300 mb-8 max-w-md mx-auto">
-              {locale === 'es' 
-                ? 'Únete a miles de personas que utilizan la IA para comprender sus ritmos celestiales.' 
-                : 'Join thousands using AI to understand their celestial rhythms.'}
-            </p>
-            <Link 
-              href="/" 
-              className="inline-block px-8 py-4 bg-white text-[#0f3d2e] font-bold rounded-full hover:bg-gray-100 transition-all shadow-lg"
-            >
-              {locale === 'es' ? 'Generar Mi Análisis' : 'Generate My Analysis'}
-            </Link>
+        {/* 頁腳 */}
+        <footer className="mt-20 py-10 bg-transparent">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <div className="max-w-2xl mx-auto mb-1">
+            <p className="text-sm text-gray-500/80 leading-relaxed">{foot.about}</p>
           </div>
-        </footer>
+          <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2">
+             <p className="text-sm text-gray-400">© 2026 Zanpath AI. </p>
+            {foot.links.map(link => (
+              <Link key={link.name} href={link.href} className="text-sm text-[#356f5b] hover:text-[#0f3d2e] transition-colors">{link.name}</Link>
+            ))}
+          </div>
+        </div>
+      </footer>
       </main>
     </div>
   );
-}
-
-// 為了讓 SEO 更好，生成靜態路徑 (可選)
-export async function generateStaticParams() {
-  return Object.keys(ARTICLES).map((slug) => ({
-    slug: slug,
-  }));
 }
