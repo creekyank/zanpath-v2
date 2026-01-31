@@ -195,48 +195,46 @@ while (true) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
 <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
-  {/* 1. 關鍵修改：增加了 md:flex-row 和 flex-col，並移除了單純的 justify-between */}
-  <div className="w-full max-w-5xl flex flex-col md:flex-row justify-between items-center px-6 py-4 gap-y-4">
+<div className="w-full max-w-5xl flex flex-col md:flex-row justify-between items-center px-6 py-4 gap-y-3">
           <div className="flex items-center space-x-2">
             <img src="/logo.png" className="w-8 h-8" alt="Logo" />
             <span className="font-bold text-lg">Zanpath AI</span>
           </div>
-{/* 2. 導航 + 語言容器：增加 flex-wrap 確保寬度不足時自動換行 */}
-<div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-3">
+{/* 🟢 關鍵修改：將所有導航項與下拉框放在同一個容器內，並使用 flex-wrap */}
+<div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 md:space-x-6">
       
-      {/* 導航菜單項 */}
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-[13px] md:text-sm font-medium text-[#356f5b]">
-        {menuItems.map((item) => {
-          const isActive = item.href === "/" || item.href === ""
-            ? pathname === "/" || pathname === ""
-            : pathname.startsWith(item.href);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={isActive
+      {/* 直接循環導航項 */}
+      {menuItems.map((item) => {
+        const isActive = item.href === "/" || item.href === ""
+          ? pathname === "/" || pathname === ""
+          : pathname.startsWith(item.href);
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`text-[13px] md:text-sm font-medium transition-colors ${
+              isActive
                 ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1"
-                : "hover:text-[#0f3d2e] transition-colors"
-              }
-            >
-              {item.name}
-            </Link>
-          );
-        })}
-      </div>
+                : "text-[#356f5b] hover:text-[#0f3d2e]"
+            }`}
+          >
+            {item.name}
+          </Link>
+        );
+      })}
 
-      {/* 語言切換下拉框 */}
-      <div className="relative shrink-0">
+      {/* 🟢 語言下拉框：現在它是導航隊列的「最後一個元素」 */}
+      <div className="relative inline-flex items-center ml-1">
         <select
           value={locale}
           onChange={(e) => router.push(pathname, { locale: e.target.value as 'en' | 'es' })}
-          className="appearance-none bg-white/60 border border-gray-200 text-[#0f3d2e] text-xs font-bold rounded-lg px-3 py-1.5 pr-8 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#0f3d2e] transition-all"
+          className="appearance-none bg-white/40 border border-[#356f5b]/20 text-[#0f3d2e] text-[11px] font-bold rounded-md px-2 py-0.5 pr-6 cursor-pointer focus:outline-none transition-all hover:bg-white/60"
         >
           <option value="en">EN</option>
           <option value="es">ES</option>
         </select>
-        {/* SVG 箭頭部分保持原樣 */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#0f3d2e]">
+        {/* 箭頭圖標稍微縮小一點以配合文字 */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-[#0f3d2e]">
           <svg className="fill-current h-3 w-3" viewBox="0 0 20 20">
             <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
           </svg>
