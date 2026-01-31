@@ -26,7 +26,7 @@ export default function PaddleInitializer() {
   return (
     <Script
       src="https://cdn.paddle.com/paddle/v3/paddle.js"
-      strategy="afterInteractive"
+      strategy="beforeInteractive" // 🟢 改為最高優先級
       onReady={handleOnReady} // 使用 onReady 比 onLoad 更穩定
     />
   );
