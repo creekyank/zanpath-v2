@@ -194,28 +194,58 @@ while (true) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
-      <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
-        <div className="w-full max-w-5xl flex justify-between items-center px-6 py-4">
+<nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
+  {/* 1. 關鍵修改：增加了 md:flex-row 和 flex-col，並移除了單純的 justify-between */}
+  <div className="w-full max-w-5xl flex flex-col md:flex-row justify-between items-center px-6 py-4 gap-y-4">
           <div className="flex items-center space-x-2">
             <img src="/logo.png" className="w-8 h-8" alt="Logo" />
             <span className="font-bold text-lg">Zanpath AI</span>
           </div>
-          <div className="flex items-center space-x-6">
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-[13px] md:text-sm font-medium text-[#356f5b]">
-              {menuItems.map(item => (
-                <Link key={item.href} href={item.href} className={item.href === "/naming" ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1" : "hover:text-[#0f3d2e]"}>
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-            {/* 🟢 隱藏語言切換，但保留代碼以便未來開啟 */}
-            <div className="flex items-center bg-white/50 rounded-full px-3 py-1 border border-gray-200 text-xs">
-              <button onClick={() => router.push(pathname, { locale: 'en' })} className={`px-2 py-1 rounded-full ${locale === 'en' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>EN</button>
-              <button onClick={() => router.push(pathname, { locale: 'es' })} className={`px-2 py-1 rounded-full ${locale === 'es' ? 'bg-[#0f3d2e] text-white' : 'text-gray-500'}`}>ES</button>
-            </div>
-          </div>
+{/* 2. 導航 + 語言容器：增加 flex-wrap 確保寬度不足時自動換行 */}
+<div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-3">
+      
+      {/* 導航菜單項 */}
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-[13px] md:text-sm font-medium text-[#356f5b]">
+        {menuItems.map((item) => {
+          const isActive = item.href === "/" || item.href === ""
+            ? pathname === "/" || pathname === ""
+            : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={isActive
+                ? "text-[#0f3d2e] border-b-2 border-[#0f3d2e] pb-1"
+                : "hover:text-[#0f3d2e] transition-colors"
+              }
+            >
+              {item.name}
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* 語言切換下拉框 */}
+      <div className="relative shrink-0">
+        <select
+          value={locale}
+          onChange={(e) => router.push(pathname, { locale: e.target.value as 'en' | 'es' })}
+          className="appearance-none bg-white/60 border border-gray-200 text-[#0f3d2e] text-xs font-bold rounded-lg px-3 py-1.5 pr-8 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#0f3d2e] transition-all"
+        >
+          <option value="en">EN</option>
+          <option value="es">ES</option>
+        </select>
+        {/* SVG 箭頭部分保持原樣 */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#0f3d2e]">
+          <svg className="fill-current h-3 w-3" viewBox="0 0 20 20">
+            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+          </svg>
         </div>
-      </nav>
+      </div>
+
+    </div>
+  </div>
+</nav>
 
       <main className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 order-1">
