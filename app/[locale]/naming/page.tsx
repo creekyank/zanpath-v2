@@ -183,8 +183,7 @@ while (true) {
 // 使用我們封裝的公共函數
 openPaddleCheckout(
   email, 
-  "naming_module", 
-  locale
+  "naming"
 );
 
 // 注意：這裡暫時不需要 successCallback，因為我們之後會通過 Webhook 或 
