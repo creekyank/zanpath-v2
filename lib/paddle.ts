@@ -27,7 +27,6 @@ export const openPaddleCheckout = (email: string, moduleName: string) => {
   if (!(window as any).__paddle_inited) {
     paddle.Initialize({
       token,
-      environment: "production",
     });
     (window as any).__paddle_inited = true;
     console.log("✅ Paddle initialized");
