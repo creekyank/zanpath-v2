@@ -17,20 +17,12 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        {/* 这里可以放 meta / title */}
-      </head>
+      <head />
       <body>
-        {/* ✅ 正确的 Paddle New SDK（v2） */}
+        {/* ✅ Paddle New (v2) SDK：无事件处理函数 */}
         <Script
           src="https://cdn.paddle.com/paddle/v2/paddle.js"
           strategy="afterInteractive"
-          onLoad={() => {
-            console.log("✅ Paddle SDK (v2) loaded");
-          }}
-          onError={(e) => {
-            console.error("❌ Paddle SDK failed to load", e);
-          }}
         />
 
         <NextIntlClientProvider messages={messages} locale={locale}>
