@@ -1,13 +1,13 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
-import Script from "next/script"; // 🟢 使用 Next.js 優化過的腳本加載器
+import Script from "next/script";
 
 import "../globals.css";
 
 export default async function LocaleLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -18,17 +18,21 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        {/* 🟢 方案 A：使用 Next.js Script 組件（推薦） */}
-        <Script
-          src="https://cdn.paddle.com/paddle/v3/paddle.js"
-          strategy="beforeInteractive" // 在頁面交互前加載，最穩！
-        />
-        
-        {/* 如果你更喜歡原生寫法，也可以用：
-        <script src="https://cdn.paddle.com/paddle/v3/paddle.js" async></script> 
-        */}
+        {/* 这里可以放 meta / title */}
       </head>
       <body>
+        {/* ✅ 正确的 Paddle New SDK（v2） */}
+        <Script
+          src="https://cdn.paddle.com/paddle/v2/paddle.js"
+          strategy="afterInteractive"
+          onLoad={() => {
+            console.log("✅ Paddle SDK (v2) loaded");
+          }}
+          onError={(e) => {
+            console.error("❌ Paddle SDK failed to load", e);
+          }}
+        />
+
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider
             attribute="class"
@@ -36,7 +40,6 @@ export default async function LocaleLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* 頁面主要內容 */}
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>
