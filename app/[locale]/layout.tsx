@@ -1,10 +1,9 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { ThemeProvider } from "next-themes";
+import Script from "next/script"; // 🟢 使用 Next.js 優化過的腳本加載器
 
 import "../globals.css";
-// 引入我們剛才重寫的、使用 useEffect 手動加載腳本的組件
-import PaddleInitializer from "@/components/PaddleInitializer";
 
 export default async function LocaleLayout({
   children,
@@ -13,19 +12,23 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // 注意：在 Next.js 15 中 params 是 Promise，需要 await
   const { locale } = await params;
   const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        {/* 這裡保留原有的 meta 標籤等，不放置 PaddleInitializer */}
+        {/* 🟢 方案 A：使用 Next.js Script 組件（推薦） */}
+        <Script
+          src="https://cdn.paddle.com/paddle/v3/paddle.js"
+          strategy="beforeInteractive" // 在頁面交互前加載，最穩！
+        />
+        
+        {/* 如果你更喜歡原生寫法，也可以用：
+        <script src="https://cdn.paddle.com/paddle/v3/paddle.js" async></script> 
+        */}
       </head>
       <body>
-        {/* 🟢 關鍵：將 Paddle 腳本加載器放在 body 最前面 */}
-        <PaddleInitializer />
-
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider
             attribute="class"
