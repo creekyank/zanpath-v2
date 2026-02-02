@@ -21,7 +21,7 @@ export default async function LocaleLayout({
       <body>
         {/* ✅ Paddle New (v2) SDK：无事件处理函数 */}
         <Script
-          src="https://cdn.paddle.com/paddle/v2/paddle.js"
+          src="https://cdn.paddle.com/paddle/v3/paddle.js"
           strategy="afterInteractive"
         />
 
