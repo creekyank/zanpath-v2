@@ -40,7 +40,11 @@ export const openPaddleCheckout = (email: string, moduleName: string) => {
     },
     items: [{ priceId, quantity: 1 }],
     customer: { email },
-    customData: { module: moduleName },
+    // 🟢 關鍵修改：將 email 放入 customData
+    customData: { 
+      module: moduleName,
+      user_email: email 
+    },
   });
 
   console.log("🚀 Paddle Checkout triggered:", moduleName);

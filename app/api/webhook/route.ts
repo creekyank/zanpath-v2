@@ -11,8 +11,6 @@ function verifyPaddleSignature(
 ) {
   if (!signatureHeader || !secret) return false;
 
-  // 1. Paddle 签名头格式是 "ts=123456;h1=abcdef..."
-  // 我们必须拆分出时间戳 (ts) 和 签名值 (h1)
   const parts = signatureHeader.split(";");
   const tsPart = parts.find((p) => p.startsWith("ts="));
   const h1Part = parts.find((p) => p.startsWith("h1="));
@@ -24,17 +22,13 @@ function verifyPaddleSignature(
 
   const ts = tsPart.split("=")[1];
   const h1 = h1Part.split("=")[1];
-
-  // 2. 构造签名载体：时间戳 + 冒号 + 原始请求体
   const payload = `${ts}:${rawBody}`;
 
-  // 3. 计算 HMAC SHA256
   const expectedHmac = crypto
     .createHmac("sha256", secret)
     .update(payload)
     .digest("hex");
 
-  // 4. 安全对比。使用 try-catch 防止长度不同导致的崩溃
   try {
     return crypto.timingSafeEqual(
       Buffer.from(expectedHmac),
@@ -54,7 +48,6 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Server misconfigured", { status: 500 });
   }
 
-  // ⚠️ 获取原始文本，验证签名必须用 rawBody
   const rawBody = await req.text();
   const signature = req.headers.get("paddle-signature");
 
@@ -62,7 +55,6 @@ export async function POST(req: NextRequest) {
 
   if (!isValid) {
     console.error("❌ Paddle Webhook 签名验证失败");
-    // 如果签名不对，返回 401
     return new NextResponse("Invalid signature", { status: 401 });
   }
 
@@ -78,16 +70,21 @@ export async function POST(req: NextRequest) {
 
   console.log("📩 验证通过！收到事件:", eventType);
 
-  // 处理支付成功逻辑
   if (eventType === "transaction.completed" || eventType === "transaction.paid") {
-    // 这里的 custom_data 是你在 paddle.ts 里传过去的
-    const email = data?.custom_data?.user_email || data?.customer?.email;
+    const emailFromCustom = data?.custom_data?.user_email;
+    const emailFromCustomer = data?.customer?.email;
+    const finalEmail = emailFromCustom || emailFromCustomer || data?.customer_email;
     const moduleName = data?.custom_data?.module;
 
-    console.log("✅ 支付处理成功:", { email, moduleName });
-    
-    // 这里写你的业务逻辑，比如更新数据库
+    console.log("✅ 支付成功確認:", {
+      email: finalEmail,
+      module: moduleName,
+      transactionId: data?.id
+    });
+
+    // TODO: 这里执行数据库写入逻辑
   }
 
+  // 🟢 之前可能漏掉了下面这两行，导致报错：
   return NextResponse.json({ received: true });
-}
+} // <--- 确保这个函数结束的大括号存在
