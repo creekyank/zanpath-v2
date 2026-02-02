@@ -145,6 +145,47 @@ while (true) {
     }
   };
 
+  // 3. 新增：輪詢檢查支付狀態
+  const pollPaymentStatus = async (email: string) => {
+    let attempts = 0;
+    const maxAttempts = 20; // 最多等待 40 秒
+
+    const interval = setInterval(async () => {
+      attempts++;
+      console.log(`Checking payment status (Attempt ${attempts})...`);
+
+      try {
+        const res = await fetch("/api/orders/check-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            email: email.toLowerCase().trim(), 
+            moduleType: "naming" 
+          }),
+        });
+        const data = await res.json();
+
+        if (data.isPaid) {
+          clearInterval(interval);
+          console.log("✅ Payment confirmed! Starting AI generation...");
+          window.scrollTo({ top: 0, behavior: 'smooth' }); // 加入這一行
+          processAiGeneration(new FormData(), "auto_after_pay");
+        }
+      } catch (e) {
+        console.error("Polling check failed", e);
+      }
+
+      if (attempts >= maxAttempts) {
+        clearInterval(interval);
+        setLoading(false);
+        alert(locale === "es" 
+          ? "El pago tarda en confirmarse. Por favor, use 'Recuperar Orden' en un minuto." 
+          : "Payment confirmation is taking longer than expected. Please use 'Recover Order' in a minute."
+        );
+      }
+    }, 2000); // 每 2 秒檢查一次
+  };
+
   // 在 NamingPage 组建内部定义
   const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
@@ -160,41 +201,47 @@ while (true) {
     target.setCustomValidity("");
   };
   // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
+  // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
   const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
     if (e) {
       e.preventDefault();
-      // 只有當 e 存在時才去檢查 form 容器
       const formElement = (e.currentTarget as HTMLElement).closest("form");
       if (!formElement) return;
     }
 
     const email = formDataState.email.trim().toLowerCase();
 
+    // 基礎驗證
     if (!email || !formDataState.surname || !formDataState.description) {
       alert(mid.fields.requiredTip);
       return;
     }
 
+    // 判斷是否為管理員、VIP 或 已預付
     if (mode === 'VIP' || isPrePaid || isAdminEmail(email)) {
       if (mode === 'VIP') {
         const pwd = prompt("Enter VIP Password:");
         if (pwd !== ADMIN_CONFIG.vipPassword) return alert("Incorrect password.");
       }
-      // 传递一个空的 FormData 仅为保持函数签名一致，逻辑内部已改用 state
       processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
-    } else {
-// 使用我們封裝的公共函數
-openPaddleCheckout(
-  email, 
-  "naming"
-);
-
-// 注意：這裡暫時不需要 successCallback，因為我們之後會通過 Webhook 或 
-// Paddle 的 Event Listener 來觸發 processAiGeneration。
-// 如果你現在想「先測試彈窗」，到這一步就可以了。
-}
-  };
-
+    } 
+    
+    else {
+      // 🚀 正式支付流程
+      openPaddleCheckout(
+        email, 
+        "naming", 
+        formDataState, // 傳入當前表單快照，供 Webhook 存入數據庫
+        () => {
+          // 支付成功回調（用戶關閉彈窗後觸發）
+          setLoading(true); 
+          setShowResult(true); 
+          setResult(""); // 清空舊結果
+          pollPaymentStatus(email); // 啟動 2 秒一次的輪詢
+        }
+      );
+    }
+  }; // <--- 確保這裡有大括號
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
     <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">

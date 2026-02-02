@@ -85,6 +85,11 @@ export async function POST(req: NextRequest) {
       module: moduleName,
       transactionId: data?.id
     });
+    
+    if (!finalEmail) {
+      console.error("❌ Webhook Error: No email found in paddle data");
+      return NextResponse.json({ received: true }); // 依然回傳 200，但中斷執行
+    }
 
     try {
       // 🟢 核心改動：將支付記錄同步到數據庫 Order 表

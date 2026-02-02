@@ -10,53 +10,42 @@ datasource db {
 }
 
 model Order {
-  id               String   @id @default(cuid())
-  email            String
-  status           String   @default("pending") // 'pending', 'paid'
+  id              String   @id @default(cuid())
+  email           String
+  status          String   @default("pending") // 'pending', 'paid'
+  isUsed          Boolean  @default(false)     
   
-// 🟢 新增：標記這筆訂單是否已經被某次「測算行為」消耗
-  isUsed           Boolean  @default(false)     
-  
-  // 🟢 新增：存儲輸入數據的唯一特徵（Hash）
-  // 用來判斷用戶是在「找回舊結果」還是在「測新數據」
-  fingerprint      String?  @unique
+  // 修正 1：移除 fingerprint 的唯一限制，改用 index 提升查詢速度
+  fingerprint     String?  
 
-  // 🟢 核心：標記是哪個模塊 (naming, bazi, dream, face, fengshui)
-  moduleType       String   
-  
-  // 🟢 核心：保存用戶輸入的原始數據（姓名、生辰等）
-  // 移到這裡：確保支付成功那一刻，數據就被鎖定，方便「找回」和「回填」
-  inputData        Json?    
+  moduleType      String   
+  inputData       Json?    
 
-  // Paddle 相關
-  paddleOrderId    String?  @unique // 對應 Paddle 的 transaction_id
+  // 修正 2：Paddle 訂單號，保留唯一性
+  paddleOrderId   String?  @unique 
   
-  // 找回訂單與驗證碼邏輯
-  recoveryCode     String?
-  codeExpiresAt    DateTime?
-  lastCodeSentAt   DateTime?
+  recoveryCode    String?
+  codeExpiresAt   DateTime?
+  lastCodeSentAt  DateTime?
   
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   
-  // 關聯 Result
-  result           Result?
+  result          Result?
+
+  // 修正 3：新增索引，方便快速查找某個用戶的訂單
+  @@index([email])
+  @@index([paddleOrderId])
 }
 
 model Result {
   id          String   @id @default(cuid())
-  
-  // 🟢 AI 生成的詳細報告內容
   content     String   @db.Text
-  
-  // 🟢 標記 AI 是否完整輸出，防止顯示一半的結果
   isComplete  Boolean  @default(false)
-  
-  // 🟢 標記 PDF 郵件是否已成功發送
   pdfSent     Boolean  @default(false)
   
   orderId     String   @unique
-  order       Order    @relation(fields: [orderId], references: [id])
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade) // 建議加上串聯刪除
   
   createdAt   DateTime @default(now())
 }
