@@ -16,10 +16,16 @@ export async function POST(req: Request) {
     const userEmail = email.toLowerCase().trim();
 
     // 1. 尋找匹配的已支付訂單 (優先找最新的一筆)
-    const order = await db.order.findFirst({
-      where: { email: userEmail, status: 'paid', moduleType: module },
-      orderBy: { createdAt: 'desc' }
-    });
+// 修改尋找訂單的邏輯：
+const order = await db.order.findFirst({
+  where: { 
+    email: userEmail, 
+    status: 'paid', 
+    moduleType: module,
+    isUsed: true // 🟢 這裡改為 true，因為 chat 接口已經把它標記為已使用了
+  },
+  orderBy: { updatedAt: 'desc' } // 改用 updatedAt 找到剛鎖定的那一筆
+});
 
     if (!order) {
       console.warn("⚠️ 數據庫未找到匹配的支付訂單:", { userEmail, module });

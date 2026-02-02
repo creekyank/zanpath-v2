@@ -89,20 +89,19 @@ export async function POST(req: NextRequest) {
     try {
       // 🟢 核心改動：將支付記錄同步到數據庫 Order 表
       await db.order.upsert({
-        where: { 
-          paddleOrderId: data.id 
-        },
+        where: { paddleOrderId: data.id },
         update: { 
           status: "paid",
           email: finalEmail,
-          inputData: inputSnapshot // 防止異步更新
+          // 不要更新 isUsed，保持其為 false
         },
         create: {
           paddleOrderId: data.id,
           email: finalEmail,
           status: "paid",
           moduleType: moduleName,
-          inputData: inputSnapshot // 👈 存入原始輸入，找回功能的核心數據
+          inputData: inputSnapshot,
+          isUsed: false // 🟢 明確初始化為 false
         }
       });
       console.log("🚀 數據庫 Order 已更新為已支付狀態");

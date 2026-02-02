@@ -94,7 +94,7 @@ export default function RecoveryModal({ locale, moduleType, onResultFound, onNee
           onResultFound(data.content, data.inputData);
           handleClose();
         } else {
-          onNeedsReRun?.();
+          onNeedsReRun?.(data.inputData);
           handleClose();
           alert(data.message);
         }

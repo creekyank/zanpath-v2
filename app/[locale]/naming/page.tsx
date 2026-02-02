@@ -161,9 +161,12 @@ while (true) {
   };
   // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
   const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
-    e.preventDefault();
-    const formElement = (e.currentTarget as HTMLElement).closest("form");
-    if (!formElement) return;
+    if (e) {
+      e.preventDefault();
+      // 只有當 e 存在時才去檢查 form 容器
+      const formElement = (e.currentTarget as HTMLElement).closest("form");
+      if (!formElement) return;
+    }
 
     const email = formDataState.email.trim().toLowerCase();
 
@@ -384,6 +387,8 @@ openPaddleCheckout(
               setResult(""); 
               setIsPrePaid(true); 
               if (inputData) setFormDataState(inputData);
+              // 🟢 新增：自動捲動到頂部
+              window.scrollTo({ top: 0, behavior: 'smooth' });
               alert(locale === "es" ? "Pago verificado. Puede generar ahora." : "Payment verified. You can generate now.");
             }}
           />

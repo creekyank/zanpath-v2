@@ -14,6 +14,13 @@ model Order {
   email            String
   status           String   @default("pending") // 'pending', 'paid'
   
+// 🟢 新增：標記這筆訂單是否已經被某次「測算行為」消耗
+  isUsed           Boolean  @default(false)     
+  
+  // 🟢 新增：存儲輸入數據的唯一特徵（Hash）
+  // 用來判斷用戶是在「找回舊結果」還是在「測新數據」
+  fingerprint      String?  @unique
+
   // 🟢 核心：標記是哪個模塊 (naming, bazi, dream, face, fengshui)
   moduleType       String   
   
