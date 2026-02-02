@@ -12,27 +12,44 @@ datasource db {
 model Order {
   id               String   @id @default(cuid())
   email            String
-  status           String   @default("pending") 
-  // 🟢 核心：标记是哪个模块 (naming, bazi, dream, face, fengshui)
+  status           String   @default("pending") // 'pending', 'paid'
+  
+  // 🟢 核心：標記是哪個模塊 (naming, bazi, dream, face, fengshui)
   moduleType       String   
-  paddleOrderId    String?  @unique
+  
+  // 🟢 核心：保存用戶輸入的原始數據（姓名、生辰等）
+  // 移到這裡：確保支付成功那一刻，數據就被鎖定，方便「找回」和「回填」
+  inputData        Json?    
+
+  // Paddle 相關
+  paddleOrderId    String?  @unique // 對應 Paddle 的 transaction_id
+  
+  // 找回訂單與驗證碼邏輯
   recoveryCode     String?
   codeExpiresAt    DateTime?
   lastCodeSentAt   DateTime?
+  
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   
+  // 關聯 Result
   result           Result?
 }
 
 model Result {
-  id         String   @id @default(cuid())
-  // 🟢 核心：保存用户输入的所有原始数据（姓名、梦境、生辰等）
-  // 使用 Json 类型可以兼容不同模块的不同字段
-  inputData  Json?    
-  content    String   @db.Text
-  isComplete Boolean  @default(false)
-  orderId    String   @unique
-  order      Order    @relation(fields: [orderId], references: [id])
-  createdAt  DateTime @default(now())
+  id          String   @id @default(cuid())
+  
+  // 🟢 AI 生成的詳細報告內容
+  content     String   @db.Text
+  
+  // 🟢 標記 AI 是否完整輸出，防止顯示一半的結果
+  isComplete  Boolean  @default(false)
+  
+  // 🟢 標記 PDF 郵件是否已成功發送
+  pdfSent     Boolean  @default(false)
+  
+  orderId     String   @unique
+  order       Order    @relation(fields: [orderId], references: [id])
+  
+  createdAt   DateTime @default(now())
 }

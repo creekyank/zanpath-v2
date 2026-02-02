@@ -5,7 +5,6 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { AnalysisReportPDF } from "@/lib/pdf-generator";
 import React from "react";
 
-// 初始化 Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const RECOVERY_TEXT = {
@@ -38,22 +37,24 @@ export async function POST(req: Request) {
     const t = RECOVERY_TEXT[langKey];
     const userEmail = email.toLowerCase().trim();
 
-    // 1. 查找匹配的已支付订单 (必须匹配 email 和对应的模块)
+    // 1. 查找匹配的已支付訂單 (優先匹配最新的支付記錄)
     const order = await db.order.findFirst({
       where: { email: userEmail, status: 'paid', moduleType: moduleType },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
+      include: { result: true } // 一次性取出關聯的結果
     });
 
     if (!order) {
-      console.warn("🔍 未找到支付订单:", { userEmail, moduleType });
+      console.warn("🔍 未找到支付訂單:", { userEmail, moduleType });
       return NextResponse.json({ error: t.noOrder }, { status: 404 });
     }
 
-    // --- 阶段 A: 发送验证码 (当前端没有传 code 时触发) ---
+    // --- 階段 A: 發送驗證碼 ---
     if (!code) {
-      // 频率限制：60秒内只能发一次
+      // 頻率限制：60秒內只能發一次
       if (order.lastCodeSentAt && Date.now() - new Date(order.lastCodeSentAt).getTime() < 60000) {
-        return NextResponse.json({ error: "Please wait 60s before requesting a new code." }, { status: 429 });
+        const waitTime = Math.ceil((60000 - (Date.now() - new Date(order.lastCodeSentAt).getTime())) / 1000);
+        return NextResponse.json({ error: `Wait ${waitTime}s.` }, { status: 429 });
       }
 
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -62,12 +63,11 @@ export async function POST(req: Request) {
         where: { id: order.id },
         data: { 
           recoveryCode: verificationCode, 
-          codeExpiresAt: new Date(Date.now() + 10 * 60000), // 10分钟有效
+          codeExpiresAt: new Date(Date.now() + 10 * 60000),
           lastCodeSentAt: new Date()
         }
       });
 
-      // 使用 Resend 发送验证码
       await resend.emails.send({
         from: "ZanPath AI <report@zanpath.com>",
         to: userEmail,
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, message: t.codeSent });
     }
 
-    // --- 阶段 B: 校验验证码 ---
+    // --- 階段 B: 校驗驗證碼 ---
     const isCodeValid = order.recoveryCode === code;
     const isNotExpired = order.codeExpiresAt && new Date() < new Date(order.codeExpiresAt);
 
@@ -86,12 +86,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: t.invalidCode }, { status: 400 });
     }
 
-    // 2. 验证码通过后，检查数据库是否有现成结果
-    const result = await db.result.findUnique({ where: { orderId: order.id } });
+    // 驗證碼通過後，檢查是否有 AI 結果
+    const result = order.result;
 
     if (result && result.isComplete) {
-      // ✅ 情况 1: 数据库有完整结果，直接生成 PDF 并补发邮件
-      console.log("🛠️ 正在为找回流程渲染 PDF...");
+      // ✅ 情況 1: 已經有完整結果 -> 補發 PDF 並顯示
+      console.log("🛠️ 正在為找回流程渲染 PDF...");
       
       const pdfBuffer = await renderToBuffer(
         React.createElement(AnalysisReportPDF, { 
@@ -100,19 +100,13 @@ export async function POST(req: Request) {
         })
       );
 
-      // 美化附件文件名，例如 ZanPath_Naming_Report.pdf
       const formattedModuleName = moduleType.charAt(0).toUpperCase() + moduleType.slice(1);
 
       await resend.emails.send({
         from: "ZanPath AI <report@zanpath.com>",
         to: userEmail,
         subject: t.pdfSubject,
-        html: `
-          <div style="font-family: sans-serif; padding: 20px;">
-            <h2>${langKey === 'es' ? 'Informe Recuperado' : 'Report Recovered'}</h2>
-            <p>${t.sentEmail}</p>
-          </div>
-        `,
+        html: `<div style="font-family: sans-serif; padding: 20px;"><h2>ZanPath AI</h2><p>${t.sentEmail}</p></div>`,
         attachments: [
           { 
             filename: `ZanPath_${formattedModuleName}_Report.pdf`, 
@@ -124,21 +118,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ 
         hasResult: true, 
         content: result.content, 
-        inputData: result.inputData, // 返回原始输入数据，用于回填表单
+        inputData: order.inputData, // 優先從 order 拿原始輸入數據
         message: t.sentEmail 
       });
 
     } else {
-      // ❌ 情况 2: 已付款但无结果 (断网/报错)
-      // 返回信号让前端设置 isPrePaid = true，允许用户免费重新提交
+      // ❌ 情況 2: 已付款但無結果 (斷網/生成中斷)
+      // 此時最重要的就是把 order.inputData 傳回去，讓前端可以自動回填姓名、生日等
       return NextResponse.json({ 
         hasResult: false, 
+        inputData: order.inputData, // 🟢 關鍵：確保這裡返回了 inputData
         message: t.recalculate 
       });
     }
 
   } catch (err: any) {
-    console.error("❌ Recovery API 严重错误:", err.message);
+    console.error("❌ Recovery API 嚴重錯誤:", err.message);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

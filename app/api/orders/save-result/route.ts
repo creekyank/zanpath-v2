@@ -5,7 +5,6 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { AnalysisReportPDF } from "@/lib/pdf-generator";
 import React from "react";
 
-// 初始化 Resend (确保 .env 中 RESEND_API_KEY 已配置)
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const dynamic = "force-dynamic";
@@ -13,28 +12,36 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, content, module, isComplete, locale } = body;
+    const { email, content, module, locale } = body; // isComplete 默認後端控制更安全
     const userEmail = email.toLowerCase().trim();
 
-    // 1. 寻找匹配的已支付订单 (Supabase)
+    // 1. 尋找匹配的已支付訂單 (優先找最新的一筆)
     const order = await db.order.findFirst({
       where: { email: userEmail, status: 'paid', moduleType: module },
       orderBy: { createdAt: 'desc' }
     });
 
     if (!order) {
-      console.warn("⚠️ 数据库未找到匹配的支付订单:", { userEmail, module });
+      console.warn("⚠️ 數據庫未找到匹配的支付訂單:", { userEmail, module });
       return NextResponse.json({ error: "No matching paid order found" }, { status: 404 });
     }
 
-    // 2. 保存/更新结果到数据库 (Supabase)
-    await db.result.upsert({
-      where: { orderId: order.id },
-      update: { content, isComplete: true },
-      create: { orderId: order.id, content, isComplete: true }
+    // 2. 保存/更新結果到數據庫
+    // 使用 transaction 確保結果保存和訂單狀態更新同時成功
+    const result = await db.$transaction(async (tx) => {
+      const upsertedResult = await tx.result.upsert({
+        where: { orderId: order.id },
+        update: { content, isComplete: true },
+        create: { orderId: order.id, content, isComplete: true }
+      });
+
+      // 🟢 擴展：可以在這裡標記 Order 為已處理完成，避免重複找回邏輯出錯
+      // await tx.order.update({ where: { id: order.id }, data: { status: 'completed' } });
+      
+      return upsertedResult;
     });
 
-    // 3. 准备邮件内容
+    // 3. 準備郵件內容
     const langKey = (locale === 'es' || locale?.startsWith('es')) ? 'es' : 'en';
     const subjects: any = {
       en: "Your ZanPath AI Analysis Report",
@@ -43,18 +50,16 @@ export async function POST(req: Request) {
     const currentSubject = `${subjects[langKey]} - ${module.toUpperCase()}`;
 
     // 4. 🔥 生成 PDF 
-    console.log("🛠️ 正在渲染正式 PDF 报告...");
+    console.log("🛠️ 正在渲染正式 PDF 報告...");
     const pdfBuffer = await renderToBuffer(
       React.createElement(AnalysisReportPDF, { 
         data: { title: currentSubject, content: content }, 
         lang: langKey 
       })
     );
-    console.log("✅ PDF 生成成功，大小:", (pdfBuffer.length / 1024).toFixed(2), "KB");
 
-    // 5. 📧 通过 Resend 发送邮件 (已切换至正式域名)
+    // 5. 📧 通過 Resend 發送郵件
     const { data, error } = await resend.emails.send({
-      // ✅ 域名已验证，现在可以使用正式的域名邮箱发件
       from: "ZanPath AI <report@zanpath.com>", 
       to: userEmail, 
       subject: currentSubject,
@@ -79,15 +84,22 @@ export async function POST(req: Request) {
     });
 
     if (error) {
-      console.error("❌ Resend 发信失败:", error);
+      console.error("❌ Resend 發信失敗:", error);
+      // 注意：即便郵件失敗，結果已經存入數據庫了，用戶可以通過 RecoveryModal 找回
       return NextResponse.json({ error: "Email delivery failed", details: error.message }, { status: 500 });
     }
 
-    console.log("🚀 正式邮件已成功送达:", userEmail);
+    // 6. 🟢 發送成功後，更新 Result 表的 pdfSent 狀態 (對應你剛改的 Schema)
+    await db.result.update({
+      where: { id: result.id },
+      data: { pdfSent: true }
+    });
+
+    console.log("🚀 正式郵件已成功送達:", userEmail);
     return NextResponse.json({ success: true, message: "Official report delivered" });
 
   } catch (err: any) {
-    console.error("❌ API 内部严重错误:", err.message);
+    console.error("❌ API 內部嚴重錯誤:", err.message);
     return NextResponse.json({ error: "Internal Server Error", details: err.message }, { status: 500 });
   }
 }

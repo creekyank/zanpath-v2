@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { db } from "@/lib/db"; // 確保你有配置 prisma 實例
 
 /**
- * 验证 Paddle Webhook 签名 (针对新版 Paddle Billing)
+ * 驗證 Paddle Webhook 簽名
  */
 function verifyPaddleSignature(
   rawBody: string,
@@ -16,7 +17,7 @@ function verifyPaddleSignature(
   const h1Part = parts.find((p) => p.startsWith("h1="));
 
   if (!tsPart || !h1Part) {
-    console.error("❌ 签名头格式错误");
+    console.error("❌ 簽名頭格式錯誤");
     return false;
   }
 
@@ -35,7 +36,7 @@ function verifyPaddleSignature(
       Buffer.from(h1)
     );
   } catch (err) {
-    console.error("❌ 签名比对失败 (可能是 Secret 不匹配):", err);
+    console.error("❌ 簽名比對失敗:", err);
     return false;
   }
 }
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
   const isValid = verifyPaddleSignature(rawBody, signature, secret);
 
   if (!isValid) {
-    console.error("❌ Paddle Webhook 签名验证失败");
+    console.error("❌ Paddle Webhook 簽名驗證失敗");
     return new NextResponse("Invalid signature", { status: 401 });
   }
 
@@ -68,23 +69,48 @@ export async function POST(req: NextRequest) {
   const eventType = event.event_type;
   const data = event.data;
 
-  console.log("📩 验证通过！收到事件:", eventType);
+  console.log("📩 驗證通過！收到事件:", eventType);
 
+  // 處理支付完成事件
   if (eventType === "transaction.completed" || eventType === "transaction.paid") {
     const emailFromCustom = data?.custom_data?.user_email;
     const emailFromCustomer = data?.customer?.email;
-    const finalEmail = emailFromCustom || emailFromCustomer || data?.customer_email;
-    const moduleName = data?.custom_data?.module;
+    const finalEmail = (emailFromCustom || emailFromCustomer || data?.customer_email)?.toLowerCase().trim();
+    
+    const moduleName = data?.custom_data?.module || "naming"; // 默認 naming
+    const inputSnapshot = data?.custom_data?.input_snapshot || {}; // 獲取前端傳來的輸入快照
 
-    console.log("✅ 支付成功確認:", {
+    console.log("✅ 準備寫入數據庫:", {
       email: finalEmail,
       module: moduleName,
       transactionId: data?.id
     });
 
-    // TODO: 这里执行数据库写入逻辑
+    try {
+      // 🟢 核心改動：將支付記錄同步到數據庫 Order 表
+      await db.order.upsert({
+        where: { 
+          paddleOrderId: data.id 
+        },
+        update: { 
+          status: "paid",
+          email: finalEmail,
+          inputData: inputSnapshot // 防止異步更新
+        },
+        create: {
+          paddleOrderId: data.id,
+          email: finalEmail,
+          status: "paid",
+          moduleType: moduleName,
+          inputData: inputSnapshot // 👈 存入原始輸入，找回功能的核心數據
+        }
+      });
+      console.log("🚀 數據庫 Order 已更新為已支付狀態");
+    } catch (dbErr: any) {
+      console.error("❌ 數據庫寫入失敗:", dbErr.message);
+      // 即使數據庫失敗也返回 200，防止 Paddle 重複重試已支付的 Webhook
+    }
   }
 
-  // 🟢 之前可能漏掉了下面这两行，导致报错：
   return NextResponse.json({ received: true });
-} // <--- 确保这个函数结束的大括号存在
+}
