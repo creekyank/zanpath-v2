@@ -203,45 +203,35 @@ while (true) {
   // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
   // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
   const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
-    if (e) {
-      e.preventDefault();
-      const formElement = (e.currentTarget as HTMLElement).closest("form");
-      if (!formElement) return;
-    }
-
+    if (e) e.preventDefault();
+  
     const email = formDataState.email.trim().toLowerCase();
-
-    // 基礎驗證
+  
+    // 1. 先做所有必要的驗證
     if (!email || !formDataState.surname || !formDataState.description) {
       alert(mid.fields.requiredTip);
       return;
     }
-
-    // 判斷是否為管理員、VIP 或 已預付
+  
+    // 2. 分流：特殊權限 vs 普通支付
     if (mode === 'VIP' || isPrePaid || isAdminEmail(email)) {
       if (mode === 'VIP') {
         const pwd = prompt("Enter VIP Password:");
         if (pwd !== ADMIN_CONFIG.vipPassword) return alert("Incorrect password.");
       }
+      // 進入生成
       processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
-    } 
-    
-    else {
-      // 🚀 正式支付流程
-      openPaddleCheckout(
-        email, 
-        "naming", 
-        formDataState, // 傳入當前表單快照，供 Webhook 存入數據庫
-        () => {
-          // 支付成功回調（用戶關閉彈窗後觸發）
-          setLoading(true); 
-          setShowResult(true); 
-          setResult(""); // 清空舊結果
-          pollPaymentStatus(email); // 啟動 2 秒一次的輪詢
-        }
-      );
+    } else {
+      // 進入支付
+      openPaddleCheckout(email, "naming", formDataState, () => {
+        setLoading(true); 
+        setShowResult(true); 
+        setResult(""); 
+        console.log("Start polling for email:", email);
+        pollPaymentStatus(email); 
+      });
     }
-  }; // <--- 確保這裡有大括號
+  };// <--- 確保這裡有大括號
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
     <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
