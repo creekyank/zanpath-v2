@@ -1,38 +1,49 @@
+// app/api/orders/check-status/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
     const { email, moduleType } = await req.json();
-
     if (!email || !moduleType) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
     const userEmail = email.toLowerCase().trim();
 
-    // 🔍 查找該用戶在該模組下，是否有一筆已支付且未使用的訂單
-    // 或者是最新的已支付訂單
     const order = await db.order.findFirst({
       where: {
         email: userEmail,
-        moduleType: moduleType,
+        moduleType,
         status: "paid",
+        isUsed: false
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: "asc" }
     });
 
-    if (order) {
-      return NextResponse.json({ 
-        isPaid: true, 
-        orderId: order.id 
-      });
+    if (!order) {
+      return NextResponse.json({ isPaid: false });
     }
 
-    return NextResponse.json({ isPaid: false });
+    // 🔐 生成一次性 Token
+    const token = crypto.randomBytes(32).toString("hex");
 
-  } catch (error: any) {
-    console.error("❌ Check Status API Error:", error.message);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    await db.order.update({
+      where: { id: order.id },
+      data: {
+        generationToken: token,
+        tokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 分钟
+      }
+    });
+
+    return NextResponse.json({
+      isPaid: true,
+      generationToken: token
+    });
+
+  } catch (err: any) {
+    console.error("❌ check-status error:", err.message);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

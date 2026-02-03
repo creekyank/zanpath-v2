@@ -96,8 +96,7 @@ export async function POST(req: NextRequest) {
       await db.order.upsert({
         where: { paddleOrderId: data.id },
         update: { 
-          status: "paid",
-          email: finalEmail,
+          status: "paid"
           // 不要更新 isUsed，保持其為 false
         },
         create: {

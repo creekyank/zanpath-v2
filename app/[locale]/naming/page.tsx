@@ -1,13 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { NAMING_PROMPT_TEMPLATE } from "@/config/prompts";
-import { TIME_ZONE_NOTICE, NAV_MENU, PAGE_SPECIFIC_CONTENT, COMMON_FOOTER, DISCLAIMER_TEXT } from "@/config/site-content";
+import {
+  TIME_ZONE_NOTICE,
+  NAV_MENU,
+  PAGE_SPECIFIC_CONTENT,
+  COMMON_FOOTER,
+  DISCLAIMER_TEXT
+} from "@/config/site-content";
 import { ADMIN_CONFIG, isAdminEmail } from "@/config/admin";
 import RecoveryModal from "@/components/RecoveryModal";
-import { openPaddleCheckout } from "@/lib/paddle"; // 引入公共函數
+import { openPaddleCheckout } from "@/lib/paddle";
 
 export default function NamingPage() {
   const locale = useLocale() as "en" | "es";
@@ -20,69 +26,217 @@ export default function NamingPage() {
   const [result, setResult] = useState("");
   const [isPrePaid, setIsPrePaid] = useState(false);
 
-  // 1. 新增：统一表单状态管理（用于自动回填）
+  const pollingRef = useRef(false); // ✅ FIX：防止多重轮询
+
   const [formDataState, setFormDataState] = useState({
     surname: "",
     gender: "Male",
     email: "",
-    year: "", month: "", day: "", hour: "", min: "",
+    year: "",
+    month: "",
+    day: "",
+    hour: "",
+    min: "",
     description: ""
   });
 
   useEffect(() => {
     const pendingEmail = localStorage.getItem("pending_payment_email");
     const pendingModule = localStorage.getItem("pending_payment_module");
-  
+
     if (!pendingEmail || pendingModule !== "naming") return;
-  
-    console.log("🕒 Page active, start polling payment:", pendingEmail);
-  
-    // 恢復表單（很重要）
+
     const savedForm = localStorage.getItem("pending_payment_form");
     if (savedForm) {
       setFormDataState(JSON.parse(savedForm));
     }
-  
+
     setShowResult(true);
     setLoading(true);
-  
+
     pollPaymentStatus(pendingEmail);
   }, []);
-  
-  
+
   useEffect(() => {
     const onFocus = () => {
       const pendingEmail = localStorage.getItem("pending_payment_email");
       const pendingModule = localStorage.getItem("pending_payment_module");
-  
       if (pendingEmail && pendingModule === "naming") {
-        console.log("👁 Page focused, resume polling:", pendingEmail);
         pollPaymentStatus(pendingEmail);
       }
     };
-  
+
     const onVisibilityChange = () => {
-      if (!document.hidden) {
-        onFocus();
-      }
+      if (!document.hidden) onFocus();
     };
-  
+
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibilityChange);
-  
+
     return () => {
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
-  
-  
 
   const currentLangName = locale === "es" ? "Spanish" : "English";
   const notice = TIME_ZONE_NOTICE[locale] || TIME_ZONE_NOTICE.en;
-  const mid = PAGE_SPECIFIC_CONTENT.naming[locale] || PAGE_SPECIFIC_CONTENT.naming.en;
+  const mid =
+    PAGE_SPECIFIC_CONTENT.naming[locale] ||
+    PAGE_SPECIFIC_CONTENT.naming.en;
   const foot = COMMON_FOOTER[locale] || COMMON_FOOTER.en;
   const menuItems = NAV_MENU[locale] || NAV_MENU.en;
+
+  const processAiGeneration = async (
+    formData: FormData,
+    source: string
+  ) => {
+    const email = formDataState.email.toLowerCase().trim();
+    setLoading(true);
+    setResult("");
+    setShowResult(true);
+
+    let fullResult = "";
+
+    try {
+      const finalPrompt = NAMING_PROMPT_TEMPLATE
+        .replace("${outputLanguage}", currentLangName)
+        .replace(
+          "${languageMode}",
+          source === "vip_debug" ? "VIP" : "REGULAR"
+        )
+        .replace("${gender}", formDataState.gender)
+        .replace(
+          "${birthTime}",
+          `${formDataState.year}-${formDataState.month}-${formDataState.day} ${formDataState.hour}:${formDataState.min}`
+        )
+        .replace(
+          "${userDescription}",
+          `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`
+        );
+
+      const generationToken =
+        localStorage.getItem("generation_token");
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: finalPrompt,
+          email,
+          moduleType: "naming",
+          inputSnapshot: formDataState,
+          generationToken
+        })
+      });
+
+      if (response.status === 403) {
+        const data = await response.json();
+        if (data?.error === "INVALID_TOKEN") {
+          alert(
+            locale === "es"
+              ? "El pago se está confirmando. Por favor espere."
+              : "Payment is being confirmed. Please wait."
+          );
+          setLoading(false);
+          setShowResult(false);
+          return;
+        }
+      }
+
+      if (!response.ok) throw new Error("Fetch failed");
+
+      const orderId = response.headers.get("X-Order-Id"); // ✅ FIX
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      if (!reader) throw new Error("No reader");
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n");
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed === "data: [DONE]") continue;
+          if (trimmed.startsWith("data: ")) {
+            try {
+              const json = JSON.parse(trimmed.substring(6));
+              const text =
+                json.choices?.[0]?.delta?.content || "";
+              if (text) {
+                fullResult += text;
+                setResult(prev => prev + text);
+              }
+            } catch {}
+          }
+        }
+      }
+
+      if (fullResult.length > 500 && orderId) {
+        await fetch("/api/orders/save-result", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId,
+            content: fullResult
+          })
+        });
+
+        localStorage.removeItem("generation_token"); // ✅ FIX
+        localStorage.removeItem("naming_backup_content");
+      }
+    } catch (err) {
+      alert(
+        locale === "es"
+          ? "La conexión se interrumpió."
+          : "Connection interrupted."
+      );
+    } finally {
+      setLoading(false);
+      setIsPrePaid(false);
+    }
+  };
+
+  const pollPaymentStatus = (email: string) => {
+    if (pollingRef.current) return; // ✅ FIX
+    pollingRef.current = true;
+
+    let attempts = 0;
+    const interval = setInterval(async () => {
+      attempts++;
+      const res = await fetch("/api/orders/check-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, moduleType: "naming" })
+      });
+
+      const data = await res.json();
+
+      if (data.isPaid && data.generationToken) {
+        clearInterval(interval);
+        pollingRef.current = false;
+
+        localStorage.removeItem("pending_payment_email");
+        localStorage.removeItem("pending_payment_module");
+        localStorage.removeItem("pending_payment_form");
+
+        localStorage.setItem(
+          "generation_token",
+          data.generationToken
+        );
+
+        processAiGeneration(new FormData(), "auto_after_pay");
+      }
+
+      if (attempts > 90) {
+        clearInterval(interval);
+        pollingRef.current = false;
+      }
+    }, 2000);
+  };
 
   const validateInput = (name: string, value: string) => {
     const val = parseInt(value);
@@ -94,151 +248,6 @@ export default function NamingPage() {
       alert(`${name} must be ${limits[name][0]}-${limits[name][1]}`);
     }
   };
-
-  // 2. 优化：AI 生成逻辑（改用 formDataState 确保数据闭环）
-  const processAiGeneration = async (formData: FormData, source: string) => {
-    const inputSnapshot = formDataState; 
-    const email = formDataState.email.toLowerCase().trim();
-
-    setLoading(true);
-    setResult(""); 
-    setShowResult(true);
-    localStorage.removeItem("naming_backup_content");
-  
-    let fullResult = "";
-
-    try {
-      const finalPrompt = NAMING_PROMPT_TEMPLATE
-        .replace("${outputLanguage}", currentLangName)
-        .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
-        .replace("${gender}", formDataState.gender)
-        .replace("${birthTime}", `${formDataState.year}-${formDataState.month}-${formDataState.day} ${formDataState.hour}:${formDataState.min}`)
-        .replace("${userDescription}", `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`);
-  
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: finalPrompt, source: source, email: email,moduleType: "naming", inputSnapshot: formDataState}),
-      });
-  
-      if (response.status === 403) {
-        const data = await response.json();
-        if (data?.error === "NEED_PAYMENT") {
-          alert(
-            locale === "es"
-              ? "El pago se está confirmando. Por favor espere 30 segundos y vuelva a intentarlo."
-              : "Payment is being confirmed. Please wait 30 seconds and try again."
-          );
-          setLoading(false);
-          setShowResult(false);
-          return;
-        }
-      }
-      
-      if (!response.ok) {
-        throw new Error("Fetch failed");
-      }
-  
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      if (!reader) throw new Error("No reader");
-
-// --- 修改開始 ---
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
-  const chunk = decoder.decode(value);
-  const lines = chunk.split("\n");
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed === "data: [DONE]") continue;
-    if (trimmed.startsWith("data: ")) {
-      try {
-        const json = JSON.parse(trimmed.substring(6));
-        
-        const text = json.choices?.[0]?.delta?.content || "";
-        
-        if (text) {
-          fullResult += text;
-          setResult((prev) => {
-            const newRes = prev + text;
-            // 每 50 個字符備份一次
-            if (newRes.length % 50 === 0) {
-              localStorage.setItem("naming_backup_content", newRes);
-            }
-            return newRes;
-          });
-        }
-      } catch (e) { 
-        // 忽略解析錯誤（部分流塊可能不完整）
-        console.error("Parse error:", e); 
-      }
-    }
-  }
-}
-// --- 修改結束 ---
-
-      if (fullResult.length > 500) { 
-        await fetch("/api/orders/save-result", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            email, 
-            content: fullResult, 
-            module: "naming", 
-            isComplete: true,
-            inputData: inputSnapshot,
-            locale: locale
-          }),
-        });
-        localStorage.removeItem("naming_backup_content");
-      }
-    } catch (err: any) {
-      console.error(err);
-      alert(locale === "es" ? "Lo sentimos, la conexión se interrumpió." : "Sorry, connection interrupted.");
-    } finally {
-      setLoading(false);
-      setIsPrePaid(false);
-    }
-  };
-
-  // 3. 新增：輪詢檢查支付狀態
-  const pollPaymentStatus = (email: string) => {
-    let attempts = 0;
-  
-    const interval = setInterval(async () => {
-      attempts++;
-  
-      const res = await fetch("/api/orders/check-status", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, moduleType: "naming" }),
-      });
-  
-      const data = await res.json();
-      console.log("⏳ polling", attempts, data);
-  
-      if (data.isPaid) {
-        clearInterval(interval);
-      
-        localStorage.removeItem("pending_payment_email");
-        localStorage.removeItem("pending_payment_module");
-        localStorage.removeItem("pending_payment_form");
-      
-        console.log("✅ Payment confirmed! Starting AI generation...");
-      
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        processAiGeneration(new FormData(), "auto_after_pay");
-      }
-      
-  
-      if (attempts > 90) {
-        clearInterval(interval);
-        console.warn("⏰ Payment polling timeout");
-      }
-    }, 2000);
-  };
-  
 
   // 在 NamingPage 组建内部定义
   const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -284,6 +293,8 @@ while (true) {
 
     }
   };// <--- 確保這裡有大括號
+
+  /* ===== 以下 JSX 原样保持，不再重复解释 ===== */
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
     <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">

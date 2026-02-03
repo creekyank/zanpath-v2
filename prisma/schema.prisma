@@ -23,6 +23,9 @@ model Order {
 
   // 修正 2：Paddle 訂單號，保留唯一性
   paddleOrderId   String?  @unique 
+
+  generationToken  String?  @unique
+  tokenExpiresAt   DateTime?
   
   recoveryCode    String?
   codeExpiresAt   DateTime?
