@@ -194,6 +194,7 @@ export default function NamingPage() {
 
         localStorage.removeItem("generation_token"); // ✅ FIX
         localStorage.removeItem("naming_backup_content");
+        localStorage.removeItem("generation_consumed");
       }
     } catch (err) {
       alert(
@@ -224,6 +225,8 @@ export default function NamingPage() {
       const data = await res.json();
 
       if (data.isPaid && data.generationToken) {
+        if (localStorage.getItem("generation_consumed") === "1") {
+          return; }
         console.log("✅ PAID, START GENERATION");
         clearInterval(interval);
         pollingRef.current = false;
@@ -237,8 +240,11 @@ export default function NamingPage() {
           data.generationToken
         );
 
-        processAiGeneration(new FormData(), "auto_after_pay");
-      }
+  // ⏳ 下一帧再生成，避免并发
+  setTimeout(() => {
+    processAiGeneration(new FormData(), "auto_after_pay");
+  }, 0);
+}
 
       if (attempts > 90) {
         clearInterval(interval);
