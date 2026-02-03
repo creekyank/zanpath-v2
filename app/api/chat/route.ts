@@ -28,6 +28,7 @@ export async function POST(req: Request) {
     if (!prompt || !email || !moduleType || !generationToken) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
+
     
     const userEmail = email.toLowerCase().trim(); // ✅ 缺的就是它
     const token = generationToken as string;
