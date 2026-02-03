@@ -55,136 +55,166 @@ export default function NamingPage() {
   };
 
   // 2. 优化：AI 生成逻辑（改用 formDataState 确保数据闭环）
-  const processAiGeneration = async (formData: FormData, source: string) => {
-    const inputSnapshot = formDataState; 
-    const email = formDataState.email.toLowerCase().trim();
+// 2. 完整優化後的 AI 生成邏輯
+const processAiGeneration = async (formData: FormData, source: string) => {
+  const email = formDataState.email.toLowerCase().trim();
+  // 獲取當前表單所有數據的快照，用於後端生成指紋 (Fingerprint)
+  const inputSnapshot = formDataState; 
 
-    setLoading(true);
-    setResult(""); 
-    setShowResult(true);
-    localStorage.removeItem("naming_backup_content");
-  
-    let fullResult = "";
+  setLoading(true);
+  setResult(""); 
+  setShowResult(true);
+  // 清除舊的本地備份，準備接收新結果
+  localStorage.removeItem("naming_backup_content");
 
-    try {
-      const finalPrompt = NAMING_PROMPT_TEMPLATE
-        .replace("${outputLanguage}", currentLangName)
-        .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
-        .replace("${gender}", formDataState.gender)
-        .replace("${birthTime}", `${formDataState.year}-${formDataState.month}-${formDataState.day} ${formDataState.hour}:${formDataState.min}`)
-        .replace("${userDescription}", `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`);
-  
-      const response = await fetch("/api/chat", {
+  let fullResult = "";
+
+  try {
+    // 構建發送給 AI 的 Prompt
+    const finalPrompt = NAMING_PROMPT_TEMPLATE
+      .replace("${outputLanguage}", currentLangName)
+      .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
+      .replace("${gender}", formDataState.gender)
+      .replace("${birthTime}", `${formDataState.year}-${formDataState.month}-${formDataState.day} ${formDataState.hour}:${formDataState.min}`)
+      .replace("${userDescription}", `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`);
+
+    // --- 核心修復點：補全後端驗證所需的所有字段 ---
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        prompt: finalPrompt, 
+        source: source, 
+        email: email,
+        moduleType: "naming",        // ✅ 必須：對應後端 if (!moduleType)
+        inputSnapshot: inputSnapshot  // ✅ 必須：用於後端 generateFingerprint
+      }),
+    });
+
+    if (!response.ok) {
+      // 嘗試讀取後端返回的錯誤 JSON
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || "Fetch failed");
+    }
+
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder();
+    if (!reader) throw new Error("No reader");
+
+    // --- 流式數據處理 ---
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      const chunk = decoder.decode(value);
+      const lines = chunk.split("\n");
+      
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed === "data: [DONE]") continue;
+        
+        if (trimmed.startsWith("data: ")) {
+          try {
+            const json = JSON.parse(trimmed.substring(6));
+            const text = json.choices?.[0]?.delta?.content || "";
+            
+            if (text) {
+              fullResult += text;
+              setResult((prev) => {
+                const newRes = prev + text;
+                // 每積累一定長度備份一次，防止意外斷網
+                if (newRes.length % 50 === 0) {
+                  localStorage.setItem("naming_backup_content", newRes);
+                }
+                return newRes;
+              });
+            }
+          } catch (e) { 
+            console.error("Parse error in stream:", e); 
+          }
+        }
+      }
+    }
+
+    // --- 生成完成後：保存結果到數據庫 ---
+    if (fullResult.length > 300) { 
+      await fetch("/api/orders/save-result", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: finalPrompt, source: source, email: email }),
+        body: JSON.stringify({ 
+          email, 
+          content: fullResult, 
+          module: "naming", 
+          isComplete: true,
+          inputData: inputSnapshot,
+          locale: locale
+        }),
       });
-  
-      if (!response.ok) throw new Error("Fetch failed");
-  
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      if (!reader) throw new Error("No reader");
-
-// --- 修改開始 ---
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
-  const chunk = decoder.decode(value);
-  const lines = chunk.split("\n");
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed === "data: [DONE]") continue;
-    if (trimmed.startsWith("data: ")) {
-      try {
-        const json = JSON.parse(trimmed.substring(6));
-        
-        const text = json.choices?.[0]?.delta?.content || "";
-        
-        if (text) {
-          fullResult += text;
-          setResult((prev) => {
-            const newRes = prev + text;
-            // 每 50 個字符備份一次
-            if (newRes.length % 50 === 0) {
-              localStorage.setItem("naming_backup_content", newRes);
-            }
-            return newRes;
-          });
-        }
-      } catch (e) { 
-        // 忽略解析錯誤（部分流塊可能不完整）
-        console.error("Parse error:", e); 
-      }
+      localStorage.removeItem("naming_backup_content");
     }
+  } catch (err: any) {
+    console.error("AI Generation Error:", err);
+    // 根據語言顯示對應的報錯
+    const errorMsg = locale === "es" 
+      ? `Lo sentimos: ${err.message}` 
+      : `Sorry, connection interrupted: ${err.message}`;
+    alert(errorMsg);
+  } finally {
+    setLoading(false);
+    setIsPrePaid(false); // 重置支付狀態
   }
-}
-// --- 修改結束 ---
-
-      if (fullResult.length > 500) { 
-        await fetch("/api/orders/save-result", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            email, 
-            content: fullResult, 
-            module: "naming", 
-            isComplete: true,
-            inputData: inputSnapshot,
-            locale: locale
-          }),
-        });
-        localStorage.removeItem("naming_backup_content");
-      }
-    } catch (err: any) {
-      console.error(err);
-      alert(locale === "es" ? "Lo sentimos, la conexión se interrumpió." : "Sorry, connection interrupted.");
-    } finally {
-      setLoading(false);
-      setIsPrePaid(false);
-    }
-  };
+};
 
   // 3. 新增：輪詢檢查支付狀態
-  const pollPaymentStatus = async (email: string) => {
-    let attempts = 0;
-    const maxAttempts = 20; // 最多等待 40 秒
+// 3. 優化後的支付狀態輪詢邏輯
+const pollPaymentStatus = async (email: string) => {
+  let attempts = 0;
+  const maxAttempts = 20; // 最多等待 40 秒，Paddle 通常在 5-15 秒內同步
 
-    const interval = setInterval(async () => {
-      attempts++;
-      console.log(`Checking payment status (Attempt ${attempts})...`);
+  const interval = setInterval(async () => {
+    attempts++;
+    console.log(`[Polling] 正在檢查支付狀態 (${attempts}/${maxAttempts})...`);
 
-      try {
-        const res = await fetch("/api/orders/check-status", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            email: email.toLowerCase().trim(), 
-            moduleType: "naming" 
-          }),
-        });
-        const data = await res.json();
-
-        if (data.isPaid) {
-          clearInterval(interval);
-          console.log("✅ Payment confirmed! Starting AI generation...");
-          window.scrollTo({ top: 0, behavior: 'smooth' }); // 加入這一行
-          processAiGeneration(new FormData(), "auto_after_pay");
-        }
-      } catch (e) {
-        console.error("Polling check failed", e);
-      }
-
-      if (attempts >= maxAttempts) {
+    try {
+      const res = await fetch("/api/orders/check-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          email: email.toLowerCase().trim(), 
+          moduleType: "naming" 
+        }),
+      });
+      
+      const data = await res.json();
+      
+      if (data.isPaid) {
+        console.log("✅ 支付已確認！準備啟動 AI 生成...");
         clearInterval(interval);
-        setLoading(false);
-        alert(locale === "es" 
-          ? "El pago tarda en confirmarse. Por favor, use 'Recuperar Orden' en un minuto." 
-          : "Payment confirmation is taking longer than expected. Please use 'Recover Order' in a minute."
-        );
+        
+        // 1. 視覺反饋：回到頂部，讓用戶看到生成過程
+        window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        
+        // 2. 觸發生成：注意這裡我們雖然傳了 new FormData()，
+        // 但實際上 processAiGeneration 內部現在是讀取 formDataState
+        processAiGeneration(new FormData(), "auto_after_pay");
+        return; // 結束輪詢
       }
-    }, 2000); // 每 2 秒檢查一次
-  };
+    } catch (e) {
+      console.error("輪詢請求發生錯誤:", e);
+    }
+
+    // 超時處理
+    if (attempts >= maxAttempts) {
+      clearInterval(interval);
+      setLoading(false);
+      // 如果 40 秒還沒好，通常是 Webhook 延遲，引導用戶手動恢復
+      alert(locale === "es" 
+        ? "El pago se está procesando. Si no aparece el informe, use 'Recuperar Orden' en un momento." 
+        : "Payment is still processing. If the report doesn't appear, please use 'Recover Order' in a minute."
+      );
+    }
+  }, 2000); // 每 2 秒檢查一次
+};
 
   // 在 NamingPage 组建内部定义
   const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -202,36 +232,56 @@ while (true) {
   };
   // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
   // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
-  const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
-    if (e) e.preventDefault();
+// 3. 優化後的表單提交與支付銜接邏輯
+const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
+  if (e) e.preventDefault();
+
+  const email = formDataState.email.trim().toLowerCase();
+
+  // --- 1. 基礎驗證 ---
+  if (!email || !formDataState.surname || !formDataState.description) {
+    alert(mid.fields.requiredTip);
+    return;
+  }
+
+  // --- 2. 分流邏輯 ---
   
-    const email = formDataState.email.trim().toLowerCase();
-  
-    // 1. 先做所有必要的驗證
-    if (!email || !formDataState.surname || !formDataState.description) {
-      alert(mid.fields.requiredTip);
-      return;
-    }
-  
-    // 2. 分流：特殊權限 vs 普通支付
-    if (mode === 'VIP' || isPrePaid || isAdminEmail(email)) {
-      if (mode === 'VIP') {
-        const pwd = prompt("Enter VIP Password:");
-        if (pwd !== ADMIN_CONFIG.vipPassword) return alert("Incorrect password.");
-      }
-      // 進入生成
-      processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
-    } else {
-      // 進入支付
-      openPaddleCheckout(email, "naming", formDataState, () => {
+  // A. 如果是 VIP 模式
+  if (mode === 'VIP') {
+    const pwd = prompt("Enter VIP Password:");
+    if (pwd !== ADMIN_CONFIG.vipPassword) return alert("Incorrect password.");
+    processAiGeneration(new FormData(), "vip_debug");
+    return;
+  }
+
+  // B. 如果是管理員或已經過驗證的已支付狀態 (isPrePaid)
+  if (isPrePaid || isAdminEmail(email)) {
+    processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : "admin_test");
+    return;
+  }
+
+  // C. 普通用戶：發起 Paddle 支付
+  if (window.Paddle) {
+    // 建議使用你之前定義的 openPaddleCheckout 或直接寫在此處
+    window.Paddle.Checkout.open({
+      product: "PRI_REAL_PRODUCT_ID_FOR_NAMING", // ⚠️ 請確保這是正確的 Paddle ID
+      email: email,
+      passthrough: JSON.stringify({ source: "naming_module", locale: locale }),
+      successCallback: () => {
+        // ⚠️ 關鍵點：支付成功後不直接調用生成，而是啟動「狀態輪詢」
+        // 因為 Paddle 的後端 Webhook 同步到你的數據庫需要幾秒鐘
         setLoading(true); 
         setShowResult(true); 
         setResult(""); 
-        console.log("Start polling for email:", email);
+        console.log("Payment successful, starting poll for:", email);
         pollPaymentStatus(email); 
-      });
-    }
-  };// <--- 確保這裡有大括號
+      }
+    });
+  } else {
+    alert(locale === "es" ? "El sistema de pago se está cargando..." : "Payment system is loading, please refresh.");
+  }
+};
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
     <nav className="flex justify-center border-b border-gray-100 bg-transparent backdrop-blur-md sticky top-0 z-50">
