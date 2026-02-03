@@ -3,7 +3,7 @@ export const openPaddleCheckout = (
   email: string, 
   moduleName: string, 
   inputSnapshot: any, // 🟢 新增：傳入當前表單快照
-  onSuccess: () => void // 🟢 新增：支付成功回調
+  onSuccess?: () => void  // 🟢 新增：支付成功回調
 ) => {
   const paddle = (window as any).Paddle;
   if (!paddle) return;
@@ -38,7 +38,7 @@ export const openPaddleCheckout = (
     // 🟢 監聽支付成功事件
     eventCallback: (event: any) => {
       if (event.name === "checkout.completed") {
-        onSuccess(); 
+        if (onSuccess) onSuccess();
       }
     }
   });

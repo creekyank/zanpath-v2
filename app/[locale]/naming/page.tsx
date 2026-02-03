@@ -31,32 +31,49 @@ export default function NamingPage() {
 
   useEffect(() => {
     const pendingEmail = localStorage.getItem("pending_payment_email");
+    const pendingModule = localStorage.getItem("pending_payment_module");
   
-    if (pendingEmail) {
-      console.log("🔁 Detected pending payment, start polling:", pendingEmail);
+    if (!pendingEmail || pendingModule !== "naming") return;
   
-      // 🟢 恢复支付前保存的表单数据（非常重要）
-      const savedForm = localStorage.getItem("pending_payment_form");
-      if (savedForm) {
-        try {
-          setFormDataState(JSON.parse(savedForm));
-        } catch (e) {
-          console.warn("Failed to restore pending form data");
-        }
+    console.log("🕒 Page active, start polling payment:", pendingEmail);
+  
+    // 恢復表單（很重要）
+    const savedForm = localStorage.getItem("pending_payment_form");
+    if (savedForm) {
+      setFormDataState(JSON.parse(savedForm));
+    }
+  
+    setShowResult(true);
+    setLoading(true);
+  
+    pollPaymentStatus(pendingEmail);
+  }, []);
+  
+  
+  useEffect(() => {
+    const onFocus = () => {
+      const pendingEmail = localStorage.getItem("pending_payment_email");
+      const pendingModule = localStorage.getItem("pending_payment_module");
+  
+      if (pendingEmail && pendingModule === "naming") {
+        console.log("👁 Page focused, resume polling:", pendingEmail);
+        pollPaymentStatus(pendingEmail);
       }
+    };
   
-      setShowResult(true);
-      setLoading(true);
-      pollPaymentStatus(pendingEmail);
-      return;
-    }
+    const onVisibilityChange = () => {
+      if (!document.hidden) {
+        onFocus();
+      }
+    };
   
-    // 🟢 没有待处理支付，才恢复中断的 AI 结果
-    const backup = localStorage.getItem("naming_backup_content");
-    if (backup && backup.length > 500) {
-      setResult(backup);
-      setShowResult(true);
-    }
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+  
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
   }, []);
   
   
@@ -186,47 +203,42 @@ while (true) {
   };
 
   // 3. 新增：輪詢檢查支付狀態
-  const pollPaymentStatus = async (email: string) => {
+  const pollPaymentStatus = (email: string) => {
     let attempts = 0;
-    const maxAttempts = 20; // 最多等待 40 秒
-
+  
     const interval = setInterval(async () => {
       attempts++;
-      console.log(`Checking payment status (Attempt ${attempts})...`);
-
-      try {
-        const res = await fetch("/api/orders/check-status", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            email: email.toLowerCase().trim(), 
-            moduleType: "naming" 
-          }),
-        });
-        const data = await res.json();
-        console.log("輪詢結果:", data); // 看看這裡是不是一直回傳 isPaid: false
-
-        if (data.isPaid) {
-          clearInterval(interval);
-          localStorage.removeItem("pending_payment_email");
-          console.log("✅ Payment confirmed! Starting AI generation...");
-          window.scrollTo({ top: 0, behavior: 'smooth' }); // 加入這一行
-          processAiGeneration(new FormData(), "auto_after_pay");
-        }
-      } catch (e) {
-        console.error("Polling check failed", e);
-      }
-
-      if (attempts >= maxAttempts) {
+  
+      const res = await fetch("/api/orders/check-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, moduleType: "naming" }),
+      });
+  
+      const data = await res.json();
+      console.log("⏳ polling", attempts, data);
+  
+      if (data.isPaid) {
         clearInterval(interval);
-        setLoading(false);
-        alert(locale === "es" 
-          ? "El pago tarda en confirmarse. Por favor, use 'Recuperar Orden' en un minuto." 
-          : "Payment confirmation is taking longer than expected. Please use 'Recover Order' in a minute."
-        );
+      
+        localStorage.removeItem("pending_payment_email");
+        localStorage.removeItem("pending_payment_module");
+        localStorage.removeItem("pending_payment_form");
+      
+        console.log("✅ Payment confirmed! Starting AI generation...");
+      
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        processAiGeneration(new FormData(), "auto_after_pay");
       }
-    }, 2000); // 每 2 秒檢查一次
+      
+  
+      if (attempts > 90) {
+        clearInterval(interval);
+        console.warn("⏰ Payment polling timeout");
+      }
+    }, 2000);
   };
+  
 
   // 在 NamingPage 组建内部定义
   const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -266,14 +278,10 @@ while (true) {
     } else {
       // 進入支付
       localStorage.setItem("pending_payment_email", email);
+      localStorage.setItem("pending_payment_module", "naming");
       localStorage.setItem("pending_payment_form", JSON.stringify(formDataState));
-      openPaddleCheckout(email, "naming", formDataState, () => {
-        setLoading(true); 
-        setShowResult(true); 
-        setResult(""); 
-        console.log("Start polling for email:", email);
-        pollPaymentStatus(email); 
-      });
+      openPaddleCheckout(email, "naming", formDataState);
+
     }
   };// <--- 確保這裡有大括號
   return (
