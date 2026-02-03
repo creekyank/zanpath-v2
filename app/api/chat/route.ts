@@ -28,20 +28,23 @@ export async function POST(req: Request) {
     if (!prompt || !email || !moduleType || !generationToken) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
-
-    const userEmail = email.toLowerCase().trim();
-
+    
+    const userEmail = email.toLowerCase().trim(); // ✅ 缺的就是它
+    const token = generationToken as string;
+    
     // 🔐 查找并锁定订单
     const order = await db.order.findFirst({
       where: {
         email: userEmail,
         moduleType,
-        generationToken,
+        generationToken: token,
         tokenExpiresAt: { gt: new Date() },
         status: "paid",
         isUsed: false
       }
     });
+    
+    
 
     if (!order) {
       return NextResponse.json({ error: "INVALID_TOKEN" }, { status: 403 });

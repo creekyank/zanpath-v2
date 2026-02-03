@@ -54,9 +54,6 @@ export default function NamingPage() {
       setFormDataState(JSON.parse(savedForm));
     }
 
-    setShowResult(true);
-    setLoading(true);
-
     pollPaymentStatus(pendingEmail);
   }, []);
 
@@ -227,6 +224,7 @@ export default function NamingPage() {
       const data = await res.json();
 
       if (data.isPaid && data.generationToken) {
+        console.log("✅ PAID, START GENERATION");
         clearInterval(interval);
         pollingRef.current = false;
 
