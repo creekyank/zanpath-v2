@@ -38,7 +38,11 @@ export async function POST(req: Request) {
     // --- 🟢 第二步：權限檢查與邏輯判定 ---
     let targetOrderId: string | null = null;
 
-    if (source !== "vip_debug" && !isAdminEmail(userEmail)) {
+    const skipPaymentCheck = 
+    source === "auto_after_pay" || 
+    source === "recovered_order";
+  
+  if (!skipPaymentCheck && source !== "vip_debug" && !isAdminEmail(userEmail)) {
       // 1. 檢查是否有完全匹配的已完成訂單（找回模式）
       const existingCompletedOrder = await db.order.findFirst({
         where: { fingerprint: currentFingerprint, status: 'paid', isUsed: true },
@@ -78,6 +82,20 @@ export async function POST(req: Request) {
       targetOrderId = availableOrder.id;
       console.log(`🔒 訂單 ${targetOrderId} 已鎖定指紋並標記為已使用`);
     }
+
+
+    // 🟢 補充：支付後 / 恢復模式下，嘗試關聯最近一筆已支付訂單（僅用於結果保存）
+if (skipPaymentCheck) {
+  const latestPaidOrder = await db.order.findFirst({
+    where: { email: userEmail, status: 'paid', moduleType },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  if (latestPaidOrder) {
+    targetOrderId = latestPaidOrder.id;
+  }
+}
+
 
     // --- 🟢 第四步：執行 AI 流程 (視覺 + 文本) ---
     let visualData = "";
