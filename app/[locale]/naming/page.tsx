@@ -28,6 +28,9 @@ export default function NamingPage() {
 
   const pollingRef = useRef(false); // ✅ FIX：防止多重轮询
 
+  // 🚫 防止重复生成（非常关键）
+  const generatingRef = useRef(false);
+
   const [formDataState, setFormDataState] = useState({
     surname: "",
     gender: "Male",
@@ -90,8 +93,15 @@ export default function NamingPage() {
   const processAiGeneration = async (
     formData: FormData,
     source: string
-  ) => {
+  ) => { 
     const email = formDataState.email.toLowerCase().trim();
+
+    if (generatingRef.current) {
+      console.warn("⚠️ Generation already in progress");
+      return;
+    }
+    generatingRef.current = true;
+
     setLoading(true);
     setResult("");
     setShowResult(true);
@@ -191,12 +201,13 @@ export default function NamingPage() {
     } catch (err) {
       alert(
         locale === "es"
-          ? "La conexión se interrumpió."
-          : "Connection interrupted."
+          ? "La generación falló. Inténtelo de nuevo más tarde."
+          : "Generation failed. Please try again later."
       );
     } finally {
       setLoading(false);
       setIsPrePaid(false);
+      generatingRef.current = false;
     }
   };
 
