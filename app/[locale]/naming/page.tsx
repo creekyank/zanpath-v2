@@ -80,7 +80,23 @@ export default function NamingPage() {
         body: JSON.stringify({ prompt: finalPrompt, source: source, email: email,moduleType: "naming", inputSnapshot: formDataState}),
       });
   
-      if (!response.ok) throw new Error("Fetch failed");
+      if (response.status === 403) {
+        const data = await response.json();
+        if (data?.error === "NEED_PAYMENT") {
+          alert(
+            locale === "es"
+              ? "El pago se está confirmando. Por favor espere 30 segundos y vuelva a intentarlo."
+              : "Payment is being confirmed. Please wait 30 seconds and try again."
+          );
+          setLoading(false);
+          setShowResult(false);
+          return;
+        }
+      }
+      
+      if (!response.ok) {
+        throw new Error("Fetch failed");
+      }
   
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
