@@ -30,12 +30,36 @@ export default function NamingPage() {
   });
 
   useEffect(() => {
+    const pendingEmail = localStorage.getItem("pending_payment_email");
+  
+    if (pendingEmail) {
+      console.log("🔁 Detected pending payment, start polling:", pendingEmail);
+  
+      // 🟢 恢复支付前保存的表单数据（非常重要）
+      const savedForm = localStorage.getItem("pending_payment_form");
+      if (savedForm) {
+        try {
+          setFormDataState(JSON.parse(savedForm));
+        } catch (e) {
+          console.warn("Failed to restore pending form data");
+        }
+      }
+  
+      setShowResult(true);
+      setLoading(true);
+      pollPaymentStatus(pendingEmail);
+      return;
+    }
+  
+    // 🟢 没有待处理支付，才恢复中断的 AI 结果
     const backup = localStorage.getItem("naming_backup_content");
     if (backup && backup.length > 500) {
       setResult(backup);
       setShowResult(true);
     }
   }, []);
+  
+  
 
   const currentLangName = locale === "es" ? "Spanish" : "English";
   const notice = TIME_ZONE_NOTICE[locale] || TIME_ZONE_NOTICE.en;
@@ -184,6 +208,7 @@ while (true) {
 
         if (data.isPaid) {
           clearInterval(interval);
+          localStorage.removeItem("pending_payment_email");
           console.log("✅ Payment confirmed! Starting AI generation...");
           window.scrollTo({ top: 0, behavior: 'smooth' }); // 加入這一行
           processAiGeneration(new FormData(), "auto_after_pay");
@@ -240,6 +265,8 @@ while (true) {
       processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
     } else {
       // 進入支付
+      localStorage.setItem("pending_payment_email", email);
+      localStorage.setItem("pending_payment_form", JSON.stringify(formDataState));
       openPaddleCheckout(email, "naming", formDataState, () => {
         setLoading(true); 
         setShowResult(true); 
