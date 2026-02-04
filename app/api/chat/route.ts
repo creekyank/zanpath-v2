@@ -43,31 +43,40 @@ export async function POST(req: Request) {
         generationToken,
         tokenExpiresAt: { gt: new Date() },
         status: "paid",
-        isUsed: false,
       },
-    });
+      include: {
+        result: true,
+      },
+    });   
 
     if (!order) {
       return NextResponse.json({ error: "INVALID_TOKEN" }, { status: 403 });
     }
+// 🔑 关键补丁：如果已经有完整结果，直接拒绝
+    if (order.result?.isComplete) {
+      return NextResponse.json({ error: "ALREADY_COMPLETED" }, { status: 409 });
+    }
+
+
 
     const fingerprint = generateFingerprint(
       userEmail,
       moduleType,
       inputSnapshot
     );
+    if (!order.isUsed) {
+      await db.order.update({
+        where: { id: order.id },
+        data: {
+          isUsed: true,
+          fingerprint,
+          generationToken: null,
+          tokenExpiresAt: null,
+          inputData: inputSnapshot,
+        },
+      });
+    }
 
-    // 🔒 原子锁单
-    await db.order.update({
-      where: { id: order.id },
-      data: {
-        isUsed: true,
-        fingerprint,
-        generationToken: null,
-        tokenExpiresAt: null,
-        inputData: inputSnapshot,
-      },
-    });
 
     // ===== 请求 AI（stream）=====
     const aiResponse = await openai.chat.completions.create({

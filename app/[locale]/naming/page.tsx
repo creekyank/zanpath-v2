@@ -51,6 +51,8 @@ export default function NamingPage() {
   const pollingRef = useRef(false);
   const paddleInitRef = useRef(false);
 
+  const [freeRecoverMode, setFreeRecoverMode] = useState(false);
+
   /* -----------------------------
      表单状态
   ------------------------------ */
@@ -265,6 +267,13 @@ export default function NamingPage() {
       alert("Email required");
       return;
     }
+    
+    if (freeRecoverMode) {
+      setFlowState("GENERATING");
+      setFreeRecoverMode(false);
+      processAiGeneration(new FormData(), "recovery_free");
+      return;
+    }
   
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", "naming");
@@ -274,6 +283,8 @@ export default function NamingPage() {
     );
   
     setFlowState("WAITING_PAYMENT");
+
+
   
     openPaddleCheckout(email, "naming", formDataState);
   };
@@ -530,6 +541,7 @@ export default function NamingPage() {
             onNeedsReRun={(inputData) => { 
               setShowResult(false); 
               setResult(""); 
+              setFreeRecoverMode(true); // ✅ 关键
               setFlowState("IDLE");
 
               if (inputData) setFormDataState(inputData);
