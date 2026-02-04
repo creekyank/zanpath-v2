@@ -199,7 +199,8 @@ export default function NamingPage() {
   
       // ❗关键：失败后什么都不自动触发
       setFlowState("ERROR");
-  
+      setFlowState("IDLE");
+      setFreeRecoverMode(true); // ✅ 允许下一次免费
       alert("Generation failed. Please click Generate again to retry.");
     } finally {
       setLoading(false);
@@ -275,13 +276,23 @@ export default function NamingPage() {
       alert("Email required");
       return;
     }
-
+  
+    // ✅ 1. 如果是【失败后的免费重试】（必须已经有 token）
     if (freeRecoverMode) {
-      setFlowState("GENERATING");
-      setFreeRecoverMode(false);
-      processAiGeneration(new FormData(), "recovery_free");
-      return;
+      const token = localStorage.getItem("generation_token");
+      if (!token) {
+        // ⚠️ 没 token，不允许走免费重试
+        setFreeRecoverMode(false);
+      } else {
+        setFlowState("GENERATING");
+        setFreeRecoverMode(false);
+        processAiGeneration(new FormData(), "recovery_free");
+        return;
+      }
     }
+  
+    // ✅ 2. 正常付费流程（唯一入口）
+    setFlowState("PAYING");
   
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", "naming");
@@ -290,51 +301,11 @@ export default function NamingPage() {
       JSON.stringify(formDataState)
     );
   
-    setFlowState("WAITING_PAYMENT");
-
-
-  
     openPaddleCheckout(email, "naming", formDataState);
+  
+    // ⚠️ 不要立刻 WAITING_PAYMENT
+    // 等支付弹窗真正打开后再进入轮询
   };
-
-  useEffect(() => {
-    if (flowState !== "WAITING_PAYMENT") return;
-  
-    const email = localStorage.getItem("pending_payment_email");
-    if (!email) return;
-  
-    const poll = async () => {
-      for (let i = 0; i < 90; i++) {
-        const res = await fetch("/api/orders/check-status", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            moduleType: "naming"
-          })
-        });
-  
-        const data = await res.json();
-  
-        if (data.ready && data.generationToken) {
-          localStorage.setItem(
-            "generation_token",
-            data.generationToken
-          );
-  
-          setFlowState("GENERATING");
-          processAiGeneration(new FormData(), "after_pay");
-          return;
-        }
-  
-        await new Promise(r => setTimeout(r, 2000));
-      }
-  
-      setFlowState("ERROR");
-    };
-  
-    poll();
-  }, [flowState]);
 
 
 
