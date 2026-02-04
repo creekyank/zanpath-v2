@@ -179,16 +179,7 @@ export default function NamingPage() {
         }
       }
 
-      if (orderId && fullResult.length > 300) {
-        await fetch("/api/orders/save-result", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            orderId,
-            content: fullResult
-          })
-        });
-      }
+
 
       localStorage.removeItem("generation_token");
       localStorage.removeItem("pending_payment_email");
