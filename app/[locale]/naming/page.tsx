@@ -51,8 +51,6 @@ export default function NamingPage() {
   const pollingRef = useRef(false);
   const paddleInitRef = useRef(false);
 
-  const [freeRecoverMode, setFreeRecoverMode] = useState(false);
-
   /* -----------------------------
      表单状态
   ------------------------------ */
@@ -115,21 +113,15 @@ export default function NamingPage() {
   ) => {
     if (generatingRef.current) return;
     generatingRef.current = true;
-  
+
     setLoading(true);
     setShowResult(true);
     setResult("");
-  
+
     const email = formDataState.email.trim().toLowerCase();
     const generationToken = localStorage.getItem("generation_token");
-  
-    if (!generationToken) {
-      alert("No valid generation token. Please restart.");
-      setLoading(false);
-      generatingRef.current = false;
-      return;
-    }
-  
+    let fullResult = "";
+
     try {
       const prompt = NAMING_PROMPT_TEMPLATE
         .replace("${outputLanguage}", locale === "es" ? "Spanish" : "English")
@@ -143,7 +135,7 @@ export default function NamingPage() {
           "${userDescription}",
           `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`
         );
-  
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -155,53 +147,50 @@ export default function NamingPage() {
           generationToken
         })
       });
-  
+
       if (!res.ok) {
         throw new Error("Generation failed");
       }
-  
+
+      const orderId = res.headers.get("X-Order-Id");
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-  
+
       if (!reader) throw new Error("No stream");
-  
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-  
+
         const chunk = decoder.decode(value);
         const lines = chunk.split("\n");
-  
+
         for (const line of lines) {
           const t = line.trim();
           if (!t || t === "data: [DONE]") continue;
-  
           if (t.startsWith("data: ")) {
             const json = JSON.parse(t.slice(6));
             const text = json.choices?.[0]?.delta?.content || "";
             if (text) {
+              fullResult += text;
               setResult(prev => prev + text);
             }
           }
         }
       }
-  
-      // ✅ 只有真正成功，才清 token
+
+
+
       localStorage.removeItem("generation_token");
       localStorage.removeItem("pending_payment_email");
       localStorage.removeItem("pending_payment_module");
       localStorage.removeItem("pending_payment_form");
-  
+
       setFlowState("DONE");
-  
-    } catch (err) {
-      console.error(err);
-  
-      // ❗关键：失败后什么都不自动触发
+    } catch (e) {
+      console.error(e);
       setFlowState("ERROR");
-      setFlowState("IDLE");
-      setFreeRecoverMode(true); // ✅ 允许下一次免费
-      alert("Generation failed. Please click Generate again to retry.");
+      alert("Generation failed. Please try again.");
     } finally {
       setLoading(false);
       generatingRef.current = false;
@@ -277,23 +266,6 @@ export default function NamingPage() {
       return;
     }
   
-    // ✅ 1. 如果是【失败后的免费重试】（必须已经有 token）
-    if (freeRecoverMode) {
-      const token = localStorage.getItem("generation_token");
-      if (!token) {
-        // ⚠️ 没 token，不允许走免费重试
-        setFreeRecoverMode(false);
-      } else {
-        setFlowState("GENERATING");
-        setFreeRecoverMode(false);
-        processAiGeneration(new FormData(), "recovery_free");
-        return;
-      }
-    }
-  
-    // ✅ 2. 正常付费流程（唯一入口）
-    setFlowState("PAYING");
-  
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", "naming");
     localStorage.setItem(
@@ -301,11 +273,49 @@ export default function NamingPage() {
       JSON.stringify(formDataState)
     );
   
-    openPaddleCheckout(email, "naming", formDataState);
+    setFlowState("WAITING_PAYMENT");
   
-    // ⚠️ 不要立刻 WAITING_PAYMENT
-    // 等支付弹窗真正打开后再进入轮询
+    openPaddleCheckout(email, "naming", formDataState);
   };
+
+  useEffect(() => {
+    if (flowState !== "WAITING_PAYMENT") return;
+  
+    const email = localStorage.getItem("pending_payment_email");
+    if (!email) return;
+  
+    const poll = async () => {
+      for (let i = 0; i < 90; i++) {
+        const res = await fetch("/api/orders/check-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            moduleType: "naming"
+          })
+        });
+  
+        const data = await res.json();
+  
+        if (data.ready && data.generationToken) {
+          localStorage.setItem(
+            "generation_token",
+            data.generationToken
+          );
+  
+          setFlowState("GENERATING");
+          processAiGeneration(new FormData(), "after_pay");
+          return;
+        }
+  
+        await new Promise(r => setTimeout(r, 2000));
+      }
+  
+      setFlowState("ERROR");
+    };
+  
+    poll();
+  }, [flowState]);
 
 
 
@@ -520,7 +530,6 @@ export default function NamingPage() {
             onNeedsReRun={(inputData) => { 
               setShowResult(false); 
               setResult(""); 
-              setFreeRecoverMode(true); // ✅ 关键
               setFlowState("IDLE");
 
               if (inputData) setFormDataState(inputData);
