@@ -115,15 +115,21 @@ export default function NamingPage() {
   ) => {
     if (generatingRef.current) return;
     generatingRef.current = true;
-
+  
     setLoading(true);
     setShowResult(true);
     setResult("");
-
+  
     const email = formDataState.email.trim().toLowerCase();
     const generationToken = localStorage.getItem("generation_token");
-    let fullResult = "";
-
+  
+    if (!generationToken) {
+      alert("No valid generation token. Please restart.");
+      setLoading(false);
+      generatingRef.current = false;
+      return;
+    }
+  
     try {
       const prompt = NAMING_PROMPT_TEMPLATE
         .replace("${outputLanguage}", locale === "es" ? "Spanish" : "English")
@@ -137,7 +143,7 @@ export default function NamingPage() {
           "${userDescription}",
           `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`
         );
-
+  
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -149,50 +155,52 @@ export default function NamingPage() {
           generationToken
         })
       });
-
+  
       if (!res.ok) {
         throw new Error("Generation failed");
       }
-
-      const orderId = res.headers.get("X-Order-Id");
+  
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-
+  
       if (!reader) throw new Error("No stream");
-
+  
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-
+  
         const chunk = decoder.decode(value);
         const lines = chunk.split("\n");
-
+  
         for (const line of lines) {
           const t = line.trim();
           if (!t || t === "data: [DONE]") continue;
+  
           if (t.startsWith("data: ")) {
             const json = JSON.parse(t.slice(6));
             const text = json.choices?.[0]?.delta?.content || "";
             if (text) {
-              fullResult += text;
               setResult(prev => prev + text);
             }
           }
         }
       }
-
-
-
+  
+      // ✅ 只有真正成功，才清 token
       localStorage.removeItem("generation_token");
       localStorage.removeItem("pending_payment_email");
       localStorage.removeItem("pending_payment_module");
       localStorage.removeItem("pending_payment_form");
-
+  
       setFlowState("DONE");
-    } catch (e) {
-      console.error(e);
-      setFlowState("IDLE"); // ✅ 回到可生成态
-      alert("Generation failed. Please try again.");
+  
+    } catch (err) {
+      console.error(err);
+  
+      // ❗关键：失败后什么都不自动触发
+      setFlowState("ERROR");
+  
+      alert("Generation failed. Please click Generate again to retry.");
     } finally {
       setLoading(false);
       generatingRef.current = false;
