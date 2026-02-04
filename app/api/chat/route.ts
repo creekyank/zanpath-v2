@@ -1,4 +1,4 @@
-
+// app/api/chat/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { OpenAI } from "openai";
@@ -35,6 +35,7 @@ export async function POST(req: Request) {
 
     const userEmail = email.toLowerCase().trim();
 
+    // 🔐 查找订单（一次性 token）
     const order = await db.order.findFirst({
       where: {
         email: userEmail,
@@ -44,16 +45,10 @@ export async function POST(req: Request) {
         status: "paid",
         isUsed: false,
       },
-      include: { result: true },
     });
 
     if (!order) {
       return NextResponse.json({ error: "INVALID_TOKEN" }, { status: 403 });
-    }
-
-    // ❗如果已经成功生成过，直接拒绝
-    if (order.result?.isComplete) {
-      return NextResponse.json({ error: "ALREADY_COMPLETED" }, { status: 409 });
     }
 
     const fingerprint = generateFingerprint(
@@ -62,20 +57,28 @@ export async function POST(req: Request) {
       inputSnapshot
     );
 
-    // 仅锁定，不清 token
+    // 🔒 原子锁单
     await db.order.update({
       where: { id: order.id },
       data: {
+        isUsed: true,
         fingerprint,
+        generationToken: null,
+        tokenExpiresAt: null,
         inputData: inputSnapshot,
       },
     });
 
+    // ===== 请求 AI（stream）=====
     const aiResponse = await openai.chat.completions.create({
       model: "deepseek-chat",
       stream: true,
       messages: [
-        { role: "system", content: "你是一位精通命理的分析师。" },
+        {
+          role: "system",
+          content:
+            "你是一位精通東西方文化的命理與空間分析大師，善於從視覺細節中洞察運勢。",
+        },
         { role: "user", content: prompt },
       ],
     });
@@ -85,10 +88,13 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
+          // 1️⃣ 边接收边推送
           for await (const chunk of aiResponse) {
             const text = chunk.choices?.[0]?.delta?.content || "";
+
             if (text) {
               fullContent += text;
+
               controller.enqueue(
                 new TextEncoder().encode(
                   `data: ${JSON.stringify({
@@ -99,8 +105,10 @@ export async function POST(req: Request) {
             }
           }
 
-          // ======== 真正成功点 ========
+          // 2️⃣ AI 完成后，开始【必须完成】的交付流程
+          console.log("🟢 AI stream finished, start final delivery");
 
+          // ✅ 保存结果
           const result = await db.result.upsert({
             where: { orderId: order.id },
             update: { content: fullContent, isComplete: true },
@@ -111,48 +119,60 @@ export async function POST(req: Request) {
             },
           });
 
+          console.log("🟢 Result saved:", result.id);
+
+          // ✅ 生成 PDF
           const pdfBuffer = await renderToBuffer(
             React.createElement(AnalysisReportPDF, {
-              data: { title: "ZanPath AI Report", content: fullContent },
+              data: {
+                title: "ZanPath AI Analysis Report",
+                content: fullContent,
+              },
               lang: locale,
             })
           );
 
-          await resend.emails.send({
+          console.log(
+            "🟢 PDF generated:",
+            (pdfBuffer.length / 1024).toFixed(2),
+            "KB"
+          );
+
+          // ✅ 发送邮件（必须在 close 之前）
+          const { error } = await resend.emails.send({
             from: "ZanPath AI <report@zanpath.com>",
             to: userEmail,
-            subject: "Your ZanPath AI Report",
-            html: "<p>Your report is ready.</p >",
+            subject: "Your ZanPath AI Analysis Report",
+            html: "<p>Your report is ready. Please find the PDF attached.</p >",
             attachments: [
               {
-                filename: `ZanPath_${moduleType}.pdf`,
+                filename: `ZanPath_${moduleType}_Report.pdf`,
                 content: pdfBuffer,
               },
             ],
           });
 
-          // ✅ 只有现在，才算“消费完成”
-          await db.order.update({
-            where: { id: order.id },
-            data: {
-              isUsed: true,
-              generationToken: null,
-              tokenExpiresAt: null,
-            },
-          });
+          if (error) {
+            console.error("❌ Resend error:", error);
+            throw new Error("Email send failed");
+          }
 
+          console.log("🟢 Email sent successfully:", userEmail);
+
+          // ✅ 标记已发邮件
           await db.result.update({
             where: { id: result.id },
             data: { pdfSent: true },
           });
 
+          // 3️⃣ 一切完成，通知前端 DONE
           controller.enqueue(
             new TextEncoder().encode("data: [DONE]\n\n")
           );
           controller.close();
         } catch (err) {
-          console.error("🔥 Stream error:", err);
-          controller.error(err); // ❗token 仍然有效
+          console.error("🔥 Stream fatal error:", err);
+          controller.error(err);
         }
       },
     });
@@ -162,6 +182,7 @@ export async function POST(req: Request) {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
         Connection: "keep-alive",
+        "X-Order-Id": order.id,
       },
     });
   } catch (err: any) {
