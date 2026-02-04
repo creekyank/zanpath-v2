@@ -1,5 +1,7 @@
+
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
@@ -15,23 +17,40 @@ export async function POST(req: Request) {
         email: userEmail,
         moduleType,
         status: "paid",
-        isUsed: false,
-        generationToken: { not: null },
-        tokenExpiresAt: { gt: new Date() }
+        isUsed: false, // ❗只允许没成功生成过的
       },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "asc" },
     });
 
     if (!order) {
-      return NextResponse.json({ ready: false });
+      return NextResponse.json({ isPaid: false });
     }
 
+    // 如果已经有 token，直接复用（失败重试核心）
+    if (order.generationToken && order.tokenExpiresAt && order.tokenExpiresAt > new Date()) {
+      return NextResponse.json({
+        isPaid: true,
+        generationToken: order.generationToken,
+      });
+    }
+
+    // 否则生成新 token
+    const token = crypto.randomBytes(32).toString("hex");
+
+    await db.order.update({
+      where: { id: order.id },
+      data: {
+        generationToken: token,
+        tokenExpiresAt: new Date(Date.now() + 15 * 60 * 1000),
+      },
+    });
+
     return NextResponse.json({
-      ready: true,
-      generationToken: order.generationToken
+      isPaid: true,
+      generationToken: token,
     });
   } catch (err: any) {
-    console.error("check-status error:", err.message);
+    console.error("❌ check-status error:", err.message);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

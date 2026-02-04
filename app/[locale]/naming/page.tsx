@@ -191,7 +191,7 @@ export default function NamingPage() {
       setFlowState("DONE");
     } catch (e) {
       console.error(e);
-      setFlowState("ERROR");
+      setFlowState("IDLE"); // ✅ 回到可生成态
       alert("Generation failed. Please try again.");
     } finally {
       setLoading(false);
@@ -267,7 +267,7 @@ export default function NamingPage() {
       alert("Email required");
       return;
     }
-    
+
     if (freeRecoverMode) {
       setFlowState("GENERATING");
       setFreeRecoverMode(false);
