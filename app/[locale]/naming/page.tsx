@@ -15,22 +15,45 @@ import { ADMIN_CONFIG, isAdminEmail } from "@/config/admin";
 import RecoveryModal from "@/components/RecoveryModal";
 import { openPaddleCheckout } from "@/lib/paddle";
 
+/* -----------------------------
+   商业级状态机定义
+------------------------------ */
+type FlowState =
+  | "IDLE"
+  | "PAYING"
+  | "WAITING_PAYMENT"
+  | "GENERATING"
+  | "DONE"
+  | "ERROR";
+
 export default function NamingPage() {
   const locale = useLocale() as "en" | "es";
-  const disclaimer = DISCLAIMER_TEXT[locale] || DISCLAIMER_TEXT.en;
   const pathname = usePathname();
   const router = useRouter();
 
+  const disclaimer = DISCLAIMER_TEXT[locale] || DISCLAIMER_TEXT.en;
+  const notice = TIME_ZONE_NOTICE[locale] || TIME_ZONE_NOTICE.en;
+  const mid =
+    PAGE_SPECIFIC_CONTENT.naming[locale] ||
+    PAGE_SPECIFIC_CONTENT.naming.en;
+  const foot = COMMON_FOOTER[locale] || COMMON_FOOTER.en;
+  const menuItems = NAV_MENU[locale] || NAV_MENU.en;
+
+  /* -----------------------------
+     基础状态
+  ------------------------------ */
+  const [flowState, setFlowState] = useState<FlowState>("IDLE");
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState("");
-  const [isPrePaid, setIsPrePaid] = useState(false);
 
-  const pollingRef = useRef(false); // ✅ FIX：防止多重轮询
-
-  // 🚫 防止重复生成（非常关键）
   const generatingRef = useRef(false);
+  const pollingRef = useRef(false);
+  const paddleInitRef = useRef(false);
 
+  /* -----------------------------
+     表单状态
+  ------------------------------ */
   const [formDataState, setFormDataState] = useState({
     surname: "",
     gender: "Male",
@@ -43,75 +66,66 @@ export default function NamingPage() {
     description: ""
   });
 
+  /* -----------------------------
+     Paddle 初始化（只一次）
+  ------------------------------ */
   useEffect(() => {
-    const pendingEmail = localStorage.getItem("pending_payment_email");
-    const pendingModule = localStorage.getItem("pending_payment_module");
+    if (typeof window === "undefined") return;
+    if (paddleInitRef.current) return;
 
-    if (!pendingEmail || pendingModule !== "naming") return;
-
-    const savedForm = localStorage.getItem("pending_payment_form");
-    if (savedForm) {
-      setFormDataState(JSON.parse(savedForm));
-    }
-
-    pollPaymentStatus(pendingEmail);
-  }, []);
-
-  useEffect(() => {
-    const onFocus = () => {
-      const pendingEmail = localStorage.getItem("pending_payment_email");
-      const pendingModule = localStorage.getItem("pending_payment_module");
-      if (pendingEmail && pendingModule === "naming") {
-        pollPaymentStatus(pendingEmail);
+    const w = window as any;
+    if (w.Paddle) {
+      try {
+        w.Paddle.Initialize({
+          token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN
+        });
+        paddleInitRef.current = true;
+        console.log("✅ Paddle initialized");
+      } catch (e) {
+        console.error("❌ Paddle init failed", e);
       }
-    };
-
-    const onVisibilityChange = () => {
-      if (!document.hidden) onFocus();
-    };
-
-    window.addEventListener("focus", onFocus);
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
-    return () => {
-      window.removeEventListener("focus", onFocus);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-    };
+    }
   }, []);
 
-  const currentLangName = locale === "es" ? "Spanish" : "English";
-  const notice = TIME_ZONE_NOTICE[locale] || TIME_ZONE_NOTICE.en;
-  const mid =
-    PAGE_SPECIFIC_CONTENT.naming[locale] ||
-    PAGE_SPECIFIC_CONTENT.naming.en;
-  const foot = COMMON_FOOTER[locale] || COMMON_FOOTER.en;
-  const menuItems = NAV_MENU[locale] || NAV_MENU.en;
+  /* -----------------------------
+     页面恢复（支付中断）
+  ------------------------------ */
+  useEffect(() => {
+    const email = localStorage.getItem("pending_payment_email");
+    const module = localStorage.getItem("pending_payment_module");
 
-  const processAiGeneration = async (
-    formData: FormData,
-    source: string
-  ) => { 
-    const email = formDataState.email.toLowerCase().trim();
-
-    if (generatingRef.current) {
-      console.warn("⚠️ Generation already in progress");
-      return;
+    if (email && module === "naming") {
+      const savedForm = localStorage.getItem("pending_payment_form");
+      if (savedForm) {
+        setFormDataState(JSON.parse(savedForm));
+      }
+      setFlowState("WAITING_PAYMENT");
+      pollPaymentStatus(email);
     }
+  }, []);
+
+  /* -----------------------------
+     AI 生成（只做生成）
+  ------------------------------ */
+  const processAiGeneration = async (
+    _formData: FormData,
+    source: string
+  ) => {
+    if (generatingRef.current) return;
     generatingRef.current = true;
 
     setLoading(true);
-    setResult("");
     setShowResult(true);
+    setResult("");
 
+    const email = formDataState.email.trim().toLowerCase();
+    const generationToken = localStorage.getItem("generation_token");
     let fullResult = "";
 
     try {
-      const finalPrompt = NAMING_PROMPT_TEMPLATE
-        .replace("${outputLanguage}", currentLangName)
-        .replace(
-          "${languageMode}",
-          source === "vip_debug" ? "VIP" : "REGULAR"
-        )
+      const prompt = NAMING_PROMPT_TEMPLATE
+        .replace("${outputLanguage}", locale === "es" ? "Spanish" : "English")
+        .replace("${languageMode}", source)
         .replace("${gender}", formDataState.gender)
         .replace(
           "${birthTime}",
@@ -122,14 +136,11 @@ export default function NamingPage() {
           `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`
         );
 
-      const generationToken =
-        localStorage.getItem("generation_token");
-
-      const response = await fetch("/api/chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: finalPrompt,
+          prompt,
           email,
           moduleType: "naming",
           inputSnapshot: formDataState,
@@ -137,52 +148,38 @@ export default function NamingPage() {
         })
       });
 
-      if (response.status === 403) {
-        const data = await response.json();
-        if (data?.error === "INVALID_TOKEN") {
-          alert(
-            locale === "es"
-              ? "El pago se está confirmando. Por favor espere."
-              : "Payment is being confirmed. Please wait."
-          );
-          setLoading(false);
-          setShowResult(false);
-          return;
-        }
+      if (!res.ok) {
+        throw new Error("Generation failed");
       }
 
-      if (!response.ok) throw new Error("Fetch failed");
-
-      const orderId = response.headers.get("X-Order-Id"); // ✅ FIX
-
-      const reader = response.body?.getReader();
+      const orderId = res.headers.get("X-Order-Id");
+      const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-      if (!reader) throw new Error("No reader");
+
+      if (!reader) throw new Error("No stream");
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
+
         const chunk = decoder.decode(value);
         const lines = chunk.split("\n");
 
         for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed || trimmed === "data: [DONE]") continue;
-          if (trimmed.startsWith("data: ")) {
-            try {
-              const json = JSON.parse(trimmed.substring(6));
-              const text =
-                json.choices?.[0]?.delta?.content || "";
-              if (text) {
-                fullResult += text;
-                setResult(prev => prev + text);
-              }
-            } catch {}
+          const t = line.trim();
+          if (!t || t === "data: [DONE]") continue;
+          if (t.startsWith("data: ")) {
+            const json = JSON.parse(t.slice(6));
+            const text = json.choices?.[0]?.delta?.content || "";
+            if (text) {
+              fullResult += text;
+              setResult(prev => prev + text);
+            }
           }
         }
       }
 
-      if (fullResult.length > 500 && orderId) {
+      if (orderId && fullResult.length > 300) {
         await fetch("/api/orders/save-result", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -191,31 +188,32 @@ export default function NamingPage() {
             content: fullResult
           })
         });
-
-        localStorage.removeItem("generation_token"); // ✅ FIX
-        localStorage.removeItem("naming_backup_content");
-        localStorage.removeItem("generation_consumed");
       }
-    } catch (err) {
-      alert(
-        locale === "es"
-          ? "La generación falló. Inténtelo de nuevo más tarde."
-          : "Generation failed. Please try again later."
-      );
+
+      localStorage.removeItem("generation_token");
+      localStorage.removeItem("pending_payment_email");
+      localStorage.removeItem("pending_payment_module");
+      localStorage.removeItem("pending_payment_form");
+
+      setFlowState("DONE");
+    } catch (e) {
+      console.error(e);
+      setFlowState("ERROR");
+      alert("Generation failed. Please try again.");
     } finally {
       setLoading(false);
-      setIsPrePaid(false);
       generatingRef.current = false;
     }
   };
 
-  const pollPaymentStatus = (email: string) => {
-    if (pollingRef.current) return; // ✅ FIX
+  /* -----------------------------
+     支付轮询（只做确认）
+  ------------------------------ */
+  const pollPaymentStatus = async (email: string) => {
+    if (pollingRef.current) return;
     pollingRef.current = true;
 
-    let attempts = 0;
-    const interval = setInterval(async () => {
-      attempts++;
+    for (let i = 0; i < 90; i++) {
       const res = await fetch("/api/orders/check-status", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -225,32 +223,18 @@ export default function NamingPage() {
       const data = await res.json();
 
       if (data.isPaid && data.generationToken) {
-        if (localStorage.getItem("generation_consumed") === "1") {
-          return; }
-        console.log("✅ PAID, START GENERATION");
-        clearInterval(interval);
+        localStorage.setItem("generation_token", data.generationToken);
         pollingRef.current = false;
-
-        localStorage.removeItem("pending_payment_email");
-        localStorage.removeItem("pending_payment_module");
-        localStorage.removeItem("pending_payment_form");
-
-        localStorage.setItem(
-          "generation_token",
-          data.generationToken
-        );
-
-  // ⏳ 下一帧再生成，避免并发
-  setTimeout(() => {
-    processAiGeneration(new FormData(), "auto_after_pay");
-  }, 0);
-}
-
-      if (attempts > 90) {
-        clearInterval(interval);
-        pollingRef.current = false;
+        setFlowState("GENERATING");
+        await processAiGeneration(new FormData(), "auto_after_pay");
+        return;
       }
-    }, 2000);
+
+      await new Promise(r => setTimeout(r, 2000));
+    }
+
+    pollingRef.current = false;
+    setFlowState("ERROR");
   };
 
   const validateInput = (name: string, value: string) => {
@@ -263,8 +247,7 @@ export default function NamingPage() {
       alert(`${name} must be ${limits[name][0]}-${limits[name][1]}`);
     }
   };
-
-  // 在 NamingPage 组建内部定义
+  
   const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     
@@ -278,36 +261,49 @@ export default function NamingPage() {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     target.setCustomValidity("");
   };
-  // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
-  // 3. 优化：表单提交逻辑（改用 formDataState 进行校验）
-  const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
-    if (e) e.preventDefault();
-  
+  /* -----------------------------
+     表单提交（唯一入口）
+  ------------------------------ */
+  const handleSubmit = async (
+    e: React.FormEvent,
+    mode: "NORMAL" | "VIP"
+  ) => {
+    e.preventDefault();
+
     const email = formDataState.email.trim().toLowerCase();
-  
-    // 1. 先做所有必要的驗證
     if (!email || !formDataState.surname || !formDataState.description) {
       alert(mid.fields.requiredTip);
       return;
     }
-  
-    // 2. 分流：特殊權限 vs 普通支付
-    if (mode === 'VIP' || isPrePaid || isAdminEmail(email)) {
-      if (mode === 'VIP') {
-        const pwd = prompt("Enter VIP Password:");
-        if (pwd !== ADMIN_CONFIG.vipPassword) return alert("Incorrect password.");
-      }
-      // 進入生成
-      processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
-    } else {
-      // 進入支付
-      localStorage.setItem("pending_payment_email", email);
-      localStorage.setItem("pending_payment_module", "naming");
-      localStorage.setItem("pending_payment_form", JSON.stringify(formDataState));
-      openPaddleCheckout(email, "naming", formDataState);
 
+    if (flowState !== "IDLE") return;
+
+    if (mode === "VIP" || isAdminEmail(email)) {
+      if (mode === "VIP") {
+        const pwd = prompt("Enter VIP Password:");
+        if (pwd !== ADMIN_CONFIG.vipPassword) return;
+      }
+      setFlowState("GENERATING");
+      processAiGeneration(new FormData(), "vip_debug");
+      return;
     }
-  };// <--- 確保這裡有大括號
+
+    setFlowState("PAYING");
+
+    localStorage.setItem("pending_payment_email", email);
+    localStorage.setItem("pending_payment_module", "naming");
+    localStorage.setItem(
+      "pending_payment_form",
+      JSON.stringify(formDataState)
+    );
+
+    openPaddleCheckout(email, "naming", formDataState);
+
+    setFlowState("WAITING_PAYMENT");
+    pollPaymentStatus(email);
+  };
+
+
 
   /* ===== 以下 JSX 原样保持，不再重复解释 ===== */
   return (
@@ -410,12 +406,32 @@ export default function NamingPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <button type="submit" className="w-full py-5 rounded-2xl bg-[#0f3d2e] text-white font-bold text-lg hover:opacity-90 transition-all">
-                    {isPrePaid ? mid.fields.btnPaid : mid.fields.btnNormal}
+                <button
+                    type="submit"
+                    disabled={
+                      flowState === "PAYING" ||
+                      flowState === "WAITING_PAYMENT" ||
+                      flowState === "GENERATING"
+                    }
+                    className="w-full py-5 rounded-2xl bg-[#0f3d2e] text-white font-bold text-lg hover:opacity-90 transition-all disabled:opacity-50"
+                  >
+                    {flowState === "IDLE" && mid.fields.btnNormal}
+
+                    {flowState === "PAYING" && (
+                      locale === "es" ? "Procesando pago…" : "Processing payment…"
+                    )}
+
+                    {flowState === "WAITING_PAYMENT" && mid.fields.btnPaid}
+
+                    {flowState === "GENERATING" && (
+                      locale === "es" ? "Generando…" : "Generating…"
+                    )}
+
+                    {flowState === "DONE" && mid.fields.btnPaid}
                   </button>
 
                   {/* --- 插入支付測試中開始 --- */}
-{!isPrePaid && (
+
   <div className="mt-4 px-2 text-center space-y-1">
     <p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
       Payments are currently being finalized. All features are available for exploration during this period.
@@ -425,7 +441,7 @@ export default function NamingPage() {
       Los pagos se están finalizando actualmente. Todas las funciones están disponibles para exploración durante este período.
     </p>*/}
   </div>
-)}
+
 {/* --- 插入結束 --- */}
                   <div className="bg-gray-50/50 rounded-2xl p-6 space-y-4 border border-gray-100/50">
                     <p className="text-[13px] text-[#0f3d2e] font-medium leading-relaxed">{mid.intro}</p>
@@ -500,7 +516,8 @@ export default function NamingPage() {
             onNeedsReRun={(inputData) => { 
               setShowResult(false); 
               setResult(""); 
-              setIsPrePaid(true); 
+              setFlowState("IDLE");
+
               if (inputData) setFormDataState(inputData);
               // 🟢 新增：自動捲動到頂部
               window.scrollTo({ top: 0, behavior: 'smooth' });
