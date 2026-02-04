@@ -183,7 +183,7 @@ export default function NamingPage() {
 
 
 
-    
+      localStorage.removeItem("generation_token");
       localStorage.removeItem("pending_payment_email");
       localStorage.removeItem("pending_payment_module");
       localStorage.removeItem("pending_payment_form");
