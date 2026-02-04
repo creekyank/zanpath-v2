@@ -3,6 +3,7 @@ export const openPaddleCheckout = (
   email: string,
   moduleType: string,
   inputSnapshot: any
+  
 ) => {
   const paddle = (window as any).Paddle;
   if (!paddle) return;

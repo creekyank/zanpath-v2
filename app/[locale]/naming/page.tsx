@@ -255,44 +255,67 @@ export default function NamingPage() {
   /* -----------------------------
      表单提交（唯一入口）
   ------------------------------ */
-  const handleSubmit = async (
-    e: React.FormEvent,
-    mode: "NORMAL" | "VIP"
-  ) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const email = formDataState.email.trim().toLowerCase();
-    if (!email || !formDataState.surname || !formDataState.description) {
-      alert(mid.fields.requiredTip);
-      return;
-    }
-
+  
     if (flowState !== "IDLE") return;
-
-    if (mode === "VIP" || isAdminEmail(email)) {
-      if (mode === "VIP") {
-        const pwd = prompt("Enter VIP Password:");
-        if (pwd !== ADMIN_CONFIG.vipPassword) return;
-      }
-      setFlowState("GENERATING");
-      processAiGeneration(new FormData(), "vip_debug");
+  
+    const email = formDataState.email.trim().toLowerCase();
+    if (!email) {
+      alert("Email required");
       return;
     }
-
-    setFlowState("PAYING");
-
+  
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", "naming");
     localStorage.setItem(
       "pending_payment_form",
       JSON.stringify(formDataState)
     );
-
-    openPaddleCheckout(email, "naming", formDataState);
-
+  
     setFlowState("WAITING_PAYMENT");
-    pollPaymentStatus(email);
+  
+    openPaddleCheckout(email, "naming", formDataState);
   };
+
+  useEffect(() => {
+    if (flowState !== "WAITING_PAYMENT") return;
+  
+    const email = localStorage.getItem("pending_payment_email");
+    if (!email) return;
+  
+    const poll = async () => {
+      for (let i = 0; i < 90; i++) {
+        const res = await fetch("/api/orders/check-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            moduleType: "naming"
+          })
+        });
+  
+        const data = await res.json();
+  
+        if (data.ready && data.generationToken) {
+          localStorage.setItem(
+            "generation_token",
+            data.generationToken
+          );
+  
+          setFlowState("GENERATING");
+          processAiGeneration(new FormData(), "after_pay");
+          return;
+        }
+  
+        await new Promise(r => setTimeout(r, 2000));
+      }
+  
+      setFlowState("ERROR");
+    };
+  
+    poll();
+  }, [flowState]);
 
 
 
@@ -359,7 +382,7 @@ export default function NamingPage() {
 
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-white">
             {!showResult && !loading ? (
-              <form onSubmit={(e) => handleSubmit(e, 'NORMAL')} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col space-y-1">
                     <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.surname}</label>

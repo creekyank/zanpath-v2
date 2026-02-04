@@ -1,7 +1,5 @@
-// app/api/orders/check-status/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
@@ -17,33 +15,23 @@ export async function POST(req: Request) {
         email: userEmail,
         moduleType,
         status: "paid",
-        isUsed: false
+        isUsed: false,
+        generationToken: { not: null },
+        tokenExpiresAt: { gt: new Date() }
       },
-      orderBy: { createdAt: "asc" }
+      orderBy: { createdAt: "desc" }
     });
 
     if (!order) {
-      return NextResponse.json({ isPaid: false });
+      return NextResponse.json({ ready: false });
     }
 
-    // 🔐 生成一次性 Token
-    const token = crypto.randomBytes(32).toString("hex");
-
-    await db.order.update({
-      where: { id: order.id },
-      data: {
-        generationToken: token,
-        tokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 分钟
-      }
-    });
-
     return NextResponse.json({
-      isPaid: true,
-      generationToken: token
+      ready: true,
+      generationToken: order.generationToken
     });
-
   } catch (err: any) {
-    console.error("❌ check-status error:", err.message);
+    console.error("check-status error:", err.message);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
