@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     const userEmail = email.toLowerCase().trim();
 
-    // 🔐 查找并锁定订单（一次性）
+    // 🔐 查找订单（一次性 token）
     const order = await db.order.findFirst({
       where: {
         email: userEmail,
@@ -74,7 +74,11 @@ export async function POST(req: Request) {
       model: "deepseek-chat",
       stream: true,
       messages: [
-        { role: "system", content: "你是一位专业命理分析师。" },
+        {
+          role: "system",
+          content:
+            "你是一位精通東西方文化的命理與空間分析大師，善於從視覺細節中洞察運勢。",
+        },
         { role: "user", content: prompt },
       ],
     });
@@ -84,9 +88,9 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
+          // 1️⃣ 边接收边推送
           for await (const chunk of aiResponse) {
-            const text =
-              chunk.choices?.[0]?.delta?.content || "";
+            const text = chunk.choices?.[0]?.delta?.content || "";
 
             if (text) {
               fullContent += text;
@@ -101,13 +105,10 @@ export async function POST(req: Request) {
             }
           }
 
-          // ===== AI 完成，开始正式交付 =====
-          controller.enqueue(
-            new TextEncoder().encode("data: [DONE]\n\n")
-          );
-          controller.close();
+          // 2️⃣ AI 完成后，开始【必须完成】的交付流程
+          console.log("🟢 AI stream finished, start final delivery");
 
-          // 🟢 保存结果
+          // ✅ 保存结果
           const result = await db.result.upsert({
             where: { orderId: order.id },
             update: { content: fullContent, isComplete: true },
@@ -118,19 +119,27 @@ export async function POST(req: Request) {
             },
           });
 
-          // 🟢 生成 PDF
+          console.log("🟢 Result saved:", result.id);
+
+          // ✅ 生成 PDF
           const pdfBuffer = await renderToBuffer(
             React.createElement(AnalysisReportPDF, {
               data: {
-                title: "ZanPath AI Report",
+                title: "ZanPath AI Analysis Report",
                 content: fullContent,
               },
               lang: locale,
             })
           );
 
-          // 🟢 发送邮件
-          await resend.emails.send({
+          console.log(
+            "🟢 PDF generated:",
+            (pdfBuffer.length / 1024).toFixed(2),
+            "KB"
+          );
+
+          // ✅ 发送邮件（必须在 close 之前）
+          const { error } = await resend.emails.send({
             from: "ZanPath AI <report@zanpath.com>",
             to: userEmail,
             subject: "Your ZanPath AI Analysis Report",
@@ -143,12 +152,26 @@ export async function POST(req: Request) {
             ],
           });
 
+          if (error) {
+            console.error("❌ Resend error:", error);
+            throw new Error("Email send failed");
+          }
+
+          console.log("🟢 Email sent successfully:", userEmail);
+
+          // ✅ 标记已发邮件
           await db.result.update({
             where: { id: result.id },
             data: { pdfSent: true },
           });
+
+          // 3️⃣ 一切完成，通知前端 DONE
+          controller.enqueue(
+            new TextEncoder().encode("data: [DONE]\n\n")
+          );
+          controller.close();
         } catch (err) {
-          console.error("🔥 Stream error:", err);
+          console.error("🔥 Stream fatal error:", err);
           controller.error(err);
         }
       },
@@ -164,9 +187,6 @@ export async function POST(req: Request) {
     });
   } catch (err: any) {
     console.error("🔥 chat fatal error:", err.message);
-    return NextResponse.json(
-      { error: "Server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
