@@ -7,6 +7,9 @@ import { BAZI_PROMPT_TEMPLATE } from "@/config/prompts"; // 🟢 改用八字提
 import { TIME_ZONE_NOTICE, NAV_MENU, PAGE_SPECIFIC_CONTENT, COMMON_FOOTER, DISCLAIMER_TEXT } from "@/config/site-content";
 import { ADMIN_CONFIG, isAdminEmail } from "@/config/admin";
 import RecoveryModal from "@/components/RecoveryModal";
+import DailyReflectionSection from "@/components/DailyReflectionSection";
+
+
 
 export default function HomePage() {
   const locale = useLocale() as "en" | "es";
@@ -238,7 +241,12 @@ while (true) {
       </div>
     </nav>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          {/* 2. 插入每日啟示組件 (放在這裡最吸引人) */}
+          <div className="mt-6 mb-5">
+        <DailyReflectionSection locale={locale} />
+      </div>
+
+      <main id="calculator-form" className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 order-1">
           <div className="mb-6 text-center max-w-3xl mx-auto">
             <h1 className="text-4xl font-bold tracking-tight mb-3">{mid.title}</h1>
@@ -358,6 +366,8 @@ while (true) {
             <h3 className="font-bold text-sm flex items-center"><span className="bg-[#0f3d2e] text-white p-1 rounded mr-2">ℹ</span>{notice.title}</h3>
             <div className="text-[13px] text-[#356f5b] leading-relaxed whitespace-pre-line">{notice.content}</div>
           </div>
+
+
           
           <RecoveryModal 
             locale={locale} 
