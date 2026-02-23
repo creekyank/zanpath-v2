@@ -66,17 +66,55 @@ export default function NamingPage() {
   ============================= */
 
   useEffect(() => {
-    const email = localStorage.getItem("pending_payment_email");
-    const module = localStorage.getItem("pending_payment_module");
-
-    if (email && module === MODULE_TYPE) {
-      const saved = localStorage.getItem("pending_payment_form");
-      if (saved) {
-        setFormDataState(JSON.parse(saved));
+    const restoreSession = async () => {
+      const email = localStorage.getItem("pending_payment_email");
+      const module = localStorage.getItem("pending_payment_module");
+  
+      if (!email || module !== MODULE_TYPE) return;
+  
+      try {
+        const res = await fetch("/api/orders/status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.toLowerCase().trim(),
+            moduleType: MODULE_TYPE
+          })
+        });
+  
+        const data = await res.json();
+  
+        /* 只恢复未完成状态 */
+        if (data.status === "PAID" || data.status === "GENERATING") {
+          const saved = localStorage.getItem("pending_payment_form");
+          if (saved) {
+            setFormDataState(JSON.parse(saved));
+          }
+  
+          if (data.status === "PAID") {
+            setFlowState("WAITING_PAYMENT");
+            pollOrderStatus(email);
+          }
+  
+          if (data.status === "GENERATING") {
+            setShowResult(true);
+            setFlowState("GENERATING");
+            pollOrderStatus(email);
+          }
+  
+        } else {
+          /* DONE 或其他状态 → 清理旧 session */
+          localStorage.removeItem("pending_payment_email");
+          localStorage.removeItem("pending_payment_module");
+          localStorage.removeItem("pending_payment_form");
+        }
+  
+      } catch (err) {
+        console.error("Session restore failed:", err);
       }
-      setFlowState("WAITING_PAYMENT");
-      pollOrderStatus(email);
-    }
+    };
+  
+    restoreSession();
   }, []);
 
   /* =============================
