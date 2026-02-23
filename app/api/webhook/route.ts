@@ -1,22 +1,18 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { db } from "@/lib/db";
 
-function verifyPaddleSignature(
-  rawBody: string,
-  signatureHeader: string | null,
-  secret: string
-) {
-  if (!signatureHeader || !secret) return false;
+const ALLOWED_MODULES = ["naming", "bazi", "dream", "face"];
 
-  const parts = signatureHeader.split(";");
-  const tsPart = parts.find(p => p.startsWith("ts="));
-  const h1Part = parts.find(p => p.startsWith("h1="));
+function verifySignature(rawBody: string, sig: string | null, secret: string) {
+  if (!sig) return false;
 
-  if (!tsPart || !h1Part) return false;
+  const parts = sig.split(";");
+  const ts = parts.find(p => p.startsWith("ts="))?.split("=")[1];
+  const h1 = parts.find(p => p.startsWith("h1="))?.split("=")[1];
 
-  const ts = tsPart.split("=")[1];
-  const h1 = h1Part.split("=")[1];
+  if (!ts || !h1) return false;
 
   const payload = `${ts}:${rawBody}`;
   const expected = crypto
@@ -24,66 +20,88 @@ function verifyPaddleSignature(
     .update(payload)
     .digest("hex");
 
-  return crypto.timingSafeEqual(
-    Buffer.from(expected),
-    Buffer.from(h1)
-  );
+  try {
+    return crypto.timingSafeEqual(
+      Buffer.from(expected),
+      Buffer.from(h1)
+    );
+  } catch {
+    return false;
+  }
 }
 
 export async function POST(req: NextRequest) {
-  const secret = process.env.PADDLE_WEBHOOK_SECRET;
-  if (!secret) {
-    return new NextResponse("Server misconfigured", { status: 500 });
-  }
+  try {
+    const secret = process.env.PADDLE_WEBHOOK_SECRET!;
+    const rawBody = await req.text();
+    const sig = req.headers.get("paddle-signature");
 
-  const rawBody = await req.text();
-  const signature = req.headers.get("paddle-signature");
+    if (!verifySignature(rawBody, sig, secret)) {
+      return new NextResponse("Invalid signature", { status: 401 });
+    }
 
-  if (!verifyPaddleSignature(rawBody, signature, secret)) {
-    return new NextResponse("Invalid signature", { status: 401 });
-  }
+    const event = JSON.parse(rawBody);
 
-  const event = JSON.parse(rawBody);
-  const data = event.data;
+    if (event.event_type !== "transaction.completed") {
+      return NextResponse.json({ ok: true });
+    }
 
-  if (
-    event.event_type === "transaction.completed" ||
-    event.event_type === "transaction.paid"
-  ) {
+    const data = event.data;
+
     const email =
       data?.custom_data?.user_email ||
-      data?.customer?.email ||
-      data?.customer_email;
+      data?.customer?.email;
 
-    if (!email) {
-      return NextResponse.json({ received: true });
+    const moduleType =
+      data?.custom_data?.module;
+
+    if (!email || !moduleType) {
+      return NextResponse.json({ ok: true });
+    }
+
+    if (!ALLOWED_MODULES.includes(moduleType)) {
+      console.warn("⚠️ Invalid moduleType:", moduleType);
+      return NextResponse.json({ ok: true });
     }
 
     const finalEmail = email.toLowerCase().trim();
-    const moduleType = data?.custom_data?.module || "naming";
-    const inputSnapshot = data?.custom_data?.input_snapshot || {};
 
-    const generationToken = crypto.randomBytes(32).toString("hex");
-
-    await db.order.upsert({
-      where: { paddleOrderId: data.id },
-      update: {
-        status: "paid",
-        generationToken,
-        tokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000)
-      },
-      create: {
-        paddleOrderId: data.id,
+    /* =========================
+       查找预创建订单
+    ========================= */
+    const existing = await db.order.findFirst({
+      where: {
         email: finalEmail,
         moduleType,
-        inputData: inputSnapshot,
-        status: "paid",
-        isUsed: false,
-        generationToken,
-        tokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000)
+        status: "CREATED"
+      },
+      orderBy: { createdAt: "desc" }
+    });
+
+    if (!existing) {
+      console.warn("⚠️ No matching CREATED order found.");
+      return NextResponse.json({ ok: true });
+    }
+
+    /* =========================
+       防重复更新
+    ========================= */
+    if (existing.status === "PAID") {
+      return NextResponse.json({ ok: true });
+    }
+
+    await db.order.update({
+      where: { id: existing.id },
+      data: {
+        status: "PAID",
+        paddleOrderId: data.id
       }
     });
-  }
 
-  return NextResponse.json({ received: true });
+    return NextResponse.json({ ok: true });
+
+  } catch (err) {
+    console.error("Webhook error:", err);
+    return NextResponse.json({ ok: true });
+  }
 }

@@ -1,12 +1,6 @@
-// app/api/chat/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { OpenAI } from "openai";
-import { generateFingerprint } from "@/lib/fingerprint";
-import { Resend } from "resend";
-import { renderToBuffer } from "@react-pdf/renderer";
-import { AnalysisReportPDF } from "@/lib/pdf-generator";
-import React from "react";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -16,71 +10,68 @@ const openai = new OpenAI({
   baseURL: "https://api.deepseek.com",
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: Request) {
   try {
-    const {
-      prompt,
-      email,
-      moduleType,
-      inputSnapshot,
-      generationToken,
-      locale = "en",
-    } = await req.json();
+    const { prompt, email, moduleType } = await req.json();
 
-    if (!prompt || !email || !moduleType || !generationToken) {
+    if (!prompt || !email || !moduleType) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
     const userEmail = email.toLowerCase().trim();
 
-    // 🔐 查找订单（一次性 token）
+    // 1. 寻找匹配的订单 (PAID, GENERATING, 或 DONE)
+    // 注意：这里去掉了 status: "PAID" 的硬性过滤，以便处理后续状态
     const order = await db.order.findFirst({
       where: {
         email: userEmail,
         moduleType,
-        generationToken,
-        tokenExpiresAt: { gt: new Date() },
-        status: "paid",
-        isUsed: false,
+        // 确保是已经付过费的订单
+        status: { in: ["PAID", "GENERATING", "DONE"] }
       },
+      orderBy: { createdAt: "desc" }
     });
 
+    // 如果没付过费，拒绝访问
     if (!order) {
-      return NextResponse.json({ error: "INVALID_TOKEN" }, { status: 403 });
+      return NextResponse.json({ error: "NOT_PAID" }, { status: 403 });
     }
 
-    const fingerprint = generateFingerprint(
-      userEmail,
-      moduleType,
-      inputSnapshot
-    );
+    // --- 新增：状态驱动逻辑 ---
 
-    // 🔒 原子锁单
+    // A. 如果正在生成中，提示前端等待（或前端可直接轮询结果）
+    if (order.status === "GENERATING") {
+      return NextResponse.json({ error: "ALREADY_GENERATING" }, { status: 409 });
+    }
+
+    // B. 如果已经完成，直接返回数据库结果，不再调用 AI
+    if (order.status === "DONE") {
+      const existing = await db.result.findUnique({
+        where: { orderId: order.id }
+      });
+
+      return NextResponse.json({
+        alreadyDone: true,
+        content: existing?.content || ""
+      });
+    }
+
+    // --- 逻辑继续：只有 PAID 状态才会走到这里 ---
+
+    // 2. 更新状态为正在生成
     await db.order.update({
       where: { id: order.id },
-      data: {
-        isUsed: true,
-        fingerprint,
-        generationToken: null,
-        tokenExpiresAt: null,
-        inputData: inputSnapshot,
-      },
+      data: { status: "GENERATING" }
     });
 
-    // ===== 请求 AI（stream）=====
+    // 3. 调用 AI 接口
     const aiResponse = await openai.chat.completions.create({
       model: "deepseek-chat",
       stream: true,
       messages: [
-        {
-          role: "system",
-          content:
-            "你是一位精通東西方文化的命理與空間分析大師，善於從視覺細節中洞察運勢。",
-        },
-        { role: "user", content: prompt },
-      ],
+        { role: "system", content: "You are a master fortune analyst." },
+        { role: "user", content: prompt }
+      ]
     });
 
     let fullContent = "";
@@ -88,105 +79,55 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          // 1️⃣ 边接收边推送
           for await (const chunk of aiResponse) {
             const text = chunk.choices?.[0]?.delta?.content || "";
-
             if (text) {
               fullContent += text;
-
               controller.enqueue(
                 new TextEncoder().encode(
                   `data: ${JSON.stringify({
-                    choices: [{ delta: { content: text } }],
+                    choices: [{ delta: { content: text } }]
                   })}\n\n`
                 )
               );
             }
           }
 
-          // 2️⃣ AI 完成后，开始【必须完成】的交付流程
-          console.log("🟢 AI stream finished, start final delivery");
-
-          // ✅ 保存结果
-          const result = await db.result.upsert({
+          // 4. 生成结束后保存到 Result 表
+          await db.result.upsert({
             where: { orderId: order.id },
-            update: { content: fullContent, isComplete: true },
+            update: { content: fullContent },
             create: {
               orderId: order.id,
-              content: fullContent,
-              isComplete: true,
-            },
+              content: fullContent
+            }
           });
 
-          console.log("🟢 Result saved:", result.id);
-
-          // ✅ 生成 PDF
-          const pdfBuffer = await renderToBuffer(
-            React.createElement(AnalysisReportPDF, {
-              data: {
-                title: "ZanPath AI Analysis Report",
-                content: fullContent,
-              },
-              lang: locale,
-            })
-          );
-
-          console.log(
-            "🟢 PDF generated:",
-            (pdfBuffer.length / 1024).toFixed(2),
-            "KB"
-          );
-
-          // ✅ 发送邮件（必须在 close 之前）
-          const { error } = await resend.emails.send({
-            from: "ZanPath AI <report@zanpath.com>",
-            to: userEmail,
-            subject: "Your ZanPath AI Analysis Report",
-            html: "<p>Your report is ready. Please find the PDF attached.</p >",
-            attachments: [
-              {
-                filename: `ZanPath_${moduleType}_Report.pdf`,
-                content: pdfBuffer,
-              },
-            ],
+          // 5. 更新订单状态为 DONE
+          await db.order.update({
+            where: { id: order.id },
+            data: { status: "DONE" }
           });
 
-          if (error) {
-            console.error("❌ Resend error:", error);
-            throw new Error("Email send failed");
-          }
-
-          console.log("🟢 Email sent successfully:", userEmail);
-
-          // ✅ 标记已发邮件
-          await db.result.update({
-            where: { id: result.id },
-            data: { pdfSent: true },
-          });
-
-          // 3️⃣ 一切完成，通知前端 DONE
-          controller.enqueue(
-            new TextEncoder().encode("data: [DONE]\n\n")
-          );
+          controller.enqueue(new TextEncoder().encode("data: [DONE]\n\n"));
           controller.close();
-        } catch (err) {
-          console.error("🔥 Stream fatal error:", err);
-          controller.error(err);
+        } catch (streamErr) {
+          console.error("Stream Error:", streamErr);
+          controller.error(streamErr);
         }
-      },
+      }
     });
 
     return new Response(stream, {
       headers: {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-        "X-Order-Id": order.id,
-      },
+        "Connection": "keep-alive",
+      }
     });
+
   } catch (err: any) {
-    console.error("🔥 chat fatal error:", err.message);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    console.error("API Error:", err.message);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
