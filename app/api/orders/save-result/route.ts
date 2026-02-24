@@ -31,9 +31,7 @@ export async function POST(req: Request) {
       where: {
         email: userEmail,
         moduleType,
-        status: {
-          in: ["paid", "PAID", "DONE"]
-        }
+        status: { in: ["PAID", "GENERATING"] }
       },
       orderBy: { createdAt: "desc" }
     });

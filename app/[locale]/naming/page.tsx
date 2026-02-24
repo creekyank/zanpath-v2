@@ -268,39 +268,48 @@ export default function NamingPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (flowState !== "IDLE") return;
-
+  
     const email = formDataState.email.trim().toLowerCase();
     if (!email) return;
-
+  
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", MODULE_TYPE);
     localStorage.setItem(
       "pending_payment_form",
       JSON.stringify(formDataState)
     );
-
+  
     setFlowState("PAYING");
-
+  
     const res = await fetch("/api/orders/status", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, moduleType: MODULE_TYPE })
     });
-
+  
     const data = await res.json();
-
-    if (data.status === "DONE") {
-      setResult(data.result || "");
-      setShowResult(true);
-      setFlowState("DONE");
-      return;
-    }
-
+  
+    /* =============================
+       ✅ 只允许恢复未完成订单
+    ============================= */
+  
     if (data.status === "PAID") {
       await startGeneration(email);
       return;
     }
-
+  
+    if (data.status === "GENERATING") {
+      setShowResult(true);
+      setFlowState("GENERATING");
+      pollOrderStatus(email);
+      return;
+    }
+  
+    /* =============================
+       ❌ DONE 不再恢复
+       永远重新支付
+    ============================= */
+  
     await openPaddleCheckout(email, MODULE_TYPE, formDataState);
     setFlowState("WAITING_PAYMENT");
     pollOrderStatus(email);
