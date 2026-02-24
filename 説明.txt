@@ -9,3 +9,95 @@
 第二次 測試  支付后  故障 頁面 不顯示  但是 發了郵箱    
 
 輸入驗證碼找回后  提示 不需要 再支付  但是 還是 彈出了 支付界面   關掉 支付界面 還是 不顯示 
+
+
+修改支付逻辑  支付后 页面显示测算结果 但不发邮箱 修改了 总是显示 上次测算 
+
+方案 A（推荐）
+
+删除 isComplete（更干净）
+
+你现在根本不需要 isComplete。
+
+因为：
+   •   只要 Result 存在
+   •   且 Order.status === DONE
+   •   就代表完成
+
+修改 save-result route.ts
+
+把这段：
+
+update: {
+  content,
+  isComplete: true
+},
+create: {
+  orderId: order.id,
+  content,
+  isComplete: true,
+  pdfSent: false
+}
+
+改成：
+
+update: {
+  content
+},
+create: {
+  orderId: order.id,
+  content,
+  pdfSent: false
+}--------------------改成真正专业版（完整可直接替换）
+
+useEffect(() => {
+  const restoreSession = async () => {
+    const email = localStorage.getItem("pending_payment_email");
+    const module = localStorage.getItem("pending_payment_module");
+
+    if (!email || module !== MODULE_TYPE) return;
+
+    try {
+      const res = await fetch("/api/orders/status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.toLowerCase().trim(),
+          moduleType: MODULE_TYPE
+        })
+      });
+
+      const data = await res.json();
+
+      /* 只恢复未完成状态 */
+      if (data.status === "PAID" || data.status === "GENERATING") {
+        const saved = localStorage.getItem("pending_payment_form");
+        if (saved) {
+          setFormDataState(JSON.parse(saved));
+        }
+
+        if (data.status === "PAID") {
+          setFlowState("WAITING_PAYMENT");
+          pollOrderStatus(email);
+        }
+
+        if (data.status === "GENERATING") {
+          setShowResult(true);
+          setFlowState("GENERATING");
+          pollOrderStatus(email);
+        }
+
+      } else {
+        /* DONE 或其他状态 → 清理旧 session */
+        localStorage.removeItem("pending_payment_email");
+        localStorage.removeItem("pending_payment_module");
+        localStorage.removeItem("pending_payment_form");
+      }
+
+    } catch (err) {
+      console.error("Session restore failed:", err);
+    }
+  };
+
+  restoreSession();
+}, []);--------------------按这个 改了后     1 不再  自动生成   可以输入新的信息    2 但是 输入  同一个 邮箱后   就自动 恢复了 上个测算的  而不管 实际的  输入出生时间 已经变化了   3  还是不发邮箱   4  竟然 生成了一个  完全的  中文 起名 内容   这在 之前的所有的测算 中是 完全没有出现过的

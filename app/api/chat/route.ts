@@ -20,51 +20,37 @@ export async function POST(req: Request) {
 
     const userEmail = email.toLowerCase().trim();
 
-    // 1. 寻找匹配的订单 (PAID, GENERATING, 或 DONE)
-    // 注意：这里去掉了 status: "PAID" 的硬性过滤，以便处理后续状态
+    // 1️⃣ 查找匹配订单
     const order = await db.order.findFirst({
       where: {
         email: userEmail,
         moduleType,
-        // 确保是已经付过费的订单
         status: { in: ["PAID", "GENERATING", "DONE"] }
       },
       orderBy: { createdAt: "desc" }
     });
 
-    // 如果没付过费，拒绝访问
     if (!order) {
       return NextResponse.json({ error: "NOT_PAID" }, { status: 403 });
     }
 
-    // --- 新增：状态驱动逻辑 ---
-
-    // A. 如果正在生成中，提示前端等待（或前端可直接轮询结果）
+    // 2️⃣ 状态驱动逻辑
     if (order.status === "GENERATING") {
       return NextResponse.json({ error: "ALREADY_GENERATING" }, { status: 409 });
     }
 
-    // B. 如果已经完成，直接返回数据库结果，不再调用 AI
     if (order.status === "DONE") {
-      const existing = await db.result.findUnique({
-        where: { orderId: order.id }
-      });
-
+      const existing = await db.result.findUnique({ where: { orderId: order.id } });
       return NextResponse.json({
         alreadyDone: true,
         content: existing?.content || ""
       });
     }
 
-    // --- 逻辑继续：只有 PAID 状态才会走到这里 ---
+    // 3️⃣ 更新状态为生成中
+    await db.order.update({ where: { id: order.id }, data: { status: "GENERATING" } });
 
-    // 2. 更新状态为正在生成
-    await db.order.update({
-      where: { id: order.id },
-      data: { status: "GENERATING" }
-    });
-
-    // 3. 调用 AI 接口
+    // 4️⃣ 调用 AI 接口（确保语言由前端 locale 控制）
     const aiResponse = await openai.chat.completions.create({
       model: "deepseek-chat",
       stream: true,
@@ -85,29 +71,21 @@ export async function POST(req: Request) {
               fullContent += text;
               controller.enqueue(
                 new TextEncoder().encode(
-                  `data: ${JSON.stringify({
-                    choices: [{ delta: { content: text } }]
-                  })}\n\n`
+                  `data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}\n\n`
                 )
               );
             }
           }
 
-          // 4. 生成结束后保存到 Result 表
+          // 保存结果
           await db.result.upsert({
             where: { orderId: order.id },
             update: { content: fullContent },
-            create: {
-              orderId: order.id,
-              content: fullContent
-            }
+            create: { orderId: order.id, content: fullContent }
           });
 
-          // 5. 更新订单状态为 DONE
-          await db.order.update({
-            where: { id: order.id },
-            data: { status: "DONE" }
-          });
+          // 标记订单完成
+          await db.order.update({ where: { id: order.id }, data: { status: "DONE" } });
 
           controller.enqueue(new TextEncoder().encode("data: [DONE]\n\n"));
           controller.close();

@@ -76,34 +76,40 @@ export default function NamingPage() {
         const res = await fetch("/api/orders/status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: email.toLowerCase().trim(),
-            moduleType: MODULE_TYPE
-          })
+          body: JSON.stringify({ email: email.toLowerCase().trim(), moduleType: MODULE_TYPE })
         });
   
         const data = await res.json();
   
-        /* 只恢复未完成状态 */
-        if (data.status === "PAID" || data.status === "GENERATING") {
-          const saved = localStorage.getItem("pending_payment_form");
-          if (saved) {
-            setFormDataState(JSON.parse(saved));
+        // ⚠️ 只恢复未完成且输入未变的订单
+        const saved = localStorage.getItem("pending_payment_form");
+        if (saved) {
+          const savedData = JSON.parse(saved);
+          // 如果用户已修改出生时间或姓氏，不恢复
+          if (
+            savedData.year === formDataState.year &&
+            savedData.month === formDataState.month &&
+            savedData.day === formDataState.day &&
+            savedData.hour === formDataState.hour &&
+            savedData.min === formDataState.min &&
+            savedData.surname === formDataState.surname
+          ) {
+            setFormDataState(savedData);
           }
+        }
   
-          if (data.status === "PAID") {
-            setFlowState("WAITING_PAYMENT");
-            pollOrderStatus(email);
-          }
+        if (data.status === "PAID") {
+          // 前端可以提示用户开始生成，而不直接覆盖输入
+          setFlowState("WAITING_PAYMENT");
+        }
   
-          if (data.status === "GENERATING") {
-            setShowResult(true);
-            setFlowState("GENERATING");
-            pollOrderStatus(email);
-          }
+        if (data.status === "GENERATING") {
+          setShowResult(true);
+          setFlowState("GENERATING");
+          pollOrderStatus(email);
+        }
   
-        } else {
-          /* DONE 或其他状态 → 清理旧 session */
+        if (data.status === "DONE") {
           localStorage.removeItem("pending_payment_email");
           localStorage.removeItem("pending_payment_module");
           localStorage.removeItem("pending_payment_form");
