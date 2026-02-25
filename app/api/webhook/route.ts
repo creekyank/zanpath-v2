@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { db } from "@/lib/db";
 
-const ALLOWED_MODULES = ["naming", "bazi", "dream", "face"];
+const ALLOWED_MODULES = ["naming", "bazi", "dream", "face", "fengshui"];
 
 function verifySignature(rawBody: string, sig: string | null, secret: string) {
   if (!sig) return false;

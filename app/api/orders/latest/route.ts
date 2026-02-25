@@ -2,14 +2,19 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
-  const { moduleType } = await req.json();
+  const { email, moduleType } = await req.json();
 
-  if (!moduleType) {
-    return NextResponse.json({ error: "Missing moduleType" }, { status: 400 });
+  if (!email || !moduleType) {
+    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
+  const userEmail = email.toLowerCase().trim();
+
   const order = await db.order.findFirst({
-    where: { moduleType },
+    where: {
+      email: userEmail,
+      moduleType
+    },
     orderBy: { createdAt: "desc" },
     include: { result: true }
   });
@@ -20,7 +25,6 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     status: order.status,
-    email: order.email,
     inputData: order.inputData,
     result: order.result?.content || null
   });

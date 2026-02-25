@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
+const ALLOWED_MODULES = ["naming", "bazi", "dream", "face", "fengshui"];
+
 export async function POST(req: Request) {
   const { email, moduleType, inputData } = await req.json();
 
   if (!email || !moduleType) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  }
+
+  if (!ALLOWED_MODULES.includes(moduleType)) {
+    return NextResponse.json({ error: "Invalid moduleType" }, { status: 400 });
   }
 
   const userEmail = email.toLowerCase().trim();
