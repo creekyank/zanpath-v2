@@ -30,8 +30,7 @@ export async function POST(req: Request) {
     const order = await db.order.findFirst({
       where: {
         email: userEmail,
-        moduleType,
-        status: { in: ["PAID", "GENERATING"] }
+        moduleType
       },
       orderBy: { createdAt: "desc" }
     });
