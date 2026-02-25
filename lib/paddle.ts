@@ -2,9 +2,13 @@ let paddleInitialized = false;
 
 const PRICE_MAP: Record<string, string> = {
   naming: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_NAMING!,
-  bazi: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_BAZI!,
+  bazi: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_NAMING!,
+
+ // bazi: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_BAZI!,
+
   dream: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_DREAM!,
-  face: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_FACE!
+  face: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_FACE!,
+  fengshui: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_FENGSHUI!
 };
 
 export async function openPaddleCheckout(
@@ -52,6 +56,10 @@ export async function openPaddleCheckout(
   /* =========================
      3️⃣ 打开支付窗口
   ========================= */
+  console.log("MODULE:", moduleType);
+  console.log("PRICE:", PRICE_MAP[moduleType]);
+  console.log("TOKEN:", process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN);
+
   Paddle.Checkout.open({
     items: [
       {
