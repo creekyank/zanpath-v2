@@ -2,8 +2,17 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { OpenAI } from "openai";
 
+import { Resend } from "resend";
+import { renderToBuffer } from "@react-pdf/renderer";
+import { AnalysisReportPDF } from "@/lib/pdf-generator";
+import React from "react";
+
+
+
 export const runtime = "nodejs";
 export const maxDuration = 120;
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const openai = new OpenAI({
   apiKey: process.env.DEEPSEEK_API_KEY,
@@ -77,15 +86,61 @@ export async function POST(req: Request) {
             }
           }
 
+          // 标记订单完成
           // 保存结果
-          await db.result.upsert({
-            where: { orderId: order.id },
-            update: { content: fullContent },
-            create: { orderId: order.id, content: fullContent }
+        await db.result.upsert({
+          where: { orderId: order.id },
+          update: { content: fullContent },
+          create: { orderId: order.id, content: fullContent }
+        });
+
+        // 标记订单完成
+        await db.order.update({
+          where: { id: order.id },
+          data: { status: "DONE" }
+        });
+
+        /* =========================
+          发送邮件（只发一次）
+        ========================= */
+
+        const existingResult = await db.result.findUnique({
+          where: { orderId: order.id }
+        });
+
+        if (!existingResult?.pdfSent) {
+
+          const subject = `Your ZanPath AI Analysis Report - ${moduleType.toUpperCase()}`;
+
+          const pdfBuffer = await renderToBuffer(
+            React.createElement(AnalysisReportPDF, {
+              data: { title: subject, content: fullContent },
+              lang: "en"
+            })
+          );
+
+          const { error } = await resend.emails.send({
+            from: "ZanPath AI <report@zanpath.com>",
+            to: userEmail,
+            subject,
+            html: `<p>Your report is attached.</p >`,
+            attachments: [
+              {
+                filename: `ZanPath_${moduleType}_Report.pdf`,
+                content: pdfBuffer
+              }
+            ]
           });
 
-          // 标记订单完成
-          await db.order.update({ where: { id: order.id }, data: { status: "DONE" } });
+          if (!error) {
+            await db.result.update({
+              where: { orderId: order.id },
+              data: { pdfSent: true }
+            });
+          } else {
+            console.error("Email send error:", error);
+          }
+        }
 
           controller.enqueue(new TextEncoder().encode("data: [DONE]\n\n"));
           controller.close();
