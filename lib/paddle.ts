@@ -2,9 +2,7 @@ let paddleInitialized = false;
 
 const PRICE_MAP: Record<string, string> = {
   naming: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_NAMING!,
-  bazi: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_NAMING!,
-
- // bazi: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_BAZI!,
+  bazi: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LIFEPATH!,
 
   dream: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_DREAM!,
   face: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_FACE!,
