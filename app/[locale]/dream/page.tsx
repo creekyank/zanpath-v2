@@ -1,172 +1,324 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { DREAM_PROMPT_TEMPLATE } from "@/config/prompts";
-import { NAV_MENU, PAGE_SPECIFIC_CONTENT, COMMON_FOOTER, DISCLAIMER_TEXT } from "@/config/site-content";
-import { ADMIN_CONFIG, isAdminEmail } from "@/config/admin";
+import {
+  NAV_MENU,
+  PAGE_SPECIFIC_CONTENT,
+  COMMON_FOOTER,
+  DISCLAIMER_TEXT,
+} from "@/config/site-content";
 import RecoveryModal from "@/components/RecoveryModal";
+import { openPaddleCheckout } from "@/lib/paddle";
+
+/* =============================
+   状态机
+============================= */
+
+type FlowState =
+  | "IDLE"
+  | "PAYING"
+  | "WAITING_PAYMENT"
+  | "GENERATING"
+  | "DONE"
+  | "ERROR";
+
 
 export default function DreamPage() {
   const locale = useLocale() as "en" | "es";
-  const disclaimer = DISCLAIMER_TEXT[locale] || DISCLAIMER_TEXT.en;
   const pathname = usePathname();
   const router = useRouter();
 
+  const disclaimer = DISCLAIMER_TEXT[locale] || DISCLAIMER_TEXT.en;
+  const mid = PAGE_SPECIFIC_CONTENT.dream[locale] || PAGE_SPECIFIC_CONTENT.dream.en;
+  const foot = COMMON_FOOTER[locale] || COMMON_FOOTER.en;
+  const menuItems = NAV_MENU[locale] || NAV_MENU.en;
+
+  const MODULE_TYPE = "dream";
+
+  const [flowState, setFlowState] = useState<FlowState>("IDLE");
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState("");
-  const [isPrePaid, setIsPrePaid] = useState(false);
+
+  const pollingRef = useRef(false);
+  const generatingRef = useRef(false);
 
   const [formDataState, setFormDataState] = useState({
     surname: "",
     gender: "Male",
     email: "",
-    description: "" 
+    description: "",
   });
 
+  /* =============================
+     页面恢复
+  ============================= */
+
   useEffect(() => {
-    const backup = localStorage.getItem("dream_backup_content");
-    if (backup && backup.length > 500) {
-      setResult(backup);
-      setShowResult(true);
-    }
-  }, []);
-
-  const currentLangName = locale === "es" ? "Spanish" : "English";
-  const mid = PAGE_SPECIFIC_CONTENT.dream[locale] || PAGE_SPECIFIC_CONTENT.dream.en;
-  const foot = COMMON_FOOTER[locale] || COMMON_FOOTER.en;
-  const menuItems = NAV_MENU[locale] || NAV_MENU.en;
-
-  const processAiGeneration = async (formData: FormData, source: string) => {
-    const inputSnapshot = formDataState; 
-    const email = formDataState.email.toLowerCase().trim();
-
-    setLoading(true);
-    setResult(""); 
-    setShowResult(true);
-    localStorage.removeItem("dream_backup_content");
+    const restoreSession = async () => {
+      const email = localStorage.getItem("pending_payment_email");
+      const module = localStorage.getItem("pending_payment_module");
   
-    let fullResult = "";
-
-    try {
-      const finalPrompt = DREAM_PROMPT_TEMPLATE
-        .replace("${outputLanguage}", currentLangName)
-        .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
-        .replace("${dreamContent}", formDataState.description)
-        .replace("${userEmotions}", "Reflective");
+      if (!email || module !== MODULE_TYPE) return;
   
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: finalPrompt, source: source, email: email }),
-      });
-  
-      if (!response.ok) throw new Error("Fetch failed");
-  
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      if (!reader) throw new Error("No reader");
-
-// --- 修改開始 ---
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
-  const chunk = decoder.decode(value);
-  const lines = chunk.split("\n");
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed === "data: [DONE]") continue;
-    if (trimmed.startsWith("data: ")) {
       try {
-        const json = JSON.parse(trimmed.substring(6));
-        
-        const text = json.choices?.[0]?.delta?.content || "";
-        
-        if (text) {
-          fullResult += text;
-          setResult((prev) => {
-            const newRes = prev + text;
-            // 每 50 個字符備份一次
-            if (newRes.length % 50 === 0) {
-              localStorage.setItem("dream_backup_content", newRes);
-            }
-            return newRes;
-          });
-        }
-      } catch (e) { 
-        // 忽略解析錯誤（部分流塊可能不完整）
-        console.error("Parse error:", e); 
-      }
-    }
-  }
-}
-// --- 修改結束 ---
-
-      if (fullResult.length > 300) { 
-        await fetch("/api/orders/save-result", {
+        const res = await fetch("/api/orders/status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            email, 
-            content: fullResult, 
-            module: "dream",
-            isComplete: true,
-            inputData: inputSnapshot,
-            locale: locale
-          }),
+          body: JSON.stringify({ email: email.toLowerCase().trim(), moduleType: MODULE_TYPE })
         });
-        localStorage.removeItem("dream_backup_content");
+  
+        const data = await res.json();
+  
+        // ⚠️ 只恢复未完成且输入未变的订单
+        const saved = localStorage.getItem("pending_payment_form");
+        if (saved) {
+          const savedData = JSON.parse(saved);
+          // 如果用户已修改出生时间或姓氏，不恢复
+          if (
+            savedData.surname === formDataState.surname
+          ) {
+            setFormDataState(savedData);
+          }
+        }
+  
+        if (data.status === "PAID") {
+          // 前端可以提示用户开始生成，而不直接覆盖输入
+          setFlowState("WAITING_PAYMENT");
+        }
+  
+        if (data.status === "GENERATING") {
+          setShowResult(true);
+          setFlowState("GENERATING");
+          pollOrderStatus(email);
+        }
+  
+        if (data.status === "DONE") {
+          localStorage.removeItem("pending_payment_email");
+          localStorage.removeItem("pending_payment_module");
+          localStorage.removeItem("pending_payment_form");
+        }
+  
+      } catch (err) {
+        console.error("Session restore failed:", err);
       }
-    } catch (err: any) {
-      console.error(err);
-      alert(locale === "es" ? "Lo sentimos, la conexión se interrumpió." : "Sorry, connection interrupted.");
-    } finally {
-      setLoading(false);
-      setIsPrePaid(false);
+    };
+  
+    restoreSession();
+  }, []);
+
+    /* =============================
+     状态检查
+  ============================= */
+
+  const checkOrderStatus = async (email: string) => {
+    const res = await fetch("/api/orders/status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+    });
+
+    const data = await res.json();
+
+    if (data.status === "DONE") {
+      setResult(data.result || "");
+      setShowResult(true);
+      setFlowState("DONE");
+      return;
+    }
+
+    if (data.status === "PAID") {
+      await startGeneration(email);
+      return;
+    }
+
+    if (data.status === "GENERATING") {
+      setShowResult(true);
+      setFlowState("GENERATING");
+      pollOrderStatus(email);
     }
   };
 
-  const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
-    const tip = (mid as any).fields?.requiredTip || "Please fill out this field.";
-    target.setCustomValidity(tip);
+  /* =============================
+     轮询
+  ============================= */
+
+  const pollOrderStatus = async (email: string) => {
+    if (pollingRef.current) return;
+    pollingRef.current = true;
+
+    for (let i = 0; i < 90; i++) {
+      const res = await fetch("/api/orders/status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+      });
+
+      const data = await res.json();
+
+      if (data.status === "DONE") {
+        setResult(data.result || "");
+        setShowResult(true);
+        setFlowState("DONE");
+        pollingRef.current = false;
+        return;
+      }
+
+      if (data.status === "PAID") {
+        pollingRef.current = false;
+        await startGeneration(email);
+        return;
+      }
+
+      await new Promise(r => setTimeout(r, 2000));
+    }
+
+    pollingRef.current = false;
   };
 
-  const handleInput = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  /* =============================
+     AI 生成
+  ============================= */
+
+  const startGeneration = async (email: string) => {
+    if (generatingRef.current) return;
+    generatingRef.current = true;
+
+    setFlowState("GENERATING");
+    setLoading(true);
+    setShowResult(true);
+    setResult("");
+
+    const prompt = DREAM_PROMPT_TEMPLATE
+      .replace("${gender}", formDataState.gender)
+      .replace(
+        "${userDescription}",
+        `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`
+      )
+      .replace("${outputLanguage}", locale === "es" ? "Spanish" : "English");
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt,
+            email,
+            moduleType: MODULE_TYPE
+          })
+        });
+  
+        if (!res.body) throw new Error("No stream");
+  
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+  
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+  
+          const chunk = decoder.decode(value);
+          const lines = chunk.split("\n");
+  
+          for (const line of lines) {
+            const t = line.trim();
+            if (!t || t === "data: [DONE]") continue;
+  
+            if (t.startsWith("data: ")) {
+              const json = JSON.parse(t.slice(6));
+              const text = json.choices?.[0]?.delta?.content || "";
+              if (text) setResult(prev => prev + text);
+            }
+          }
+        }
+  
+        setFlowState("DONE");
+      } catch {
+        setFlowState("ERROR");
+      } finally {
+        setLoading(false);
+        generatingRef.current = false;
+      }
+    };
+
+  /* =============================
+     表单提交
+  ============================= */
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (flowState !== "IDLE") return;
+  
+    const email = formDataState.email.trim().toLowerCase();
+    if (!email) return;
+  
+    localStorage.setItem("pending_payment_email", email);
+    localStorage.setItem("pending_payment_module", MODULE_TYPE);
+    localStorage.setItem(
+      "pending_payment_form",
+      JSON.stringify(formDataState)
+    );
+  
+    setFlowState("PAYING");
+  
+    const res = await fetch("/api/orders/status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+    });
+  
+    const data = await res.json();
+  
+    /* =============================
+       ✅ 只允许恢复未完成订单
+    ============================= */
+  
+    if (data.status === "PAID") {
+      await startGeneration(email);
+      return;
+    }
+  
+    if (data.status === "GENERATING") {
+      setShowResult(true);
+      setFlowState("GENERATING");
+      pollOrderStatus(email);
+      return;
+    }
+  
+    /* =============================
+       ❌ DONE 不再恢复
+       永远重新支付
+    ============================= */
+  
+    await openPaddleCheckout(email, MODULE_TYPE, formDataState);
+    setFlowState("WAITING_PAYMENT");
+    pollOrderStatus(email);
+  };
+
+
+  /* =============================
+     表单辅助
+  ============================= */
+
+  const handleInvalid = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    target.setCustomValidity(
+      mid.fields?.requiredTip || "Please fill out this field."
+    );
+  };
+
+  const handleInput = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     target.setCustomValidity("");
   };
 
-  const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
-    e.preventDefault();
-    const email = formDataState.email.trim().toLowerCase();
-
-    if (!email || !formDataState.surname || !formDataState.description) {
-      alert(mid.fields.requiredTip);
-      return;
-    }
-
-    if (mode === 'VIP' || isPrePaid || isAdminEmail(email)) {
-      if (mode === 'VIP') {
-        const pwd = prompt("Enter VIP Password:");
-        if (pwd !== ADMIN_CONFIG.vipPassword) return alert("Incorrect password.");
-      }
-      processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
-    } else {
-      if (window.Paddle) {
-        window.Paddle.Checkout.open({
-          product: "PRI_REAL_PRODUCT_ID_FOR_DREAM", 
-          email: email,
-          passthrough: JSON.stringify({ source: "dream_module", locale: locale }),
-          successCallback: () => processAiGeneration(new FormData(), "dream_module")
-        });
-      } else {
-        alert("Payment system is loading, please refresh.");
-      }
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
@@ -231,7 +383,7 @@ while (true) {
 
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-white">
             {!showResult && !loading ? (
-              <form onSubmit={(e) => handleSubmit(e, 'NORMAL')} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col space-y-1">
                     <label className="text-xs font-bold text-gray-400 ml-1">{mid.fields.surname}</label>
@@ -257,12 +409,32 @@ while (true) {
                 </div>
 
                 <div className="space-y-4">
-                  <button type="submit" className="w-full py-5 rounded-2xl bg-[#0f3d2e] text-white font-bold text-lg hover:opacity-90 transition-all shadow-lg shadow-[#dff3ee]">
-                    {isPrePaid ? mid.fields.btnPaid : mid.fields.btnNormal}
+                <button
+                    type="submit"
+                    disabled={
+                      flowState === "PAYING" ||
+                      flowState === "WAITING_PAYMENT" ||
+                      flowState === "GENERATING"
+                    }
+                    className="w-full py-5 rounded-2xl bg-[#0f3d2e] text-white font-bold text-lg hover:opacity-90 transition-all disabled:opacity-50"
+                  >
+                    {flowState === "IDLE" && mid.fields.btnNormal}
+
+                    {flowState === "PAYING" && (
+                      locale === "es" ? "Procesando pago…" : "Processing payment…"
+                    )}
+
+                    {flowState === "WAITING_PAYMENT" && mid.fields.btnPaid}
+
+                    {flowState === "GENERATING" && (
+                      locale === "es" ? "Generando…" : "Generating…"
+                    )}
+
+                    {flowState === "DONE" && mid.fields.btnPaid}
                   </button>
 
                   {/* --- 插入開始 --- */}
-{!isPrePaid && (
+{
   <div className="mt-4 px-2 text-center space-y-1">
     <p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
       Payments are currently being finalized. All features are available for exploration during this period.
@@ -272,7 +444,7 @@ while (true) {
       Los pagos se están finalizando actualmente. Todas las funciones están disponibles para exploración durante este período.
     </p>*/}
   </div>
-)}
+}
 {/* --- 插入結束 --- */}
 
                   <div className="bg-[#f8fcfb] rounded-2xl p-6 space-y-4 border border-[#eaf7f2]">
@@ -319,11 +491,11 @@ while (true) {
 
                       {!loading && (
                         <button 
-                          onClick={() => { setShowResult(false); setResult(""); }} 
-                          className="mt-8 w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold hover:opacity-90 transition-all"
-                        >
-                          {mid.fields.newAnalysis}
-                        </button>
+                        onClick={() => { setShowResult(false); setResult(""); }} 
+                        className="mt-8 w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold hover:opacity-90 transition-all"
+                      >
+                        {mid.fields.newAnalysis}
+                      </button>
                       )}
                     </>
                   )}
@@ -343,7 +515,7 @@ while (true) {
           
           <RecoveryModal 
             locale={locale} 
-            moduleType="dream"
+            moduleType="dream" 
             onResultFound={(content, inputData) => { 
               setResult(content); 
               setShowResult(true);
@@ -353,8 +525,12 @@ while (true) {
             onNeedsReRun={(inputData) => { 
               setShowResult(false); 
               setResult(""); 
-              setIsPrePaid(true); 
+              setFlowState("IDLE");
+
               if (inputData) setFormDataState(inputData);
+              // 🟢 新增：自動捲動到頂部
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              alert(locale === "es" ? "Pago verificado. Puede generar ahora." : "Payment verified. You can generate now.");
             }}
           />
         </div>

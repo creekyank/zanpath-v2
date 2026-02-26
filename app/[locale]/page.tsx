@@ -11,7 +11,6 @@ import {
   COMMON_FOOTER,
   DISCLAIMER_TEXT
 } from "@/config/site-content";
-import { ADMIN_CONFIG, isAdminEmail } from "@/config/admin";
 import RecoveryModal from "@/components/RecoveryModal";
 import DailyReflectionSection from "@/components/DailyReflectionSection";
 import { openPaddleCheckout } from "@/lib/paddle";
@@ -520,29 +519,12 @@ export default function HomePage() {
                       )}
 
                       {!loading && (
-                        <button
-                        type="submit"
-                        disabled={
-                          flowState === "PAYING" ||
-                          flowState === "WAITING_PAYMENT" ||
-                          flowState === "GENERATING"
-                        }
-                        className="w-full py-5 rounded-2xl bg-[#0f3d2e] text-white font-bold text-lg hover:opacity-90 transition-all disabled:opacity-50"
-                        >
-                        {flowState === "IDLE" && mid.fields.btnNormal}
-
-                        {flowState === "PAYING" && (
-                          locale === "es" ? "Procesando pago…" : "Processing payment…"
-                        )}
-
-                        {flowState === "WAITING_PAYMENT" && mid.fields.btnPaid}
-
-                        {flowState === "GENERATING" && (
-                          locale === "es" ? "Generando…" : "Generating…"
-                        )}
-
-                        {flowState === "DONE" && mid.fields.btnPaid}
-                        </button>
+                        <button 
+                        onClick={() => { setShowResult(false); setResult(""); }} 
+                        className="mt-8 w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold hover:opacity-90 transition-all"
+                      >
+                        {mid.fields.newAnalysis}
+                      </button>
                       )}
                     </>
                   )}
