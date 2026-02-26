@@ -193,12 +193,11 @@ export default function DreamPage() {
     setResult("");
 
     const prompt = DREAM_PROMPT_TEMPLATE
-      .replace("${gender}", formDataState.gender)
-      .replace(
-        "${userDescription}",
-        `Surname: ${formDataState.surname}. Expectations: ${formDataState.description}`
-      )
-      .replace("${outputLanguage}", locale === "es" ? "Spanish" : "English");
+    .replace("${outputLanguage}", locale === "es" ? "Spanish" : "English")
+    .replace("${languageMode}", "REGULAR")
+    .replace("${gender}", formDataState.gender)
+    .replace("${dreamContent}", formDataState.description) // 直接传入梦境描述，不带姓氏
+    .replace("${userEmotions}", "Reflective");
 
       try {
         const res = await fetch("/api/chat", {

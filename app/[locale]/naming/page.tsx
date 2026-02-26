@@ -207,6 +207,7 @@ export default function NamingPage() {
 
     const prompt = NAMING_PROMPT_TEMPLATE
       .replace("${gender}", formDataState.gender)
+      .replace("${languageMode}", "REGULAR")
       .replace(
         "${birthTime}",
         `${formDataState.year}-${formDataState.month}-${formDataState.day} ${formDataState.hour}:${formDataState.min}`
