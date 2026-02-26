@@ -1,51 +1,201 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { SPACE_PROMPT_TEMPLATE } from "@/config/prompts";
-import { UPLOAD_GUIDELINES, NAV_MENU, PAGE_SPECIFIC_CONTENT, COMMON_FOOTER, DISCLAIMER_TEXT } from "@/config/site-content";
-import { ADMIN_CONFIG, isAdminEmail } from "@/config/admin";
+import {
+  UPLOAD_GUIDELINES,
+  NAV_MENU,
+  PAGE_SPECIFIC_CONTENT,
+  COMMON_FOOTER,
+  DISCLAIMER_TEXT
+} from "@/config/site-content";
+
 import RecoveryModal from "@/components/RecoveryModal";
 import { processImageForAI } from "@/lib/utils";
+import { openPaddleCheckout } from "@/lib/paddle";
+
+const MODULE_TYPE = "fengshui";
+
+type FlowState =
+  | "IDLE"
+  | "PAYING"
+  | "WAITING_PAYMENT"
+  | "GENERATING"
+  | "DONE"
+  | "ERROR";
 
 export default function FengShuiPage() {
   const locale = useLocale() as "en" | "es";
-  const disclaimer = DISCLAIMER_TEXT[locale] || DISCLAIMER_TEXT.en;
   const pathname = usePathname();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [loading, setLoading] = useState(false);
-  const [showResult, setShowResult] = useState(false);
-  const [result, setResult] = useState("");
-  const [isPrePaid, setIsPrePaid] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
-  // 1. 狀態管理 (gender 在此頁面邏輯代表 Residential/Commercial)
-  const [formDataState, setFormDataState] = useState({
-    surname: "",      // 此處代表空間名稱
-    gender: "Male",   // 映射：Male -> Residential, Female -> Commercial
-    email: "",
-    preferences: "",
-    imageData: ""     // 存儲處理後的 Base64
-  });
-
-  useEffect(() => {
-    const backup = localStorage.getItem("space_backup_content");
-    if (backup && backup.length > 500) {
-      setResult(backup);
-      setShowResult(true);
-    }
-  }, []);
-
-  const currentLangName = locale === "es" ? "Spanish" : "English";
+  const disclaimer = DISCLAIMER_TEXT[locale] || DISCLAIMER_TEXT.en;
   const guide = UPLOAD_GUIDELINES.space[locale] || UPLOAD_GUIDELINES.space.en;
-  const mid = PAGE_SPECIFIC_CONTENT.space[locale] || PAGE_SPECIFIC_CONTENT.space.en;
+  const mid =
+    PAGE_SPECIFIC_CONTENT.space[locale] ||
+    PAGE_SPECIFIC_CONTENT.space.en;
   const foot = COMMON_FOOTER[locale] || COMMON_FOOTER.en;
   const menuItems = NAV_MENU[locale] || NAV_MENU.en;
 
-  // 圖片上傳處理
+  const currentLangName = locale === "es" ? "Spanish" : "English";
+
+  const [flowState, setFlowState] = useState<FlowState>("IDLE");
+  const [loading, setLoading] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState("");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const pollingRef = useRef(false);
+  const generatingRef = useRef(false);
+
+  const [formDataState, setFormDataState] = useState({
+    surname: "",
+    gender: "Male", // Male -> Residential, Female -> Commercial
+    email: "",
+    preferences: "",
+    imageData: ""
+  });
+
+  // =============================
+  // 页面恢复
+  // =============================
+  useEffect(() => {
+    const restoreSession = async () => {
+      const email = localStorage.getItem("pending_payment_email");
+      const module = localStorage.getItem("pending_payment_module");
+
+      if (!email || module !== MODULE_TYPE) return;
+
+      try {
+        const res = await fetch("/api/orders/status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.toLowerCase().trim(),
+            moduleType: MODULE_TYPE
+          })
+        });
+
+        const data = await res.json();
+
+        // ⚠️ 只恢复未完成且输入未变的订单
+        const saved = localStorage.getItem("pending_payment_form");
+        if (saved) {
+          const savedData = JSON.parse(saved);
+          // 如果用户已修改出生时间或姓氏，不恢复
+          if (
+            savedData.imageData === formDataState.imageData &&
+            savedData.surname === formDataState.surname
+          ) {
+            setFormDataState(savedData);
+          }
+        }
+
+        if (data.status === "PAID") {
+          setFlowState("WAITING_PAYMENT");
+        }
+
+        if (data.status === "GENERATING") {
+          setShowResult(true);
+          setFlowState("GENERATING");
+          pollOrderStatus(email);
+        }
+
+        if (data.status === "DONE") {
+          localStorage.removeItem("pending_payment_email");
+          localStorage.removeItem("pending_payment_module");
+          localStorage.removeItem("pending_payment_form");
+        }
+      } catch (err) {
+        console.error("Restore failed:", err);
+      }
+    };
+
+    restoreSession();
+  }, []);
+
+  // =============================
+  // 状态检查
+  // =============================
+  const checkOrderStatus = async (email: string) => {
+    const res = await fetch("/api/orders/status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+    });
+
+    const data = await res.json();
+
+    if (data.status === "DONE") {
+      localStorage.removeItem("pending_payment_email");
+      localStorage.removeItem("pending_payment_module");
+      localStorage.removeItem("pending_payment_form");
+
+      setResult(data.result || "");
+      setShowResult(true);
+      setFlowState("DONE");
+      return;
+    }
+
+    if (data.status === "PAID") {
+      await startGeneration(email);
+      return;
+    }
+
+    if (data.status === "GENERATING") {
+      setShowResult(true);
+      setFlowState("GENERATING");
+      pollOrderStatus(email);
+    }
+  };
+
+  // =============================
+  // 轮询
+  // =============================
+  const pollOrderStatus = async (email: string) => {
+    if (pollingRef.current) return;
+    pollingRef.current = true;
+
+    for (let i = 0; i < 90; i++) {
+      const res = await fetch("/api/orders/status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+      });
+
+      const data = await res.json();
+
+      if (data.status === "DONE") {
+        localStorage.removeItem("pending_payment_email");
+        localStorage.removeItem("pending_payment_module");
+        localStorage.removeItem("pending_payment_form");
+
+        setResult(data.result || "");
+        setShowResult(true);
+        setFlowState("DONE");
+        pollingRef.current = false;
+        return;
+      }
+
+      if (data.status === "PAID") {
+        pollingRef.current = false;
+        await startGeneration(email);
+        return;
+      }
+
+      await new Promise(r => setTimeout(r, 2000));
+    }
+
+    pollingRef.current = false;
+  };
+
+  // =============================
+  // 图片处理
+  // =============================
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -58,159 +208,158 @@ export default function FengShuiPage() {
         setSelectedImage(compressedBase64);
         setFormDataState(prev => ({ ...prev, imageData: compressedBase64 }));
       } catch (err) {
-        console.error("Image processing error:", err);
+        console.error("Face image processing error:", err);
       }
     }
   };
 
-  // 2. AI 生成邏輯
-  const processAiGeneration = async (formData: FormData, source: string) => {
-    const inputSnapshot = formDataState;
-    const email = formDataState.email.toLowerCase().trim();
-
-    if (!formDataState.imageData) {
-      alert(mid.fields.requiredTip);
-      return;
-    }
-
+  // =============================
+  // AI 生成
+  // =============================
+  const startGeneration = async (email: string) => {
+    if (generatingRef.current) return;
+    generatingRef.current = true;
+  
+    setFlowState("GENERATING");
     setLoading(true);
-    setResult("");
     setShowResult(true);
-    localStorage.removeItem("space_backup_content");
-
-    let fullResult = "";
-
+    setResult("");
+  
     try {
-      // 核心邏輯：將 Male/Female 映射為 Residential/Commercial 傳給 Prompt
-      const spaceContext = formDataState.gender === "Male" ? "Residential (住宅)" : "Commercial (商業)";
-      
+      const spaceContext =
+        formDataState.gender === "Male"
+          ? "Residential (住宅)"
+          : "Commercial (商業)";
+  
       const finalPrompt = SPACE_PROMPT_TEMPLATE
-        .replace("${outputLanguage}", currentLangName)
-        .replace("${languageMode}", source === "vip_debug" ? "VIP" : "REGULAR")
+        .replace("${outputLanguage}", locale === "es" ? "Spanish" : "English")
+        .replace("${languageMode}", "REGULAR")
         .replace("${spaceContext}", spaceContext)
-        .replace("${spaceDescription}", `Target Name: ${formDataState.surname}. Context: ${spaceContext}. User Notes: ${formDataState.preferences}`);
-
-      const response = await fetch("/api/chat", {
+        .replace(
+          "${spaceDescription}",
+          `Target Name: ${formDataState.surname}. Context: ${spaceContext}. User Notes: ${formDataState.preferences}`
+        );
+  
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          prompt: finalPrompt, 
-          source: source, 
-          email: email,
-          image: formDataState.imageData, // 如果你的 API 支持傳入圖片數據
+        body: JSON.stringify({
+          prompt: finalPrompt,
+          email,
+          moduleType: MODULE_TYPE,
+          image: formDataState.imageData,
           preferences: formDataState.preferences
-        }),
+        })
       });
-
-      if (!response.ok) {
-        const text = await response.text();
-        console.error("AI API Error:", {
-          status: response.status,
-          body: text,
-        });
-        throw new Error(text || "AI request failed");
-      };
-      
-
-      const reader = response.body?.getReader();
+  
+      if (!res.body) throw new Error("No stream");
+  
+      const reader = res.body.getReader();
       const decoder = new TextDecoder();
-      if (!reader) throw new Error("No reader");
-
-// --- 修改開始 ---
-// --- 修改後的循環邏輯 ---
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
-  const chunk = decoder.decode(value);
-  const lines = chunk.split("\n");
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
-      try {
-        const json = JSON.parse(trimmed.substring(6));
-        // 核心：直接讀取 OpenAI/DeepSeek 標準的 choices 結構
-        const text = json.choices?.[0]?.delta?.content || "";
-        
-        if (text) {
-          fullResult += text;
-          setResult((prev) => {
-            const newRes = prev + text;
-            if (newRes.length % 50 === 0) {
-              localStorage.setItem("space_backup_content", newRes);
-            }
-            return newRes;
-          });
+  
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+  
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n");
+  
+        for (const line of lines) {
+          const t = line.trim();
+          if (!t || t === "data: [DONE]") continue;
+  
+          if (t.startsWith("data: ")) {
+            const json = JSON.parse(t.slice(6));
+            const text = json.choices?.[0]?.delta?.content || "";
+            if (text) setResult(prev => prev + text);
+          }
         }
-      } catch (e) { 
-        // 忽略不完整的 JSON 塊
       }
-    }
-  }
-}
-// --- 修改結束 ---
-
-      if (fullResult.length > 500) {
-        await fetch("/api/orders/save-result", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            content: fullResult,
-            module: "space",
-            isComplete: true,
-            inputData: inputSnapshot,
-            locale: locale
-          }),
-        });
-        localStorage.removeItem("space_backup_content");
-      }
-    } catch (err: any) {
+  
+      setFlowState("DONE");
+    } catch (err) {
       console.error(err);
-      alert(locale === "es" ? "Lo sentimos, la conexión se interrumpió." : "Sorry, connection interrupted.");
+      setFlowState("ERROR");
     } finally {
       setLoading(false);
-      setIsPrePaid(false);
+      generatingRef.current = false;
     }
   };
 
-  const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
-    const tip = (mid as any).fields?.requiredTip || "Please fill out this field.";
-    target.setCustomValidity(tip);
-  };
-
-  const handleInput = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    (e.target as HTMLInputElement).setCustomValidity("");
-  };
-
-  const handleSubmit = async (e: React.FormEvent, mode: 'NORMAL' | 'VIP') => {
+  // =============================
+  // 提交逻辑
+  // =============================
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const email = formDataState.email.trim().toLowerCase();
+    if (flowState !== "IDLE") return;
 
+    const email = formDataState.email.trim().toLowerCase();
     if (!email || !formDataState.surname || !formDataState.imageData) {
       alert(mid.fields.requiredTip);
       return;
     }
 
-    if (mode === 'VIP' || isPrePaid || isAdminEmail(email)) {
-      if (mode === 'VIP') {
-        const pwd = prompt("Enter VIP Password:");
-        if (pwd !== ADMIN_CONFIG.vipPassword) return alert("Incorrect password.");
-      }
-      processAiGeneration(new FormData(), isPrePaid ? "recovered_order" : (mode === 'VIP' ? "vip_debug" : "admin_test"));
-    } else {
-      if (window.Paddle) {
-        window.Paddle.Checkout.open({
-          product: "PRI_REAL_PRODUCT_ID_FOR_SPACE",
-          email: email,
-          passthrough: JSON.stringify({ source: "space_module", locale: locale }),
-          successCallback: () => processAiGeneration(new FormData(), "space_module")
-        });
-      } else {
-        alert("Payment system is loading, please refresh.");
-      }
+    localStorage.setItem("pending_payment_email", email);
+    localStorage.setItem("pending_payment_module", MODULE_TYPE);
+    localStorage.setItem(
+      "pending_payment_form",
+      JSON.stringify(formDataState)
+    );
+
+    setFlowState("PAYING");
+
+    const res = await fetch("/api/orders/status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+    });
+
+    const data = await res.json();
+
+    /* =============================
+       ✅ 只允许恢复未完成订单
+    ============================= */
+
+    if (data.status === "PAID") {
+      await startGeneration(email);
+      return;
     }
+
+    if (data.status === "GENERATING") {
+      setShowResult(true);
+      setFlowState("GENERATING");
+      pollOrderStatus(email);
+      return;
+    }
+    /* =============================
+       ❌ DONE 不再恢复
+       永远重新支付
+    ============================= */
+  
+    await openPaddleCheckout(email, MODULE_TYPE, formDataState);
+    setFlowState("WAITING_PAYMENT");
+    pollOrderStatus(email);
   };
+/* =============================
+     表单辅助
+  ============================= */
+
+  const handleInvalid = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    target.setCustomValidity(
+      mid.fields?.requiredTip || "Please fill out this field."
+    );
+  };
+
+  const handleInput = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    target.setCustomValidity("");
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
@@ -274,7 +423,7 @@ while (true) {
 
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-white">
             {!showResult && !loading ? (
-              <form onSubmit={(e) => handleSubmit(e, 'NORMAL')} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col space-y-1">
                     <label className="text-xs font-bold text-gray-500 ml-1">{mid.fields.surname}</label>
@@ -326,12 +475,32 @@ while (true) {
                 </div>
 
                 <div className="space-y-4">
-                  <button type="submit" className="w-full py-5 rounded-2xl bg-[#0f3d2e] text-white font-bold text-lg hover:opacity-90 transition-all">
-                    {isPrePaid ? mid.fields.btnPaid : mid.fields.btnNormal}
+                <button
+                    type="submit"
+                    disabled={
+                      flowState === "PAYING" ||
+                      flowState === "WAITING_PAYMENT" ||
+                      flowState === "GENERATING"
+                    }
+                    className="w-full py-5 rounded-2xl bg-[#0f3d2e] text-white font-bold text-lg hover:opacity-90 transition-all disabled:opacity-50"
+                  >
+                    {flowState === "IDLE" && mid.fields.btnNormal}
+
+                    {flowState === "PAYING" && (
+                      locale === "es" ? "Procesando pago…" : "Processing payment…"
+                    )}
+
+                    {flowState === "WAITING_PAYMENT" && mid.fields.btnPaid}
+
+                    {flowState === "GENERATING" && (
+                      locale === "es" ? "Generando…" : "Generating…"
+                    )}
+
+                    {flowState === "DONE" && mid.fields.btnPaid}
                   </button>
 
                     {/* --- 插入開始 --- */}
-{!isPrePaid && (
+{ (
   <div className="mt-4 px-2 text-center space-y-1">
     <p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
       Payments are currently being finalized. All features are available for exploration during this period.
@@ -401,7 +570,7 @@ while (true) {
           
           <RecoveryModal 
             locale={locale} 
-            moduleType="space" 
+            moduleType="fengshui" 
             onResultFound={(content, inputData) => { 
               setResult(content); 
               setShowResult(true);
@@ -411,7 +580,7 @@ while (true) {
             onNeedsReRun={(inputData) => { 
               setShowResult(false); 
               setResult(""); 
-              setIsPrePaid(true); 
+              setFlowState("IDLE");
               if (inputData) setFormDataState(inputData);
             }}
           />
