@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { DREAM_PROMPT_TEMPLATE } from "@/config/prompts";
+import { sendGAEvent } from '@next/third-parties/google';
+
 import {
   NAV_MENU,
   PAGE_SPECIFIC_CONTENT,
@@ -250,6 +252,11 @@ export default function DreamPage() {
   
     const email = formDataState.email.trim().toLowerCase();
     if (!email) return;
+          // ✅ 在这里添加追踪代码
+    sendGAEvent('event', 'click_pay_button', {
+      module_type: MODULE_TYPE,
+      locale: locale
+    });
   
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", MODULE_TYPE);

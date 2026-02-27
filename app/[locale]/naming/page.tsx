@@ -268,10 +268,10 @@ export default function NamingPage() {
     if (!email) return;
 
     // ✅ 在这里添加追踪代码
-  sendGAEvent('event', 'click_pay_button', {
-    module_type: MODULE_TYPE,
-    locale: locale
-  });
+    sendGAEvent('event', 'click_pay_button', {
+      module_type: MODULE_TYPE,
+      locale: locale
+    });
   
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", MODULE_TYPE);
