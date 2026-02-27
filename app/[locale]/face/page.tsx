@@ -517,41 +517,41 @@ export default function FaceReflectionPage() {
             ) : (
               <div className="py-10">
                 <div className="animate-in fade-in duration-700">
-                {flowState === "GENERATING" ? (
-                  <div className="flex flex-col items-center space-y-4 py-20">
-                    <div className="animate-spin rounded-full h-14 w-14 border-4 border-gray-200 border-t-[#0f3d2e]"></div>
-                    <p className="text-sm text-[#356f5b] animate-pulse">⚡ {mid.fields.thinking}</p >
-                  </div>
-                ) : (
-                  <>
-                    <h2 className="text-2xl font-bold mb-6 pb-2 border-b">{mid.fields.reportTitle}</h2>
-                    <div className="whitespace-pre-wrap text-[#0f3d2e] leading-relaxed text-sm bg-gray-50 p-6 rounded-2xl">
-                      {result}
-                      {loading && <span className="inline-block w-2 h-4 ml-1 bg-[#0f3d2e] animate-pulse" />}
+                  {loading && !result ? (
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0f3d2e]"></div>
+                      <p className="text-sm text-[#4a7c6d] animate-pulse">⚡ {mid.fields.thinking}</p>
                     </div>
-                    
-                    {!loading && result && (
-                      <div className="mt-6 p-4 bg-gray-100/50 rounded-xl border border-gray-200/50">
-                        <p className="text-[12px] text-gray-500 leading-relaxed italic">
-                        {disclaimer}
-                        </p >
+                  ) : (
+                    <>
+                      <h2 className="text-2xl font-bold mb-6 pb-2 border-b text-[#0f3d2e]">{mid.fields.reportTitle}</h2>
+                      <div className="whitespace-pre-wrap text-[#0f3d2e] leading-relaxed text-sm bg-[#f8fcfb] p-6 rounded-2xl border border-[#eaf7f2]">
+                        {result}
+                        {loading && <span className="inline-block w-2 h-4 ml-1 bg-[#0f3d2e] animate-pulse" />}
                       </div>
-                    )}
+                      
+                      {!loading && result && (
+                        <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                          <p className="text-[12px] text-gray-500 italic leading-relaxed">
+                          {disclaimer}
+                          </p>
+                        </div>
+                      )}
 
-                    {!loading && (
-                      <button 
-                      onClick={() => {
-                        setShowResult(false);
-                        setResult("");
-                        setFlowState("IDLE");
-                      }}
+                      {!loading && (
+                        <button 
+                        onClick={() => {
+                          setShowResult(false);
+                          setResult("");
+                          setFlowState("IDLE");
+                        }} 
                         className="mt-8 w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold hover:opacity-90 transition-all"
                       >
                         {mid.fields.newAnalysis}
                       </button>
-                    )}
-                  </>
-                )}
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             )}
