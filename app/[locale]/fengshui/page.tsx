@@ -82,19 +82,6 @@ export default function FengShuiPage() {
 
         const data = await res.json();
 
-        // ⚠️ 只恢复未完成且输入未变的订单
-        const saved = localStorage.getItem("pending_payment_form");
-        if (saved) {
-          const savedData = JSON.parse(saved);
-          // 如果用户已修改出生时间或姓氏，不恢复
-          if (
-            savedData.imageData === formDataState.imageData &&
-            savedData.surname === formDataState.surname
-          ) {
-            setFormDataState(savedData);
-          }
-        }
-
         if (data.status === "PAID") {
           setFlowState("WAITING_PAYMENT");
         }
@@ -248,7 +235,8 @@ export default function FengShuiPage() {
           email,
           moduleType: MODULE_TYPE,
           image: formDataState.imageData,
-          preferences: formDataState.preferences
+          preferences: formDataState.preferences,
+          locale 
         })
       });
   
@@ -499,20 +487,6 @@ export default function FengShuiPage() {
                     {flowState === "DONE" && mid.fields.btnPaid}
                   </button>
 
-                    {/* --- 插入開始 --- */}
-{ (
-  <div className="mt-4 px-2 text-center space-y-1">
-    <p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
-      Payments are currently being finalized. All features are available for exploration during this period.
-    </p>
-    {/* 🟢 隱藏西班牙語提示 */}
-    {/*<p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
-      Los pagos se están finalizando actualmente. Todas las funciones están disponibles para exploración durante este período.
-    </p>*/}
-  </div>
-)}
-{/* --- 插入結束 --- */}
-
                   <div className="bg-gray-50/50 rounded-2xl p-6 space-y-4 border border-gray-100/50">
                     <p className="text-[13px] text-[#0f3d2e] font-medium leading-relaxed">{mid.intro}</p>
                     <ul className="text-xs text-[#356f5b] space-y-2 list-disc ml-4 font-normal">
@@ -531,30 +505,41 @@ export default function FengShuiPage() {
             ) : (
               <div className="py-10">
                 <div className="animate-in fade-in duration-700">
-                  {loading && !result ? (
-                    <div className="flex flex-col items-center space-y-4">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0f3d2e]"></div>
-                      <p className="text-sm text-[#356f5b] animate-pulse">⚡ {mid.fields.thinking}</p>
+                {flowState === "GENERATING" ? (
+                  <div className="flex flex-col items-center space-y-4 py-20">
+                    <div className="animate-spin rounded-full h-14 w-14 border-4 border-gray-200 border-t-[#0f3d2e]"></div>
+                    <p className="text-sm text-[#356f5b] animate-pulse">⚡ {mid.fields.thinking}</p >
+                  </div>
+                ) : (
+                  <>
+                    <h2 className="text-2xl font-bold mb-6 pb-2 border-b">{mid.fields.reportTitle}</h2>
+                    <div className="whitespace-pre-wrap text-[#0f3d2e] leading-relaxed text-sm bg-gray-50 p-6 rounded-2xl">
+                      {result}
+                      {loading && <span className="inline-block w-2 h-4 ml-1 bg-[#0f3d2e] animate-pulse" />}
                     </div>
-                  ) : (
-                    <>
-                      <h2 className="text-2xl font-bold mb-6 pb-2 border-b">{mid.fields.reportTitle}</h2>
-                      <div className="whitespace-pre-wrap text-[#0f3d2e] leading-relaxed text-sm bg-gray-50 p-6 rounded-2xl">
-                        {result}
-                        {loading && <span className="inline-block w-2 h-4 ml-1 bg-[#0f3d2e] animate-pulse" />}
+                    
+                    {!loading && result && (
+                      <div className="mt-6 p-4 bg-gray-100/50 rounded-xl border border-gray-200/50">
+                        <p className="text-[12px] text-gray-500 leading-relaxed italic">
+                        {disclaimer}
+                        </p >
                       </div>
-                      {!loading && result && (
-                        <div className="mt-6 p-4 bg-gray-100/50 rounded-xl border border-gray-200/50 text-[12px] text-gray-500 italic leading-relaxed">
-                          {disclaimer}
-                        </div>
-                      )}
-                      {!loading && (
-                        <button onClick={() => { setShowResult(false); setResult(""); setSelectedImage(null); }} className="mt-8 w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold hover:opacity-90">
-                          {mid.fields.newAnalysis}
-                        </button>
-                      )}
-                    </>
-                  )}
+                    )}
+
+                    {!loading && (
+                      <button 
+                      onClick={() => {
+                        setShowResult(false);
+                        setResult("");
+                        setFlowState("IDLE");
+                      }}
+                        className="mt-8 w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold hover:opacity-90 transition-all"
+                      >
+                        {mid.fields.newAnalysis}
+                      </button>
+                    )}
+                  </>
+                )}
                 </div>
               </div>
             )}

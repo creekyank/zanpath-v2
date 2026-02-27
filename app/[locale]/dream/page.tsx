@@ -73,18 +73,6 @@ export default function DreamPage() {
   
         const data = await res.json();
   
-        // ⚠️ 只恢复未完成且输入未变的订单
-        const saved = localStorage.getItem("pending_payment_form");
-        if (saved) {
-          const savedData = JSON.parse(saved);
-          // 如果用户已修改出生时间或姓氏，不恢复
-          if (
-            savedData.surname === formDataState.surname
-          ) {
-            setFormDataState(savedData);
-          }
-        }
-  
         if (data.status === "PAID") {
           // 前端可以提示用户开始生成，而不直接覆盖输入
           setFlowState("WAITING_PAYMENT");
@@ -124,6 +112,10 @@ export default function DreamPage() {
     const data = await res.json();
 
     if (data.status === "DONE") {
+      localStorage.removeItem("pending_payment_email");
+      localStorage.removeItem("pending_payment_module");
+      localStorage.removeItem("pending_payment_form");
+
       setResult(data.result || "");
       setShowResult(true);
       setFlowState("DONE");
@@ -160,6 +152,10 @@ export default function DreamPage() {
       const data = await res.json();
 
       if (data.status === "DONE") {
+        localStorage.removeItem("pending_payment_email");
+        localStorage.removeItem("pending_payment_module");
+        localStorage.removeItem("pending_payment_form");
+
         setResult(data.result || "");
         setShowResult(true);
         setFlowState("DONE");
@@ -206,7 +202,8 @@ export default function DreamPage() {
           body: JSON.stringify({
             prompt,
             email,
-            moduleType: MODULE_TYPE
+            moduleType: MODULE_TYPE,
+            locale 
           })
         });
   
@@ -432,20 +429,6 @@ export default function DreamPage() {
                     {flowState === "DONE" && mid.fields.btnPaid}
                   </button>
 
-                  {/* --- 插入開始 --- */}
-{
-  <div className="mt-4 px-2 text-center space-y-1">
-    <p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
-      Payments are currently being finalized. All features are available for exploration during this period.
-    </p>
-    {/* 🟢 隱藏西班牙語提示 */}
-    {/*<p className="text-[15px] text-[#0f3d2e] font-medium leading-tight">
-      Los pagos se están finalizando actualmente. Todas las funciones están disponibles para exploración durante este período.
-    </p>*/}
-  </div>
-}
-{/* --- 插入結束 --- */}
-
                   <div className="bg-[#f8fcfb] rounded-2xl p-6 space-y-4 border border-[#eaf7f2]">
                     {/* 🟢 修改點：補齊了 Zanpath AI provides... 全站統一聲明 */}
                     <p className="text-[13px] text-[#0f3d2e] font-semibold leading-relaxed">
@@ -467,37 +450,41 @@ export default function DreamPage() {
             ) : (
               <div className="py-10">
                 <div className="animate-in fade-in duration-700">
-                  {loading && !result ? (
-                    <div className="flex flex-col items-center space-y-4">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0f3d2e]"></div>
-                      <p className="text-sm text-[#4a7c6d] animate-pulse">⚡ {mid.fields.thinking}</p>
+                {flowState === "GENERATING" ? (
+                  <div className="flex flex-col items-center space-y-4 py-20">
+                    <div className="animate-spin rounded-full h-14 w-14 border-4 border-gray-200 border-t-[#0f3d2e]"></div>
+                    <p className="text-sm text-[#356f5b] animate-pulse">⚡ {mid.fields.thinking}</p >
+                  </div>
+                ) : (
+                  <>
+                    <h2 className="text-2xl font-bold mb-6 pb-2 border-b">{mid.fields.reportTitle}</h2>
+                    <div className="whitespace-pre-wrap text-[#0f3d2e] leading-relaxed text-sm bg-gray-50 p-6 rounded-2xl">
+                      {result}
+                      {loading && <span className="inline-block w-2 h-4 ml-1 bg-[#0f3d2e] animate-pulse" />}
                     </div>
-                  ) : (
-                    <>
-                      <h2 className="text-2xl font-bold mb-6 pb-2 border-b text-[#0f3d2e]">{mid.fields.reportTitle}</h2>
-                      <div className="whitespace-pre-wrap text-[#0f3d2e] leading-relaxed text-sm bg-[#f8fcfb] p-6 rounded-2xl border border-[#eaf7f2]">
-                        {result}
-                        {loading && <span className="inline-block w-2 h-4 ml-1 bg-[#0f3d2e] animate-pulse" />}
+                    
+                    {!loading && result && (
+                      <div className="mt-6 p-4 bg-gray-100/50 rounded-xl border border-gray-200/50">
+                        <p className="text-[12px] text-gray-500 leading-relaxed italic">
+                        {disclaimer}
+                        </p >
                       </div>
-                      
-                      {!loading && result && (
-                        <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                          <p className="text-[12px] text-gray-500 italic leading-relaxed">
-                          {disclaimer}
-                          </p>
-                        </div>
-                      )}
+                    )}
 
-                      {!loading && (
-                        <button 
-                        onClick={() => { setShowResult(false); setResult(""); }} 
+                    {!loading && (
+                      <button 
+                      onClick={() => {
+                        setShowResult(false);
+                        setResult("");
+                        setFlowState("IDLE");
+                      }}
                         className="mt-8 w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold hover:opacity-90 transition-all"
                       >
                         {mid.fields.newAnalysis}
                       </button>
-                      )}
-                    </>
-                  )}
+                    )}
+                  </>
+                )}
                 </div>
               </div>
             )}

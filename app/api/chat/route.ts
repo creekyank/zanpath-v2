@@ -78,7 +78,7 @@ async function getImageDescription(imageBase64: string, preferences?: string) {
 
 export async function POST(req: Request) {
   try {
-    const { prompt, email, moduleType, image, preferences } = await req.json();
+    const { prompt, email, moduleType, image, preferences, locale } = await req.json();
 
     if (!prompt || !email || !moduleType) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -215,37 +215,73 @@ export async function POST(req: Request) {
 
         if (!existingResult?.pdfSent) {
 
-          const subject = `Your ZanPath AI Analysis Report - ${moduleType.toUpperCase()}`;
 
-          const pdfBuffer = await renderToBuffer(
-            React.createElement(AnalysisReportPDF, {
-              data: { title: subject, content: fullContent },
-              lang: "en"
-            })
-          );
+  // 🔥 语言自适应恢复（仅新增这部分）
+  const langKey =
+  locale === "es" || locale?.startsWith("es")
+    ? "es"
+    : "en";
 
-          const { error } = await resend.emails.send({
-            from: "ZanPath AI <report@zanpath.com>",
-            to: userEmail,
-            subject,
-            html: `<p>Your report is attached.</p >`,
-            attachments: [
-              {
-                filename: `ZanPath_${moduleType}_Report.pdf`,
-                content: pdfBuffer
-              }
-            ]
-          });
+  const subjects: Record<string, string> = {
+    en: "Your ZanPath AI Analysis Report",
+    es: "Tu Informe de Análisis de ZanPath AI"
+  };
 
-          if (!error) {
-            await db.result.update({
-              where: { orderId: order.id },
-              data: { pdfSent: true }
-            });
-          } else {
-            console.error("Email send error:", error);
+  const subject = `${subjects[langKey]} - ${moduleType.toUpperCase()}`;
+
+  const emailHtml =
+    langKey === "es"
+      ? `
+        <div style="font-family: sans-serif; padding: 20px; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px;">
+          <h2 style="color: #1a1a1a;">¡Tu informe está listo!</h2>
+          <p>Adjunto encontrarás tu informe detallado en formato PDF. Gracias por confiar en ZanPath AI.</p >
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #888; text-align: center;">
+            <p><strong>ZanPath AI</strong></p >
+            <p>Descubre tu camino espiritual con Inteligencia Artificial.</p >
+          </div>
+        </div>
+      `
+      : `
+        <div style="font-family: sans-serif; padding: 20px; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px;">
+          <h2 style="color: #1a1a1a;">Your report is ready!</h2>
+          <p>Please find your detailed analysis report in the attached PDF file. Thank you for choosing ZanPath AI.</p >
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #888; text-align: center;">
+            <p><strong>ZanPath AI</strong></p >
+            <p>Discover your spiritual path with Artificial Intelligence.</p >
+          </div>
+        </div>
+      `;
+
+      // 🔥 PDF 语言也同步
+      const pdfBuffer = await renderToBuffer(
+        React.createElement(AnalysisReportPDF, {
+          data: { title: subject, content: fullContent },
+          lang: langKey
+        })
+      );
+
+      const { error } = await resend.emails.send({
+        from: "ZanPath AI <report@zanpath.com>",
+        to: userEmail,
+        subject,
+        html: emailHtml,
+        attachments: [
+          {
+            filename: `ZanPath_${moduleType}_Report.pdf`,
+            content: pdfBuffer
           }
-        }
+        ]
+      });
+
+      if (!error) {
+        await db.result.update({
+          where: { orderId: order.id },
+          data: { pdfSent: true }
+        });
+      } else {
+        console.error("Email send error:", error);
+      }
+    }
 
           controller.enqueue(new TextEncoder().encode("data: [DONE]\n\n"));
           controller.close();
