@@ -3,6 +3,9 @@ import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
 
+// 1. 导入 GoogleAnalytics 组件
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 import "../globals.css";
 
 export default async function LocaleLayout({
@@ -35,6 +38,9 @@ export default async function LocaleLayout({
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>
+
+        <GoogleAnalytics gaId="G-VP1VKTDHN4" />
+
       </body>
     </html>
   );
