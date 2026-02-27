@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { VISUAL_PROMPT_TEMPLATE } from "@/config/prompts";
+import { sendGAEvent } from '@next/third-parties/google';
+
 import {
   UPLOAD_GUIDELINES,
   NAV_MENU,
@@ -299,7 +301,15 @@ export default function FaceReflectionPage() {
     if (flowState !== "IDLE") return;
   
     const email = formDataState.email.trim().toLowerCase();
-    if (!email) return;
+    if (!formDataState.imageData) {
+      alert(mid.fields.requiredTip);
+      return;
+    }
+          // ✅ 在这里添加追踪代码
+    sendGAEvent('event', 'click_pay_button', {
+      module_type: MODULE_TYPE,
+      locale: locale
+    });
   
     localStorage.setItem("pending_payment_email", email);
     localStorage.setItem("pending_payment_module", MODULE_TYPE);
