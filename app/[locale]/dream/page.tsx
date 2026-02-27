@@ -450,6 +450,7 @@ export default function DreamPage() {
             ) : (
               <div className="py-10">
                 <div className="animate-in fade-in duration-700">
+                  
                   {loading && !result ? (
                     <div className="flex flex-col items-center space-y-4">
                       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0f3d2e]"></div>
