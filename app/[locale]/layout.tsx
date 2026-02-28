@@ -8,6 +8,10 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 
 import "../globals.css";
 
+export const metadata = {
+  metadataBase: new URL("https://zanpath.com")
+};
+
 export default async function LocaleLayout({
   children,
   params,
