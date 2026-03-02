@@ -477,6 +477,8 @@ export default function HomePage() {
           </div>
         </div>
 
+        
+
         <div className="space-y-6 lg:space-y-8 order-2">
           <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white space-y-4">
             <h3 className="font-bold text-sm flex items-center"><span className="bg-[#0f3d2e] text-white p-1 rounded mr-2">ℹ</span>{notice.title}</h3>
