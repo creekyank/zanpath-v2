@@ -3,14 +3,13 @@ import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
 
+import NavBar from "./NavBar";
+import Footer from "./Footer";
+
 // 1. 导入 GoogleAnalytics 组件
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 import "../globals.css";
-
-export const metadata = {
-  metadataBase: new URL("https://zanpath.com")
-};
 
 export default async function LocaleLayout({
   children,
@@ -33,14 +32,22 @@ export default async function LocaleLayout({
         />
 
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+<ThemeProvider
+  attribute="class"
+  defaultTheme="system"
+  enableSystem
+  disableTransitionOnChange
+>
+  <div className="min-h-screen bg-gradient-to-br from-[#dff3ee] to-[#eaf7f2] text-[#0f3d2e]">
+
+  <NavBar locale={locale as "en" | "es"} />
+
+    {children}
+
+    <Footer locale={locale as "en" | "es"} />
+
+  </div>
+</ThemeProvider>
         </NextIntlClientProvider>
 
         <GoogleAnalytics gaId="G-VP1VKTDHN4" />

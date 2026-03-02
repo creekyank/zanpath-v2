@@ -1,20 +1,17 @@
-
 import { getAllArticles } from "@/lib/article-loader";
 import Link from "next/link";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
-}) {
-  const baseUrl = "https://zanpath.com";
+const baseUrl = "https://zanpath.com";
+
+export async function generateMetadata({ params }: any) {
+  const { locale } = await params;
 
   return {
     title: "Spiritual Wisdom & Destiny Insights | Zanpath",
     description:
       "Explore life path, dream meaning, naming and destiny insights powered by ancient metaphysics.",
     alternates: {
-      canonical: `${baseUrl}/${params.locale}/wisdom`,
+      canonical: `${baseUrl}/${locale}/wisdom`,
       languages: {
         en: `${baseUrl}/en/wisdom`,
         es: `${baseUrl}/es/wisdom`,
@@ -23,47 +20,88 @@ export async function generateMetadata({
   };
 }
 
-export default function WisdomPage({
-  params,
-}: {
-  params: { locale: string };
-}) {
-  const articles = getAllArticles(params.locale);
+export default async function WisdomPage({ params }: any) {
+  const { locale } = await params;
+
+  const articles = getAllArticles(locale);
 
   const latest = articles.slice(0, 5);
   const modules = Array.from(new Set(articles.map((a) => a.module)));
 
   return (
-    <div style={{ padding: 40 }}>
-      <h1>Wisdom</h1>
-
-      <h2>Latest Articles</h2>
-      {latest.map((a) => (
-        <div key={a.slug}>
-          <Link href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}>
-            {a.title}
-          </Link>
-        </div>
-      ))}
-
-      <hr style={{ margin: "40px 0" }} />
-
-      {modules.map((module) => (
-        <div key={module}>
-          <h2>{module}</h2>
-
-          {articles
-            .filter((a) => a.module === module)
-            .slice(0, 5)
-            .map((a) => (
-              <div key={a.slug}>
-                <Link href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}>
-                  {a.title}
-                </Link>
-              </div>
-            ))}
-        </div>
-      ))}
-    </div>
+    <main className="max-w-4xl mx-auto px-6 py-16 flex flex-col items-center">
+  
+      {/* Header */}
+      <div className="mb-16 text-center max-w-2xl">
+        <div className="text-4xl mb-4">📜</div>
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+          Wisdom
+        </h1>
+        <p className="text-[#4a7c6d] text-sm leading-relaxed">
+          Spiritual insights, dream meanings and destiny analysis powered by ancient metaphysics.
+        </p >
+      </div>
+  
+      {/* Latest Articles */}
+      <div className="w-full space-y-8 mb-16">
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Latest Articles
+        </h2>
+  
+        {latest.map((a) => (
+          <div
+            key={a.slug}
+            className="bg-white rounded-3xl shadow-xl shadow-[#dff3ee]/50 p-8 border border-white transition hover:translate-y-[-4px] duration-300"
+          >
+            <div className="text-xs font-bold text-[#356f5b] mb-3 uppercase tracking-wider">
+              {a.module}
+            </div>
+  
+            <h3 className="text-xl font-bold mb-4 leading-tight">
+              {a.title}
+            </h3>
+  
+            <Link
+              href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}
+              className="inline-block px-6 py-2 rounded-xl bg-[#0f3d2e] text-white text-sm font-semibold hover:opacity-90 transition"
+            >
+              Read Article
+            </Link>
+          </div>
+        ))}
+      </div>
+  
+      {/* Module Sections */}
+      <div className="w-full space-y-16">
+        {modules.map((module) => (
+          <div key={module}>
+            <h2 className="text-2xl font-bold text-center mb-8 capitalize">
+              {module}
+            </h2>
+  
+            <div className="space-y-6">
+              {articles
+                .filter((a) => a.module === module)
+                .slice(0, 5)
+                .map((a) => (
+                  <div
+                    key={a.slug}
+                    className="bg-white rounded-2xl shadow-md p-6 border border-white transition hover:translate-y-[-3px] duration-300"
+                  >
+                    <h3 className="text-lg font-semibold mb-2">
+                      <Link href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}>
+                        {a.title}
+                      </Link>
+                    </h3>
+                  </div>
+                ))}
+            </div>
+          </div>
+        ))}
+      </div>
+  
+    </main>
   );
+  
 }
+

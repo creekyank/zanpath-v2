@@ -10,19 +10,78 @@ import { generateAnchorText } from "@/lib/anchor-engine";
 const baseUrl = "https://zanpath.com";
 
 export async function generateMetadata({ params }: any) {
-  const article = getArticle(
-    params.locale,
-    params.module,
-    params.slug
-  );
+  const { locale, module, slug } = await params;
 
+  const article = getArticle(locale, module, slug);
   if (!article) return {};
 
   return buildMetadata(article);
 }
 
-export default function ArticlePage({ params }: any) {
-  const { locale, module, slug } = params;
+/* ✅ 只升级样式，不改逻辑 */
+function renderBlock(block: any, index: number) {
+  switch (block.type) {
+    case "h2":
+      return (
+        <h2
+          key={index}
+          className="text-2xl md:text-3xl font-bold mt-14 mb-6 text-[#0f3d2e]"
+        >
+          {block.text}
+        </h2>
+      );
+
+    case "h3":
+      return (
+        <h3
+          key={index}
+          className="text-xl font-semibold mt-10 mb-4 text-[#1e5c49]"
+        >
+          {block.text}
+        </h3>
+      );
+
+    case "p":
+      return (
+        <p
+          key={index}
+          className="text-[#4a7c6d] leading-relaxed mb-6 text-[16px]"
+        >
+          {block.text}
+        </p >
+      );
+
+    case "ul":
+      return (
+        <ul
+          key={index}
+          className="list-disc pl-6 space-y-3 mb-6 text-[#4a7c6d]"
+        >
+          {block.items?.map((item: string, i: number) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      );
+
+    case "ol":
+      return (
+        <ol
+          key={index}
+          className="list-decimal pl-6 space-y-3 mb-6 text-[#4a7c6d]"
+        >
+          {block.items?.map((item: string, i: number) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ol>
+      );
+
+    default:
+      return null;
+  }
+}
+
+export default async function ArticlePage({ params }: any) {
+  const { locale, module, slug } = await params;
 
   const article = getArticle(locale, module, slug);
   if (!article) return notFound();
@@ -33,47 +92,119 @@ export default function ArticlePage({ params }: any) {
     .filter((a) => a.module === module && a.slug !== slug)
     .slice(0, 4);
 
-  const snippet = generateSnippet(article.content);
-  const faq = generateFAQ(article.title, article.content);
+  const snippet = generateSnippet(
+    Array.isArray(article.content)
+      ? article.content.map((c: any) => c.text).join(" ")
+      : article.content
+  );
+
+  const faq = generateFAQ(
+    article.title,
+    Array.isArray(article.content)
+      ? article.content.map((c: any) => c.text).join(" ")
+      : article.content
+  );
 
   const url = `${baseUrl}/${locale}/wisdom/${module}/${slug}`;
 
   return (
-    <div style={{ maxWidth: 900, margin: "auto", padding: 40 }}>
+    <main className="max-w-4xl mx-auto px-6 py-16">
 
-      <h1>{article.title}</h1>
+      {/* ===== Header ===== */}
+      <div className="mb-16 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#0f3d2e]">
+          {article.title}
+        </h1>
 
-      <div style={{ background: "#f5f5f5", padding: 20, marginBottom: 30 }}>
-        <p>{snippet}</p >
+        <div className="bg-white rounded-3xl shadow-lg p-8 max-w-2xl mx-auto border border-white">
+          <p className="text-[#4a7c6d] text-[15px] leading-relaxed">
+            {snippet}
+          </p >
+        </div>
       </div>
 
-      <div dangerouslySetInnerHTML={{ __html: article.content }} />
+      {/* ===== Article Content ===== */}
+      <article className="prose prose-neutral max-w-none">
+        {Array.isArray(article.content)
+          ? article.content.map((block: any, index: number) =>
+              renderBlock(block, index)
+            )
+          : (
+            <p className="text-[#4a7c6d] leading-relaxed text-[16px]">
+              {article.content}
+            </p >
+          )}
+      </article>
 
-      {/* Topic Cluster */}
-      <div style={{ marginTop: 60 }}>
-        <h2>Related Insights</h2>
-        {related.map((r) => (
-          <div key={r.slug}>
-            <Link href={`/${locale}/wisdom/${r.module}/${r.slug}`}>
-              {generateAnchorText(r.title)}
-            </Link>
+      {/* ===== Related ===== */}
+      {related.length > 0 && (
+        <div className="mt-24">
+          <h2 className="text-2xl font-bold mb-10 text-center">
+            Related Insights
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {related.map((r) => (
+              <Link
+                key={r.slug}
+                href={`/${locale}/wisdom/${r.module}/${r.slug}`}
+                className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition border border-white"
+              >
+                <h3 className="font-semibold text-[#0f3d2e]">
+                  {generateAnchorText(r.title)}
+                </h3>
+              </Link>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
 
-      {/* FAQ */}
-      <div style={{ marginTop: 60 }}>
-        <h2>Frequently Asked Questions</h2>
-        {faq.map((f, i) => (
-          <div key={i}>
-            <h3>{f.q}</h3>
-            <p>{f.a}</p >
+      {/* ===== FAQ ===== */}
+      {faq.length > 0 && (
+        <div className="mt-28">
+          <h2 className="text-2xl font-bold mb-10 text-center">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-8">
+            {faq.map((f, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl p-6 shadow-sm border border-white"
+              >
+                <h3 className="font-semibold mb-3 text-[#0f3d2e]">
+                  {f.q}
+                </h3>
+                <p className="text-[#4a7c6d] text-sm leading-relaxed">
+                  {f.a}
+                </p >
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+      )}
+
+            {/* ===== Back To List ===== */}
+            <div className="mt-20 text-center">
+        <Link
+          href={`/${locale}/wisdom/${module}`}
+          className="inline-block bg-[#0f3d2e] text-white px-8 py-3 rounded-full text-sm font-semibold hover:opacity-90 transition shadow-md"
+        >
+          ← Back to {module.charAt(0).toUpperCase() + module.slice(1)} Articles
+        </Link>
       </div>
 
-      {/* ================= FULL SCHEMA ================= */}
+      {/* ===== Back To Wisdom ===== */}
+      <div className="mt-6 text-center">
+        <Link
+          href={`/${locale}/wisdom`}
+          className="inline-block bg-white text-[#0f3d2e] px-8 py-3 rounded-full text-sm font-semibold border border-[#0f3d2e] hover:bg-[#0f3d2e] hover:text-white transition shadow-md"
+        >
+          ← Back to Wisdom
+        </Link>
+      </div>
 
+      {/* ===== Article Schema ===== */}
       <Script
         id="article-schema"
         type="application/ld+json"
@@ -83,15 +214,15 @@ export default function ArticlePage({ params }: any) {
             "@type": "Article",
             headline: article.title,
             description: article.description,
-            datePublished: article.date,
-            dateModified: article.date,
+            datePublished: article.datePublished || article.date,
+            dateModified: article.dateModified || article.date,
             author: {
               "@type": "Organization",
-              name: "Zanpath AI",
+              name: "Zanpath",
             },
             publisher: {
               "@type": "Organization",
-              name: "Zanpath AI",
+              name: "Zanpath",
               logo: {
                 "@type": "ImageObject",
                 url: `${baseUrl}/logo.png`,
@@ -101,11 +232,11 @@ export default function ArticlePage({ params }: any) {
               "@type": "WebPage",
               "@id": url,
             },
-            image: article.image || `${baseUrl}/default.jpg`,
           }),
         }}
       />
 
+      {/* ===== FAQ Schema ===== */}
       <Script
         id="faq-schema"
         type="application/ld+json"
@@ -125,6 +256,7 @@ export default function ArticlePage({ params }: any) {
         }}
       />
 
+      {/* ===== Breadcrumb Schema ===== */}
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
@@ -155,6 +287,7 @@ export default function ArticlePage({ params }: any) {
           }),
         }}
       />
-    </div>
+    </main>
   );
 }
+
