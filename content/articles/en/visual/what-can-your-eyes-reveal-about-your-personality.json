@@ -1,0 +1,160 @@
+{
+  "id": "what-can-your-eyes-reveal-about-your-personality",
+  "locale": "en",
+  "module": "visual",
+
+  "slug": "what-can-your-eyes-reveal-about-your-personality",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "What Can Your Eyes Reveal About Your Personality?",
+  "metaTitle": "What Can Your Eyes Reveal About Your Personality? Face Reading Insights",
+  "metaDescription": "Discover what your eye shape, gaze intensity, and spacing may reveal about your personality according to traditional face reading and modern psychological observation.",
+
+  "primaryKeyword": "eyes personality meaning",
+  "secondaryKeywords": [
+    "face reading eyes",
+    "what eyes say about personality",
+    "physiognomy eye meaning"
+  ],
+  "longTailKeywords": [
+    "what can your eyes reveal about your personality",
+    "does eye shape reflect personality traits"
+  ],
+  "semanticKeywords": [
+    "micro expressions",
+    "facial symbolism",
+    "visual personality cues"
+  ],
+
+  "keywords": [
+    "eye shape meaning",
+    "face reading",
+    "personality traits"
+  ],
+
+  "cluster": "face-reading-basics",
+  "pillar": "visual-personality-analysis",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-does-your-face-shape-say-about-you",
+    "how-to-read-micro-expressions"
+  ],
+
+  "summary": "Your eyes often reflect emotional tendencies, attention patterns, and social energy rather than fixed destiny.",
+  "featuredSnippetAnswer": "In face reading traditions, the eyes are believed to reflect emotional depth, focus, openness, and social tendencies, offering clues about personality rather than predicting fate.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-03-02",
+  "dateModified": "2026-03-02",
+  "lastReviewed": "2026-03-02",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.05,
+  "targetPosition": 6,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/eyes-personality.jpg",
+  "coverAlt": "Illustration showing different eye shapes and expressions",
+  "ogImage": "/images/eyes-personality.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/visual/what-can-your-eyes-reveal-about-your-personality",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Visual", "url": "/en/wisdom/visual" },
+    { "name": "What Can Your Eyes Reveal About Your Personality?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Can eye shape really determine personality?",
+      "answer": "Eye shape does not determine destiny, but traditional face reading suggests it reflects emotional and social tendencies."
+    },
+    {
+      "question": "Are eye readings scientifically proven?",
+      "answer": "Modern psychology studies facial expressions and micro-expressions, but personality interpretation through eye shape remains symbolic rather than scientific."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "AI face reading analysis",
+    "visual personality report"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "AI face reading analysis",
+      "slug": "ai-face-reading-analysis"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Why Eyes Are Called the Window to Personality"
+    },
+    {
+      "type": "p",
+      "text": "Across many traditions, the eyes are seen as the most expressive part of the face. They reveal emotional intensity, attention patterns, and openness to the world."
+    },
+    {
+      "type": "h2",
+      "text": "Large vs. Small Eyes"
+    },
+    {
+      "type": "p",
+      "text": "Larger eyes are often associated with emotional sensitivity, curiosity, and expressiveness. Smaller or narrower eyes are traditionally linked to focus, discipline, and strategic thinking."
+    },
+    {
+      "type": "h2",
+      "text": "Eye Spacing and Social Energy"
+    },
+    {
+      "type": "p",
+      "text": "Wider-set eyes are symbolically connected with broad perspective and open-mindedness, while closer-set eyes may reflect detail orientation and concentration."
+    },
+    {
+      "type": "h2",
+      "text": "Gaze Intensity and Confidence"
+    },
+    {
+      "type": "p",
+      "text": "A steady, direct gaze often suggests confidence and decisiveness. Softer or shifting eye contact may indicate adaptability or heightened emotional awareness."
+    },
+    {
+      "type": "h2",
+      "text": "Personality Reflection, Not Prediction"
+    },
+    {
+      "type": "p",
+      "text": "Eye interpretation in face reading is not about predicting fate. Instead, it offers a symbolic framework to understand emotional patterns and interpersonal style."
+    }
+  ],
+
+  "cta": {
+    "text": "Upload a photo and receive your AI Visual Personality Analysis at Zanpath.",
+    "url": "https://zanpath.com/visual"
+  }
+}
