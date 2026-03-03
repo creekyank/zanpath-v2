@@ -21,7 +21,7 @@ export default function NavBar({
       { name: "Wisdom", href: "/wisdom" },
     ],
     es: [
-      { name: "Destino", href: "/" },
+      { name: "Camino de Vida", href: "/" },
       { name: "Nombres", href: "/naming" },
       { name: "Sueños", href: "/dream" },
       { name: "Espacio", href: "/fengshui" },

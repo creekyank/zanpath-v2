@@ -29,14 +29,14 @@ export default async function WisdomPage({ params }: any) {
       ? {
           wisdom: "Sabiduría",
           subtitle:
-            "Perspectivas espirituales, interpretación de sueños y análisis del destino basados en la metafísica antigua.",
+            "Perspectivas espirituales, interpretación de sueños y análisis del camino de vida basados en la metafísica antigua.",
           latest: "Artículos Recientes",
           read: "Leer Artículo",
         }
       : {
           wisdom: "Wisdom",
           subtitle:
-            "Spiritual insights, dream meanings and destiny analysis powered by ancient metaphysics.",
+            "Spiritual insights, dream meanings and life path analysis powered by ancient metaphysics.",
           latest: "Latest Articles",
           read: "Read Article",
         };
