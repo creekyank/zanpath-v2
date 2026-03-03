@@ -23,6 +23,22 @@ export async function generateMetadata({ params }: any) {
 export default async function WisdomPage({ params }: any) {
   const { locale } = await params;
 
+  const t = locale === "es"
+  ? {
+      wisdom: "Sabiduría",
+      subtitle:
+        "Perspectivas espirituales, interpretación de sueños y análisis del destino basados en la metafísica antigua.",
+      latest: "Artículos Recientes",
+      read: "Leer Artículo"
+    }
+  : {
+      wisdom: "Wisdom",
+      subtitle:
+        "Spiritual insights, dream meanings and destiny analysis powered by ancient metaphysics.",
+      latest: "Latest Articles",
+      read: "Read Article"
+    };
+
   const articles = getAllArticles(locale);
 
   const latest = articles.slice(0, 5);
@@ -35,17 +51,17 @@ export default async function WisdomPage({ params }: any) {
       <div className="mb-16 text-center max-w-2xl">
         <div className="text-4xl mb-4">📜</div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-          Wisdom
+        {t.wisdom}
         </h1>
         <p className="text-[#4a7c6d] text-sm leading-relaxed">
-          Spiritual insights, dream meanings and destiny analysis powered by ancient metaphysics.
+        {t.subtitle}
         </p >
       </div>
   
       {/* Latest Articles */}
       <div className="w-full space-y-8 mb-16">
         <h2 className="text-2xl font-bold text-center mb-6">
-          Latest Articles
+        {t.latest}
         </h2>
   
         {latest.map((a) => (
@@ -65,7 +81,7 @@ export default async function WisdomPage({ params }: any) {
               href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}
               className="inline-block px-6 py-2 rounded-xl bg-[#0f3d2e] text-white text-sm font-semibold hover:opacity-90 transition"
             >
-              Read Article
+              {t.read}
             </Link>
           </div>
         ))}

@@ -19,6 +19,20 @@ export async function generateMetadata({ params }: any) {
 export default async function ModulePage({ params }: any) {
   const { locale, module } = await params;
 
+  const t = locale === "es"
+  ? {
+      insights: "Análisis",
+      explore: "Explora interpretaciones profundas y perspectivas espirituales.",
+      read: "Leer Artículo",
+      back: "Volver a Sabiduría"
+    }
+  : {
+      insights: "Insights",
+      explore: "Explore in-depth interpretations and spiritual insights.",
+      read: "Read Article",
+      back: "Back to Wisdom"
+    };
+
   const articles = getAllArticles(locale).filter(
     (a) => a.module === module
   );
@@ -30,10 +44,10 @@ export default async function ModulePage({ params }: any) {
       <div className="mb-16 text-center max-w-2xl">
         <div className="text-4xl mb-4">✨</div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 capitalize">
-          {module} Insights
+        {module} {t.insights}
         </h1>
         <p className="text-[#4a7c6d] text-sm leading-relaxed">
-          Explore in-depth {module} interpretations and spiritual insights.
+        {t.explore}
         </p >
       </div>
   
@@ -59,7 +73,7 @@ export default async function ModulePage({ params }: any) {
               href={`/${locale}/wisdom/${a.module}/${a.slug}`}
               className="inline-block px-6 py-2 rounded-xl bg-[#0f3d2e] text-white text-sm font-semibold hover:opacity-90 transition"
             >
-              Read Article
+              {t.read}
             </Link>
           </div>
         ))}
@@ -72,7 +86,7 @@ export default async function ModulePage({ params }: any) {
           href={`/${locale}/wisdom`}
           className="inline-block bg-white text-[#0f3d2e] px-8 py-3 rounded-full text-sm font-semibold border border-[#0f3d2e] hover:bg-[#0f3d2e] hover:text-white transition shadow-md"
         >
-          ← Back to Wisdom
+          ←  {t.back}
         </Link>
       </div>
   

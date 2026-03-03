@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: any) {
   return buildMetadata(article);
 }
 
-/* ✅ 只升级样式，不改逻辑 */
+/* 样式渲染保持不变 */
 function renderBlock(block: any, index: number) {
   switch (block.type) {
     case "h2":
@@ -83,6 +83,40 @@ function renderBlock(block: any, index: number) {
 export default async function ArticlePage({ params }: any) {
   const { locale, module, slug } = await params;
 
+  /* ===== 模块显示名称翻译 ===== */
+  const moduleNames: Record<string, string> =
+    locale === "es"
+      ? {
+          dream: "Sueños",
+          space: "Espacio",
+          naming: "Nombres",
+          "life-path": "Destino",
+          visual: "Visual",
+        }
+      : {
+          dream: "Dream",
+          space: "Space",
+          naming: "Naming",
+          "life-path": "Life Path",
+          visual: "Visual",
+        };
+
+        const displayModule = moduleNames[module] ?? module;
+
+  /* ===== UI 文案翻译 ===== */
+  const t =
+    locale === "es"
+      ? {
+          related: "Artículos Relacionados",
+          faq: "Preguntas Frecuentes",
+          backWisdom: "Volver a Sabiduría",
+        }
+      : {
+          related: "Related Insights",
+          faq: "Frequently Asked Questions",
+          backWisdom: "Back to Wisdom",
+        };
+
   const article = getArticle(locale, module, slug);
   if (!article) return notFound();
 
@@ -140,7 +174,7 @@ export default async function ArticlePage({ params }: any) {
       {related.length > 0 && (
         <div className="mt-24">
           <h2 className="text-2xl font-bold mb-10 text-center">
-            Related Insights
+            {t.related}
           </h2>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -163,7 +197,7 @@ export default async function ArticlePage({ params }: any) {
       {faq.length > 0 && (
         <div className="mt-28">
           <h2 className="text-2xl font-bold mb-10 text-center">
-            Frequently Asked Questions
+            {t.faq}
           </h2>
 
           <div className="space-y-8">
@@ -184,13 +218,15 @@ export default async function ArticlePage({ params }: any) {
         </div>
       )}
 
-            {/* ===== Back To List ===== */}
-            <div className="mt-20 text-center">
+      {/* ===== Back To Module List ===== */}
+      <div className="mt-20 text-center">
         <Link
           href={`/${locale}/wisdom/${module}`}
           className="inline-block bg-[#0f3d2e] text-white px-8 py-3 rounded-full text-sm font-semibold hover:opacity-90 transition shadow-md"
         >
-          ← Back to {module.charAt(0).toUpperCase() + module.slice(1)} Articles
+          ← {locale === "es"
+              ? `Volver a Artículos de ${displayModule}`
+              : `Back to ${displayModule} Articles`}
         </Link>
       </div>
 
@@ -200,7 +236,7 @@ export default async function ArticlePage({ params }: any) {
           href={`/${locale}/wisdom`}
           className="inline-block bg-white text-[#0f3d2e] px-8 py-3 rounded-full text-sm font-semibold border border-[#0f3d2e] hover:bg-[#0f3d2e] hover:text-white transition shadow-md"
         >
-          ← Back to Wisdom
+          ← {t.backWisdom}
         </Link>
       </div>
 
@@ -268,13 +304,13 @@ export default async function ArticlePage({ params }: any) {
               {
                 "@type": "ListItem",
                 position: 1,
-                name: "Wisdom",
+                name: locale === "es" ? "Sabiduría" : "Wisdom",
                 item: `${baseUrl}/${locale}/wisdom`,
               },
               {
                 "@type": "ListItem",
                 position: 2,
-                name: module,
+                name: displayModule,
                 item: `${baseUrl}/${locale}/wisdom/${module}`,
               },
               {
@@ -290,4 +326,3 @@ export default async function ArticlePage({ params }: any) {
     </main>
   );
 }
-
