@@ -1,0 +1,153 @@
+{
+  "id": "how-to-know-if-you-have-a-strong-or-weak-day-master",
+  "locale": "en",
+  "module": "life-path",
+
+  "slug": "how-to-know-if-you-have-a-strong-or-weak-day-master",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "How to Know If You Have a Strong or Weak Day Master?",
+  "metaTitle": "Strong vs Weak Day Master in Bazi – How to Tell",
+  "metaDescription": "In Bazi analysis, determining whether your Day Master is strong or weak is essential for understanding element balance and destiny structure. Learn the key signs and indicators.",
+
+  "primaryKeyword": "strong or weak day master bazi",
+  "secondaryKeywords": [
+    "how to read day master strength",
+    "bazi day master analysis",
+    "five elements strength evaluation"
+  ],
+  "longTailKeywords": [
+    "how do i know if my day master is strong",
+    "signs of weak day master in bazi"
+  ],
+  "semanticKeywords": [
+    "day master support",
+    "elemental balance",
+    "chart structure",
+    "energy stability"
+  ],
+
+  "keywords": [
+    "day master",
+    "bazi chart",
+    "element balance"
+  ],
+
+  "cluster": "day-master-structure",
+  "pillar": "bazi-life-path-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "why-do-some-people-attract-wealth-more-easily-than-others",
+    "what-happens-when-fire-is-too-strong-in-your-birth-chart"
+  ],
+
+  "summary": "Day Master strength in Bazi determines how well you can handle wealth, power, and opportunity energies within your chart.",
+  "featuredSnippetAnswer": "You can determine whether your Day Master is strong or weak by analyzing seasonal support, element reinforcement, and whether controlling or draining elements dominate your Bazi chart.",
+
+  "readingTime": 8,
+
+  "datePublished": "2026-03-03",
+  "dateModified": "2026-03-03",
+  "lastReviewed": "2026-03-03",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.07,
+  "targetPosition": 4,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/day-master-strength.jpg",
+  "coverAlt": "Diagram illustrating strong versus weak Day Master in a Bazi chart",
+  "ogImage": "/images/day-master-strength.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/life-path/how-to-know-if-you-have-a-strong-or-weak-day-master",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Life Path", "url": "/en/wisdom/life-path" },
+    { "name": "How to Know If You Have a Strong or Weak Day Master?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is a strong Day Master always better?",
+      "answer": "Not necessarily. A strong Day Master needs different balancing elements than a weak one. Both can succeed with proper structure."
+    },
+    {
+      "question": "Can Day Master strength change over time?",
+      "answer": "The natal structure remains the same, but luck cycles can temporarily strengthen or weaken its influence."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "day master guide",
+    "five elements balance guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "five elements balance guide",
+      "slug": "what-does-it-mean-if-my-five-elements-are-out-of-balance"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "What Is the Day Master?"
+    },
+    {
+      "type": "p",
+      "text": "The Day Master represents your core self in Bazi. It is determined by the Heavenly Stem of your Day Pillar and defines your elemental identity."
+    },
+    {
+      "type": "h2",
+      "text": "Seasonal Support and Element Reinforcement"
+    },
+    {
+      "type": "p",
+      "text": "If your Day Master is supported by the seasonal element and reinforced by similar elements in the chart, it is typically considered strong."
+    },
+    {
+      "type": "h2",
+      "text": "Signs of a Weak Day Master"
+    },
+    {
+      "type": "p",
+      "text": "When controlling or draining elements dominate the chart and supportive elements are scarce, the Day Master may be classified as weak."
+    },
+    {
+      "type": "h2",
+      "text": "Why Strength Matters"
+    },
+    {
+      "type": "p",
+      "text": "Day Master strength determines how you interact with wealth, power, and output elements, shaping life direction and strategy."
+    }
+  ],
+
+  "cta": {
+    "text": "Find out your Day Master strength with AI-powered Bazi analysis at Zanpath.",
+    "url": "https://zanpath.com/life-path"
+  }
+}

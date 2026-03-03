@@ -1,0 +1,153 @@
+{
+  "id": "can-your-element-type-affect-your-career-success",
+  "locale": "en",
+  "module": "life-path",
+
+  "slug": "can-your-element-type-affect-your-career-success",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "Can Your Element Type Affect Your Career Success?",
+  "metaTitle": "Element Type in Bazi – Does It Influence Career Success?",
+  "metaDescription": "In Bazi analysis, your dominant element influences work style, leadership tendencies, risk tolerance, and long-term career alignment. Discover how element type affects success patterns.",
+
+  "primaryKeyword": "element type career success",
+  "secondaryKeywords": [
+    "bazi career analysis",
+    "five elements personality work style",
+    "career alignment bazi"
+  ],
+  "longTailKeywords": [
+    "can my five element type affect my career",
+    "best careers based on bazi element"
+  ],
+  "semanticKeywords": [
+    "wood fire earth metal water",
+    "element dominance",
+    "career structure",
+    "destiny alignment"
+  ],
+
+  "keywords": [
+    "bazi career",
+    "five elements",
+    "life path analysis"
+  ],
+
+  "cluster": "career-destiny-alignment",
+  "pillar": "bazi-life-path-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "how-does-your-birth-time-influence-your-personality-in-bazi",
+    "what-does-it-mean-if-my-five-elements-are-out-of-balance"
+  ],
+
+  "summary": "In Bazi, your dominant element shapes decision-making style, stress patterns, leadership tendencies, and the environments where you thrive professionally.",
+  "featuredSnippetAnswer": "Yes. In Bazi, your dominant element influences how you approach risk, leadership, creativity, and structure, which directly affects career compatibility and long-term success patterns.",
+
+  "readingTime": 7,
+
+  "datePublished": "2026-03-03",
+  "dateModified": "2026-03-03",
+  "lastReviewed": "2026-03-03",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.06,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/bazi-career-elements.jpg",
+  "coverAlt": "Illustration of Five Elements connected to career paths in Bazi",
+  "ogImage": "/images/bazi-career-elements.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/life-path/can-your-element-type-affect-your-career-success",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Life Path", "url": "/en/wisdom/life-path" },
+    { "name": "Can Your Element Type Affect Your Career Success?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Which element is best for career success?",
+      "answer": "No element is universally superior. Success depends on alignment between your dominant element, luck cycles, and chosen industry."
+    },
+    {
+      "question": "Can I change my element type?",
+      "answer": "Your natal element structure cannot change, but you can choose environments and strategies that harmonize with it."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "bazi career analysis",
+    "five elements personality guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "bazi career analysis",
+      "slug": "how-to-read-your-bazi-chart"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Understanding Element Type in Bazi"
+    },
+    {
+      "type": "p",
+      "text": "In Bazi, your dominant element reflects how you process decisions, handle pressure, and pursue opportunities."
+    },
+    {
+      "type": "h2",
+      "text": "How Each Element Approaches Career"
+    },
+    {
+      "type": "p",
+      "text": "Wood favors growth and creativity. Fire seeks visibility and influence. Earth values stability. Metal prioritizes structure. Water excels in strategy and adaptability."
+    },
+    {
+      "type": "h2",
+      "text": "Alignment Creates Sustainable Success"
+    },
+    {
+      "type": "p",
+      "text": "Career success increases when your professional environment supports your elemental strengths rather than constantly opposing them."
+    },
+    {
+      "type": "h2",
+      "text": "Beyond Talent: Timing Matters"
+    },
+    {
+      "type": "p",
+      "text": "Luck pillars and elemental cycles activate different career phases, amplifying or challenging your natural strengths."
+    }
+  ],
+
+  "cta": {
+    "text": "Discover your element-based career strengths with AI Bazi analysis at Zanpath.",
+    "url": "https://zanpath.com/life-path"
+  }
+}
