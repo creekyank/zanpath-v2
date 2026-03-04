@@ -1,0 +1,94 @@
+{
+  "id": "what-are-the-most-common-feng-shui-mistakes-in-modern-homes",
+  "locale": "es",
+  "module": "space",
+
+  "slug": "what-are-the-most-common-feng-shui-mistakes-in-modern-homes",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "¿Cuáles Son los Errores Más Comunes de Feng Shui en los Hogares Modernos?",
+  "metaTitle": "Errores Más Comunes de Feng Shui en Casas Modernas (Y Cómo Corregirlos)",
+  "metaDescription": "Descubre los errores más comunes de Feng Shui en hogares modernos, desde la posición de la cama hasta el desorden y la energía bloqueada, y aprende cómo corregirlos.",
+
+  "primaryKeyword": "errores comunes feng shui",
+  "secondaryKeywords": [
+    "feng shui casa moderna",
+    "errores distribución hogar",
+    "flujo energético hogar"
+  ],
+  "longTailKeywords": [
+    "errores más comunes de feng shui en apartamentos",
+    "cómo corregir mal feng shui en casa moderna"
+  ],
+  "semanticKeywords": [
+    "chi bloqueado",
+    "desequilibrio yin yang",
+    "armonía espacial"
+  ],
+
+  "keywords": [
+    "errores feng shui",
+    "problemas energía hogar",
+    "consejos feng shui"
+  ],
+
+  "cluster": "dinamica-energia-hogar",
+  "pillar": "guia-feng-shui-hogar",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "why-does-my-bedroom-make-me-feel-restless",
+    "does-feng-shui-really-affect-relationships-at-home"
+  ],
+
+  "summary": "Las casas modernas suelen presentar desequilibrios energéticos debido a mala distribución, espejos mal ubicados y acumulación de objetos.",
+  "featuredSnippetAnswer": "Los errores más comunes de Feng Shui incluyen la cama alineada con la puerta, espejos frente a la cama, desorden en la entrada, mala posición del escritorio y acumulación excesiva de objetos. Corregirlos mejora estabilidad y equilibrio emocional.",
+
+  "readingTime": 9,
+
+  "datePublished": "2026-03-04",
+  "dateModified": "2026-03-04",
+  "lastReviewed": "2026-03-04",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Publicación inicial",
+
+  "targetCTR": 0.07,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Equipo Editorial Zanpath",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/common-feng-shui-mistakes-modern-home.jpg",
+  "coverAlt": "Distribución moderna con errores comunes de Feng Shui",
+  "ogImage": "/images/common-feng-shui-mistakes-modern-home.jpg",
+
+  "canonical": "https://zanpath.com/es/sabiduria/space/what-are-the-most-common-feng-shui-mistakes-in-modern-homes",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Sabiduría", "url": "/es/sabiduria" },
+    { "name": "Space", "url": "/es/sabiduria/space" },
+    { "name": "¿Cuáles Son los Errores Más Comunes de Feng Shui en los Hogares Modernos?", "url": "" }
+  ],
+
+  "cta": {
+    "text": "Obtén tu Análisis Personalizado de Feng Shui para tu Hogar en Zanpath.",
+    "url": "https://zanpath.com/es/fengshui"
+  }
+}

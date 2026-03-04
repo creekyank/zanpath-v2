@@ -1,0 +1,160 @@
+{
+  "id": "what-are-the-most-common-feng-shui-mistakes-in-modern-homes",
+  "locale": "en",
+  "module": "space",
+
+  "slug": "what-are-the-most-common-feng-shui-mistakes-in-modern-homes",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "What Are the Most Common Feng Shui Mistakes in Modern Homes?",
+  "metaTitle": "Most Common Feng Shui Mistakes in Modern Homes (And How to Fix Them)",
+  "metaDescription": "Discover the most common Feng Shui mistakes in modern homes, including bed placement, mirror positioning, clutter buildup, and blocked energy flow—and how to correct them.",
+
+  "primaryKeyword": "common feng shui mistakes",
+  "secondaryKeywords": [
+    "modern home feng shui",
+    "feng shui layout errors",
+    "energy flow home"
+  ],
+  "longTailKeywords": [
+    "most common feng shui mistakes in apartments",
+    "how to fix bad feng shui in modern house"
+  ],
+  "semanticKeywords": [
+    "blocked chi",
+    "yin yang imbalance",
+    "spatial harmony"
+  ],
+
+  "keywords": [
+    "feng shui mistakes",
+    "home energy problems",
+    "feng shui tips"
+  ],
+
+  "cluster": "home-energy-dynamics",
+  "pillar": "feng-shui-home-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "why-does-my-bedroom-make-me-feel-restless",
+    "does-feng-shui-really-affect-relationships-at-home"
+  ],
+
+  "summary": "Modern homes often unintentionally create Feng Shui imbalances through poor layout, excessive mirrors, clutter, and misaligned furniture placement.",
+  "featuredSnippetAnswer": "The most common Feng Shui mistakes in modern homes include beds aligned with doors, mirrors facing sleeping areas, clutter blocking pathways, poor desk positioning, and weak entryway energy. Correcting these improves stability, focus, and emotional balance.",
+
+  "readingTime": 9,
+
+  "datePublished": "2026-03-04",
+  "dateModified": "2026-03-04",
+  "lastReviewed": "2026-03-04",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.07,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/common-feng-shui-mistakes-modern-home.jpg",
+  "coverAlt": "Modern home layout illustrating common Feng Shui mistakes",
+  "ogImage": "/images/common-feng-shui-mistakes-modern-home.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/space/what-are-the-most-common-feng-shui-mistakes-in-modern-homes",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Space", "url": "/en/wisdom/space" },
+    { "name": "What Are the Most Common Feng Shui Mistakes in Modern Homes?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is mirror placement really important in Feng Shui?",
+      "answer": "Yes. Mirrors reflecting beds or front doors are believed to overstimulate energy and disturb emotional stability."
+    },
+    {
+      "question": "Does clutter block energy flow?",
+      "answer": "In Feng Shui philosophy, clutter symbolizes stagnation and may represent blocked opportunities or mental stress."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "feng shui home analysis",
+    "energy flow correction guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "feng shui home analysis",
+      "slug": "feng-shui-home-layout-analysis"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "1. Bed Directly Aligned with the Door"
+    },
+    {
+      "type": "p",
+      "text": "Known as the 'coffin position,' placing the bed directly in line with the door may create subconscious tension and disturb sleep quality."
+    },
+    {
+      "type": "h2",
+      "text": "2. Mirrors Facing the Bed"
+    },
+    {
+      "type": "p",
+      "text": "Mirrors reflecting the sleeping area can amplify active energy in a space meant for rest, potentially causing restlessness."
+    },
+    {
+      "type": "h2",
+      "text": "3. Blocked Entryway Energy"
+    },
+    {
+      "type": "p",
+      "text": "The front entrance represents opportunity flow. Shoes, clutter, or dark lighting may symbolically weaken incoming energy."
+    },
+    {
+      "type": "h2",
+      "text": "4. Poor Desk Positioning"
+    },
+    {
+      "type": "p",
+      "text": "Sitting with your back to the door may reduce feelings of control and awareness in professional settings."
+    },
+    {
+      "type": "h2",
+      "text": "5. Excessive Clutter and Storage Under the Bed"
+    },
+    {
+      "type": "p",
+      "text": "Items stored under the bed may represent unresolved emotional weight, subtly influencing mood and sleep."
+    }
+  ],
+
+  "cta": {
+    "text": "Get your personalized AI Feng Shui Home Analysis at Zanpath.",
+    "url": "https://zanpath.com/en/fengshui"
+  }
+}

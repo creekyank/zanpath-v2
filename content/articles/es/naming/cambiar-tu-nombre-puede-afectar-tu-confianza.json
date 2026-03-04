@@ -1,0 +1,145 @@
+{
+  "id": "cambiar-tu-nombre-puede-afectar-tu-confianza",
+  "locale": "es",
+  "module": "naming",
+
+  "slug": "cambiar-tu-nombre-puede-afectar-tu-confianza",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "¿Cambiar tu Nombre Puede Afectar tu Confianza?",
+  "metaTitle": "¿Cambiar tu Nombre Puede Aumentar tu Confianza? Psicología e Identidad",
+  "metaDescription": "Descubre cómo cambiar tu nombre puede influir en la confianza, la percepción personal y la identidad a través de procesos psicológicos y simbólicos.",
+
+  "primaryKeyword": "cambiar nombre confianza",
+  "secondaryKeywords": [
+    "psicologia del cambio de nombre",
+    "nombre e identidad",
+    "autoestima y nombre"
+  ],
+  "longTailKeywords": [
+    "cambiar tu nombre puede afectar tu confianza",
+    "nuevo nombre mejora la autoestima"
+  ],
+  "semanticKeywords": [
+    "cambio de identidad",
+    "auto percepcion",
+    "refuerzo social",
+    "transformacion personal"
+  ],
+
+  "keywords": [
+    "cambio de nombre",
+    "confianza",
+    "psicologia de identidad"
+  ],
+
+  "cluster": "identidad-y-nombres",
+  "pillar": "guia-completa-de-nombres",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "como-puede-un-nombre-influir-en-la-identidad-personal",
+    "puede-tu-nombre-influir-en-tu-destino"
+  ],
+
+  "summary": "Cambiar el nombre puede influir en la confianza al modificar la percepción personal y la respuesta social.",
+  "featuredSnippetAnswer": "Cambiar el nombre puede afectar la confianza al generar un cambio psicológico en la identidad y modificar cómo la persona se percibe y cómo los demás responden.",
+
+  "readingTime": 7,
+
+  "datePublished": "2026-03-03",
+  "dateModified": "2026-03-03",
+  "lastReviewed": "2026-03-03",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Publicación inicial",
+
+  "targetCTR": 0.06,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Equipo Editorial Zanpath",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/name-change-confidence.jpg",
+  "coverAlt": "Ilustración conceptual sobre cambio de nombre y confianza",
+  "ogImage": "/images/name-change-confidence.jpg",
+
+  "canonical": "https://zanpath.com/es/sabiduria/naming/cambiar-tu-nombre-puede-afectar-tu-confianza",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Sabiduría", "url": "/es/sabiduria" },
+    { "name": "Naming", "url": "/es/sabiduria/naming" },
+    { "name": "¿Cambiar tu Nombre Puede Afectar tu Confianza?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "¿Cambiar el nombre cambia la personalidad?",
+      "answer": "No cambia la personalidad directamente, pero puede influir en la percepción personal y el comportamiento."
+    },
+    {
+      "question": "¿Por qué algunas personas se sienten más seguras con un nuevo nombre?",
+      "answer": "Un nuevo nombre puede simbolizar un nuevo comienzo y reforzar una imagen positiva de sí mismas."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "analisis de nombre con IA",
+    "guia de identidad y nombres"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "analisis de nombre con IA",
+      "slug": "herramienta-analisis-nombre-ia"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Cambio Psicologico de Identidad"
+    },
+    {
+      "type": "p",
+      "text": "El nombre forma parte central de la identidad. Cambiarlo puede crear una sensación de renovación personal."
+    },
+    {
+      "type": "h2",
+      "text": "Refuerzo Social"
+    },
+    {
+      "type": "p",
+      "text": "La reacción de los demás ante un nuevo nombre puede fortalecer nuevas formas de confianza y expresión."
+    },
+    {
+      "type": "h2",
+      "text": "Liberarse de Asociaciones Negativas"
+    },
+    {
+      "type": "p",
+      "text": "Un nuevo nombre puede ayudar a dejar atrás recuerdos o etiquetas asociadas con el pasado."
+    }
+  ],
+
+  "cta": {
+    "text": "Descubre cómo tu nombre influye en tu identidad con análisis inteligente en Zanpath.",
+    "url": "https://zanpath.com/es/naming"
+  }
+}

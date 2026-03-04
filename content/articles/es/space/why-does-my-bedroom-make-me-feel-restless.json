@@ -1,0 +1,144 @@
+{
+  "id": "why-does-my-bedroom-make-me-feel-restless",
+  "locale": "es",
+  "module": "space",
+
+  "slug": "why-does-my-bedroom-make-me-feel-restless",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "¿Por Qué Mi Dormitorio Me Hace Sentir Inquieto?",
+  "metaTitle": "¿Por Qué Mi Dormitorio Me Hace Sentir Inquieto? Energía y Feng Shui",
+  "metaDescription": "Si tu dormitorio te genera ansiedad o dificultad para dormir, descubre cómo la distribución, los espejos, el desorden y el flujo energético pueden influir en tu descanso.",
+
+  "primaryKeyword": "dormitorio me hace sentir inquieto",
+  "secondaryKeywords": [
+    "energía feng shui dormitorio",
+    "causas del sueño inquieto",
+    "distribución dormitorio feng shui"
+  ],
+  "longTailKeywords": [
+    "por qué me siento ansioso en mi dormitorio",
+    "cómo corregir energía inquieta en dormitorio feng shui"
+  ],
+  "semanticKeywords": [
+    "desequilibrio energético",
+    "ambiente de descanso",
+    "armonía yin yang"
+  ],
+
+  "keywords": [
+    "dormitorio inquieto",
+    "feng shui dormitorio",
+    "energía del sueño"
+  ],
+
+  "cluster": "problemas-energia-dormitorio",
+  "pillar": "guia-feng-shui-hogar",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "does-feng-shui-really-affect-relationships-at-home",
+    "como-equilibrar-energia-hogar"
+  ],
+
+  "summary": "Un dormitorio inquietante suele reflejar desequilibrio energético, mala distribución o exceso de estímulos visuales.",
+  "featuredSnippetAnswer": "Si tu dormitorio te hace sentir inquieto, puede deberse a una distribución desequilibrada, espejos frente a la cama, desorden o exceso de estimulación. El Feng Shui recomienda simetría, iluminación suave y flujo libre para mejorar el descanso.",
+
+  "readingTime": 7,
+
+  "datePublished": "2026-03-04",
+  "dateModified": "2026-03-04",
+  "lastReviewed": "2026-03-04",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Publicación inicial",
+
+  "targetCTR": 0.06,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Equipo Editorial Zanpath",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/restless-bedroom-energy.jpg",
+  "coverAlt": "Dormitorio con energía desequilibrada según Feng Shui",
+  "ogImage": "/images/restless-bedroom-energy.jpg",
+
+  "canonical": "https://zanpath.com/es/sabiduria/space/why-does-my-bedroom-make-me-feel-restless",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Sabiduría", "url": "/es/sabiduria" },
+    { "name": "Space", "url": "/es/sabiduria/space" },
+    { "name": "¿Por Qué Mi Dormitorio Me Hace Sentir Inquieto?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "¿Los espejos pueden afectar el descanso?",
+      "answer": "En el Feng Shui, un espejo frente a la cama puede estimular demasiado la energía y alterar el sueño."
+    },
+    {
+      "question": "¿El desorden influye en el estado emocional?",
+      "answer": "Sí. El desorden puede generar tensión subconsciente y sensación de inquietud."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "análisis feng shui dormitorio",
+    "guía equilibrio energía sueño"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "análisis feng shui dormitorio",
+      "slug": "feng-shui-dormitorio-pareja"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Cuando el Dormitorio No Transmite Calma"
+    },
+    {
+      "type": "p",
+      "text": "El dormitorio debería ser el espacio más tranquilo del hogar. Si sientes ansiedad o dificultad para relajarte, la energía del entorno podría estar influyendo en tu estado emocional."
+    },
+    {
+      "type": "h2",
+      "text": "Posición de la Cama y Flujo Energético"
+    },
+    {
+      "type": "p",
+      "text": "Según el Feng Shui, la cama simboliza estabilidad. Una posición alineada con la puerta o bajo una ventana puede debilitar la sensación de seguridad."
+    },
+    {
+      "type": "h2",
+      "text": "Espejos y Exceso de Estímulo"
+    },
+    {
+      "type": "p",
+      "text": "Espejos frente a la cama, luces intensas o dispositivos electrónicos pueden generar energía activa en un espacio destinado al descanso."
+    }
+  ],
+
+  "cta": {
+    "text": "Obtén tu Análisis Energético Personalizado con IA en Zanpath.",
+    "url": "https://zanpath.com/es/fengshui"
+  }
+}

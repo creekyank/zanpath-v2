@@ -1,0 +1,152 @@
+{
+  "id": "how-does-natural-light-impact-energy-in-a-space",
+  "locale": "en",
+  "module": "space",
+
+  "slug": "how-does-natural-light-impact-energy-in-a-space",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "How Does Natural Light Impact Energy in a Space?",
+  "metaTitle": "How Natural Light Impacts Energy in a Space (Feng Shui & Mood Explained)",
+  "metaDescription": "Discover how natural light influences energy flow, mood, productivity, and emotional balance in a space according to Feng Shui and environmental psychology.",
+
+  "primaryKeyword": "natural light energy in a space",
+  "secondaryKeywords": [
+    "feng shui natural light",
+    "home lighting energy",
+    "sunlight and mood indoors"
+  ],
+  "longTailKeywords": [
+    "how does sunlight affect feng shui energy",
+    "does natural light improve home energy flow"
+  ],
+  "semanticKeywords": [
+    "yang energy",
+    "chi circulation",
+    "environmental psychology"
+  ],
+
+  "keywords": [
+    "natural light feng shui",
+    "home energy balance",
+    "sunlight indoors"
+  ],
+
+  "cluster": "home-energy-dynamics",
+  "pillar": "feng-shui-home-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-are-the-most-common-feng-shui-mistakes-in-modern-homes",
+    "why-does-my-bedroom-make-me-feel-restless"
+  ],
+
+  "summary": "Natural light strengthens energy flow, enhances mood, and activates vitality within indoor spaces.",
+  "featuredSnippetAnswer": "Natural light increases yang energy, improves chi circulation, and enhances mood and productivity. In Feng Shui, well-balanced sunlight creates vitality and clarity, while insufficient light may lead to stagnation or low emotional energy.",
+
+  "readingTime": 8,
+
+  "datePublished": "2026-03-04",
+  "dateModified": "2026-03-04",
+  "lastReviewed": "2026-03-04",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.07,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/natural-light-energy-space.jpg",
+  "coverAlt": "Sunlight entering a modern home symbolizing strong positive energy",
+  "ogImage": "/images/natural-light-energy-space.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/space/how-does-natural-light-impact-energy-in-a-space",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Space", "url": "/en/wisdom/space" },
+    { "name": "How Does Natural Light Impact Energy in a Space?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is more sunlight always better in Feng Shui?",
+      "answer": "Not necessarily. While natural light increases vitality, excessive harsh light can create imbalance. The goal is balanced, soft illumination."
+    },
+    {
+      "question": "Can lack of natural light affect mood?",
+      "answer": "Yes. Insufficient sunlight may reduce energy levels and contribute to feelings of stagnation or low motivation."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "feng shui home analysis",
+    "improve home energy flow"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "feng shui home analysis",
+      "slug": "feng-shui-home-layout-analysis"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Natural Light as Yang Energy"
+    },
+    {
+      "type": "p",
+      "text": "In Feng Shui, sunlight represents active yang energy. It stimulates movement, clarity, and growth within a space."
+    },
+    {
+      "type": "h2",
+      "text": "Impact on Mood and Productivity"
+    },
+    {
+      "type": "p",
+      "text": "Bright, well-lit environments improve mental alertness and emotional stability. Natural light supports decision-making and positive interaction."
+    },
+    {
+      "type": "h2",
+      "text": "When Light Is Insufficient"
+    },
+    {
+      "type": "p",
+      "text": "Dark corners and blocked windows may lead to stagnant chi. Introducing sheer curtains, mirrors for reflection (carefully placed), or light-colored surfaces can help rebalance energy."
+    },
+    {
+      "type": "h2",
+      "text": "Balancing Light for Harmony"
+    },
+    {
+      "type": "p",
+      "text": "The key is moderation—soft, diffused natural light that circulates evenly promotes vitality without overstimulation."
+    }
+  ],
+
+  "cta": {
+    "text": "Get your personalized AI Feng Shui Light & Energy Analysis at Zanpath.",
+    "url": "https://zanpath.com/en/fengshui"
+  }
+}
