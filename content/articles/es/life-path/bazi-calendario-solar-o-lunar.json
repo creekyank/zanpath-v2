@@ -1,0 +1,143 @@
+
+{
+  "id": "bazi-calendario-solar-o-lunar",
+  "locale": "es",
+  "module": "camino-de-vida",
+  "slug": "bazi-calendario-solar-o-lunar",
+  "status": "published",
+  "featured": false,
+  "title": "¿Bazi se Basa en el Calendario Solar o Lunar?",
+  "metaTitle": "Calendario en Bazi: Diferencias entre Solar y Lunar en el Análisis de los Cuatro Pilares",
+  "metaDescription": "Descubre si Bazi (Cuatro Pilares del Destino) utiliza el calendario solar o lunar. Aprende cómo la astrología china calcula tu destino con ambos calendarios y sus diferencias.",
+  "primaryKeyword": "calendario Bazi solar o lunar",
+  "secondaryKeywords": [
+    "explicación calendario Bazi",
+    "solar vs lunar en Bazi",
+    "calendarios astrología china"
+  ],
+  "longTailKeywords": [
+    "Bazi usa calendario solar o lunar",
+    "diferencia calendario solar y lunar en Bazi",
+    "cómo los Cuatro Pilares usan los calendarios"
+  ],
+  "semanticKeywords": [
+    "Tallos Celestiales",
+    "Ramas Terrestres",
+    "cálculo Cuatro Pilares",
+    "Day Master",
+    "interpretación carta Bazi"
+  ],
+  "keywords": [
+    "Bazi",
+    "calendario solar",
+    "calendario lunar",
+    "astrología china",
+    "Cuatro Pilares"
+  ],
+  "cluster": "calendarios-bazi",
+  "pillar": "guia-bazi-principiantes",
+  "clusterIntent": "informational",
+  "relatedArticles": [
+    "que-es-bazi-y-como-funciona",
+    "que-son-los-cuatro-pilares-del-destino",
+    "como-leer-mi-propia-carta-bazi-paso-a-paso"
+  ],
+  "summary": "Bazi utiliza el calendario solar para calcular los Cuatro Pilares, aunque las fechas lunares se usan en festivales y contextos culturales. Conocer ambos calendarios ayuda a interpretar tu destino con precisión.",
+  "featuredSnippetAnswer": "Bazi se basa principalmente en el calendario solar para calcular los Cuatro Pilares. Las fechas lunares se usan para festivales y eventos especiales, pero tus pilares de día, mes y año siguen cálculos solares para garantizar precisión.",
+  "readingTime": 10,
+  "datePublished": "2026-03-04",
+  "dateModified": "2026-03-04",
+  "lastReviewed": "2026-03-04",
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Publicación inicial",
+  "targetCTR": 0.06,
+  "targetPosition": 4,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+  "coverImage": "/images/bazi-calendar.jpg",
+  "coverAlt": "Ilustración de calendario solar y lunar en Bazi",
+  "ogImage": "/images/bazi-calendar.jpg",
+  "canonical": "https://zanpath.com/es/camino-de-vida/bazi-calendario-solar-o-lunar",
+  "robots": "index, follow",
+  "priority": 0.9,
+  "changefreq": "monthly",
+  "breadcrumbs": [
+    { "name": "Camino de Vida", "url": "/es/camino-de-vida" },
+    { "name": "¿Bazi se Basa en el Calendario Solar o Lunar?", "url": "" }
+  ],
+  "faq": [
+    {
+      "question": "¿Bazi usa el calendario lunar para todos los cálculos?",
+      "answer": "No, Bazi usa el calendario solar para determinar los Cuatro Pilares. Las fechas lunares se usan principalmente para festivales."
+    },
+    {
+      "question": "¿Por qué se usa el calendario solar en Bazi?",
+      "answer": "El calendario solar se alinea con los cambios estacionales, lo cual es crucial para un análisis preciso del destino y la interacción de los elementos."
+    }
+  ],
+  "suggestedAnchors": [
+    "calendarios solar y lunar Bazi",
+    "guía calendario astrología china"
+  ],
+  "internalLinks": [
+    {
+      "anchor": "cálculo Cuatro Pilares",
+      "slug": "que-son-los-cuatro-pilares-del-destino"
+    }
+  ],
+  "content": [
+    {
+      "type": "h2",
+      "text": "Introducción a los Calendarios en Bazi"
+    },
+    {
+      "type": "p",
+      "text": "Bazi, también conocido como los Cuatro Pilares del Destino, utiliza un sistema de tiempo derivado de la astronomía china antigua. Comprender si sigue el calendario solar o lunar es clave para interpretar tu destino con precisión."
+    },
+    {
+      "type": "h2",
+      "text": "El Calendario Solar en Bazi"
+    },
+    {
+      "type": "p",
+      "text": "Bazi calcula principalmente los pilares de año, mes, día y hora usando el calendario solar. Esto alinea tus Cuatro Pilares con los cambios estacionales, asegurando que las interacciones elementales reflejen el tiempo real."
+    },
+    {
+      "type": "h2",
+      "text": "El Calendario Lunar y Su Papel"
+    },
+    {
+      "type": "p",
+      "text": "El calendario lunar se usa tradicionalmente para marcar festivales, días festivos y fechas auspiciosas. Aunque aporta contexto cultural, las fechas lunares no alteran directamente el cálculo de tus Cuatro Pilares."
+    },
+    {
+      "type": "h2",
+      "text": "Combinando el Entendimiento Solar y Lunar"
+    },
+    {
+      "type": "p",
+      "text": "Conocer ambos calendarios te permite apreciar la importancia cultural de los festivales mientras mantienes tu carta Bazi precisa. Por ejemplo, conocer tu pilar solar mientras celebras cumpleaños lunares armoniza los rituales personales con el análisis de destino."
+    },
+    {
+      "type": "h2",
+      "text": "Conclusión"
+    },
+    {
+      "type": "p",
+      "text": "Bazi se basa en el calendario solar para un cálculo preciso del destino. Incorporar conocimiento del calendario lunar enriquece la comprensión cultural, pero tu análisis elemental y los Cuatro Pilares permanecen basados en el solar para garantizar exactitud."
+    }
+  ],
+  "cta": {
+    "text": "Genera tu carta Bazi y explora tu destino usando el calendario solar en Zanpath.",
+    "url": "https://zanpath.com/es"
+  }
+}

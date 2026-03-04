@@ -1,0 +1,169 @@
+{
+  "id": "what-is-bazi-and-how-does-it-work",
+  "locale": "en",
+  "module": "life-path",
+
+  "slug": "what-is-bazi-and-how-does-it-work",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "What Is Bazi and How Does It Work?",
+  "metaTitle": "What Is Bazi? Complete Beginner Guide to the Four Pillars of Destiny",
+  "metaDescription": "What is Bazi and how does it actually work? Learn how the Four Pillars of Destiny analyze your birth data, personality structure, life cycles, wealth potential, and relationship timing.",
+
+  "primaryKeyword": "what is bazi",
+  "secondaryKeywords": [
+    "four pillars of destiny",
+    "bazi chart meaning",
+    "how bazi works"
+  ],
+  "longTailKeywords": [
+    "what is bazi and how does it work",
+    "how to read a bazi chart for beginners"
+  ],
+  "semanticKeywords": [
+    "five elements",
+    "day master",
+    "luck pillars",
+    "element balance"
+  ],
+
+  "keywords": [
+    "bazi",
+    "four pillars",
+    "five elements"
+  ],
+
+  "cluster": "bazi-foundation",
+  "pillar": "bazi-life-path-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "how-to-know-if-you-have-a-strong-or-weak-day-master",
+    "what-does-it-mean-if-my-five-elements-are-out-of-balance"
+  ],
+
+  "summary": "Bazi, also known as the Four Pillars of Destiny, is a Chinese metaphysical system that analyzes your birth date and time to reveal personality traits, life cycles, strengths, and timing patterns.",
+  "featuredSnippetAnswer": "Bazi is a traditional Chinese system called the Four Pillars of Destiny that analyzes your birth year, month, day, and hour to reveal personality structure, element balance, and life timing patterns.",
+
+  "readingTime": 10,
+
+  "datePublished": "2026-03-03",
+  "dateModified": "2026-03-03",
+  "lastReviewed": "2026-03-03",
+
+  "evergreenScore": 10,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Expanded foundational guide for SEO",
+
+  "targetCTR": 0.08,
+  "targetPosition": 3,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/what-is-bazi-guide.jpg",
+  "coverAlt": "Diagram of a Bazi Four Pillars chart with five elements interaction",
+  "ogImage": "/images/what-is-bazi-guide.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/life-path/what-is-bazi-and-how-does-it-work",
+
+  "robots": "index, follow",
+  "priority": 0.9,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Life Path", "url": "/en/wisdom/life-path" },
+    { "name": "What Is Bazi and How Does It Work?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is Bazi the same as the Chinese zodiac?",
+      "answer": "No. The Chinese zodiac uses only birth year, while Bazi analyzes year, month, day, and hour for a much deeper life structure interpretation."
+    },
+    {
+      "question": "Can Bazi predict exact future events?",
+      "answer": "Bazi identifies timing patterns and probabilities rather than fixed events. It reveals cycles of opportunity, pressure, and transformation."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "bazi beginner guide",
+    "five elements balance explained"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "five elements balance explained",
+      "slug": "what-does-it-mean-if-my-five-elements-are-out-of-balance"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "What Is Bazi?"
+    },
+    {
+      "type": "p",
+      "text": "Bazi, also known as the Four Pillars of Destiny, is a traditional Chinese metaphysical system used to analyze a person's life blueprint based on their birth date and time. The term 'Bazi' means 'Eight Characters,' referring to the eight Chinese characters derived from your birth year, month, day, and hour."
+    },
+    {
+      "type": "h2",
+      "text": "The Four Pillars Explained"
+    },
+    {
+      "type": "p",
+      "text": "Your birth data is converted into four pillars: Year Pillar, Month Pillar, Day Pillar, and Hour Pillar. Each pillar consists of a Heavenly Stem and an Earthly Branch, forming the eight characters that define your energetic structure."
+    },
+    {
+      "type": "h2",
+      "text": "The Role of the Five Elements"
+    },
+    {
+      "type": "p",
+      "text": "At the core of Bazi analysis are the Five Elements: Wood, Fire, Earth, Metal, and Water. These elements interact in cycles of support and control. The balance between them determines personality tendencies, strengths, weaknesses, and life themes."
+    },
+    {
+      "type": "h2",
+      "text": "What Is the Day Master?"
+    },
+    {
+      "type": "p",
+      "text": "The Day Master represents your core self. It is the Heavenly Stem of your Day Pillar and defines your elemental identity. Understanding whether your Day Master is strong or weak is essential for interpreting your chart correctly."
+    },
+    {
+      "type": "h2",
+      "text": "How Bazi Analyzes Life Timing"
+    },
+    {
+      "type": "p",
+      "text": "Bazi does not only describe personality. It also tracks 10-year Luck Pillars and annual cycles. These cycles reveal when certain elements become activated, influencing wealth opportunities, career shifts, relationships, or challenges."
+    },
+    {
+      "type": "h2",
+      "text": "Is Bazi Deterministic?"
+    },
+    {
+      "type": "p",
+      "text": "Bazi is not about fixed destiny. Instead, it maps energetic tendencies and timing patterns. With awareness, individuals can make strategic decisions aligned with favorable cycles."
+    }
+  ],
+
+  "cta": {
+    "text": "Discover your personal Bazi chart with AI-powered life path analysis at Zanpath.",
+    "url": "https://zanpath.com/en"
+  }
+}
