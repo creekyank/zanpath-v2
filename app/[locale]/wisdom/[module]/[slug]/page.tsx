@@ -171,6 +171,26 @@ export default async function ArticlePage({ params }: any) {
           )}
       </article>
 
+      {/* ===== Dynamic CTA Section ===== */}
+        {article.cta && (
+          <div className="mt-28">
+            <div className="bg-[#0f3d2e] rounded-3xl p-10 text-center text-white shadow-xl">
+              
+              <p className="max-w-2xl mx-auto mb-8 text-white/90 leading-relaxed text-lg">
+                {article.cta.text}
+              </p >
+
+              <Link
+                href={article.cta.url}
+                className="inline-block bg-white text-[#0f3d2e] px-10 py-4 rounded-full font-semibold hover:opacity-90 transition shadow-md"
+              >
+                {locale === "es" ? "Comenzar Ahora" : "Start Now"}
+              </Link>
+
+            </div>
+          </div>
+        )}
+
       {/* ===== Related ===== */}
       {related.length > 0 && (
         <div className="mt-24">
@@ -217,43 +237,6 @@ export default async function ArticlePage({ params }: any) {
             ))}
           </div>
         </div>
-      )}
-
-      {/* ===== Dynamic + Sticky CTA Section ===== */}
-      {article.cta && (
-        <>
-          {/* ===== Dynamic CTA Section ===== */}
-          <div className="mt-28">
-            <div className="bg-[#0f3d2e] rounded-3xl p-10 text-center text-white shadow-xl">
-              <p className="max-w-2xl mx-auto mb-8 text-white/90 leading-relaxed text-lg">
-                {article.cta.text}
-              </p >
-
-              <Link
-                href={article.cta.url}
-                className="inline-block bg-white text-[#0f3d2e] px-10 py-4 rounded-full font-semibold hover:opacity-90 transition shadow-md"
-              >
-                {locale === "es" ? "Comenzar Ahora" : "Start Now"}
-              </Link>
-            </div>
-          </div>
-
-          {/* ===== Sticky CTA (Floating Bottom Bar) ===== */}
-          <div className="fixed bottom-0 left-0 w-full bg-transparent shadow-lg z-50"> 
-          <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm md:text-base text-[#0f3d2e]/70 font-medium text-center md:text-left"> 
-              {article.cta.text}
-            </p >
-
-            <Link
-              href={article.cta.url}
-              className="bg-[#0f3d2e] text-white px-6 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition whitespace-nowrap"
-            >
-              {locale === "es" ? "Comenzar" : "Start Now"}
-            </Link>
-          </div>
-        </div>
-        </>
       )}
 
       {/* ===== Back To Module List ===== */}
