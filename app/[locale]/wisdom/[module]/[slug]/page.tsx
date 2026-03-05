@@ -239,9 +239,9 @@ export default async function ArticlePage({ params }: any) {
           </div>
 
           {/* ===== Sticky CTA (Floating Bottom Bar) ===== */}
-          <div className="fixed bottom-0 left-0 w-full bg-transparent shadow-lg z-50"> // 将 bg-white 改为 bg-transparent，去除 border-t
+          <div className="fixed bottom-0 left-0 w-full bg-transparent shadow-lg z-50"> 
           <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm md:text-base text-[#0f3d2e]/70 font-medium text-center md:text-left"> // 为文字添加不透明度 (例如 /70)，使其变淡
+            <p className="text-sm md:text-base text-[#0f3d2e]/70 font-medium text-center md:text-left"> 
               {article.cta.text}
             </p >
 
