@@ -31,8 +31,8 @@ export default async function WisdomPage({ params }: any) {
             "Perspectivas espirituales, interpretación de sueños y análisis del camino de vida basados en la metafísica antigua.",
           latest: "Artículos Recientes",
           read: "Leer Artículo",
-          viewAll: "Ver Todos",
-          articles: "Artículos",
+          viewAll: "Ver Todos →",          // ✅ 新增
+          articles: "Artículos",            // ✅ 新增
         }
       : {
           wisdom: "Wisdom",
@@ -40,10 +40,11 @@ export default async function WisdomPage({ params }: any) {
             "Spiritual insights, dream meanings and life path analysis powered by ancient metaphysics.",
           latest: "Latest Articles",
           read: "Read Article",
-          viewAll: "View All",
-          articles: "Articles",
+          viewAll: "View All →",            // ✅ 新增
+          articles: "Articles",             // ✅ 新增
         };
 
+  // ✅ 模块翻译映射（保留你之前版本）
   const moduleNames: Record<string, string> =
     locale === "es"
       ? {
@@ -66,98 +67,94 @@ export default async function WisdomPage({ params }: any) {
   const modules = Array.from(new Set(articles.map((a) => a.module)));
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-20">
+    <main className="max-w-4xl mx-auto px-6 py-16 flex flex-col items-center">
 
-      {/* ===== Header ===== */}
-      <section className="text-center mb-24">
-        <div className="text-5xl mb-6">📜</div>
-
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6">
+      {/* Header */}
+      <div className="mb-16 text-center max-w-2xl">
+        <div className="text-4xl mb-4">📜</div>
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
           {t.wisdom}
         </h1>
-
-        <p className="text-[#4a7c6d] text-base leading-relaxed max-w-2xl mx-auto">
+        <p className="text-[#4a7c6d] text-sm leading-relaxed">
           {t.subtitle}
         </p >
-      </section>
+      </div>
 
-      {/* ===== Latest Articles ===== */}
-      <section className="mb-28">
-        <h2 className="text-3xl font-bold text-center mb-12">
+      {/* Latest Articles */}
+      <div className="w-full space-y-8 mb-16">
+        <h2 className="text-2xl font-bold text-center mb-6">
           {t.latest}
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-10">
-          {latest.map((a) => (
-            <div
-              key={a.slug}
-              className="bg-white rounded-3xl shadow-lg p-10 border border-gray-100 transition hover:-translate-y-1 duration-300"
-            >
-              <div className="text-xs font-semibold text-[#356f5b] mb-4 uppercase tracking-wider">
-                {moduleNames[a.module] ?? a.module}
-              </div>
-
-              <h3 className="text-2xl font-bold mb-6 leading-snug">
-                {a.title}
-              </h3>
-
-              <Link
-                href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}
-                className="inline-block px-6 py-3 rounded-full bg-[#0f3d2e] text-white text-sm font-semibold hover:opacity-90 transition"
-              >
-                {t.read}
-              </Link>
+        {latest.map((a) => (
+          <div
+            key={a.slug}
+            className="bg-white rounded-3xl shadow-xl shadow-[#dff3ee]/50 p-8 border border-white transition hover:translate-y-[-4px] duration-300"
+          >
+            <div className="text-xs font-bold text-[#356f5b] mb-3 uppercase tracking-wider">
+              {moduleNames[a.module] ?? a.module}
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* ===== Module Sections ===== */}
-      <section className="space-y-28">
+            <h3 className="text-xl font-bold mb-4 leading-tight">
+              {a.title}
+            </h3>
+
+            <Link
+              href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}
+              className="inline-block px-6 py-2 rounded-xl bg-[#0f3d2e] text-white text-sm font-semibold hover:opacity-90 transition"
+            >
+              {t.read}
+            </Link>
+          </div>
+        ))}
+      </div>
+
+      {/* Module Sections */}
+      <div className="w-full space-y-16">
         {modules.map((module) => {
+
           const moduleArticles = articles.filter(
             (a) => a.module === module
           );
-          const count = moduleArticles.length;
+
+          const count = moduleArticles.length;   // ✅ 新增统计数量
 
           return (
-            <div
-              key={module}
-              className="bg-[#f9fbfa] rounded-3xl px-10 py-14"
-            >
-              {/* 模块标题区 */}
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold capitalize mb-2">
-                  <Link
-                    href={`/${locale}/wisdom/${module}`}
-                    className="hover:underline"
-                  >
-                    {moduleNames[module] ?? module}
-                  </Link>
-                </h2>
+            <div key={module}>
 
-                <p className="text-sm text-gray-500">
-                  {count} {t.articles}
-                </p >
+              {/* ✅ 改动1：模块标题可点击 + View All */}
+              <div className="relative mb-8 text-center">
+                <div>
+                  <h2 className="text-2xl font-bold capitalize">
+                    <Link
+                      href={`/${locale}/wisdom/${module}`}
+                      className="hover:underline"
+                    >
+                      {moduleNames[module] ?? module}
+                    </Link>
+                  </h2>
 
-                <div className="mt-6">
-                  <Link
-                    href={`/${locale}/wisdom/${module}`}
-                    className="inline-block px-6 py-2 rounded-full border border-[#0f3d2e] text-[#0f3d2e] text-sm font-semibold hover:bg-[#0f3d2e] hover:text-white transition"
-                  >
-                    {t.viewAll}
-                  </Link>
+                  {/* ✅ 改动2：显示文章数量 */}
+                  <p className="text-xs text-gray-500 mt-1">
+                    {count} {t.articles}
+                  </p >
                 </div>
+
+                <Link
+                  href={`/${locale}/wisdom/${module}`}
+                  className="text-sm font-semibold text-[#0f3d2e] hover:underline"
+                >
+                  {t.viewAll}
+                </Link>
               </div>
 
-              {/* 文章预览 */}
-              <div className="grid md:grid-cols-2 gap-8">
-                {moduleArticles.slice(0, 4).map((a) => (
+              <div className="space-y-6">
+                {moduleArticles.slice(0, 5).map((a) => (
                   <div
                     key={a.slug}
-                    className="bg-white rounded-2xl shadow-md p-6 border border-gray-100 transition hover:-translate-y-1 duration-300"
+                    className="bg-white rounded-2xl shadow-md p-6 border border-white transition hover:translate-y-[-3px] duration-300"
                   >
-                    <h3 className="text-lg font-semibold leading-snug">
+                    <h3 className="text-lg font-semibold mb-2">
                       <Link href={`/${a.locale}/wisdom/${a.module}/${a.slug}`}>
                         {a.title}
                       </Link>
@@ -168,7 +165,7 @@ export default async function WisdomPage({ params }: any) {
             </div>
           );
         })}
-      </section>
+      </div>
 
     </main>
   );
