@@ -1,4 +1,3 @@
-
 import { getAllArticles } from "@/lib/article-loader";
 import Link from "next/link";
 
@@ -32,6 +31,8 @@ export default async function WisdomPage({ params }: any) {
             "Perspectivas espirituales, interpretación de sueños y análisis del camino de vida basados en la metafísica antigua.",
           latest: "Artículos Recientes",
           read: "Leer Artículo",
+          viewAll: "Ver Todos →",          // ✅ 新增
+          articles: "Artículos",            // ✅ 新增
         }
       : {
           wisdom: "Wisdom",
@@ -39,9 +40,11 @@ export default async function WisdomPage({ params }: any) {
             "Spiritual insights, dream meanings and life path analysis powered by ancient metaphysics.",
           latest: "Latest Articles",
           read: "Read Article",
+          viewAll: "View All →",            // ✅ 新增
+          articles: "Articles",             // ✅ 新增
         };
 
-  /* ✅ 只新增：模块名称双语映射 */
+  // ✅ 模块翻译映射（保留你之前版本）
   const moduleNames: Record<string, string> =
     locale === "es"
       ? {
@@ -60,12 +63,12 @@ export default async function WisdomPage({ params }: any) {
         };
 
   const articles = getAllArticles(locale);
-
   const latest = articles.slice(0, 5);
   const modules = Array.from(new Set(articles.map((a) => a.module)));
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-16 flex flex-col items-center">
+
       {/* Header */}
       <div className="mb-16 text-center max-w-2xl">
         <div className="text-4xl mb-4">📜</div>
@@ -88,7 +91,6 @@ export default async function WisdomPage({ params }: any) {
             key={a.slug}
             className="bg-white rounded-3xl shadow-xl shadow-[#dff3ee]/50 p-8 border border-white transition hover:translate-y-[-4px] duration-300"
           >
-            {/* ✅ 这里改成翻译后的模块名 */}
             <div className="text-xs font-bold text-[#356f5b] mb-3 uppercase tracking-wider">
               {moduleNames[a.module] ?? a.module}
             </div>
@@ -109,18 +111,45 @@ export default async function WisdomPage({ params }: any) {
 
       {/* Module Sections */}
       <div className="w-full space-y-16">
-        {modules.map((module) => (
-          <div key={module}>
-            {/* ✅ 这里也改成翻译后的模块名 */}
-            <h2 className="text-2xl font-bold text-center mb-8 capitalize">
-              {moduleNames[module] ?? module}
-            </h2>
+        {modules.map((module) => {
 
-            <div className="space-y-6">
-              {articles
-                .filter((a) => a.module === module)
-                .slice(0, 5)
-                .map((a) => (
+          const moduleArticles = articles.filter(
+            (a) => a.module === module
+          );
+
+          const count = moduleArticles.length;   // ✅ 新增统计数量
+
+          return (
+            <div key={module}>
+
+              {/* ✅ 改动1：模块标题可点击 + View All */}
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold capitalize">
+                    <Link
+                      href={`/${locale}/wisdom/${module}`}
+                      className="hover:underline"
+                    >
+                      {moduleNames[module] ?? module}
+                    </Link>
+                  </h2>
+
+                  {/* ✅ 改动2：显示文章数量 */}
+                  <p className="text-xs text-gray-500 mt-1">
+                    {count} {t.articles}
+                  </p >
+                </div>
+
+                <Link
+                  href={`/${locale}/wisdom/${module}`}
+                  className="text-sm font-semibold text-[#0f3d2e] hover:underline"
+                >
+                  {t.viewAll}
+                </Link>
+              </div>
+
+              <div className="space-y-6">
+                {moduleArticles.slice(0, 5).map((a) => (
                   <div
                     key={a.slug}
                     className="bg-white rounded-2xl shadow-md p-6 border border-white transition hover:translate-y-[-3px] duration-300"
@@ -132,10 +161,12 @@ export default async function WisdomPage({ params }: any) {
                     </h3>
                   </div>
                 ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
+
     </main>
   );
 }

@@ -33,6 +33,26 @@ export default async function ModulePage({ params }: any) {
       back: "Back to Wisdom"
     };
 
+     // ✅ 新增模块翻译
+     const moduleNames: Record<string, string> =
+     locale === "es"
+       ? {
+           dream: "Sueños",
+           space: "Espacio",
+           naming: "Nombres",
+           "life-path": "Destino",
+           visual: "Visual",
+         }
+       : {
+           dream: "Dream",
+           space: "Space",
+           naming: "Naming",
+           "life-path": "Life Path",
+           visual: "Visual",
+         };
+ 
+         const displayModule = moduleNames[module] ?? module;
+
   const articles = getAllArticles(locale).filter(
     (a) => a.module === module
   );
@@ -108,7 +128,7 @@ export default async function ModulePage({ params }: any) {
               {
                 "@type": "ListItem",
                 position: 2,
-                name: module,
+                name: displayModule, // ✅ 改动
                 item: `${baseUrl}/${locale}/wisdom/${module}`,
               },
             ],
