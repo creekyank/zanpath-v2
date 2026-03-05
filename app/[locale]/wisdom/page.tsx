@@ -123,32 +123,19 @@ export default async function WisdomPage({ params }: any) {
             <div key={module}>
 
               {/* ✅ 改动1：模块标题可点击 + View All */}
-              <div className="relative mb-8 text-center">
+              <Link href={`/${locale}/wisdom/${module}`}>
+                <div className="mb-10 text-center cursor-pointer group">
 
-              {/* 右上角 View All */}
-              <Link
-                href={`/${locale}/wisdom/${module}`}
-                className="absolute right-0 top-0 text-sm font-semibold text-[#0f3d2e] hover:underline"
-              >
-                {t.viewAll}
+                  <h2 className="text-2xl font-bold capitalize group-hover:underline transition">
+                    {moduleNames[module] ?? module}
+                  </h2>
+
+                  <p className="text-xs text-gray-500 mt-2 tracking-wide">
+                    {count} {t.articles}
+                  </p >
+
+                </div>
               </Link>
-
-              {/* 标题 */}
-              <h2 className="text-2xl font-bold capitalize">
-                <Link
-                  href={`/${locale}/wisdom/${module}`}
-                  className="hover:underline"
-                >
-                  {moduleNames[module] ?? module}
-                </Link>
-              </h2>
-
-              {/* 文章数量 */}
-              <p className="text-xs text-gray-500 mt-1">
-                {count} {t.articles}
-              </p >
-
-              </div>
 
               <div className="space-y-6">
                 {moduleArticles.slice(0, 5).map((a) => (
