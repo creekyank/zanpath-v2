@@ -4,6 +4,11 @@ import path from "path";
 
 const CONTENT_PATH = path.join(process.cwd(), "content/articles");
 
+// 1. 新增 CTA 类型定义
+export type CTA = {
+  text: string;
+  url: string;
+};
 
 export type Article = {
   title: string;
@@ -16,6 +21,9 @@ export type Article = {
   slug: string;
   module: string;
   locale: string;
+
+  // 2. 将 cta 加入到 Article 类型中
+  cta?: CTA;
 
   datePublished?: string
   dateModified?: string

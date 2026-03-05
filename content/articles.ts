@@ -1,11 +1,20 @@
 // content/articles.ts
 
+// ------------------- 新增 CTA 类型定义 -------------------
+export type CTA = {
+  text: string;
+  url: string;
+};
+
+
+
 export type ArticleContent = {
   title: string;
   category: string;
   date: string;
   desc: string;
   content: string;
+  cta?: CTA;
 };
 
 export type ArticleEntry = {
@@ -113,5 +122,19 @@ El desarrollo del camino de la vida es una **ecuación de múltiples variables**
     }
   }
 };
+
+
+// ------------------- 新增 Article 接口 -------------------
+export interface Article {
+  id: string;
+  locale: string;
+  module: string;
+  slug: string;
+  title: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  content: any[];
+  cta?: CTA; // ✅ 可选 CTA
+}
 
 export type ArticleSlug = keyof typeof ARTICLES;
