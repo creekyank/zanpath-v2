@@ -171,23 +171,23 @@ export default async function ArticlePage({ params }: any) {
           )}
       </article>
 
-      {/* ===== Dynamic CTA Section ===== */}
+        {/* ===== Dynamic CTA Section (简洁版) ===== */}
         {article.cta && (
-          <div className="mt-28">
-            <div className="bg-[#0f3d2e] rounded-3xl p-10 text-center text-white shadow-xl">
-              
-              <p className="max-w-2xl mx-auto mb-8 text-white/90 leading-relaxed text-lg">
+          <div className="mt-28 mb-16">
+            <Link 
+              href={article.cta.url}
+              className="group block max-w-2xl mx-auto text-center p-8 rounded-3xl hover:bg-black/5 transition-all"
+            >
+              {/* 文字部分：改为深绿色，并让它在鼠标悬停时稍微变亮或变色 */}
+              <p className="mb-8 text-[#0f3d2e] font-medium leading-relaxed text-lg group-hover:text-[#1e5c49] transition-colors">
                 {article.cta.text}
               </p >
 
-              <Link
-                href={article.cta.url}
-                className="inline-block bg-white text-[#0f3d2e] px-10 py-4 rounded-full font-semibold hover:opacity-90 transition shadow-md"
-              >
+              {/* 按钮部分：保持深色按钮外观，但在整体 Link 中 */}
+              <span className="inline-block bg-[#0f3d2e] text-white px-10 py-4 rounded-full font-semibold group-hover:opacity-90 transition shadow-md">
                 {locale === "es" ? "Comenzar Ahora" : "Start Now"}
-              </Link>
-
-            </div>
+              </span>
+            </Link>
           </div>
         )}
 
