@@ -1,0 +1,156 @@
+{
+  "id": "que-son-las-estrellas-de-riqueza-en-bazi",
+  "locale": "es",
+  "module": "life-path",
+
+  "slug": "que-son-las-estrellas-de-riqueza-en-bazi",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "¿Qué son las Estrellas de Riqueza en Bazi y cómo funcionan?",
+  "metaTitle": "Estrellas de Riqueza en Bazi: significado y cómo influyen en tu destino",
+  "metaDescription": "Descubre qué son las Estrellas de Riqueza en Bazi y cómo influyen en las oportunidades financieras, la carrera y el flujo de recursos en la astrología china.",
+
+  "primaryKeyword": "estrellas de riqueza en bazi",
+  "secondaryKeywords": [
+    "significado de riqueza en bazi",
+    "cuatro pilares riqueza",
+    "astrologia china dinero"
+  ],
+  "longTailKeywords": [
+    "que son las estrellas de riqueza en bazi",
+    "como influyen las estrellas de riqueza en el dinero"
+  ],
+  "semanticKeywords": [
+    "metafisica china",
+    "equilibrio de cinco elementos",
+    "analisis del destino"
+  ],
+
+  "keywords": [
+    "bazi riqueza",
+    "estrellas de riqueza",
+    "cuatro pilares",
+    "destino bazi"
+  ],
+
+  "cluster": "analisis-destino-bazi",
+  "pillar": "guia-bazi-destino",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "que-es-bazi",
+    "como-leer-cuatro-pilares"
+  ],
+
+  "summary": "En Bazi, las Estrellas de Riqueza representan los elementos que el Maestro del Día controla y simbolizan oportunidades financieras y gestión de recursos.",
+  "featuredSnippetAnswer": "En Bazi, las Estrellas de Riqueza son los elementos que el Maestro del Día controla y simbolizan dinero, oportunidades financieras y la relación de una persona con los recursos materiales.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-03-05",
+  "dateModified": "2026-03-05",
+  "lastReviewed": "2026-03-05",
+
+  "evergreenScore": 9,
+  "updateFrequency": "yearly",
+  "revisionNotes": "Publicación inicial",
+
+  "targetCTR": 0.05,
+  "targetPosition": 6,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/bazi-wealth-stars.jpg",
+  "coverAlt": "Ilustración de las estrellas de riqueza en Bazi y los cinco elementos",
+  "ogImage": "/images/bazi-wealth-stars.jpg",
+
+  "canonical": "https://zanpath.com/es/life-path/que-son-las-estrellas-de-riqueza-en-bazi",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Camino de Vida", "url": "/es/life-path" },
+    { "name": "¿Qué son las Estrellas de Riqueza en Bazi?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "¿Qué representan las Estrellas de Riqueza en Bazi?",
+      "answer": "Representan oportunidades financieras, capacidad de gestionar recursos y la relación de una persona con el dinero."
+    },
+    {
+      "question": "¿Tener más estrellas de riqueza significa ser rico?",
+      "answer": "No necesariamente. Indican potencial, pero el equilibrio completo del mapa Bazi determina cómo se manifiesta la riqueza."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "analisis bazi",
+    "lectura cuatro pilares"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "analisis bazi",
+      "slug": "analisis-destino-bazi"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Comprendiendo las Estrellas de Riqueza en Bazi"
+    },
+    {
+      "type": "p",
+      "text": "En Bazi, también conocido como la astrología de los Cuatro Pilares, el destino de una persona se analiza a través de la interacción de los Cinco Elementos."
+    },
+    {
+      "type": "p",
+      "text": "Las Estrellas de Riqueza representan los elementos que el Maestro del Día controla, simbolizando dinero, recursos y oportunidades materiales."
+    },
+    {
+      "type": "h2",
+      "text": "Cómo se determinan"
+    },
+    {
+      "type": "p",
+      "text": "La clave para identificar las Estrellas de Riqueza es el Maestro del Día, que representa la identidad central en el mapa Bazi."
+    },
+    {
+      "type": "p",
+      "text": "Por ejemplo, si tu Maestro del Día es Madera, entonces la Tierra representa tu elemento de riqueza."
+    },
+    {
+      "type": "h2",
+      "text": "Riqueza Directa y Riqueza Indirecta"
+    },
+    {
+      "type": "p",
+      "text": "La teoría clásica distingue entre riqueza directa e indirecta. La riqueza directa se asocia con ingresos estables y trabajo disciplinado."
+    },
+    {
+      "type": "p",
+      "text": "La riqueza indirecta suele relacionarse con negocios, inversiones y oportunidades inesperadas."
+    }
+  ],
+
+  "cta": {
+    "text": "Explora tu destino con el análisis Bazi impulsado por IA en Zanpath.",
+    "url": "https://zanpath.com/es"
+  }
+}

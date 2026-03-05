@@ -1,0 +1,173 @@
+{
+  "id": "how-does-bazi-reveal-your-wealth-potential",
+  "locale": "en",
+  "module": "life-path",
+
+  "slug": "how-does-bazi-reveal-your-wealth-potential",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "How Does Bazi Reveal Your Wealth Potential?",
+  "metaTitle": "Bazi Wealth Analysis: How the Four Pillars Reveal Your Financial Potential",
+  "metaDescription": "Discover how Bazi reveals your wealth potential through the Day Master, Wealth Stars, element balance, and luck cycles. Learn how your Four Pillars influence financial growth.",
+
+  "primaryKeyword": "Bazi wealth potential",
+  "secondaryKeywords": [
+    "Bazi wealth star meaning",
+    "Four Pillars money analysis",
+    "Day Master and wealth"
+  ],
+  "longTailKeywords": [
+    "how does Bazi show wealth potential",
+    "how to find wealth star in Bazi chart",
+    "can Bazi predict financial success"
+  ],
+  "semanticKeywords": [
+    "Five Elements balance",
+    "Direct Wealth",
+    "Indirect Wealth",
+    "Luck Pillars",
+    "element strength"
+  ],
+
+  "keywords": [
+    "Bazi",
+    "wealth potential",
+    "Four Pillars",
+    "Chinese astrology",
+    "financial destiny"
+  ],
+
+  "cluster": "bazi-wealth",
+  "pillar": "bazi-beginners-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "how-do-i-find-my-day-master-in-bazi",
+    "what-does-each-of-the-five-elements-represent",
+    "how-accurate-is-bazi-for-predicting-life-events"
+  ],
+
+  "summary": "Bazi reveals wealth potential by analyzing your Day Master strength, Wealth Stars, element interactions, and 10-year Luck Pillars.",
+  "featuredSnippetAnswer": "Bazi reveals wealth potential by examining your Day Master strength, identifying Direct and Indirect Wealth elements, and analyzing how Luck Pillars activate financial opportunities over time.",
+
+  "readingTime": 13,
+
+  "datePublished": "2026-03-05",
+  "dateModified": "2026-03-05",
+  "lastReviewed": "2026-03-05",
+
+  "evergreenScore": 10,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.07,
+  "targetPosition": 3,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/bazi-wealth.jpg",
+  "coverAlt": "Illustration of Bazi wealth analysis chart",
+  "ogImage": "/images/bazi-wealth.jpg",
+
+  "canonical": "https://zanpath.com/en/life-path/how-does-bazi-reveal-your-wealth-potential",
+
+  "robots": "index, follow",
+  "priority": 0.9,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Life Path", "url": "/en/life-path" },
+    { "name": "How Does Bazi Reveal Your Wealth Potential?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Can Bazi predict if I will become rich?",
+      "answer": "Bazi does not guarantee riches, but it reveals your financial tendencies, strengths, and timing of wealth opportunities."
+    },
+    {
+      "question": "What is a Wealth Star in Bazi?",
+      "answer": "Wealth Star refers to the element that your Day Master controls. It represents financial opportunities and money-related potential."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "Bazi wealth analysis",
+    "find your wealth star"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "find your Day Master",
+      "slug": "how-do-i-find-my-day-master-in-bazi"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Understanding Wealth in Bazi"
+    },
+    {
+      "type": "p",
+      "text": "In Bazi, wealth is not simply about money. It reflects your ability to manage resources, recognize opportunities, and align with favorable timing. Financial potential is revealed through the interaction between your Day Master and the Five Elements."
+    },
+    {
+      "type": "h2",
+      "text": "The Role of the Day Master"
+    },
+    {
+      "type": "p",
+      "text": "Your Day Master represents you. Wealth elements are those that your Day Master controls. If your Day Master is strong and well-supported, you are more capable of handling financial responsibility and growth."
+    },
+    {
+      "type": "h2",
+      "text": "Direct Wealth vs Indirect Wealth"
+    },
+    {
+      "type": "p",
+      "text": "Direct Wealth usually indicates stable income such as salary or structured earnings. Indirect Wealth often relates to business, investments, or unexpected gains. The balance between them shows how you best accumulate money."
+    },
+    {
+      "type": "h2",
+      "text": "Element Balance and Wealth Flow"
+    },
+    {
+      "type": "p",
+      "text": "If the wealth element is too strong and your Day Master is weak, financial pressure may arise. If balanced, wealth flows smoothly. Harmony between elements creates sustainable financial growth."
+    },
+    {
+      "type": "h2",
+      "text": "Luck Pillars and Timing"
+    },
+    {
+      "type": "p",
+      "text": "Bazi reveals when wealth opportunities appear through 10-year Luck Pillars. A strong wealth phase can activate career breakthroughs, investments, or business expansion."
+    },
+    {
+      "type": "h2",
+      "text": "Conclusion"
+    },
+    {
+      "type": "p",
+      "text": "Bazi does not promise sudden riches, but it provides a structured way to understand your financial tendencies, strengths, and timing. When used wisely, it becomes a strategic tool for long-term wealth planning."
+    }
+  ],
+
+  "cta": {
+    "text": "Generate your Bazi chart and uncover your wealth potential at Zanpath.",
+    "url": "https://zanpath.com/en"
+  }
+}

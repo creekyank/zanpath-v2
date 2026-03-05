@@ -1,0 +1,157 @@
+{
+  "id": "what-is-direct-wealth-vs-indirect-wealth-in-bazi",
+  "locale": "es",
+  "module": "life-path",
+
+  "slug": "what-is-direct-wealth-vs-indirect-wealth-in-bazi",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "¿Qué es la Riqueza Directa y la Riqueza Indirecta en Bazi?",
+  "metaTitle": "Riqueza Directa vs Riqueza Indirecta en Bazi: significado y oportunidades financieras",
+  "metaDescription": "Aprende la diferencia entre Riqueza Directa y Riqueza Indirecta en Bazi y cómo estos conceptos reflejan diferentes formas de generar dinero.",
+
+  "primaryKeyword": "riqueza directa e indirecta bazi",
+  "secondaryKeywords": [
+    "estrellas de riqueza bazi",
+    "riqueza directa bazi",
+    "riqueza indirecta bazi"
+  ],
+  "longTailKeywords": [
+    "que es riqueza directa y riqueza indirecta en bazi",
+    "como influyen riqueza directa e indirecta en el dinero"
+  ],
+  "semanticKeywords": [
+    "estructura de riqueza",
+    "flujo financiero",
+    "potencial económico bazi"
+  ],
+
+  "keywords": [
+    "riqueza directa bazi",
+    "riqueza indirecta bazi",
+    "estrellas de riqueza bazi"
+  ],
+
+  "cluster": "bazi-wealth-analysis",
+  "pillar": "bazi-destiny-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "which-bazi-elements-attract-financial-success",
+    "can-bazi-show-if-you-will-become-rich",
+    "how-to-identify-business-talent-in-a-bazi-chart"
+  ],
+
+  "summary": "La Riqueza Directa y la Riqueza Indirecta representan dos formas diferentes en que el dinero puede aparecer en una carta Bazi.",
+  "featuredSnippetAnswer": "En Bazi, la Riqueza Directa representa ingresos estables como salario o trabajo constante, mientras que la Riqueza Indirecta representa oportunidades financieras como inversiones, negocios o ganancias inesperadas.",
+
+  "readingTime": 7,
+
+  "datePublished": "2026-03-05",
+  "dateModified": "2026-03-05",
+  "lastReviewed": "2026-03-05",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Publicación inicial",
+
+  "targetCTR": 0.05,
+  "targetPosition": 6,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Equipo Editorial de Zanpath",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/bazi-direct-indirect-wealth.jpg",
+  "coverAlt": "Explicación de riqueza directa e indirecta en Bazi",
+  "ogImage": "/images/bazi-direct-indirect-wealth.jpg",
+
+  "canonical": "https://zanpath.com/es/wisdom/life-path/what-is-direct-wealth-vs-indirect-wealth-in-bazi",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Sabiduría", "url": "/es/wisdom" },
+    { "name": "Camino de Vida", "url": "/es/wisdom/life-path" },
+    { "name": "¿Qué es la Riqueza Directa y la Riqueza Indirecta en Bazi?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "¿Qué representa la Riqueza Directa en Bazi?",
+      "answer": "La Riqueza Directa representa ingresos estables obtenidos mediante trabajo constante, salario o negocios tradicionales."
+    },
+    {
+      "question": "¿Qué representa la Riqueza Indirecta en Bazi?",
+      "answer": "La Riqueza Indirecta representa oportunidades financieras como inversiones, negocios o ganancias inesperadas."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "analisis de riqueza bazi",
+    "explicacion riqueza directa e indirecta"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "analisis de riqueza bazi",
+      "slug": "what-are-wealth-stars-in-bazi"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Comprender las estrellas de riqueza en Bazi"
+    },
+    {
+      "type": "p",
+      "text": "En el análisis Bazi, el dinero y los recursos se representan mediante las llamadas estrellas de riqueza. Entre ellas existen dos categorías principales: Riqueza Directa y Riqueza Indirecta."
+    },
+    {
+      "type": "p",
+      "text": "Estas dos energías reflejan diferentes formas en que una persona puede generar ingresos o atraer oportunidades económicas."
+    },
+    {
+      "type": "h2",
+      "text": "Qué es la Riqueza Directa"
+    },
+    {
+      "type": "p",
+      "text": "La Riqueza Directa se asocia con ingresos estables y previsibles. Esto incluye salarios, trabajos tradicionales o negocios que crecen de forma constante con disciplina y esfuerzo."
+    },
+    {
+      "type": "p",
+      "text": "Las personas con fuerte Riqueza Directa suelen valorar la estabilidad financiera, la planificación y la seguridad económica a largo plazo."
+    },
+    {
+      "type": "h2",
+      "text": "Qué es la Riqueza Indirecta"
+    },
+    {
+      "type": "p",
+      "text": "La Riqueza Indirecta representa oportunidades más dinámicas como inversiones, emprendimiento o ganancias inesperadas."
+    },
+    {
+      "type": "p",
+      "text": "Las personas con esta energía suelen tener talento para detectar oportunidades y asumir riesgos calculados."
+    }
+  ],
+
+  "cta": {
+    "text": "Descubre tu carta Bazi y explora tu camino de vida en Zanpath.",
+    "url": "https://zanpath.com/es"
+  }
+}

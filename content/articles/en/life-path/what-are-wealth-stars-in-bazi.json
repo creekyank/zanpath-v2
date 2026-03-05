@@ -1,0 +1,168 @@
+{
+  "id": "what-are-wealth-stars-in-bazi",
+  "locale": "en",
+  "module": "life-path",
+
+  "slug": "what-are-wealth-stars-in-bazi",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "What Are Wealth Stars in Bazi and How Do They Work?",
+  "metaTitle": "Wealth Stars in Bazi: Meaning, Types, and How They Influence Your Life Path",
+  "metaDescription": "Discover what Wealth Stars mean in Bazi (Chinese Four Pillars astrology) and how they influence financial opportunities, career patterns, and life direction.",
+
+  "primaryKeyword": "wealth stars in bazi",
+  "secondaryKeywords": [
+    "bazi wealth star meaning",
+    "four pillars wealth element",
+    "bazi money luck"
+  ],
+  "longTailKeywords": [
+    "what are wealth stars in bazi astrology",
+    "how wealth stars influence career and money in bazi"
+  ],
+  "semanticKeywords": [
+    "chinese metaphysics",
+    "five elements balance",
+    "destiny analysis"
+  ],
+
+  "keywords": [
+    "wealth stars",
+    "bazi astrology",
+    "four pillars destiny",
+    "bazi wealth"
+  ],
+
+  "cluster": "bazi-destiny-analysis",
+  "pillar": "bazi-life-path-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-is-bazi-and-how-does-it-work",
+    "how-to-read-your-four-pillars-chart"
+  ],
+
+  "summary": "In Bazi astrology, Wealth Stars represent elements that control your Day Master and symbolize financial opportunities, resource flow, and how a person manages material success.",
+  "featuredSnippetAnswer": "In Bazi, Wealth Stars are elements that your Day Master controls. They symbolize money, financial opportunities, business ability, and how a person interacts with material resources.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-03-05",
+  "dateModified": "2026-03-05",
+  "lastReviewed": "2026-03-05",
+
+  "evergreenScore": 9,
+  "updateFrequency": "yearly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.05,
+  "targetPosition": 6,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/bazi-wealth-stars.jpg",
+  "coverAlt": "Illustration of Bazi wealth stars and five elements balance",
+  "ogImage": "/images/bazi-wealth-stars.jpg",
+
+  "canonical": "https://zanpath.com/en/life-path/what-are-wealth-stars-in-bazi",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Life Path", "url": "/en/life-path" },
+    { "name": "What Are Wealth Stars in Bazi?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "What do Wealth Stars represent in Bazi?",
+      "answer": "Wealth Stars represent financial opportunities, resource management ability, and how a person interacts with money and material assets."
+    },
+    {
+      "question": "Does having more Wealth Stars mean you will be rich?",
+      "answer": "Not necessarily. Wealth Stars show potential opportunities, but the overall balance of the Bazi chart determines how wealth manifests."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "bazi destiny reading",
+    "four pillars analysis"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "bazi destiny reading",
+      "slug": "bazi-destiny-analysis"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Understanding Wealth Stars in Bazi"
+    },
+    {
+      "type": "p",
+      "text": "In Bazi, also known as Four Pillars astrology, every person's destiny chart is built from the interaction of the Five Elements: Wood, Fire, Earth, Metal, and Water."
+    },
+    {
+      "type": "p",
+      "text": "Among these relationships, Wealth Stars represent the elements that the Day Master controls. In classical Chinese metaphysics, this relationship symbolizes resources, financial flow, and the ability to manage material success."
+    },
+    {
+      "type": "h2",
+      "text": "How Wealth Stars Are Determined"
+    },
+    {
+      "type": "p",
+      "text": "The key to identifying Wealth Stars lies in the Day Master, which represents the core self in a Bazi chart."
+    },
+    {
+      "type": "p",
+      "text": "For example, if your Day Master is Wood, then Earth becomes your Wealth element because Wood controls Earth in the Five Elements cycle."
+    },
+    {
+      "type": "h2",
+      "text": "Direct Wealth vs Indirect Wealth"
+    },
+    {
+      "type": "p",
+      "text": "Traditional Bazi theory distinguishes between Direct Wealth and Indirect Wealth. Direct Wealth is associated with stable income, salary, and disciplined financial management."
+    },
+    {
+      "type": "p",
+      "text": "Indirect Wealth often represents business opportunities, investments, side income, and unexpected financial gains."
+    },
+    {
+      "type": "h2",
+      "text": "Wealth Stars and Life Opportunities"
+    },
+    {
+      "type": "p",
+      "text": "Having Wealth Stars in a chart does not automatically guarantee financial success. Instead, it indicates the potential pathways through which money and resources may enter a person's life."
+    },
+    {
+      "type": "p",
+      "text": "The strength of the Day Master, the balance of the Five Elements, and the timing of luck cycles all influence how wealth opportunities appear."
+    }
+  ],
+
+  "cta": {
+    "text": "Explore your destiny path with AI-powered Bazi analysis at Zanpath.",
+    "url": "https://zanpath.com/en"
+  }
+}
