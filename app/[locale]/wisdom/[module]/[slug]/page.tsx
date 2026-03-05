@@ -170,24 +170,24 @@ export default async function ArticlePage({ params }: any) {
             </p >
           )}
       </article>
-
-        {/* ===== Dynamic CTA Section (纯净版) ===== */}
-        {article.cta && (
-          <div className="mt-28 mb-16">
+{/* ===== Dynamic CTA Section (简洁统一版) ===== */}
+{article.cta && (
+          /* 将 mt-28 改为 mt-14 让它离正文近一点，mb-16 改为 mb-10 让它离相关文章近一点 */
+          <div className="mt-14 mb-10"> 
             <Link 
               href={article.cta.url}
-              className="group block max-w-2xl mx-auto text-center p-8 transition-all"
+              className="group block max-w-2xl mx-auto text-center p-4 transition-all"
             >
-              {/* 文字部分：深绿色，无背景，鼠标悬停时透明度轻微变化 */}
-              <p className="mb-8 text-[#0f3d2e] font-medium leading-relaxed text-lg group-hover:opacity-80 transition-opacity">
+              {/* 文字部分：mb-8 改为 mb-5 缩短与按钮的距离 */}
+              <p className="mb-5 text-[#0f3d2e] font-medium leading-relaxed text-lg group-hover:opacity-80 transition-opacity">
                 {article.cta.text}
               </p >
 
               {/* 按钮部分：
-                  初始：白色背景 + 深绿文字 + 深绿边框
-                  悬浮：深绿背景 + 白色文字 
+                  px-10 改为 px-8, py-4 改为 py-3 
+                  这样尺寸就和下方的 Back to Wisdom 按钮 (px-8 py-3) 完全一致了
               */}
-              <span className="inline-block bg-white text-[#0f3d2e] border-2 border-[#0f3d2e] px-10 py-4 rounded-full font-semibold transition-all duration-300 group-hover:bg-[#0f3d2e] group-hover:text-white shadow-sm">
+              <span className="inline-block bg-white text-[#0f3d2e] border border-[#0f3d2e] px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 group-hover:bg-[#0f3d2e] group-hover:text-white shadow-md">
                 {locale === "es" ? "Comenzar Ahora" : "Start Now"}
               </span>
             </Link>
