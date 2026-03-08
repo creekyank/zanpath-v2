@@ -1,0 +1,180 @@
+{
+  "id": "can-bazi-show-divorce-indicators",
+  "locale": "es",
+  "module": "life-path",
+
+  "slug": "can-bazi-show-divorce-indicators",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "¿Puede Bazi Mostrar Indicadores de Divorcio?",
+  "metaTitle": "¿Puede Bazi Revelar Indicadores de Divorcio?",
+  "metaDescription": "Descubre cómo el análisis Bazi examina posibles desafíos matrimoniales mediante estrellas de pareja, choques elementales y ciclos de suerte.",
+
+  "primaryKeyword": "indicadores de divorcio bazi",
+  "secondaryKeywords": [
+    "divorcio en astrologia bazi",
+    "analisis de relaciones bazi",
+    "compatibilidad matrimonio bazi"
+  ],
+  "longTailKeywords": [
+    "puede bazi predecir divorcio",
+    "que indica divorcio en carta bazi"
+  ],
+  "semanticKeywords": [
+    "palacio del conyuge choque",
+    "estrellas de relacion bazi",
+    "desequilibrio cinco elementos"
+  ],
+
+  "keywords": [
+    "divorcio astrologia china",
+    "indicadores relacion bazi",
+    "analisis matrimonio bazi"
+  ],
+
+  "cluster": "bazi-relationship-analysis",
+  "pillar": "bazi-love-compatibility",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "how-does-bazi-predict-marriage-compatibility",
+    "what-is-a-spouse-star-in-bazi"
+  ],
+
+  "summary": "El sistema Bazi no predice directamente el divorcio, pero puede revelar dinámicas de relación y posibles desafíos mediante el análisis de estrellas de pareja, choques de elementos y ciclos de vida.",
+
+  "featuredSnippetAnswer": "Bazi puede mostrar posibles desafíos matrimoniales analizando la estrella del cónyuge, el palacio del cónyuge y los choques entre elementos dentro de la carta natal.",
+
+  "readingTime": 8,
+
+  "datePublished": "2026-03-07",
+  "dateModified": "2026-03-07",
+  "lastReviewed": "2026-03-07",
+
+  "evergreenScore": 9,
+  "updateFrequency": "yearly",
+  "revisionNotes": "Publicación inicial",
+
+  "targetCTR": 0.05,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/bazi-relationship-analysis.jpg",
+  "coverAlt": "Carta Bazi mostrando dinámicas de relación",
+  "ogImage": "/images/bazi-relationship-analysis.jpg",
+
+  "canonical": "https://zanpath.com/es/life-path/can-bazi-show-divorce-indicators",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Life Path", "url": "/es" },
+    { "name": "¿Puede Bazi Mostrar Indicadores de Divorcio?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "¿Bazi puede predecir el divorcio con certeza?",
+      "answer": "No. Bazi solo analiza patrones energéticos y posibles desafíos en las relaciones."
+    },
+    {
+      "question": "¿Qué factores del Bazi influyen en el matrimonio?",
+      "answer": "Los practicantes analizan la estrella del cónyuge, el palacio del cónyuge, los choques elementales y los ciclos de suerte."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "analisis de relaciones bazi",
+    "estrella del conyuge"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "estrella del conyuge",
+      "slug": "what-is-a-spouse-star-in-bazi"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Comprender los Patrones de Relación en Bazi"
+    },
+    {
+      "type": "p",
+      "text": "El sistema Bazi analiza patrones energéticos dentro de la carta natal. En lugar de predecir eventos específicos, identifica tendencias que pueden influir en la dinámica de las relaciones."
+    },
+    {
+      "type": "p",
+      "text": "Al estudiar el equilibrio de los Cinco Elementos y su interacción, los practicantes pueden identificar áreas donde pueden surgir tensiones emocionales o desafíos en la pareja."
+    },
+    {
+      "type": "h2",
+      "text": "La Importancia de la Estrella del Cónyuge"
+    },
+    {
+      "type": "p",
+      "text": "La estrella del cónyuge representa la energía simbólica de la pareja dentro de la carta natal."
+    },
+    {
+      "type": "p",
+      "text": "Si esta energía está equilibrada y bien apoyada, puede indicar relaciones más estables. Si está debilitada o en conflicto con otros elementos, pueden surgir desafíos."
+    },
+    {
+      "type": "h2",
+      "text": "Choques en el Palacio del Cónyuge"
+    },
+    {
+      "type": "p",
+      "text": "El palacio del cónyuge se encuentra en la rama del día y representa el área energética del matrimonio."
+    },
+    {
+      "type": "p",
+      "text": "Cuando este palacio experimenta choques elementales, puede reflejar períodos de tensión o cambios importantes en la relación."
+    },
+    {
+      "type": "h2",
+      "text": "Importancia de los Ciclos de Suerte"
+    },
+    {
+      "type": "p",
+      "text": "Los ciclos de suerte también influyen en la dinámica de las relaciones. Durante ciertas etapas de la vida, la energía del matrimonio puede volverse más intensa."
+    },
+    {
+      "type": "p",
+      "text": "Estos períodos pueden traer oportunidades de crecimiento o desafíos que requieren mayor comprensión emocional."
+    },
+    {
+      "type": "h2",
+      "text": "Indicadores No Significan Destino"
+    },
+    {
+      "type": "p",
+      "text": "Los indicadores dentro de Bazi no determinan el destino final de una relación."
+    },
+    {
+      "type": "p",
+      "text": "El análisis se utiliza principalmente como una herramienta para comprender patrones emocionales y mejorar la conciencia personal."
+    }
+  ],
+
+  "cta": {
+    "text": "Descubre los patrones de tu relación con un análisis Bazi impulsado por IA en Zanpath.",
+    "url": "https://zanpath.com/es"
+  }
+}

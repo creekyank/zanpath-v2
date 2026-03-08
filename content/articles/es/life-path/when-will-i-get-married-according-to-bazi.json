@@ -1,0 +1,157 @@
+{
+  "id": "when-will-i-get-married-according-to-bazi",
+  "locale": "es",
+  "module": "life-path",
+
+  "slug": "when-will-i-get-married-according-to-bazi",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "¿Cuándo Me Casaré Según Bazi?",
+  "metaTitle": "¿Cuándo Me Casaré Según la Astrología Bazi?",
+  "metaDescription": "Descubre cómo el sistema Bazi analiza el momento del matrimonio mediante estrellas de pareja, palacio del cónyuge y ciclos de suerte.",
+
+  "primaryKeyword": "cuando me casare bazi",
+  "secondaryKeywords": [
+    "momento del matrimonio bazi",
+    "prediccion matrimonio bazi",
+    "indicadores de matrimonio bazi"
+  ],
+  "longTailKeywords": [
+    "como saber cuando me casare bazi",
+    "puede bazi predecir matrimonio"
+  ],
+  "semanticKeywords": [
+    "estrella del conyuge bazi",
+    "ciclos de suerte matrimonio",
+    "palacio del conyuge"
+  ],
+
+  "keywords": [
+    "matrimonio astrologia china",
+    "tiempo de matrimonio bazi",
+    "analisis relaciones bazi"
+  ],
+
+  "cluster": "bazi-relationship-analysis",
+  "pillar": "bazi-love-compatibility",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "how-does-bazi-predict-marriage-compatibility",
+    "what-is-a-spouse-star-in-bazi"
+  ],
+
+  "summary": "El sistema Bazi analiza el momento del matrimonio estudiando la estrella del cónyuge, el palacio del cónyuge y los ciclos de suerte. Estas interacciones pueden indicar períodos favorables para relaciones importantes.",
+
+  "featuredSnippetAnswer": "Bazi estima el momento del matrimonio analizando la estrella del cónyuge, el palacio del cónyuge y las interacciones con ciclos de suerte y años específicos.",
+
+  "readingTime": 9,
+
+  "datePublished": "2026-03-07",
+  "dateModified": "2026-03-07",
+  "lastReviewed": "2026-03-07",
+
+  "evergreenScore": 9,
+  "updateFrequency": "yearly",
+  "revisionNotes": "Publicación inicial",
+
+  "targetCTR": 0.05,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/bazi-marriage-timing.jpg",
+  "coverAlt": "Carta Bazi mostrando indicadores de matrimonio",
+  "ogImage": "/images/bazi-marriage-timing.jpg",
+
+  "canonical": "https://zanpath.com/es/life-path/when-will-i-get-married-according-to-bazi",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Life Path", "url": "/es" },
+    { "name": "¿Cuándo Me Casaré Según Bazi?", "url": "" }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Cómo Bazi Analiza el Momento del Matrimonio"
+    },
+    {
+      "type": "p",
+      "text": "Muchas personas se preguntan si su carta natal puede revelar cuándo se casarán. En Bazi, el momento de eventos importantes se estudia observando patrones energéticos dentro de la carta y su interacción con los ciclos del tiempo."
+    },
+    {
+      "type": "p",
+      "text": "En lugar de indicar una fecha exacta, Bazi identifica períodos en los que la energía de relación se vuelve más activa."
+    },
+    {
+      "type": "h2",
+      "text": "La Estrella del Cónyuge"
+    },
+    {
+      "type": "p",
+      "text": "La estrella del cónyuge representa la energía simbólica de la pareja dentro de la carta natal."
+    },
+    {
+      "type": "p",
+      "text": "Cuando esta energía se activa durante ciertos ciclos de tiempo, puede indicar momentos en los que las relaciones se vuelven más importantes."
+    },
+    {
+      "type": "h2",
+      "text": "El Palacio del Cónyuge"
+    },
+    {
+      "type": "p",
+      "text": "El palacio del cónyuge se encuentra en la rama del día y representa el área energética relacionada con el matrimonio."
+    },
+    {
+      "type": "p",
+      "text": "Si este palacio interactúa de forma armoniosa con ciclos de suerte, puede indicar oportunidades favorables para relaciones duraderas."
+    },
+    {
+      "type": "h2",
+      "text": "Ciclos de Suerte y Etapas de Relación"
+    },
+    {
+      "type": "p",
+      "text": "Los ciclos de suerte de diez años influyen en diferentes aspectos de la vida."
+    },
+    {
+      "type": "p",
+      "text": "Algunos ciclos pueden fortalecer la energía de pareja, mientras que otros pueden enfocarse más en el crecimiento personal o la carrera."
+    },
+    {
+      "type": "h2",
+      "text": "Diferencias Entre Cartas Personales"
+    },
+    {
+      "type": "p",
+      "text": "Cada carta Bazi es única. Algunas personas pueden experimentar oportunidades de matrimonio más temprano, mientras que otras pueden encontrar relaciones importantes más adelante en la vida."
+    },
+    {
+      "type": "p",
+      "text": "Por esta razón, el análisis siempre considera la estructura completa de la carta."
+    }
+  ],
+
+  "cta": {
+    "text": "Descubre el momento de tu relación con un análisis Bazi impulsado por IA en Zanpath.",
+    "url": "https://zanpath.com/es"
+  }
+}
