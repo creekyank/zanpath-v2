@@ -1,0 +1,213 @@
+
+
+我想把 给openclaw 的任务 改成这样
+
+1 首先 运行 E:\Wisdom\find_title.py
+
+读取 E:\Wisdom\title\bazi.txt      不同模块 文件名不同，如bazi.txt  dream.txt
+bazi.txt 中 有很多需要生成文章的标题
+获得 模块名（就是文件名） 与 具体的标题 
+
+find_title.py首先检查，这个标题是否已经有生成了的标记，如果有，跳过该标题；
+如果没有，拿这个获得的 标题 去 E:\zanpath v2\content\articles\en\life-path 文件夹下检查，是否已经有这篇文章，如果有 了，就把bazi.txt 中这个标题标记 已经生成了；
+然后 查找下一个 标题
+
+2 AI 根据这个模块名 和标题名 生成 英文文章，
+
+Title:
+{{title}}
+Structure:
+{{structure}}
+Requirements:
+1200–1800 words
+Use H1 H2 H3
+Natural English
+Markdown format
+No Chinese
+
+Include FAQ section.
+
+Add a disclaimer at the end stating the content is for cultural or entertainment purposes only.
+
+输出{{article_es}}，保存 E:\Wisdom\article_en.txt
+
+根据文章内容，生成图片关键词{{keyword1}}{{keyword2}}{{keyword3}}，保存到 E:\Wisdom\pic_keyword.txt
+
+输出{{seo_en}}，保存 E:\Wisdom\seo_en.json
+{
+ "metaTitle":"",
+ "metaDescription":"",
+ "primaryKeyword":"",
+ "secondaryKeywords":[],
+ "longTailKeywords":[],
+ "semanticKeywords":[],
+ "keywords":[],
+ "cluster":"",
+ "pillar":"",
+ "clusterIntent":"informational",
+ "relatedArticles":[],
+ "internalLinks":[],
+ "faq":[],
+ "summary":"",
+ "featuredSnippetAnswer":""
+}
+
+The faq field must be:
+[
+ {"question":"", "answer":""}
+]
+
+
+
+
+
+
+
+
+smart_factory.py 功能：
+
+执行  node scripts/buildArticle.js "{{title}}" "{{slug}}" "{{module}}"
+
+自动生成 content/articles/en/{module}/{slug}.json
+              content/articles/es/{module}/{slug}.json 
+并把上面 AI  生成的 seo_en.json  seo_es.json 加入对应的json中
+
+下载图片，执行  node scripts/downloadImage.js "{{title}}" "{{slug}}" "{{module}}" "{{keyword1}}" "{{keyword2}}"
+
+生成 /images/{folder}/{slug}-1.webp
+       /images/{folder}/{slug}-2.webp
+
+更新 sitemap，执行   node -e "require('./scripts/updateImageSitemap')('{{module}}','en/wisdom/{{module}}/{{slug}}','{{slug}}-1.webp','{{title}}','{{title}} image')"
+node -e "require('./scripts/updateImageSitemap')('{{module}}','en/wisdom/{{module}}/{{slug}}','{{slug}}-2.webp','{{title}}','{{title}} image')"
+
+更新
+article-sitemap.xml
+image-sitemap.xml
+sitemap.xml
+
+标记 E:\Wisdom\title\bazi.txt 中这个标题 已经生成了
+清空：article_en.txt article_es.txt seo_en.json seo_es.json pic_keyword.txt , 以待下一轮循环
+
+ 下面是 现在的  smart_factory.py文件
+------------------------------------
+import os
+import json
+import re
+import subprocess
+
+# --- 配置路径 ---
+BASE_DIR = r"E:\zanpath v2"
+INPUT_FILE = r"E:\Wisdom\article.txt"
+TEMP_DIR = os.path.join(BASE_DIR, "temp")
+
+def run_cmd(cmd):
+    print(f">> 执行: {cmd}")
+    # 使用 subprocess.run 的 shell 模式，注意编码处理
+    result = subprocess.run(cmd, shell=True, cwd=BASE_DIR, capture_output=True, text=True, encoding='utf-8')
+    if result.returncode != 0:
+        print(f"⚠️ 命令执行警告/失败: {result.stderr}")
+    return result.returncode == 0
+
+def process_smart_factory():
+    if not os.path.exists(INPUT_FILE):
+        print(f"❌ 未找到输入文件: {INPUT_FILE}")
+        return
+
+    print("🚀 开始读取并解析文章...")
+    with open(INPUT_FILE, 'r', encoding='utf-8') as f:
+        content = f.read()
+        # 按横杠分割文章 (支持 10 个以上的横杠)
+        raw_articles = re.split(r'-{10,}', content)
+
+    for raw_block in raw_articles:
+        raw_block = raw_block.strip()
+        if not raw_block: continue
+        
+        lines = [l.strip() for l in raw_block.split('\n') if l.strip()]
+        if len(lines) < 10: continue # 确保内容足够完整
+
+        try:
+            # 1. 提取元数据 (使用更稳健的搜索方式)
+            title = re.search(r"Title:\s*(.*)", raw_block).group(1).strip()
+            module = re.search(r"Module:\s*(.*)", raw_block).group(1).strip()
+            slug = re.search(r"Slug:\s*(.*)", raw_block).group(1).strip()
+            img_keywords = re.search(r"Keywords:\s*(.*)", raw_block).group(1).strip()
+
+            # 2. 提取 JSON (匹配最外层的花括号，支持多行)
+            # 逻辑：找第一个 { 到第一个 } 为 EN，第二个 { 到第二个 } 为 ES
+            json_blocks = re.findall(r'(\{.*?\})', raw_block, re.DOTALL)
+            if len(json_blocks) < 2:
+                print(f"❌ {title} 缺失 SEO JSON 数据")
+                continue
+            seo_en = json_blocks[0]
+            seo_es = json_blocks[1]
+
+            # 3. 提取正文内容 (Markdown/HTML)
+            # 通过排除法：找到两个 JSON 块之间的内容通常是 EN，JSON 之后的是 ES
+            # 或者简单的按长度切分大的段落
+            parts = [p.strip() for p in raw_block.split('\n\n') if len(p.strip()) > 300]
+            if len(parts) < 2:
+                print(f"❌ {title} 正文解析失败（段落过短）")
+                continue
+            article_en = parts[0]
+            article_es = parts[1]
+
+            print(f"\n📦 正在处理文章: [{title}]")
+            print(f"   模块: {module} | Slug: {slug}")
+
+            # 4. 写入临时文件供 Node.js 读取 (清理旧数据)
+            os.makedirs(TEMP_DIR, exist_ok=True)
+            files = {
+                "article_en.txt": article_en,
+                "article_es.txt": article_es,
+                "seo_en.json": seo_en,
+                "seo_es.json": seo_es
+            }
+            for filename, data in files.items():
+                with open(os.path.join(TEMP_DIR, filename), "w", encoding="utf-8") as f:
+                    f.write(data)
+
+            # 5. 调用 Node 脚本组装 JSON 文章 (对应 buildArticle.js)
+            # 参数顺序：title, slug, module
+            run_cmd(f'node scripts/buildArticle.js "{title}" "{slug}" "{module}"')
+
+            # 6. 下载图片 (对应 downloadImage.js)
+            # 参数顺序：title, slug, module, keywords
+            run_cmd(f'node scripts/downloadImage.js "{title}" "{slug}" "{module}" "{img_keywords}"')
+
+            # 7. 更新 Sitemap (Image Sitemap)
+            # 这里的路径需要根据你的实际路由 routingFolder 匹配
+            routing_folder = module
+            if module == 'bazi': routing_folder = 'life-path'
+            elif module == 'fengshui': routing_folder = 'space'
+            elif module == 'face': routing_folder = 'visual'
+            
+            sitemap_path = f"en/wisdom/{routing_folder}/{slug}"
+            run_cmd(f'node -e "require(\'./scripts/updateImageSitemap\')(\'{routing_folder}\', \'{sitemap_path}\', \'{slug}-1.webp\', \'{title}\', \'{title} image\')"')
+
+        except Exception as e:
+            print(f"❌ 解析文章 [{title if 'title' in locals() else '未知'}] 出错: {e}")
+
+    # --- 流程结束 ---
+    print("\n" + "="*30)
+    print("✅ 所有文章处理完成！")
+    print("="*30)
+    
+    # 最后统一 Build
+    # if run_cmd("npm run build"):
+    #     print("🚀 Build 成功！正在提交代码...")
+    #     run_cmd("git add . && git commit -m 'feat: 批量更新 AI 文章' && git push")
+    # else:
+    #     print("❌ Build 失败，请查看上方日志。")
+
+if __name__ == "__main__":
+    process_smart_factory()
+
+=======================
+请给出 完整的 find_title.py  文件内容， 
+并给出修改后的 smart_factory.py 完整内容
+
+要不要在 smart_factory.py   之后 跟着运行一个  检查生成的文章json错误的Py文件？
+如有错误，检查并修复，有没有必要？
+
+

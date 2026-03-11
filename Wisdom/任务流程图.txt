@@ -1,0 +1,394 @@
+
+zanpath-article-pipeline
+
+目标：
+
+自动生成
+
+EN + ES 文章
+SEO
+JSON
+图片
+Sitemap
+Git
+
+Task 0 — 输入标题
+
+变量
+
+{{title}}
+
+示例
+
+How Do You Calculate a Bazi Chart Step by Step?
+
+Task 1 — 生成 slug 与 module
+
+AI Prompt
+
+You are generating metadata for zanpath.com.
+
+Title:
+{{title}}
+
+Modules must be one of:
+
+life-path
+dream
+naming
+space
+visual
+
+Mapping:
+
+life-path = Bazi
+dream = Dream interpretation
+naming = Name analysis
+space = Feng Shui
+visual = Face reading
+
+Generate:
+
+1 module
+1 SEO slug
+
+Slug rules:
+
+lowercase
+hyphen-separated
+no punctuation
+
+Return JSON only:
+
+{
+ "module": "",
+ "slug": ""
+}
+
+输出变量
+
+{{module}}
+{{slug}}
+
+Task 2 — 检查文章是否存在
+
+OpenClaw 执行
+
+Check file exists:
+
+content/articles/en/{{module}}/{{slug}}.json
+
+逻辑
+
+IF EXISTS
+STOP
+
+ELSE
+CONTINUE
+
+避免重复文章。
+
+Task 3 — 生成文章结构
+
+AI Prompt
+
+Generate an SEO article outline.
+
+Title:
+{{title}}
+
+Return JSON:
+
+{
+ "structure":[
+  "Introduction",
+  "",
+  "",
+  "",
+  "Conclusion",
+  "FAQ"
+ ]
+}
+
+输出
+
+{{structure}}
+
+Task 4 — 生成英文文章
+
+AI Prompt
+
+Write a full SEO article.
+
+Title:
+{{title}}
+
+Structure:
+{{structure}}
+
+Requirements:
+
+1200–1800 words
+Use H1 H2 H3
+Natural English
+Markdown format
+No Chinese
+
+Include FAQ section.
+
+Add a disclaimer at the end stating the content is for cultural or entertainment purposes only.
+
+输出
+
+{{article_en}}
+
+保存
+
+temp/article_en.txt
+
+Task 5 — 翻译西班牙语
+
+AI Prompt
+
+Translate the following article into Spanish.
+
+Keep all headings identical.
+
+Article:
+{{article_en}}
+
+输出
+
+{{article_es}}
+
+保存
+
+temp/article_es.txt
+
+Task 6 — 生成 SEO 数据
+
+AI Prompt
+
+Generate SEO metadata for zanpath.com.
+
+Title:
+{{title}}
+
+Slug:
+{{slug}}
+
+Module:
+{{module}}
+
+Return JSON:
+
+{
+ "metaTitle":"",
+ "metaDescription":"",
+ "primaryKeyword":"",
+ "secondaryKeywords":[],
+ "longTailKeywords":[],
+ "semanticKeywords":[],
+ "keywords":[],
+ "cluster":"",
+ "pillar":"",
+ "clusterIntent":"informational",
+ "relatedArticles":[],
+ "internalLinks":[],
+ "faq":[],
+ "summary":"",
+ "featuredSnippetAnswer":""
+}
+
+The faq field must be:
+
+[
+ {"question":"", "answer":""}
+]
+
+输出
+
+{{seo_en}}
+
+保存
+
+temp/seo_en.json
+
+Task 7 — 西班牙 SEO
+
+AI Prompt
+
+Translate the following JSON into Spanish.
+
+Translate values only.
+
+Keep all keys unchanged.
+
+{{seo_en}}
+
+输出
+
+{{seo_es}}
+
+保存
+
+temp/seo_es.json
+
+Task 8 — 生成图片关键词
+
+AI Prompt
+
+Generate 3 realistic photography keywords.
+
+Title:
+{{title}}
+
+Return JSON:
+
+{
+ "image_keywords":[
+  "",
+  "",
+  ""
+ ]
+}
+
+输出
+
+{{keyword1}}
+{{keyword2}}
+{{keyword3}}
+
+Task 9 — 生成 JSON
+
+执行
+
+node scripts/buildArticle.js "{{title}}" "{{slug}}" "{{module}}"
+
+脚本会自动生成
+
+content/articles/en/{module}/{slug}.json
+content/articles/es/{module}/{slug}.json
+
+并自动生成
+
+canonical
+CTA
+images
+breadcrumbs
+SEO metadata
+readingTime
+
+Task 10 — 下载图片
+
+必须带 slug
+
+执行
+
+node scripts/downloadImage.js "{{title}}" "{{slug}}" "{{module}}" "{{keyword1}}" "{{keyword2}}"
+
+生成
+
+/images/{folder}/{slug}-1.webp
+/images/{folder}/{slug}-2.webp
+
+folder 由 Node 自动映射：
+
+life-path → bazi
+space → fengshui
+visual → face
+
+Task 11 — 更新 sitemap
+
+执行
+
+node -e "require('./scripts/updateImageSitemap')('{{module}}','en/wisdom/{{module}}/{{slug}}','{{slug}}-1.webp','{{title}}','{{title}} image')"
+
+node -e "require('./scripts/updateImageSitemap')('{{module}}','en/wisdom/{{module}}/{{slug}}','{{slug}}-2.webp','{{title}}','{{title}} image')"
+
+更新
+
+article-sitemap.xml
+image-sitemap.xml
+sitemap.xml
+
+Task 12 — Build 验证
+
+执行
+
+npm run build
+
+逻辑
+
+IF SUCCESS
+ → Task 13
+
+IF FAIL
+ → AI分析错误
+ → 修复 JSON
+ → 重试（最多3次）
+
+AI Prompt
+
+Analyze this build error.
+
+{{error_log}}
+
+Identify if the issue is caused by invalid JSON or special characters.
+
+Check the following SEO JSON:
+
+{{seo_en_content}}
+
+Fix the JSON formatting.
+
+Ensure:
+
+JSON starts with {
+JSON ends with }
+All quotes are escaped properly.
+
+Task 13 — Git 自动提交
+
+执行
+
+cd e:/zanpath v2
+
+git add .
+
+git commit -m "feat(content): automated article {{slug}}"
+
+git push
+
+最终系统流程图
+
+Title
+ ↓
+Generate Module + Slug
+ ↓
+Check Existing Article
+ ↓
+Generate Article Outline
+ ↓
+Generate Article EN
+ ↓
+Translate ES
+ ↓
+Generate SEO EN
+ ↓
+Translate SEO ES
+ ↓
+Generate Image Keywords
+ ↓
+Node buildArticle.js
+ ↓
+Generate JSON
+ ↓
+Download Images
+ ↓
+Update Sitemap
+ ↓
+Build Verification
+ ↓
+Git Push
+

@@ -1,0 +1,769 @@
+
+Life Path (Bazi / 八字)
+================================
+按你之前给的模板  
+✅ 一、最终统一 JSON 模板（终极版）
+
+适用于：
+
+/content/articles/{locale}/{module}/{slug}.json
+
+例如：
+
+/content/articles/en/dream/why-do-i-keep-dreaming-about-the-same-person.json
+
+🔥 标准统一模板（以后全部照这个生成）
+
+=================================================
+{
+  "id": "unique-uuid-or-slug",
+  "locale": "en",
+  "module": "dream",
+
+  "slug": "why-do-i-keep-dreaming-about-the-same-person",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "Why Do I Keep Dreaming About the Same Person?",
+  "metaTitle": "Why Do I Keep Dreaming About the Same Person? Symbolic Meaning Explained",
+  "metaDescription": "What does it mean if you repeatedly dream about the same person? Explore emotional imprint, symbolic projection, and subconscious processing through structured dream reflection.",
+
+  "primaryKeyword": "dreaming about the same person",
+  "secondaryKeywords": [
+    "recurring dreams meaning",
+    "dream psychology",
+    "symbolic dream interpretation"
+  ],
+  "longTailKeywords": [
+    "why do I keep dreaming about the same person every night",
+    "what does recurring dream about someone mean"
+  ],
+  "semanticKeywords": [
+    "subconscious processing",
+    "emotional imprint",
+    "dream symbolism"
+  ],
+
+  "keywords": [
+    "dreaming about the same person",
+    "recurring dreams",
+    "dream interpretation"
+  ],
+
+  "cluster": "recurring-dream-patterns",
+  "pillar": "dream-interpretation-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-does-dreaming-of-snakes-mean",
+    "why-do-i-dream-about-falling"
+  ],
+
+  "summary": "Recurring dreams about the same person usually reflect unresolved emotional processing rather than literal meaning.",
+  "featuredSnippetAnswer": "Dreaming repeatedly about the same person typically represents unresolved emotional patterns, subconscious attachment, or symbolic projection rather than a direct prediction about that individual.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-02-27",
+  "dateModified": "2026-02-27",
+  "lastReviewed": "2026-02-27",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.05,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/dream-recurring-person.jpg",
+  "coverAlt": "Symbolic illustration of recurring dream about the same person",
+  "ogImage": "/images/dream-recurring-person.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/dream/why-do-i-keep-dreaming-about-the-same-person",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Dream", "url": "/en/wisdom/dream" },
+    { "name": "Why Do I Keep Dreaming About the Same Person?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is dreaming about the same person a sign they are thinking about me?",
+      "answer": "Recurring dreams are usually internal psychological processing rather than telepathic signals."
+    },
+    {
+      "question": "Do recurring dreams predict the future?",
+      "answer": "Most recurring dreams reflect unresolved emotional themes, not future events."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "dream reflection analysis",
+    "recurring dream meaning guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "dream reflection analysis",
+      "slug": "dream-reflection-guide"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Why the Same Person Appears in Dreams"
+    },
+    {
+      "type": "p",
+      "text": "Have you ever woken up wondering why the same person keeps appearing in your dreams?"
+    }
+  ],
+
+  "cta": {
+    "text": "Submit your dream for a structured AI Dream Reflection at Zanpath.",
+    "url": "https://zanpath.com/en/dream"
+  }
+}
+
+============================================  你帮生成一篇 我 的 在线AI  八字 起名 解梦 风水 相面 小网站的 文章，并给出 类似的文件名 why-do-i-keep-dreaming-about-the-same-person.json   ： ----------------Life Path (Bazi / 八字)
+	Why Do Some People Experience Extreme Ups and Downs in Life?   ------分别给出英语和西班牙语版------ 我分别放到  content\articles\en\life-path           content\articles\es\camino-de-vida  文件夹下     
+
+
+=============================================
+
+==============================================
+
+Dream
+===============================
+
+按你之前给的模板  
+✅ 一、最终统一 JSON 模板（终极版）
+
+适用于：
+
+/content/articles/{locale}/{module}/{slug}.json
+
+例如：
+
+/content/articles/en/dream/why-do-i-keep-dreaming-about-the-same-person.json
+
+🔥 标准统一模板（以后全部照这个生成）
+
+=================================================
+{
+  "id": "unique-uuid-or-slug",
+  "locale": "en",
+  "module": "dream",
+
+  "slug": "why-do-i-keep-dreaming-about-the-same-person",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "Why Do I Keep Dreaming About the Same Person?",
+  "metaTitle": "Why Do I Keep Dreaming About the Same Person? Symbolic Meaning Explained",
+  "metaDescription": "What does it mean if you repeatedly dream about the same person? Explore emotional imprint, symbolic projection, and subconscious processing through structured dream reflection.",
+
+  "primaryKeyword": "dreaming about the same person",
+  "secondaryKeywords": [
+    "recurring dreams meaning",
+    "dream psychology",
+    "symbolic dream interpretation"
+  ],
+  "longTailKeywords": [
+    "why do I keep dreaming about the same person every night",
+    "what does recurring dream about someone mean"
+  ],
+  "semanticKeywords": [
+    "subconscious processing",
+    "emotional imprint",
+    "dream symbolism"
+  ],
+
+  "keywords": [
+    "dreaming about the same person",
+    "recurring dreams",
+    "dream interpretation"
+  ],
+
+  "cluster": "recurring-dream-patterns",
+  "pillar": "dream-interpretation-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-does-dreaming-of-snakes-mean",
+    "why-do-i-dream-about-falling"
+  ],
+
+  "summary": "Recurring dreams about the same person usually reflect unresolved emotional processing rather than literal meaning.",
+  "featuredSnippetAnswer": "Dreaming repeatedly about the same person typically represents unresolved emotional patterns, subconscious attachment, or symbolic projection rather than a direct prediction about that individual.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-02-27",
+  "dateModified": "2026-02-27",
+  "lastReviewed": "2026-02-27",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.05,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/dream-recurring-person.jpg",
+  "coverAlt": "Symbolic illustration of recurring dream about the same person",
+  "ogImage": "/images/dream-recurring-person.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/dream/why-do-i-keep-dreaming-about-the-same-person",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Dream", "url": "/en/wisdom/dream" },
+    { "name": "Why Do I Keep Dreaming About the Same Person?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is dreaming about the same person a sign they are thinking about me?",
+      "answer": "Recurring dreams are usually internal psychological processing rather than telepathic signals."
+    },
+    {
+      "question": "Do recurring dreams predict the future?",
+      "answer": "Most recurring dreams reflect unresolved emotional themes, not future events."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "dream reflection analysis",
+    "recurring dream meaning guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "dream reflection analysis",
+      "slug": "dream-reflection-guide"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Why the Same Person Appears in Dreams"
+    },
+    {
+      "type": "p",
+      "text": "Have you ever woken up wondering why the same person keeps appearing in your dreams?"
+    }
+  ],
+
+  "cta": {
+    "text": "Submit your dream for a structured AI Dream Reflection at Zanpath.",
+    "url": "https://zanpath.com/en/dream"
+  }
+}
+
+============================================  你帮生成一篇 我 的 在线AI  八字 起名 解梦 风水 相面 小网站的 文章，并给出 类似的文件名 why-do-i-keep-dreaming-about-the-same-person.json   ： ----------------Dream
+		What Does It Mean to Dream About Water Repeatedly?   ------分别给出英语和西班牙语版------ 我分别放到  content\articles\en\dream           content\articles\es\suenos  文件夹下     
+
+
+=============================================
+
+===============================================
+
+Naming
+=======================================
+
+按你之前给的模板  
+✅ 一、最终统一 JSON 模板（终极版）
+
+适用于：
+
+/content/articles/{locale}/{module}/{slug}.json
+
+例如：
+
+/content/articles/en/dream/why-do-i-keep-dreaming-about-the-same-person.json
+
+🔥 标准统一模板（以后全部照这个生成）
+
+=================================================
+{
+  "id": "unique-uuid-or-slug",
+  "locale": "en",
+  "module": "dream",
+
+  "slug": "why-do-i-keep-dreaming-about-the-same-person",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "Why Do I Keep Dreaming About the Same Person?",
+  "metaTitle": "Why Do I Keep Dreaming About the Same Person? Symbolic Meaning Explained",
+  "metaDescription": "What does it mean if you repeatedly dream about the same person? Explore emotional imprint, symbolic projection, and subconscious processing through structured dream reflection.",
+
+  "primaryKeyword": "dreaming about the same person",
+  "secondaryKeywords": [
+    "recurring dreams meaning",
+    "dream psychology",
+    "symbolic dream interpretation"
+  ],
+  "longTailKeywords": [
+    "why do I keep dreaming about the same person every night",
+    "what does recurring dream about someone mean"
+  ],
+  "semanticKeywords": [
+    "subconscious processing",
+    "emotional imprint",
+    "dream symbolism"
+  ],
+
+  "keywords": [
+    "dreaming about the same person",
+    "recurring dreams",
+    "dream interpretation"
+  ],
+
+  "cluster": "recurring-dream-patterns",
+  "pillar": "dream-interpretation-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-does-dreaming-of-snakes-mean",
+    "why-do-i-dream-about-falling"
+  ],
+
+  "summary": "Recurring dreams about the same person usually reflect unresolved emotional processing rather than literal meaning.",
+  "featuredSnippetAnswer": "Dreaming repeatedly about the same person typically represents unresolved emotional patterns, subconscious attachment, or symbolic projection rather than a direct prediction about that individual.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-02-27",
+  "dateModified": "2026-02-27",
+  "lastReviewed": "2026-02-27",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.05,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/dream-recurring-person.jpg",
+  "coverAlt": "Symbolic illustration of recurring dream about the same person",
+  "ogImage": "/images/dream-recurring-person.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/dream/why-do-i-keep-dreaming-about-the-same-person",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Dream", "url": "/en/wisdom/dream" },
+    { "name": "Why Do I Keep Dreaming About the Same Person?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is dreaming about the same person a sign they are thinking about me?",
+      "answer": "Recurring dreams are usually internal psychological processing rather than telepathic signals."
+    },
+    {
+      "question": "Do recurring dreams predict the future?",
+      "answer": "Most recurring dreams reflect unresolved emotional themes, not future events."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "dream reflection analysis",
+    "recurring dream meaning guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "dream reflection analysis",
+      "slug": "dream-reflection-guide"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Why the Same Person Appears in Dreams"
+    },
+    {
+      "type": "p",
+      "text": "Have you ever woken up wondering why the same person keeps appearing in your dreams?"
+    }
+  ],
+
+  "cta": {
+    "text": "Submit your dream for a structured AI Dream Reflection at Zanpath.",
+    "url": "https://zanpath.com/en/dream"
+  }
+}
+
+============================================  你帮生成一篇 我 的 在线AI  八字 起名 解梦 风水 相面 小网站的 文章，并给出 类似的文件名 why-do-i-keep-dreaming-about-the-same-person.json   ： ----------------Naming
+	1.	How Can a Name Influence Personal Identity?   -----分别给出英语和西班牙语版------- 我分别放到  content\articles\en\naming           content\articles\es\nombres  文件夹下     
+
+
+=============================================
+
+=====================================
+
+
+Space
+
+============================
+按你之前给的模板  
+✅ 一、最终统一 JSON 模板（终极版）
+
+适用于：
+
+/content/articles/{locale}/{module}/{slug}.json
+
+例如：
+
+/content/articles/en/dream/why-do-i-keep-dreaming-about-the-same-person.json
+
+🔥 标准统一模板（以后全部照这个生成）
+
+=================================================
+{
+  "id": "unique-uuid-or-slug",
+  "locale": "en",
+  "module": "dream",
+
+  "slug": "why-do-i-keep-dreaming-about-the-same-person",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "Why Do I Keep Dreaming About the Same Person?",
+  "metaTitle": "Why Do I Keep Dreaming About the Same Person? Symbolic Meaning Explained",
+  "metaDescription": "What does it mean if you repeatedly dream about the same person? Explore emotional imprint, symbolic projection, and subconscious processing through structured dream reflection.",
+
+  "primaryKeyword": "dreaming about the same person",
+  "secondaryKeywords": [
+    "recurring dreams meaning",
+    "dream psychology",
+    "symbolic dream interpretation"
+  ],
+  "longTailKeywords": [
+    "why do I keep dreaming about the same person every night",
+    "what does recurring dream about someone mean"
+  ],
+  "semanticKeywords": [
+    "subconscious processing",
+    "emotional imprint",
+    "dream symbolism"
+  ],
+
+  "keywords": [
+    "dreaming about the same person",
+    "recurring dreams",
+    "dream interpretation"
+  ],
+
+  "cluster": "recurring-dream-patterns",
+  "pillar": "dream-interpretation-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-does-dreaming-of-snakes-mean",
+    "why-do-i-dream-about-falling"
+  ],
+
+  "summary": "Recurring dreams about the same person usually reflect unresolved emotional processing rather than literal meaning.",
+  "featuredSnippetAnswer": "Dreaming repeatedly about the same person typically represents unresolved emotional patterns, subconscious attachment, or symbolic projection rather than a direct prediction about that individual.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-02-27",
+  "dateModified": "2026-02-27",
+  "lastReviewed": "2026-02-27",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.05,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/dream-recurring-person.jpg",
+  "coverAlt": "Symbolic illustration of recurring dream about the same person",
+  "ogImage": "/images/dream-recurring-person.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/dream/why-do-i-keep-dreaming-about-the-same-person",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Dream", "url": "/en/wisdom/dream" },
+    { "name": "Why Do I Keep Dreaming About the Same Person?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is dreaming about the same person a sign they are thinking about me?",
+      "answer": "Recurring dreams are usually internal psychological processing rather than telepathic signals."
+    },
+    {
+      "question": "Do recurring dreams predict the future?",
+      "answer": "Most recurring dreams reflect unresolved emotional themes, not future events."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "dream reflection analysis",
+    "recurring dream meaning guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "dream reflection analysis",
+      "slug": "dream-reflection-guide"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Why the Same Person Appears in Dreams"
+    },
+    {
+      "type": "p",
+      "text": "Have you ever woken up wondering why the same person keeps appearing in your dreams?"
+    }
+  ],
+
+  "cta": {
+    "text": "Submit your dream for a structured AI Dream Reflection at Zanpath.",
+    "url": "https://zanpath.com/en/dream"
+  }
+}
+
+============================================  你帮生成一篇 我 的 在线AI  八字 起名 解梦 风水 相面 小网站的 文章，并给出 类似的文件名 why-do-i-keep-dreaming-about-the-same-person.json   ： ----------------space
+	1.	Does Feng Shui Really Affect Relationships at Home?   -----分别给出英语和西班牙语版------- 我分别放到  content\articles\en\space           content\articles\es\espacio  文件夹下     
+
+
+=============================================
+
+==============================================
+
+
+ Visual
+============================
+
+按你之前给的模板  
+✅ 一、最终统一 JSON 模板（终极版）
+
+适用于：
+
+/content/articles/{locale}/{module}/{slug}.json
+
+例如：
+
+/content/articles/en/dream/why-do-i-keep-dreaming-about-the-same-person.json
+
+🔥 标准统一模板（以后全部照这个生成）
+
+=================================================
+{
+  "id": "unique-uuid-or-slug",
+  "locale": "en",
+  "module": "dream",
+
+  "slug": "why-do-i-keep-dreaming-about-the-same-person",
+
+  "status": "published",
+  "featured": false,
+
+  "title": "Why Do I Keep Dreaming About the Same Person?",
+  "metaTitle": "Why Do I Keep Dreaming About the Same Person? Symbolic Meaning Explained",
+  "metaDescription": "What does it mean if you repeatedly dream about the same person? Explore emotional imprint, symbolic projection, and subconscious processing through structured dream reflection.",
+
+  "primaryKeyword": "dreaming about the same person",
+  "secondaryKeywords": [
+    "recurring dreams meaning",
+    "dream psychology",
+    "symbolic dream interpretation"
+  ],
+  "longTailKeywords": [
+    "why do I keep dreaming about the same person every night",
+    "what does recurring dream about someone mean"
+  ],
+  "semanticKeywords": [
+    "subconscious processing",
+    "emotional imprint",
+    "dream symbolism"
+  ],
+
+  "keywords": [
+    "dreaming about the same person",
+    "recurring dreams",
+    "dream interpretation"
+  ],
+
+  "cluster": "recurring-dream-patterns",
+  "pillar": "dream-interpretation-guide",
+  "clusterIntent": "informational",
+
+  "relatedArticles": [
+    "what-does-dreaming-of-snakes-mean",
+    "why-do-i-dream-about-falling"
+  ],
+
+  "summary": "Recurring dreams about the same person usually reflect unresolved emotional processing rather than literal meaning.",
+  "featuredSnippetAnswer": "Dreaming repeatedly about the same person typically represents unresolved emotional patterns, subconscious attachment, or symbolic projection rather than a direct prediction about that individual.",
+
+  "readingTime": 6,
+
+  "datePublished": "2026-02-27",
+  "dateModified": "2026-02-27",
+  "lastReviewed": "2026-02-27",
+
+  "evergreenScore": 9,
+  "updateFrequency": "quarterly",
+  "revisionNotes": "Initial publication",
+
+  "targetCTR": 0.05,
+  "targetPosition": 5,
+  "optimizationGoal": "featured-snippet",
+  "priorityLevel": "high",
+
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+
+  "coverImage": "/images/dream-recurring-person.jpg",
+  "coverAlt": "Symbolic illustration of recurring dream about the same person",
+  "ogImage": "/images/dream-recurring-person.jpg",
+
+  "canonical": "https://zanpath.com/en/wisdom/dream/why-do-i-keep-dreaming-about-the-same-person",
+
+  "robots": "index, follow",
+  "priority": 0.8,
+  "changefreq": "monthly",
+
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Dream", "url": "/en/wisdom/dream" },
+    { "name": "Why Do I Keep Dreaming About the Same Person?", "url": "" }
+  ],
+
+  "faq": [
+    {
+      "question": "Is dreaming about the same person a sign they are thinking about me?",
+      "answer": "Recurring dreams are usually internal psychological processing rather than telepathic signals."
+    },
+    {
+      "question": "Do recurring dreams predict the future?",
+      "answer": "Most recurring dreams reflect unresolved emotional themes, not future events."
+    }
+  ],
+
+  "suggestedAnchors": [
+    "dream reflection analysis",
+    "recurring dream meaning guide"
+  ],
+
+  "internalLinks": [
+    {
+      "anchor": "dream reflection analysis",
+      "slug": "dream-reflection-guide"
+    }
+  ],
+
+  "content": [
+    {
+      "type": "h2",
+      "text": "Why the Same Person Appears in Dreams"
+    },
+    {
+      "type": "p",
+      "text": "Have you ever woken up wondering why the same person keeps appearing in your dreams?"
+    }
+  ],
+
+  "cta": {
+    "text": "Submit your dream for a structured AI Dream Reflection at Zanpath.",
+    "url": "https://zanpath.com/en/dream"
+  }
+}
+
+============================================  你帮生成一篇 我 的 在线AI  八字 起名 解梦 风水 相面 小网站的 文章，并给出 类似的文件名 why-do-i-keep-dreaming-about-the-same-person.json   ： ---------------- Visual
+	1.	What Can Your Eyes Reveal About Your Personality?  ------分别给出英语和西班牙语版------ 我分别放到  content\articles\en\visual           content\articles\es\visual  文件夹下     
+
+=============================================
+

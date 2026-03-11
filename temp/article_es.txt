@@ -1,0 +1,27 @@
+{
+  "title": "El misterio de los Diez Dioses en la Astrología Bazi",
+  "description": "Aprende cómo los Diez Dioses influyen en tu camino de vida, relaciones y destino profesional en el análisis Bazi.",
+  "keywords": "Bazi, Diez Dioses, Astrología China, Destino"
+}
+{
+  "metaTitle": "El Misterio de los Diez Dioses en Bazi | Mapa de Vida",
+  "metaDescription": "Desbloquea los secretos de los Diez Dioses en Bazi. Aprende cómo estos arquetipos influyen en tu riqueza, carrera y relaciones en la astrología china.",
+  "primaryKeyword": "Diez Dioses Bazi",
+  "secondaryKeywords": ["Cuatro Pilares del Destino", "Astrología China", "Estrella de Riqueza", "Estrella de Oficial"],
+  "longTailKeywords": ["cómo influyen los diez dioses en el camino de vida", "significado del Dios Comiente en bazi", "calcular el Dios Útil en astrología"],
+  "semanticKeywords": ["Cinco Elementos", "Maestro del Día", "Mapa Cósmico", "Análisis de Destino"],
+  "keywords": ["Bazi", "Diez Dioses", "Astrología", "Camino de Vida"],
+  "cluster": "Guías de Astrología",
+  "pillar": "Sabiduría",
+  "clusterIntent": "informational",
+  "relatedArticles": ["introduccion-al-bazi", "equilibrio-de-cinco-elementos"],
+  "internalLinks": [],
+  "faq": [
+    {
+      "question": "¿Qué son los Diez Dioses en Bazi?",
+      "answer": "Los Diez Dioses son arquetipos simbólicos que representan diferentes dimensiones de la vida basados en la interacción de los elementos en tu carta natal."
+    }
+  ],
+  "summary": "Una guía completa para entender los Diez Dioses en la astrología Bazi y cómo trazan el potencial y los desafíos de tu vida.",
+  "featuredSnippetAnswer": "Los Diez Dioses en Bazi representan diez dimensiones de la vida, incluyendo las estrellas de Riqueza, Oficial, Recurso y Producción, que determinan la suerte y el carácter."
+}

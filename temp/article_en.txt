@@ -1,0 +1,31 @@
+Title: The Mystery of the Ten Gods in Bazi Astrology: Mapping Your Life Path
+Module: life-path
+Slug: bazi-ten-gods-mystery
+Keywords: ancient scrolls, zen garden, Chinese astrology, ethereal destiny, celestial mountains
+{
+  "title": "The Mystery of the Ten Gods in Bazi Astrology",
+  "description": "Learn how the Ten Gods influence your life path, relationships, and professional destiny in Bazi analysis.",
+  "keywords": "Bazi, Ten Gods, Chinese Astrology, Destiny, Four Pillars of Destiny"
+}
+{
+  "metaTitle": "The Mystery of the Ten Gods in Bazi Astrology | Life Path Mapping",
+  "metaDescription": "Unlock the secrets of the Ten Gods in Bazi. Learn how these archetypes influence your wealth, career, and relationships in Chinese astrology.",
+  "primaryKeyword": "Bazi Ten Gods",
+  "secondaryKeywords": ["Four Pillars of Destiny", "Chinese Astrology", "Wealth Star", "Officer Star"],
+  "longTailKeywords": ["how ten gods influence life path", "meaning of eating god in bazi", "calculating useful god in astrology"],
+  "semanticKeywords": ["Five Elements", "Day Master", "Cosmic Blueprint", "Destiny Analysis"],
+  "keywords": ["Bazi", "Ten Gods", "Astrology", "Life Path"],
+  "cluster": "Astrology Guides",
+  "pillar": "Wisdom",
+  "clusterIntent": "informational",
+  "relatedArticles": ["introduction-to-bazi", "five-elements-balance"],
+  "internalLinks": [],
+  "faq": [
+    {
+      "question": "What are the Ten Gods in Bazi?",
+      "answer": "The Ten Gods are symbolic archetypes representing different life dimensions based on the interaction of elements in your birth chart."
+    }
+  ],
+  "summary": "A comprehensive guide to understanding the Ten Gods in Bazi astrology and how they map out your life's potential and challenges.",
+  "featuredSnippetAnswer": "The Ten Gods in Bazi represent ten life dimensions, including Wealth, Officer, Resource, and Output stars, which determine a person's luck and character traits."
+}

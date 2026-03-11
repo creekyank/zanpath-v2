@@ -8,32 +8,37 @@ import sharp from "sharp";
 import crypto from "crypto";
 import dotenv from "dotenv";
 
-// 1. 强制指定 .env 文件所在的目录 (E:\zanpath v2)
 const envPath = "E:/zanpath v2/.env";
 const envLocalPath = "E:/zanpath v2/.env.local";
+if (fs.existsSync(envPath)) { dotenv.config({ path: envPath }); }
+if (fs.existsSync(envLocalPath)) { dotenv.config({ path: envLocalPath }); }
 
-// 2. 依次尝试加载这两个文件
-if (fs.existsSync(envPath)) {
-    dotenv.config({ path: envPath });
-}
-if (fs.existsSync(envLocalPath)) {
-    dotenv.config({ path: envLocalPath }); // 后加载的会覆盖或补充前面的
-}
-
-// 3. 强制指定图片存放的根目录
+// 2. 【核心修复】将变量定义移到最上方
 const IMAGE_DIR = "E:/zanpath v2/public/images";
 
-// 4. 读取 Key
+const folderMap = {
+  "life-path": "bazi",
+  "bazi": "bazi",
+  "space": "fengshui",
+  "fengshui": "fengshui",
+  "visual": "face",
+  "face": "face",
+  "dream": "dream",
+  "naming": "naming"
+};
+
+
+// 3. 读取 Key
 const PEXELS_KEY = process.env.PEXELS_KEY;
 const UNSPLASH_KEY = process.env.UNSPLASH_KEY;
 const PIXABAY_KEY = process.env.PIXABAY_KEY;
 
-// 调试打印：确认 Key 是否真的读到了
+// 4. 定义完之后再打印日志（这样就不会报 ReferenceError 了）
 console.log("--- 环境加载检查 ---");
 console.log("PEXELS_KEY:", PEXELS_KEY ? "✅ 已获取" : "❌ 未找到");
 console.log("UNSPLASH_KEY:", UNSPLASH_KEY ? "✅ 已获取" : "❌ 未找到");
 console.log("PIXABAY_KEY:", PIXABAY_KEY ? "✅ 已获取" : "❌ 未找到");
-console.log("图片存储路径:", IMAGE_DIR);
+console.log("图片存储路径:", IMAGE_DIR); 
 console.log("-------------------\n");
 
 const usedHashes = new Set();
@@ -59,16 +64,25 @@ function isGoodQuality(width, height) {
 /* ------------------------- */
 async function downloadAndProcess(url, savePath) {
     try {
-      const res = await fetch(url, { timeout: 15000 }); // 设置15秒超时
+      console.log(`正在从 URL 下载: ${url.substring(0, 50)}...`);
+      const res = await fetch(url, { 
+        timeout: 20000, // 增加到 20 秒
+        headers: { 'User-Agent': 'Mozilla/5.0' } 
+      }); 
   
       if (!res.ok) {
-        console.error(`❌ 下载请求失败: ${res.status} ${res.statusText}`);
+        console.error(`❌ 下载请求失败: ${res.status}`);
         return false;
       }
   
-      // 使用 ArrayBuffer 并转换为 Buffer，同时增加错误捕获
       const arrayBuffer = await res.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
+
+      // 核心修复：检查 Buffer 长度，防止 0KB 文件写入
+      if (buffer.length < 1000) { 
+        console.error("❌ 下载的文件过小或损坏 (0KB)，已跳过");
+        return false;
+      }
   
       const hash = crypto.createHash("md5").update(buffer).digest("hex");
       if (usedHashes.has(hash)) {
@@ -77,22 +91,26 @@ async function downloadAndProcess(url, savePath) {
       }
       usedHashes.add(hash);
   
-      const pipeline = sharp(buffer).resize(1200);
+      // 使用 Sharp 处理
+      const pipeline = sharp(buffer);
+      const metadata = await pipeline.metadata(); // 先读取元数据确认有效性
 
-      const jpg = await pipeline.clone().jpeg({ quality: 75 }).toBuffer();
-      const webp = await pipeline.clone().webp({ quality: 75 }).toBuffer();
-    
-    fs.writeFileSync(savePath + ".jpg", jpg);
-    fs.writeFileSync(savePath + ".webp", webp);
-    console.log(`✅ 成功保存: ${savePath}.jpg 和 ${savePath}.webp`);
+      if (!metadata.width) throw new Error("无效的图片数据");
+
+      const resized = pipeline.resize(1200, null, { withoutEnlargement: true });
+
+      // 写入物理文件
+      await resized.clone().jpeg({ quality: 80 }).toFile(savePath + ".jpg");
+      await resized.clone().webp({ quality: 80 }).toFile(savePath + ".webp");
+      
+      console.log(`✅ 成功保存: ${path.basename(savePath)}.webp`);
       return true;
   
     } catch (error) {
-      // 捕获 ECONNRESET, Timeout 等网络错误
-      console.error(`❌ 网络连接异常 (跳过该图): ${error.message}`);
+      console.error(`❌ 处理图片时发生错误: ${error.message}`);
       return false; 
     }
-  }
+}
 
 /* ------------------------- */
 /* PEXELS */
@@ -272,64 +290,46 @@ function generateAlt(keyword) {
 /* ------------------------- */
 /* 主程序 */
 /* ------------------------- */
-
 async function main() {
-
+  // 参数顺序：0:node, 1:script, 2:title, 3:slug, 4:module, 5...:keywords
   const title = process.argv[2];
-  const module = process.argv[3];
-  const keywords = process.argv.slice(4);
+  const slug = process.argv[3];
+  const moduleIn = process.argv[4];
+  const rawKeywords = process.argv.slice(5);
 
-  if (!title || !module || keywords.length === 0) {
-
-    console.log("usage:");
-
-    console.log(
-      'node downloadImage.js "title" module "keyword1" "keyword2"'
-    );
-
+  if (!title || !slug || !moduleIn || rawKeywords.length === 0) {
+    console.log('用法: node downloadImage.js "Title" "slug" "module" "keywords1, keyword2"');
     return;
-
   }
 
-  const slug = slugify(title, { lower: true });
 
-  const dir = `${IMAGE_DIR}/${module}`;
+const keywords = rawKeywords.join(',').split(',').map(k => k.trim()).filter(k => k);
 
+  // 2. 映射实际物理文件夹 (如 fengshui -> fengshui, space -> fengshui)
+  const actualFolderName = folderMap[moduleIn] || moduleIn;
+
+  // 3. 确定存储目录
+  const dir = path.join(IMAGE_DIR, actualFolderName);
   if (!fs.existsSync(dir)) {
-
     fs.mkdirSync(dir, { recursive: true });
-
   }
+
+  console.log(`🚀 开始搜图。物理路径: /images/${actualFolderName}/`);
 
   let index = 1;
-
   for (const keyword of keywords) {
+    if (index > 2) break; // 每篇文章下载 2 张图
 
-    if (index > 2) break;
+    const imgUrl = await findImage(keyword, moduleIn);
+    if (!imgUrl) continue;
 
-    const img = await findImage(keyword, module);
+    // 4. 拼接完整文件名路径 (不包含后缀)
+    const savePath = path.join(dir, `${slug}-${index}`);
 
-    if (!img) {
-
-      console.log("no image for:", keyword);
-
-      continue;
-
+    const success = await downloadAndProcess(imgUrl, savePath);
+    if (success) {
+      index++;
     }
-
-    const file = `${dir}/${slug}-${index}`;
-
-    const ok = await downloadAndProcess(img, file);
-    if (ok) {
-        const alt = generateAlt(keyword);
-        console.log("alt:", alt);
-        index++; // 只在这里加一次
-      } else {
-        console.log(`⏭️ 已跳过关键词 "${keyword}" 的图片处理`);
-      }
-
   }
-
 }
-
 main();
