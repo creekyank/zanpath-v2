@@ -64,23 +64,40 @@ AI 强力文本清洗
 ================================= */
 
 function cleanAIText(text) {
+
   if (!text) return "";
 
   let t = text;
 
+  // 删除代码块
   t = t.replace(/```[\s\S]*?```/g, "");
+
+  // 删除 AI 元信息
   t = t.replace(/Title:.*\n/g, "");
   t = t.replace(/Module:.*\n/g, "");
   t = t.replace(/Slug:.*\n/g, "");
   t = t.replace(/Keywords:.*\n/g, "");
   t = t.replace(/SEO:.*\n/g, "");
+
+  // 删除 JSON 残留
   t = t.replace(/\{[\s\S]*?"metaTitle"[\s\S]*?\}/g, "");
   t = t.replace(/\{[\s\S]*?"title"[\s\S]*?\}/g, "");
   t = t.replace(/\{[\s\S]*?"keywords"[\s\S]*?\}/g, "");
+
+  // ⭐ 删除 AI 插入的图片
+  t = t.replace(/<img[\s\S]*?>/gi, "");
+
+  // 删除 auto image
+  t = t.replace(/\/images\/auto\/section-\d+\.webp/g, "");
+
+  // 删除 markdown image
+  t = t.replace(/!\[.*?\]\(.*?\)/g, "");
+
   t = t.replace(/\*\*/g, "");
   t = t.replace(/\r/g, "");
   t = t.replace(/\n{3,}/g, "\n\n");
 
+  // 删除 FAQ
   t = t.replace(/## FAQ[\s\S]*/i, "");
 
   return t.trim();
@@ -96,11 +113,46 @@ function mdToHtml(text, imageFolder, slug, title) {
 
   text = text
     .replace(/\r/g, "")
-    .replace(/\*\*/g, "**")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 
+  const img1 = `/images/${imageFolder}/${slug}-1.webp`;
+  const img2 = `/images/${imageFolder}/${slug}-2.webp`;
+
   let lines = text.split("\n");
+
+  /* ---------- MERGE BROKEN PARAGRAPHS ---------- */
+
+  let merged = [];
+  let buffer = "";
+
+  for (let l of lines) {
+
+    let t = l.trim();
+
+    if (!t) {
+      if (buffer) {
+        merged.push(buffer);
+        buffer = "";
+      }
+      continue;
+    }
+
+    if (t.startsWith("#") || t.startsWith("- ") || /^\d+\.\s/.test(t)) {
+      if (buffer) {
+        merged.push(buffer);
+        buffer = "";
+      }
+      merged.push(t);
+    } else {
+      buffer += (buffer ? " " : "") + t;
+    }
+
+  }
+
+  if (buffer) merged.push(buffer);
+
+  lines = merged;
 
   let html = [];
 
@@ -108,91 +160,84 @@ function mdToHtml(text, imageFolder, slug, title) {
   let inOL = false;
 
   let h2Count = 0;
-  const img2Path = `/images/${imageFolder}/${slug}-2.webp`;
+  let firstImageInserted = false;
 
   for (let raw of lines) {
 
     let line = raw.trim();
-
     if (!line) continue;
-
-    /* ---------- HR ---------- */
-
-    if (line === "---" || line === "***") {
-
-      if (inUL) {
-        html.push("</ul>");
-        inUL = false;
-      }
-
-      if (inOL) {
-        html.push("</ol>");
-        inOL = false;
-      }
-
-      html.push("<hr>");
-      continue;
-    }
-    const isHeading = line.startsWith("#");
-    if (isHeading) {
-      if (inUL) { html.push("</ul>"); inUL = false; }
-      if (inOL) { html.push("</ol>"); inOL = false; }
-    }
-    /* ---------- H3 ---------- */
-
-    if (line.startsWith("### ")) {
-
-      if (inUL) {
-        html.push("</ul>");
-        inUL = false;
-      }
-
-      if (inOL) {
-        html.push("</ol>");
-        inOL = false;
-      }
-
-      html.push(`<h3>${line.replace(/^### /, "")}</h3>`);
-      continue;
-    }
-
-    /* ---------- H2 ---------- */
-    if (line.startsWith("## ")) {
-      h2Count++;
-      // --- ✨ 核心逻辑：在第二个 H2 之前插入第二张图 ---
-      if (h2Count === 2) {
-        html.push(`
-<img
-  loading="lazy"
-  decoding="async"
-  src="${img2Path}"
-  alt="${title}"
-  class="rounded-xl my-6"
-/>`);
-      }
-      html.push(`<h2>${line.replace(/^## /, "")}</h2>`);
-      continue;
-    }
 
     /* ---------- H1 ---------- */
 
     if (line.startsWith("# ")) {
 
-      if (inUL) {
-        html.push("</ul>");
-        inUL = false;
+      const h1 = line.replace(/^# /, "");
+    
+      if (html.find(v => v.startsWith("<h1>"))) {
+        html.push(`<h2>${h1}</h2>`);
+      } else {
+        html.push(`<h1>${h1}</h1>`);
       }
-
-      if (inOL) {
-        html.push("</ol>");
-        inOL = false;
+    
+      if (!firstImageInserted) {
+    
+        html.push(`
+    <img
+     loading="lazy"
+     decoding="async"
+     src="${img1}"
+     alt="${title}"
+     class="rounded-xl my-6"
+    />`);
+    
+        firstImageInserted = true;
       }
-
-      html.push(`<h1>${line.replace(/^# /, "")}</h1>`);
+    
       continue;
     }
 
-    /* ---------- UL LIST ---------- */
+    /* ---------- H2 ---------- */
+
+    if (line.startsWith("## ")) {
+
+      h2Count++;
+
+      if (h2Count === 2) {
+
+        html.push(`
+<img
+ loading="lazy"
+ decoding="async"
+ src="${img2}"
+ alt="${title}"
+ class="rounded-xl my-6"
+/>`);
+      }
+
+      html.push(`<h2>${line.replace(/^## /, "")}</h2>`);
+
+      continue;
+    }
+
+    /* ---------- H3 ---------- */
+
+    if (line.startsWith("### ")) {
+
+      html.push(`<h3>${line.replace(/^### /, "")}</h3>`);
+
+      continue;
+    }
+
+    /* ---------- H4 ---------- */
+
+    if (line.startsWith("#### ")) {
+
+      html.push(`<h4>${line.replace(/^#### /, "")}</h4>`);
+
+      continue;
+    }
+
+    /* ---------- UL ---------- */
 
     if (line.startsWith("- ") || line.startsWith("* ")) {
 
@@ -207,13 +252,12 @@ function mdToHtml(text, imageFolder, slug, title) {
         inUL = true;
       }
 
-      let item = line.replace(/^[-*] /, "");
+      html.push(`<li>${line.replace(/^[-*] /, "")}</li>`);
 
-      html.push(`<li>${item}</li>`);
       continue;
     }
 
-    /* ---------- OL LIST ---------- */
+    /* ---------- OL ---------- */
 
     if (/^\d+\.\s/.test(line)) {
 
@@ -228,9 +272,8 @@ function mdToHtml(text, imageFolder, slug, title) {
         inOL = true;
       }
 
-      let item = line.replace(/^\d+\.\s/, "");
+      html.push(`<li>${line.replace(/^\d+\.\s/, "")}</li>`);
 
-      html.push(`<li>${item}</li>`);
       continue;
     }
 
@@ -246,6 +289,14 @@ function mdToHtml(text, imageFolder, slug, title) {
       inOL = false;
     }
 
+    /* ---------- SAFE TEXT CLEAN ---------- */
+
+    line = line
+      .replace(/<\/?p>/gi, "")
+      .replace(/<\/?div>/gi, "")
+      .replace(/<\/?span>/gi, "")
+      .replace(/<\/?section>/gi, "");
+
     /* ---------- BOLD ---------- */
 
     line = line.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
@@ -254,11 +305,14 @@ function mdToHtml(text, imageFolder, slug, title) {
 
     line = line.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-    /* ---------- SAFE TEXT ---------- */
+    /* ---------- LINK ---------- */
 
-    line = line
-      .replace(/<\/?p>/g, "")
-      .replace(/<\/?div>/g, "");
+    line = line.replace(
+      /\[(.*?)\]\((.*?)\)/g,
+      '<a href="$2" class="text-blue-600 underline">$1</a >'
+    );
+
+    /* ---------- PARAGRAPH ---------- */
 
     html.push(`<p>${line}</p >`);
 
@@ -280,6 +334,7 @@ function mdToHtml(text, imageFolder, slug, title) {
   result = result.replace(/<p>\s*<\/p>/g, "");
 
   return result;
+
 }
 
 /* =================================
