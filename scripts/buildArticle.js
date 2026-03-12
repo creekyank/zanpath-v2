@@ -181,14 +181,8 @@ function mdToHtml(text, imageFolder, slug, title) {
     
       if (!firstImageInserted) {
     
-        html.push(`
-    <img
-     loading="lazy"
-     decoding="async"
-     src="${img1}"
-     alt="${title}"
-     class="rounded-xl my-6"
-    />`);
+        html.push(`< img loading="lazy" decoding="async" src="${img1}" alt="${title}" class="rounded-xl my-6" />`);
+
     
         firstImageInserted = true;
       }
@@ -204,14 +198,7 @@ function mdToHtml(text, imageFolder, slug, title) {
 
       if (h2Count === 2) {
 
-        html.push(`
-<img
- loading="lazy"
- decoding="async"
- src="${img2}"
- alt="${title}"
- class="rounded-xl my-6"
-/>`);
+        html.push(`< img loading="lazy" decoding="async" src="${img2}" alt="${title}" class="rounded-xl my-6" />`);
       }
 
       html.push(`<h2>${line.replace(/^## /, "")}</h2>`);
@@ -309,7 +296,7 @@ function mdToHtml(text, imageFolder, slug, title) {
 
     line = line.replace(
       /\[(.*?)\]\((.*?)\)/g,
-      '<a href="$2" class="text-blue-600 underline">$1</a >'
+      '<a href="$2" class="text-blue-600 underline">$1</a>'
     );
 
     /* ---------- PARAGRAPH ---------- */
