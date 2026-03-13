@@ -21,36 +21,60 @@ export async function generateMetadata({ params }: any) {
 
 /* 样式渲染保持不变 */
 function renderBlock(block: any, index: number) {
+
   switch (block.type) {
+
+    /* ===== H1 ===== */
+
+    case "h1":
+      return (
+        <h1
+          key={index}
+          id={block.id}
+          className="text-3xl md:text-4xl font-bold mt-10 mb-6 text-[#0f3d2e]"
+        >
+          {block.text}
+        </h1>
+      );
+
+    /* ===== H2 ===== */
+
     case "h2":
       return (
         <h2
           key={index}
+          id={block.id}
           className="text-2xl md:text-3xl font-bold mt-14 mb-6 text-[#0f3d2e]"
         >
           {block.text}
         </h2>
       );
 
+    /* ===== H3 ===== */
+
     case "h3":
       return (
         <h3
           key={index}
+          id={block.id}
           className="text-xl font-semibold mt-10 mb-4 text-[#1e5c49]"
         >
           {block.text}
         </h3>
       );
 
+    /* ===== Paragraph ===== */
+
     case "p":
       return (
         <p
           key={index}
           className="text-[#4a7c6d] leading-relaxed mb-6 text-[16px]"
-        >
-          {block.text}
-        </p >
+          dangerouslySetInnerHTML={{ __html: block.text }}
+        />
       );
+
+    /* ===== UL ===== */
 
     case "ul":
       return (
@@ -59,10 +83,15 @@ function renderBlock(block: any, index: number) {
           className="list-disc pl-6 space-y-3 mb-6 text-[#4a7c6d]"
         >
           {block.items?.map((item: string, i: number) => (
-            <li key={i}>{item}</li>
+            <li
+              key={i}
+              dangerouslySetInnerHTML={{ __html: item }}
+            />
           ))}
         </ul>
       );
+
+    /* ===== OL ===== */
 
     case "ol":
       return (
@@ -71,14 +100,96 @@ function renderBlock(block: any, index: number) {
           className="list-decimal pl-6 space-y-3 mb-6 text-[#4a7c6d]"
         >
           {block.items?.map((item: string, i: number) => (
-            <li key={i}>{item}</li>
+            <li
+              key={i}
+              dangerouslySetInnerHTML={{ __html: item }}
+            />
           ))}
         </ol>
       );
 
+    /* ===== IMAGE ===== */
+
+    case "image":
+      return (
+        <img
+          key={index}
+          src={block.src}
+          alt={block.alt || ""}
+          loading="lazy"
+          decoding="async"
+          className="rounded-xl my-8 w-full"
+        />
+      );
+
+    /* ===== TOC ===== */
+
+    case "toc":
+      return (
+        <div
+          key={index}
+          className="my-10 p-6 bg-gray-50 rounded-xl border"
+        >
+          <strong className="text-[#0f3d2e]">
+            Table of Contents
+          </strong>
+
+          <ul className="mt-4 list-disc pl-5 space-y-2">
+
+            {block.items?.map((item: any, i: number) => (
+
+              <li key={i}>
+                <a
+                  href= "text-blue-600 hover:underline"
+                >
+                  {item.text}
+                </a >
+              </li>
+
+            ))}
+
+          </ul>
+        </div>
+      );
+
+    /* ===== RELATED ARTICLES (block版) ===== */
+
+    case "related":
+      return (
+        <div
+          key={index}
+          className="mt-14 border-t pt-8"
+        >
+
+          <h3 className="text-xl font-semibold mb-4 text-[#0f3d2e]">
+            Related Insights
+          </h3>
+
+          <ul className="space-y-2">
+
+            {block.items?.map((item: any, i: number) => (
+
+              <li key={i}>
+                <a
+                  href={item.url}
+                  className="text-blue-600 hover:underline"
+                >
+                  {item.title}
+                </a >
+              </li>
+
+            ))}
+
+          </ul>
+
+        </div>
+      );
+
     default:
       return null;
+
   }
+
 }
 
 export default async function ArticlePage({ params }: any) {

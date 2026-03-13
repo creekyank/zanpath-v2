@@ -113,36 +113,114 @@ function mdToBlocks(text, imageFolder, slug, title) {
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
 
+  /* ================================
+  工具函数
+  ================================ */
+
+  function slugifyAnchor(t) {
+    return t
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .trim();
+  }
+
+  function random(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  /* ================================
+  internal link 关键词库
+  ================================ */
+
+  const internalLinks = [
+    {
+      keyword: "five elements",
+      url: "/en/wisdom/life-path/understanding-the-five-elements"
+    },
+    {
+      keyword: "bazi chart",
+      url: "/en/wisdom/life-path/how-to-read-a-bazi-chart"
+    },
+    {
+      keyword: "feng shui",
+      url: "/en/wisdom/space/what-is-feng-shui"
+    },
+    {
+      keyword: "dream meaning",
+      url: "/en/wisdom/dream/what-do-dreams-mean"
+    }
+  ];
+
+  /* ================================
+  预处理
+  ================================ */
+
   let lines = text
     .replace(/\r/g, "")
     .replace(/\n{3,}/g, "\n\n")
     .split("\n");
 
   let blocks = [];
+  let toc = [];
 
   let buffer = "";
   let h2Count = 0;
   let firstImageInserted = false;
 
+  /* ================================
+  段落输出
+  ================================ */
+
   function flushParagraph() {
-    if (buffer.trim()) {
-      blocks.push({
-        type: "p",
-        text: buffer.trim()
-      });
-      buffer = "";
-    }
+
+    if (!buffer.trim()) return;
+
+    let paragraph = buffer.trim();
+
+    /* 自动 internal link */
+
+    internalLinks.forEach(link => {
+
+      const regex = new RegExp(`\\b${link.keyword}\\b`, "i");
+
+      if (regex.test(paragraph)) {
+
+        paragraph = paragraph.replace(
+          regex,
+          `<a href=" " class="text-blue-600 underline">${link.keyword}</a >`
+        );
+
+      }
+
+    });
+
+    blocks.push({
+      type: "p",
+      text: paragraph
+    });
+
+    buffer = "";
+
   }
+
+  /* ================================
+  主循环
+  ================================ */
 
   for (let raw of lines) {
 
     let line = raw.trim();
+
     if (!line) {
       flushParagraph();
       continue;
     }
 
-    /* H1 */
+    /* ================================
+    H1
+    ================================ */
 
     if (line.startsWith("# ")) {
 
@@ -167,9 +245,12 @@ function mdToBlocks(text, imageFolder, slug, title) {
       }
 
       continue;
+
     }
 
-    /* H2 */
+    /* ================================
+    H2
+    ================================ */
 
     if (line.startsWith("## ")) {
 
@@ -178,10 +259,17 @@ function mdToBlocks(text, imageFolder, slug, title) {
       h2Count++;
 
       const h2 = line.replace(/^## /, "");
+      const anchor = slugifyAnchor(h2);
+
+      toc.push({
+        text: h2,
+        anchor: anchor
+      });
 
       blocks.push({
         type: "h2",
-        text: h2
+        text: h2,
+        id: anchor
       });
 
       if (h2Count === 2) {
@@ -195,29 +283,39 @@ function mdToBlocks(text, imageFolder, slug, title) {
       }
 
       continue;
+
     }
 
-    /* H3 */
+    /* ================================
+    H3
+    ================================ */
 
     if (line.startsWith("### ")) {
 
       flushParagraph();
 
+      const h3 = line.replace(/^### /, "");
+      const anchor = slugifyAnchor(h3);
+
       blocks.push({
         type: "h3",
-        text: line.replace(/^### /, "")
+        text: h3,
+        id: anchor
       });
 
       continue;
+
     }
 
-    /* UL */
+    /* ================================
+    UL
+    ================================ */
 
     if (line.startsWith("- ") || line.startsWith("* ")) {
 
       flushParagraph();
 
-      const items = [];
+      let items = [];
 
       while (line.startsWith("- ") || line.startsWith("* ")) {
 
@@ -227,6 +325,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
         lines.shift();
         line = (lines[0] || "").trim();
+
       }
 
       blocks.push({
@@ -235,15 +334,18 @@ function mdToBlocks(text, imageFolder, slug, title) {
       });
 
       continue;
+
     }
 
-    /* OL */
+    /* ================================
+    OL
+    ================================ */
 
     if (/^\d+\.\s/.test(line)) {
 
       flushParagraph();
 
-      const items = [];
+      let items = [];
 
       while (/^\d+\.\s/.test(line)) {
 
@@ -253,6 +355,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
         lines.shift();
         line = (lines[0] || "").trim();
+
       }
 
       blocks.push({
@@ -261,9 +364,12 @@ function mdToBlocks(text, imageFolder, slug, title) {
       });
 
       continue;
+
     }
 
-    /* paragraph */
+    /* ================================
+    paragraph
+    ================================ */
 
     buffer += (buffer ? " " : "") + line;
 
@@ -271,9 +377,48 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
   flushParagraph();
 
+  /* ================================
+  插入 TOC
+  ================================ */
+
+  if (toc.length > 2) {
+
+    blocks.splice(2, 0, {
+      type: "toc",
+      items: toc
+    });
+
+  }
+
+  /* ================================
+  Related Articles
+  ================================ */
+
+  blocks.push({
+
+    type: "related",
+
+    items: [
+      {
+        title: "How to Read a Bazi Chart",
+        url: "/en/wisdom/life-path/how-to-read-a-bazi-chart"
+      },
+      {
+        title: "Understanding the Five Elements",
+        url: "/en/wisdom/life-path/understanding-the-five-elements"
+      },
+      {
+        title: "Can Feng Shui Influence Life Decisions",
+        url: "/en/wisdom/space/can-feng-shui-influence-life-decisions"
+      }
+    ]
+
+  });
+
   return blocks;
 
 }
+
 
 /* =================================
 关键词清洗
@@ -391,57 +536,52 @@ function build(locale, article, seo) {
   // 3. 生成 HTML 内容 (传入参数，内部会自动处理第 2 张图的插入)
   let blocks = mdToBlocks(article, imageFolder, slug, displayTitle);
 
-  // 4. 兼容性补齐：如果 AI 生成的内容里原本就带了占位符，执行替换
-  finalHtml = finalHtml.replace(/\/images\/auto\/section-1\.webp/g, img1);
-  finalHtml = finalHtml.replace(/\/images\/auto\/section-2\.webp/g, img2);
-  
   return {
-
+  
     id: slug,
     locale: locale,
     module: moduleName,
     slug: slug,
-
+  
     status: "published",
-
+  
     title: displayTitle,
-
+  
     metaTitle: seo.metaTitle || title,
-
+  
     metaDescription:
       seo.metaDescription ||
       `Explore the deeper meaning behind ${title}.`,
-
+  
     primaryKeyword:
       seo.primaryKeyword || title.toLowerCase(),
-
+  
     secondaryKeywords: seo.secondaryKeywords || [],
     longTailKeywords: seo.longTailKeywords || [],
     semanticKeywords: seo.semanticKeywords || [],
     keywords: seo.keywords || [],
-
+  
     summary: seo.summary || "",
-
+  
     featuredSnippetAnswer:
       seo.featuredSnippetAnswer || "",
-
+  
     readingTime: readingTime(article),
-
+  
     datePublished: today,
     dateModified: today,
     lastReviewed: today,
-
+  
     canonical:
       `${SITE_URL}/${locale}/wisdom/${moduleName}/${slug}`,
-
-    // --- 💡 修改点 3: 使用映射后的文件夹变量 ---
+  
     coverImage: img1,
     ogImage: img1,
-
+  
     faq: seo.faq || [],
-
+  
     content: blocks
-
+  
   };
 }
 
