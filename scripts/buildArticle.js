@@ -106,221 +106,172 @@ function cleanAIText(text) {
 /* =================================
 Markdown → HTML
 ================================= */
+function mdToBlocks(text, imageFolder, slug, title) {
 
-function mdToHtml(text, imageFolder, slug, title) {
-
-  if (!text) return "";
-
-  text = text
-    .replace(/\r/g, "")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  if (!text) return [];
 
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
 
-  let lines = text.split("\n");
+  let lines = text
+    .replace(/\r/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .split("\n");
 
-  /* ---------- MERGE BROKEN PARAGRAPHS ---------- */
+  let blocks = [];
 
-  let merged = [];
   let buffer = "";
-
-  for (let l of lines) {
-
-    let t = l.trim();
-
-    if (!t) {
-      if (buffer) {
-        merged.push(buffer);
-        buffer = "";
-      }
-      continue;
-    }
-
-    if (t.startsWith("#") || t.startsWith("- ") || /^\d+\.\s/.test(t)) {
-      if (buffer) {
-        merged.push(buffer);
-        buffer = "";
-      }
-      merged.push(t);
-    } else {
-      buffer += (buffer ? " " : "") + t;
-    }
-
-  }
-
-  if (buffer) merged.push(buffer);
-
-  lines = merged;
-
-  let html = [];
-
-  let inUL = false;
-  let inOL = false;
-
   let h2Count = 0;
   let firstImageInserted = false;
+
+  function flushParagraph() {
+    if (buffer.trim()) {
+      blocks.push({
+        type: "p",
+        text: buffer.trim()
+      });
+      buffer = "";
+    }
+  }
 
   for (let raw of lines) {
 
     let line = raw.trim();
-    if (!line) continue;
+    if (!line) {
+      flushParagraph();
+      continue;
+    }
 
-    /* ---------- H1 ---------- */
+    /* H1 */
 
     if (line.startsWith("# ")) {
 
-      const h1 = line.replace(/^# /, "");
-    
-      if (html.find(v => v.startsWith("<h1>"))) {
-        html.push(`<h2>${h1}</h2>`);
-      } else {
-        html.push(`<h1>${h1}</h1>`);
-      }
-    
-      if (!firstImageInserted) {
-    
-        html.push(`< img loading="lazy" decoding="async" src="${img1}" alt="${title}" class="rounded-xl my-6" />`);
+      flushParagraph();
 
-    
+      const h1 = line.replace(/^# /, "");
+
+      blocks.push({
+        type: "h1",
+        text: h1
+      });
+
+      if (!firstImageInserted) {
+
+        blocks.push({
+          type: "image",
+          src: img1,
+          alt: title
+        });
+
         firstImageInserted = true;
       }
-    
+
       continue;
     }
 
-    /* ---------- H2 ---------- */
+    /* H2 */
 
     if (line.startsWith("## ")) {
 
+      flushParagraph();
+
       h2Count++;
+
+      const h2 = line.replace(/^## /, "");
+
+      blocks.push({
+        type: "h2",
+        text: h2
+      });
 
       if (h2Count === 2) {
 
-        html.push(`< img loading="lazy" decoding="async" src="${img2}" alt="${title}" class="rounded-xl my-6" />`);
-      }
+        blocks.push({
+          type: "image",
+          src: img2,
+          alt: title
+        });
 
-      html.push(`<h2>${line.replace(/^## /, "")}</h2>`);
+      }
 
       continue;
     }
 
-    /* ---------- H3 ---------- */
+    /* H3 */
 
     if (line.startsWith("### ")) {
 
-      html.push(`<h3>${line.replace(/^### /, "")}</h3>`);
+      flushParagraph();
+
+      blocks.push({
+        type: "h3",
+        text: line.replace(/^### /, "")
+      });
 
       continue;
     }
 
-    /* ---------- H4 ---------- */
-
-    if (line.startsWith("#### ")) {
-
-      html.push(`<h4>${line.replace(/^#### /, "")}</h4>`);
-
-      continue;
-    }
-
-    /* ---------- UL ---------- */
+    /* UL */
 
     if (line.startsWith("- ") || line.startsWith("* ")) {
 
-      if (!inUL) {
+      flushParagraph();
 
-        if (inOL) {
-          html.push("</ol>");
-          inOL = false;
-        }
+      const items = [];
 
-        html.push("<ul>");
-        inUL = true;
+      while (line.startsWith("- ") || line.startsWith("* ")) {
+
+        items.push(
+          line.replace(/^[-*] /, "")
+        );
+
+        lines.shift();
+        line = (lines[0] || "").trim();
       }
 
-      html.push(`<li>${line.replace(/^[-*] /, "")}</li>`);
+      blocks.push({
+        type: "ul",
+        items: items
+      });
 
       continue;
     }
 
-    /* ---------- OL ---------- */
+    /* OL */
 
     if (/^\d+\.\s/.test(line)) {
 
-      if (!inOL) {
+      flushParagraph();
 
-        if (inUL) {
-          html.push("</ul>");
-          inUL = false;
-        }
+      const items = [];
 
-        html.push("<ol>");
-        inOL = true;
+      while (/^\d+\.\s/.test(line)) {
+
+        items.push(
+          line.replace(/^\d+\.\s/, "")
+        );
+
+        lines.shift();
+        line = (lines[0] || "").trim();
       }
 
-      html.push(`<li>${line.replace(/^\d+\.\s/, "")}</li>`);
+      blocks.push({
+        type: "ol",
+        items: items
+      });
 
       continue;
     }
 
-    /* ---------- CLOSE LIST ---------- */
+    /* paragraph */
 
-    if (inUL) {
-      html.push("</ul>");
-      inUL = false;
-    }
-
-    if (inOL) {
-      html.push("</ol>");
-      inOL = false;
-    }
-
-    /* ---------- SAFE TEXT CLEAN ---------- */
-
-    line = line
-      .replace(/<\/?p>/gi, "")
-      .replace(/<\/?div>/gi, "")
-      .replace(/<\/?span>/gi, "")
-      .replace(/<\/?section>/gi, "");
-
-    /* ---------- BOLD ---------- */
-
-    line = line.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-
-    /* ---------- ITALIC ---------- */
-
-    line = line.replace(/\*(.*?)\*/g, "<em>$1</em>");
-
-    /* ---------- LINK ---------- */
-
-    line = line.replace(
-      /\[(.*?)\]\((.*?)\)/g,
-      '<a href="$2" class="text-blue-600 underline">$1</a>'
-    );
-
-    /* ---------- PARAGRAPH ---------- */
-
-    html.push(`<p>${line}</p >`);
+    buffer += (buffer ? " " : "") + line;
 
   }
 
-  /* ---------- CLOSE LIST END ---------- */
+  flushParagraph();
 
-  if (inUL) html.push("</ul>");
-  if (inOL) html.push("</ol>");
-
-  let result = html.join("\n");
-
-  /* ---------- FIX BAD P TAG ---------- */
-
-  result = result.replace(/<\/p\s+>/g, "</p >");
-
-  /* ---------- REMOVE EMPTY P ---------- */
-
-  result = result.replace(/<p>\s*<\/p>/g, "");
-
-  return result;
+  return blocks;
 
 }
 
@@ -438,7 +389,7 @@ function build(locale, article, seo) {
   }
 
   // 3. 生成 HTML 内容 (传入参数，内部会自动处理第 2 张图的插入)
-  let finalHtml = mdToHtml(article, imageFolder, slug, displayTitle);
+  let blocks = mdToBlocks(article, imageFolder, slug, displayTitle);
 
   // 4. 兼容性补齐：如果 AI 生成的内容里原本就带了占位符，执行替换
   finalHtml = finalHtml.replace(/\/images\/auto\/section-1\.webp/g, img1);
@@ -489,12 +440,7 @@ function build(locale, article, seo) {
 
     faq: seo.faq || [],
 
-    content: [
-      {
-        type: "html",
-        text: finalHtml
-      }
-    ]
+    content: blocks
 
   };
 }
