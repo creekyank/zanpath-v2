@@ -160,15 +160,22 @@ export default async function ArticlePage({ params }: any) {
 
       {/* ===== Article Content ===== */}
       <article className="prose prose-neutral max-w-none">
-        {Array.isArray(article.content)
-          ? article.content.map((block: any, index: number) =>
-              renderBlock(block, index)
-            )
-          : (
-            <p className="text-[#4a7c6d] leading-relaxed text-[16px]">
-              {article.content}
-            </p >
-          )}
+      {Array.isArray(article.content)
+        ? article.content.map((block: any, index: number) => {
+
+            if (block.type === "html") {
+              return (
+                <div
+                  key={index}
+                  dangerouslySetInnerHTML={{ __html: block.text }}
+                />
+              );
+            }
+
+            return renderBlock(block, index);
+        })
+        : null}
+
       </article>
 {/* ===== Dynamic CTA Section (简洁统一版) ===== */}
 {article.cta && (
