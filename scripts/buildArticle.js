@@ -83,6 +83,9 @@ function cleanAIText(text) {
   t = t.replace(/\{[\s\S]*?"metaTitle"[\s\S]*?\}/g, "");
   t = t.replace(/\{[\s\S]*?"title"[\s\S]*?\}/g, "");
   t = t.replace(/\{[\s\S]*?"keywords"[\s\S]*?\}/g, "");
+  t = t.replace(/Related Insights[\s\S]*/i, "");
+  t = t.replace(/section-\d+\.webp/g, "");
+
 
   // ⭐ 删除 AI 插入的图片
   t = t.replace(/<img[\s\S]*?>/gi, "");
@@ -99,6 +102,8 @@ function cleanAIText(text) {
 
   // 删除 FAQ
   t = t.replace(/## FAQ[\s\S]*/i, "");
+  t = t.replace (/^---$/gm,"");
+
 
   return t.trim();
 }
