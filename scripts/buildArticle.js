@@ -83,15 +83,17 @@ function cleanAIText(text) {
   t = t.replace(/\{[\s\S]*?"metaTitle"[\s\S]*?\}/g, "");
   t = t.replace(/\{[\s\S]*?"title"[\s\S]*?\}/g, "");
   t = t.replace(/\{[\s\S]*?"keywords"[\s\S]*?\}/g, "");
-  t = t.replace(/Related Insights[\s\S]*/i, "");
+
+  // 删除图片
+  t = t.replace(/<img[\s\S]*?>/gi, "");
+  t = t.replace(/!\[.*?\]\(.*?\)/g, "");
+  t = t.replace(/\/images\/auto\/section-\d+\.webp/g, "");
   t = t.replace(/section-\d+\.webp/g, "");
 
+  // 删除 Related Insights
+  t = t.replace(/Related Insights[\s\S]*?(?=\n#|\n##|\n$)/gi, "");
+  t = t.replace(/^Related Insights.*$/gim, "");
 
-  // ⭐ 删除 AI 插入的图片
-  t = t.replace(/<img[\s\S]*?>/gi, "");
-
-  // 删除 auto image
-  t = t.replace(/\/images\/auto\/section-\d+\.webp/g, "");
 
   // 删除 markdown image
   t = t.replace(/!\[.*?\]\(.*?\)/g, "");
@@ -121,14 +123,13 @@ function mdToBlocks(text, imageFolder, slug, title) {
   /* ================================
   工具函数
   ================================ */
-
   function slugifyAnchor(t) {
     return t
       .toLowerCase()
       .replace(/[^\w\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
-      .trim();
+      .replace(/^-+|-+$/g, "");
   }
 
   function random(arr) {
@@ -174,6 +175,8 @@ function mdToBlocks(text, imageFolder, slug, title) {
   let h2Count = 0;
   let firstImageInserted = false;
 
+  let i = 0;
+
   /* ================================
   段落输出
   ================================ */
@@ -184,9 +187,11 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
     let paragraph = buffer.trim();
 
-    /* 自动 internal link */
+    let linkInserted = false;
 
-    internalLinks.forEach(link => {
+    for (const link of internalLinks) {
+
+      if (linkInserted) break;
 
       const regex = new RegExp(`\\b${link.keyword}\\b`, "i");
 
@@ -197,9 +202,11 @@ function mdToBlocks(text, imageFolder, slug, title) {
           `<a href=" " class="text-blue-600 underline">${link.keyword}</a >`
         );
 
+        linkInserted = true;
+
       }
 
-    });
+    }
 
     blocks.push({
       type: "p",
@@ -214,12 +221,13 @@ function mdToBlocks(text, imageFolder, slug, title) {
   主循环
   ================================ */
 
-  for (let raw of lines) {
+  while (i < lines.length) {
 
-    let line = raw.trim();
+    let line = lines[i].trim();
 
     if (!line) {
       flushParagraph();
+      i++;
       continue;
     }
 
@@ -228,6 +236,32 @@ function mdToBlocks(text, imageFolder, slug, title) {
     ================================ */
 
     if (line.startsWith("# ")) {
+
+      flushParagraph();
+
+      const h1 = line.replace(/^# /, "");
+
+      blocks.push({
+        type: "h1",
+        text: h1
+      });
+
+      if (!firstImageInserted) {
+
+        blocks.push({
+          type: "image",
+          src: img1,
+          alt: title
+        });
+
+        firstImageInserted = true;
+
+      }
+
+      i++;
+      continue;
+
+    }   if (line.startsWith("# ")) {
 
       flushParagraph();
 
@@ -287,6 +321,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
       }
 
+      i++;
       continue;
 
     }
@@ -296,6 +331,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
     ================================ */
 
     if (line.startsWith("### ")) {
+
 
       flushParagraph();
 
@@ -308,6 +344,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
         id: anchor
       });
 
+      i++;
       continue;
 
     }
@@ -322,14 +359,17 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
       let items = [];
 
-      while (line.startsWith("- ") || line.startsWith("* ")) {
+      while (
+        i < lines.length &&
+        (lines[i].trim().startsWith("- ") ||
+          lines[i].trim().startsWith("* "))
+      ) {
 
         items.push(
-          line.replace(/^[-*] /, "")
+          lines[i].trim().replace(/^[-*] /, "")
         );
 
-        lines.shift();
-        line = (lines[0] || "").trim();
+        i++;
 
       }
 
@@ -352,14 +392,16 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
       let items = [];
 
-      while (/^\d+\.\s/.test(line)) {
+      while (
+        i < lines.length &&
+        /^\d+\.\s/.test(lines[i].trim())
+      ) {
 
         items.push(
-          line.replace(/^\d+\.\s/, "")
+          lines[i].trim().replace(/^\d+\.\s/, "")
         );
 
-        lines.shift();
-        line = (lines[0] || "").trim();
+        i++;
 
       }
 
@@ -378,6 +420,8 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
     buffer += (buffer ? " " : "") + line;
 
+    i++;
+
   }
 
   flushParagraph();
@@ -395,30 +439,6 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
   }
 
-  /* ================================
-  Related Articles
-  ================================ */
-
-  blocks.push({
-
-    type: "related",
-
-    items: [
-      {
-        title: "How to Read a Bazi Chart",
-        url: "/en/wisdom/life-path/how-to-read-a-bazi-chart"
-      },
-      {
-        title: "Understanding the Five Elements",
-        url: "/en/wisdom/life-path/understanding-the-five-elements"
-      },
-      {
-        title: "Can Feng Shui Influence Life Decisions",
-        url: "/en/wisdom/space/can-feng-shui-influence-life-decisions"
-      }
-    ]
-
-  });
 
   return blocks;
 

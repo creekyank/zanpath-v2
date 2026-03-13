@@ -139,18 +139,10 @@
     {
       "type": "ul",
       "items": [
-        "La Madera controla la Tierra"
-      ]
-    },
-    {
-      "type": "ul",
-      "items": [
-        "El Agua controla el Fuego"
-      ]
-    },
-    {
-      "type": "ul",
-      "items": [
+        "La Madera controla la Tierra",
+        "La Tierra controla el Agua",
+        "El Agua controla el Fuego",
+        "El Fuego controla el Metal",
         "El Metal controla la Madera"
       ]
     },
@@ -210,23 +202,6 @@
     {
       "type": "p",
       "text": "Comprender estas dinámicas puede ayudar a desarrollar mayor conciencia personal y equilibrio al enfrentar decisiones importantes."
-    },
-    {
-      "type": "related",
-      "items": [
-        {
-          "title": "How to Read a Bazi Chart",
-          "url": "/en/wisdom/life-path/how-to-read-a-bazi-chart"
-        },
-        {
-          "title": "Understanding the Five Elements",
-          "url": "/en/wisdom/life-path/understanding-the-five-elements"
-        },
-        {
-          "title": "Can Feng Shui Influence Life Decisions",
-          "url": "/en/wisdom/space/can-feng-shui-influence-life-decisions"
-        }
-      ]
     }
   ],
   "relatedArticles": [

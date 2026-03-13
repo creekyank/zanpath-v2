@@ -149,18 +149,10 @@
     {
       "type": "ul",
       "items": [
-        "Wood controls Earth"
-      ]
-    },
-    {
-      "type": "ul",
-      "items": [
-        "Water controls Fire"
-      ]
-    },
-    {
-      "type": "ul",
-      "items": [
+        "Wood controls Earth",
+        "Earth controls Water",
+        "Water controls Fire",
+        "Fire controls Metal",
         "Metal controls Wood"
       ]
     },
@@ -175,12 +167,8 @@
     {
       "type": "ul",
       "items": [
-        "Strong Water vs Fire may create emotional versus logical tension."
-      ]
-    },
-    {
-      "type": "ul",
-      "items": [
+        "Strong Water vs Fire may create emotional versus logical tension.",
+        "Strong Metal vs Wood may create rigidity against creativity.",
         "Strong Earth vs Water may produce hesitation between stability and adaptability."
       ]
     },
@@ -244,12 +232,8 @@
     {
       "type": "ul",
       "items": [
-        "Someone with strong Metal influence might benefit from allowing more creative brainstorming before choosing a path."
-      ]
-    },
-    {
-      "type": "ul",
-      "items": [
+        "Someone with strong Metal influence might benefit from allowing more creative brainstorming before choosing a path.",
+        "Someone with strong Fire influence might pause to evaluate options more calmly before acting.",
         "Someone with dominant Earth energy may practice becoming comfortable with gradual change."
       ]
     },
@@ -273,10 +257,18 @@
       ]
     },
     {
+      "type": "p",
+      "text": "Writing down options and evaluating them logically can support charts dominated by emotional elements."
+    },
+    {
       "type": "ol",
       "items": [
         "Intuitive Check-Ins"
       ]
+    },
+    {
+      "type": "p",
+      "text": "Taking quiet moments to reflect can help analytical personalities reconnect with intuition."
     },
     {
       "type": "ol",
@@ -285,10 +277,18 @@
       ]
     },
     {
+      "type": "p",
+      "text": "Trying small changes rather than large commitments can reduce pressure when conflicting tendencies appear."
+    },
+    {
       "type": "ol",
       "items": [
         "Timing Awareness"
       ]
+    },
+    {
+      "type": "p",
+      "text": "Some practitioners also consider yearly or monthly element influences to observe when decisions feel more natural."
     },
     {
       "type": "h2",
@@ -306,23 +306,6 @@
     {
       "type": "p",
       "text": "Ultimately, awareness of these patterns may help individuals develop a more balanced decision-making process that integrates logic, intuition, and emotional understanding."
-    },
-    {
-      "type": "related",
-      "items": [
-        {
-          "title": "How to Read a Bazi Chart",
-          "url": "/en/wisdom/life-path/how-to-read-a-bazi-chart"
-        },
-        {
-          "title": "Understanding the Five Elements",
-          "url": "/en/wisdom/life-path/understanding-the-five-elements"
-        },
-        {
-          "title": "Can Feng Shui Influence Life Decisions",
-          "url": "/en/wisdom/space/can-feng-shui-influence-life-decisions"
-        }
-      ]
     }
   ],
   "relatedArticles": [
