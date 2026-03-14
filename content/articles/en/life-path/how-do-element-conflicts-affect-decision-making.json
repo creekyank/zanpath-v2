@@ -54,7 +54,8 @@
   "content": [
     {
       "type": "h1",
-      "text": "How Do Element Conflicts Affect Decision Making?"
+      "text": "How Do Element Conflicts Affect Decision Making?",
+      "id": "how-do-element-conflicts-affect-decision-making"
     },
     {
       "type": "image",
@@ -101,7 +102,7 @@
     },
     {
       "type": "p",
-      "text": "In traditional Chinese metaphysics, the Bazi system—also known as the Four Pillars of Destiny—analyzes a person's birth time using the <a href=\" \" class=\"text-blue-600 underline\">five elements</a >: Wood, Fire, Earth, Metal, and Water. These elements interact through cycles of generation and control, shaping personality tendencies, emotional responses, and even decision-making patterns."
+      "text": "In traditional Chinese metaphysics, the Bazi system—also known as the Four Pillars of Destiny—analyzes a person's birth time using the five elements: Wood, Fire, Earth, Metal, and Water. These elements interact through cycles of generation and control, shaping personality tendencies, emotional responses, and even decision-making patterns."
     },
     {
       "type": "p",

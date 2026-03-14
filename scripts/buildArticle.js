@@ -126,6 +126,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
   function slugifyAnchor(t) {
     return t
       .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
       .replace(/[^\w\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
@@ -135,29 +136,6 @@ function mdToBlocks(text, imageFolder, slug, title) {
   function random(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
-
-  /* ================================
-  internal link 关键词库
-  ================================ */
-
-  const internalLinks = [
-    {
-      keyword: "five elements",
-      url: "/en/wisdom/life-path/understanding-the-five-elements"
-    },
-    {
-      keyword: "bazi chart",
-      url: "/en/wisdom/life-path/how-to-read-a-bazi-chart"
-    },
-    {
-      keyword: "feng shui",
-      url: "/en/wisdom/space/what-is-feng-shui"
-    },
-    {
-      keyword: "dream meaning",
-      url: "/en/wisdom/dream/what-do-dreams-mean"
-    }
-  ];
 
   /* ================================
   预处理
@@ -187,37 +165,14 @@ function mdToBlocks(text, imageFolder, slug, title) {
   function flushParagraph() {
 
     if (!buffer.trim()) return;
-
-    let paragraph = buffer.trim();
-
-    let linkInserted = false;
-
-    for (const link of internalLinks) {
-
-      if (linkInserted) break;
-
-      const regex = new RegExp(`\\b${link.keyword}\\b`, "i");
-
-      if (regex.test(paragraph)) {
-
-        paragraph = paragraph.replace(
-          regex,
-          `<a href=" " class="text-blue-600 underline">${link.keyword}</a >`
-        );
-
-        linkInserted = true;
-
-      }
-
-    }
-
+  
     blocks.push({
       type: "p",
-      text: paragraph
+      text: buffer.trim()
     });
-
+  
     buffer = "";
-
+  
   }
 
   /* ================================
@@ -248,7 +203,8 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
       blocks.push({
         type: "h1",
-        text: h1
+        text: h1,
+        id: slugifyAnchor(h1)
       });
 
       if (!firstImageInserted) {

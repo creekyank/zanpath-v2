@@ -128,22 +128,46 @@ function renderBlock(block: any, index: number) {
     case "toc":
       return (
         <div key={index} className="my-10 p-6 bg-gray-50 rounded-xl border">
+    
           <strong className="text-[#0f3d2e]">
             Table of Contents
           </strong>
     
           <ul className="mt-4 list-disc pl-5 space-y-2">
+    
             {block.items?.map((item: any, i: number) => (
+    
               <li key={i}>
+    
                 <a
                   href={`#${item.anchor}`}
                   className="text-blue-600 hover:underline"
+                  onClick={(e) => {
+    
+                    e.preventDefault();
+    
+                    const el = document.getElementById(item.anchor);
+    
+                    if (el) {
+                      el.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                      });
+                    }
+    
+                  }}
                 >
+    
                   {item.text}
+    
                 </a >
+    
               </li>
+    
             ))}
+    
           </ul>
+    
         </div>
       );
 
