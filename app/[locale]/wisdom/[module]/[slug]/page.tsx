@@ -10,6 +10,80 @@ import { Article } from "@/content/articles"; // 确保导入了接口
 
 const baseUrl = "https://zanpath.com";
 
+
+/* =================================
+CTA URL 生成
+================================= */
+
+function getCtaUrl(locale: string, module: string) {
+
+  const map: Record<string, string> = {
+
+    "life-path": "",        // 八字 → 首页
+    dream: "/dream",
+    naming: "/naming",
+    space: "/fengshui",
+    visual: "/visual"
+
+  };
+
+  const path = map[module] ?? "";
+
+  return `https://zanpath.com/${locale}${path}`;
+
+}
+
+
+/* =================================
+CTA 文案 fallback（SEO优化版）
+================================= */
+
+function getDefaultCtaText(locale: string, module: string) {
+
+  const en: Record<string, string> = {
+
+    "life-path":
+      "Discover what your Bazi chart reveals about love, personality, and destiny with an AI-powered analysis on Zanpath.",
+
+    dream:
+      "Uncover the hidden meaning of your dreams with an AI-powered dream interpretation on Zanpath.",
+
+    naming:
+      "Explore the deeper energy behind your name with an AI-powered naming analysis on Zanpath.",
+
+    space:
+      "Get personalized Feng Shui insights to improve the energy of your home with AI analysis on Zanpath.",
+
+    visual:
+      "Upload your photo and discover personality and leadership signals through AI face analysis on Zanpath."
+
+  };
+
+  const es: Record<string, string> = {
+
+    "life-path":
+      "Descubre lo que revela tu carta Bazi sobre tu personalidad, amor y destino con un análisis de IA en Zanpath.",
+
+    dream:
+      "Descubre el significado oculto de tus sueños con una interpretación de sueños impulsada por IA en Zanpath.",
+
+    naming:
+      "Explora la energía profunda de tu nombre con un análisis de nombres impulsado por IA en Zanpath.",
+
+    space:
+      "Obtén consejos personalizados de Feng Shui para mejorar la energía de tu hogar con IA en Zanpath.",
+
+    visual:
+      "Sube tu foto y descubre rasgos de personalidad y liderazgo con análisis facial de IA en Zanpath."
+
+  };
+
+  const map = locale === "es" ? es : en;
+
+  return map[module] ?? en["life-path"];
+
+}
+
 export async function generateMetadata({ params }: any) {
   const { locale, module, slug } = await params;
 
@@ -256,6 +330,18 @@ export default async function ArticlePage({ params }: any) {
 
   const url = `${baseUrl}/${locale}/wisdom/${module}/${slug}`;
 
+  /* =================================
+CTA 自动生成
+================================= */
+
+const ctaText =
+  article.cta?.text ||
+  getDefaultCtaText(locale, module);
+
+const ctaUrl =
+  article.cta?.url ||
+  getCtaUrl(locale, module);
+
   return (
     <main className="max-w-4xl mx-auto px-6 py-16 pb-32">
 
@@ -292,16 +378,16 @@ export default async function ArticlePage({ params }: any) {
 
       </article>
 {/* ===== Dynamic CTA Section (简洁统一版) ===== */}
-{article.cta && (
+{ctaText && (
           /* 将 mt-28 改为 mt-14 让它离正文近一点，mb-16 改为 mb-10 让它离相关文章近一点 */
           <div className="mt-14 mb-10"> 
             <Link 
-              href={article.cta.url}
+             href={ctaUrl}
               className="group block max-w-2xl mx-auto text-center p-4 transition-all"
             >
               {/* 文字部分：mb-8 改为 mb-5 缩短与按钮的距离 */}
               <p className="mb-5 text-[#0f3d2e] font-medium leading-relaxed text-lg group-hover:opacity-80 transition-opacity">
-                {article.cta.text}
+               {ctaText}
               </p >
 
               {/* 按钮部分：
