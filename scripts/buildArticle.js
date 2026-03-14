@@ -512,8 +512,8 @@ function build(locale, article, seo) {
     "life-path": "bazi",
     "dream": "dream",
     "naming": "naming",
-    "space": "space",
-    "visual": "visual"
+    "space": "fengshui",
+    "visual": "face"
   };
 
   const imageFolder = folderMap[moduleName] || moduleName;
