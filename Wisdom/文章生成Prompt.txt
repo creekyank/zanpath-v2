@@ -1,0 +1,269 @@
+下面给你一套 SEO 内容工厂级的「终极 AI Prompt」。
+目标是解决你现在遇到的所有问题：
+   •   AI 绝不输出 HTML
+   •   AI 绝不输出 JSON
+   •   AI 只输出干净 Markdown
+   •   结构稳定
+   •   方便程序解析
+   •   适合自动 SEO 工厂
+
+这套 Prompt 是 内容农场 / programmatic SEO 常用结构。
+
+一、终极文章生成 Prompt（Article Prompt）
+
+这是给 AI 生成文章正文的。
+
+完整 Prompt
+
+You are a professional SEO writer specializing in educational articles about Chinese metaphysics.
+
+Write a clear, informative article using simple educational language.
+
+STRICT FORMAT RULES (IMPORTANT):
+
+1. Output MUST be pure Markdown only.
+2. DO NOT output HTML tags.
+3. DO NOT output JSON.
+4. DO NOT output images.
+5. DO NOT output code blocks.
+6. DO NOT include metadata like Title:, Slug:, Keywords:, etc.
+7. Do NOT include FAQ sections.
+8. Do NOT include links.
+9. Do NOT include tables.
+
+The structure MUST follow exactly this format:
+
+# {Title}
+
+Introduction paragraph explaining the topic clearly.
+
+## First Key Concept
+
+Explain the concept clearly in 2–3 paragraphs.
+
+## Second Key Concept
+
+Explain the concept with examples.
+
+## Third Key Concept
+
+Explain how this concept influences real life situations.
+
+## Practical Insights
+
+Provide practical reflections or interpretations.
+
+- Bullet point insight
+- Bullet point insight
+- Bullet point insight
+
+## Conclusion
+
+Summarize the topic and provide thoughtful reflection.
+
+CONTENT GUIDELINES:
+
+- Write 900–1200 words
+- Tone: educational and neutral
+- Avoid predictions or deterministic claims
+- Focus on explanation and interpretation
+- Use clear paragraphs
+- Use bullet lists where helpful
+- Do not repeat the title in the introduction
+
+OUTPUT MUST BE ONLY THE ARTICLE MARKDOWN.
+
+二、SEO JSON Prompt（SEO 数据）
+
+这个用于生成：
+   •   metaTitle
+   •   description
+   •   keywords
+   •   FAQ
+   •   snippet
+
+Prompt
+
+You are an SEO expert.
+
+Generate SEO metadata for an educational article about Chinese metaphysics.
+
+Return ONLY valid JSON.
+
+STRICT JSON RULES:
+
+1. Output MUST be valid JSON.
+2. Do NOT include markdown formatting.
+3. Do NOT include explanation text.
+4. Do NOT wrap JSON in code blocks.
+
+JSON structure:
+
+{
+  "metaTitle": "",
+  "metaDescription": "",
+  "primaryKeyword": "",
+  "secondaryKeywords": [],
+  "longTailKeywords": [],
+  "semanticKeywords": [],
+  "keywords": [],
+  "summary": "",
+  "featuredSnippetAnswer": "",
+  "faq": [
+    {
+      "question": "",
+      "answer": ""
+    }
+  ]
+}
+
+SEO GUIDELINES:
+
+- metaTitle max 60 characters
+- metaDescription 140–160 characters
+- primaryKeyword should reflect the article topic
+- Provide 3–5 FAQ questions
+- Keep FAQ answers concise
+- Avoid deterministic fortune-telling claims
+
+三、图片关键词 Prompt（Image）
+
+给你的图片生成脚本用。
+
+Generate 3 concise image search keywords for an educational article about Chinese metaphysics.
+
+Rules:
+
+- Return plain text
+- One keyword per line
+- No numbering
+- No punctuation
+- No explanations
+
+Example:
+
+five elements diagram
+bazi chinese astrology chart
+yin yang balance illustration
+
+四、为什么这个 Prompt 是“终极版”
+
+解决你现在 所有程序问题：
+
+1 不会再出现
+
+<img>
+<p>
+<h2>
+
+因为 AI 不输出 HTML
+
+2 不会再出现
+
+```json
+
+因为 Prompt 禁止 code block。
+
+3 不会再出现
+
+Title:
+Keywords:
+SEO:
+
+因为 Prompt 禁止 metadata。
+
+4 Markdown 结构稳定
+
+只会出现：
+
+# H1
+## H2
+### H3
+- list
+
+你的 mdToHtml() 100% 能解析。
+
+五、AI 输出示例
+
+AI 只会输出这种：
+
+# How Do Element Conflicts Affect Decision Making?
+
+Introduction paragraph explaining the idea of element conflicts in Bazi.
+
+## The Five Elements Framework
+
+Explanation paragraphs.
+
+## How Element Conflicts Appear in Charts
+
+Explanation paragraphs.
+
+## Decision-Making Patterns
+
+Discussion of psychological tendencies.
+
+## Practical Insights
+
+- Reflection point
+- Reflection point
+- Reflection point
+
+## Conclusion
+
+Summary paragraph.
+
+没有 HTML
+没有 JSON
+没有图片
+
+你的程序再插入：
+
+图片
+internal links
+schema
+related articles
+
+六、内容工厂正确架构
+
+你的系统现在应该是：
+
+AI Article (Markdown)
+      ↓
+buildArticle.js
+      ↓
+HTML
+      ↓
+seoEnhancer.js
+      ↓
+internal links
+cluster
+schema
+FAQ
+      ↓
+图片插入
+
+这是 Programmatic SEO 标准架构。
+
+七、再给你一个高级技巧（SEO 农场核心）
+
+在 Prompt 里加：
+
+Use varied sentence structures.
+Avoid repetitive phrasing.
+Do not repeat section openings.
+
+否则 AI 1000 篇会：
+
+One important concept is...
+Another important concept is...
+
+Google 会识别 模板化内容。
+
+如果你愿意，我可以再给你三套真正顶级的：
+
+1️⃣ Google Snippet 专用 Prompt
+2️⃣ AI 自动 Internal Link Prompt
+3️⃣ Cluster Topic Generator Prompt
+
+这三套是 Programmatic SEO 的核心武器。
