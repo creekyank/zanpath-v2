@@ -17,14 +17,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://zanpath.com/en/wisdom/face/what-is-face-reading-and-how-does-it-work</loc>
-    <image:image>
-      <image:loc>https://zanpath.com/images/face/what-is-face-reading-and-how-does-it-work-1.webp</image:loc>
-      <image:title>What Is Face Reading and How Does It Work?</image:title>
-      <image:caption>Learn what face reading is and how it works in Chinese metaphysics. Understand facial feature analysis for personality and life pattern insights.</image:caption>
-    </image:image>
-  </url>
-  <url>
     <loc>https://zanpath.com/en/life-path/best-industries-for-each-five-element-type</loc>
     <image:image>
       <image:loc>https://zanpath.com/images/five-elements-career.jpg</image:loc>
@@ -393,6 +385,14 @@
     </image:image>
   </url>
   <url>
+    <loc>https://zanpath.com/en/wisdom/visual/how-can-face-reading-reveal-personality-traits</loc>
+    <image:image>
+      <image:loc>https://zanpath.com/images/visual/how-can-face-reading-reveal-personality-traits-1.webp</image:loc>
+      <image:title>How Can Face Reading Reveal Personality Traits?</image:title>
+      <image:caption>Learn how face reading reveals personality traits through facial feature analysis. Understand character insights from Chinese physiognomy.</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://zanpath.com/en/wisdom/visual/what-can-your-eyes-reveal-about-your-personality</loc>
     <image:image>
       <image:loc>https://zanpath.com/images/eyes-personality.jpg</image:loc>
@@ -406,6 +406,14 @@
       <image:loc>https://zanpath.com/images/strong-jawline-face-reading.jpg</image:loc>
       <image:title>What Does a Strong Jawline Symbolize in Face Reading?</image:title>
       <image:caption>Discover what a strong jawline symbolizes in traditional face reading. Learn how jaw structure is linked to willpower, determination, and life stability.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://zanpath.com/en/wisdom/face/what-is-face-reading-and-how-does-it-work</loc>
+    <image:image>
+      <image:loc>https://zanpath.com/images/face/what-is-face-reading-and-how-does-it-work-1.webp</image:loc>
+      <image:title>What Is Face Reading and How Does It Work?</image:title>
+      <image:caption>Learn what face reading is and how it works in Chinese metaphysics. Understand facial feature analysis for personality and life pattern insights.</image:caption>
     </image:image>
   </url>
   <url>
@@ -430,14 +438,6 @@
       <image:loc>https://zanpath.com/images/dream-water-recurring.jpg</image:loc>
       <image:title>¿Qué Significa Soñar con Agua Repetidamente?</image:title>
       <image:caption>Los sueños recurrentes con agua suelen reflejar estados emocionales, procesos internos y transiciones de vida. Descubre su significado simbólico estructurado.</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://zanpath.com/es/wisdom/face/what-is-face-reading-and-how-does-it-work</loc>
-    <image:image>
-      <image:loc>https://zanpath.com/images/face/what-is-face-reading-and-how-does-it-work-1.webp</image:loc>
-      <image:title>Guía de Lectura Facial</image:title>
-      <image:caption>Aprende qué es la lectura facial y cómo funciona en la metafísica china. Comprende el análisis de características faciales para perspectivas de personalida</image:caption>
     </image:image>
   </url>
   <url>
@@ -801,6 +801,14 @@
     </image:image>
   </url>
   <url>
+    <loc>https://zanpath.com/es/wisdom/visual/how-can-face-reading-reveal-personality-traits</loc>
+    <image:image>
+      <image:loc>https://zanpath.com/images/visual/how-can-face-reading-reveal-personality-traits-1.webp</image:loc>
+      <image:title>Rasgos de Personalidad Lectura Facial</image:title>
+      <image:caption>Aprende cómo la lectura facial revela rasgos de personalidad a través del análisis de características faciales. Comprende perspectivas de carácter de la fi</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://zanpath.com/es/wisdom/visual/por-que-algunas-personas-tienen-energia-intensa-en-la-mirada</loc>
     <image:image>
       <image:loc>https://zanpath.com/images/intense-eye-energy.jpg</image:loc>
@@ -830,6 +838,14 @@
       <image:loc>https://zanpath.com/images/strong-jawline-face-reading.jpg</image:loc>
       <image:title>¿Qué Simboliza Una Mandíbula Fuerte En La Lectura Facial?</image:title>
       <image:caption>Descubre qué simboliza una mandíbula fuerte según la lectura facial tradicional y cómo se relaciona con determinación y estabilidad.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://zanpath.com/es/wisdom/face/what-is-face-reading-and-how-does-it-work</loc>
+    <image:image>
+      <image:loc>https://zanpath.com/images/face/what-is-face-reading-and-how-does-it-work-1.webp</image:loc>
+      <image:title>Guía de Lectura Facial</image:title>
+      <image:caption>Aprende qué es la lectura facial y cómo funciona en la metafísica china. Comprende el análisis de características faciales para perspectivas de personalida</image:caption>
     </image:image>
   </url>
 </urlset>
