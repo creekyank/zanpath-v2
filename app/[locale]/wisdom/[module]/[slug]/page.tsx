@@ -44,7 +44,7 @@ function renderBlock(block: any, index: number) {
         <h2
           key={index}
           id={block.id}
-          className="text-2xl md:text-3xl font-bold mt-14 mb-6 text-[#0f3d2e]"
+          className="text-2xl md:text-3xl font-bold mt-14 mb-6 text-[#0f3d2e] scroll-mt-28"
         >
           {block.text}
         </h2>
@@ -142,24 +142,8 @@ function renderBlock(block: any, index: number) {
                 <a
                   href={`#${item.anchor}`}
                   className="text-blue-600 hover:underline"
-                  onClick={(e) => {
-    
-                    e.preventDefault();
-    
-                    const el = document.getElementById(item.anchor);
-    
-                    if (el) {
-                      el.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                      });
-                    }
-    
-                  }}
                 >
-    
                   {item.text}
-    
                 </a >
     
               </li>
