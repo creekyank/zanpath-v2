@@ -380,10 +380,32 @@ function mdToBlocks(text, imageFolder, slug, title, locale) {
 /* ================================
 插入 Disclaimer
 ================================ */
-blocks.push({
-  type: "disclaimer",
-  text: disclaimerText
-});
+let inserted = false;
+
+for (let i = blocks.length - 1; i >= 0; i--) {
+
+  if (blocks[i].type === "h2") {
+
+    blocks.splice(i + 1, 0, {
+      type: "disclaimer",
+      text: disclaimerText
+    });
+
+    inserted = true;
+    break;
+
+  }
+
+}
+
+if (!inserted) {
+
+  blocks.push({
+    type: "disclaimer",
+    text: disclaimerText
+  });
+
+}
 
 
   return blocks;

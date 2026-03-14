@@ -231,10 +231,8 @@ function renderBlock(block: any, index: number) {
 
       case "disclaimer":
         return (
-          <div key={index} className="mt-14 pt-6 border-t">
-            <p className="text-sm text-gray-500 italic">
-              {block.text}
-            </p >
+          <div key={index} className="mt-14 p-4 bg-gray-50 rounded-lg border text-sm text-gray-600">
+            {block.text}
           </div>
         );
 
