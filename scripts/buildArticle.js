@@ -168,18 +168,21 @@ function mdToBlocks(text, imageFolder, slug, title) {
     .replace(/\n{3,}/g, "\n\n")
     .split("\n");
 
-  let blocks = [];
-  let toc = [];
-
-  let buffer = "";
-  let h2Count = 0;
-  let firstImageInserted = false;
-
-  let i = 0;
+    let blocks = [];
+    let toc = [];
+  
+    let buffer = "";
+  
+    let h2Count = 0;
+    let firstImageInserted = false;
+    let snippetInserted = false;
+  
+    let i = 0;
 
   /* ================================
   段落输出
   ================================ */
+
 
   function flushParagraph() {
 
@@ -199,7 +202,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
         paragraph = paragraph.replace(
           regex,
-          `<a href=" " class="text-blue-600 underline">${link.keyword}</a>`
+          `<a href=" " class="text-blue-600 underline">${link.keyword}</a >`
         );
 
         linkInserted = true;
@@ -218,7 +221,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
   }
 
   /* ================================
-  主循环
+  main loop
   ================================ */
 
   while (i < lines.length) {
@@ -226,9 +229,11 @@ function mdToBlocks(text, imageFolder, slug, title) {
     let line = lines[i].trim();
 
     if (!line) {
+
       flushParagraph();
       i++;
       continue;
+
     }
 
     /* ================================
@@ -238,29 +243,29 @@ function mdToBlocks(text, imageFolder, slug, title) {
     if (line.startsWith("# ")) {
 
       flushParagraph();
-    
+
       const h1 = line.replace(/^# /, "");
-    
+
       blocks.push({
         type: "h1",
         text: h1
       });
-    
+
       if (!firstImageInserted) {
-    
+
         blocks.push({
           type: "image",
           src: img1,
           alt: title
         });
-    
+
         firstImageInserted = true;
-    
+
       }
-    
+
       i++;
       continue;
-    
+
     }
 
     /* ================================
@@ -278,7 +283,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
       toc.push({
         text: h2,
-        anchor: anchor
+        anchor
       });
 
       blocks.push({
@@ -308,16 +313,14 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
     if (line.startsWith("### ")) {
 
-
       flushParagraph();
 
       const h3 = line.replace(/^### /, "");
-      const anchor = slugifyAnchor(h3);
 
       blocks.push({
         type: "h3",
         text: h3,
-        id: anchor
+        id: slugifyAnchor(h3)
       });
 
       i++;
@@ -326,32 +329,62 @@ function mdToBlocks(text, imageFolder, slug, title) {
     }
 
     /* ================================
-    UL
+    UL / OL → unified list
     ================================ */
 
-    if (line.startsWith("- ") || line.startsWith("* ")) {
+    if (
+      line.startsWith("- ") ||
+      line.startsWith("* ") ||
+      /^\d+\.\s/.test(line)
+    ) {
 
       flushParagraph();
 
       let items = [];
 
-      while (
-        i < lines.length &&
-        (lines[i].trim().startsWith("- ") ||
-          lines[i].trim().startsWith("* "))
-      ) {
+      while (i < lines.length) {
 
-        items.push(
-          lines[i].trim().replace(/^[-*] /, "")
-        );
+        let current = lines[i].trim();
 
-        i++;
+        if (
+          current.startsWith("- ") ||
+          current.startsWith("* ") ||
+          /^\d+\.\s/.test(current)
+        ) {
+
+          let item = current
+            .replace(/^[-*]\s/, "")
+            .replace(/^\d+\.\s/, "");
+
+          i++;
+
+          while (
+            i < lines.length &&
+            lines[i].trim() &&
+            !lines[i].startsWith("- ") &&
+            !lines[i].startsWith("* ") &&
+            !/^\d+\.\s/.test(lines[i]) &&
+            !lines[i].startsWith("#")
+          ) {
+
+            item += " " + lines[i].trim();
+            i++;
+
+          }
+
+          items.push(item);
+
+        } else {
+
+          break;
+
+        }
 
       }
 
       blocks.push({
         type: "ul",
-        items: items
+        items
       });
 
       continue;
@@ -359,48 +392,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
     }
 
     /* ================================
-    OL
-    ================================ */
-
-    if (/^\d+\.\s/.test(line)) {
-
-      flushParagraph();
-    
-      let items = [];
-    
-      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
-    
-        let item = lines[i].trim().replace(/^\d+\.\s/, "");
-        i++;
-    
-        // 收集该 item 的描述段落
-        while (
-          i < lines.length &&
-          lines[i].trim() &&
-          !/^\d+\.\s/.test(lines[i].trim()) &&
-          !lines[i].startsWith("#")
-        ) {
-    
-          item += " " + lines[i].trim();
-          i++;
-    
-        }
-    
-        items.push(item);
-    
-      }
-    
-      blocks.push({
-        type: "ol",
-        items: items
-      });
-    
-      continue;
-    
-    }
-
-    /* ================================
-    paragraph
+    normal paragraph
     ================================ */
 
     buffer += (buffer ? " " : "") + line;
