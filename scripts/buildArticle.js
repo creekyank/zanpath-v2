@@ -365,29 +365,38 @@ function mdToBlocks(text, imageFolder, slug, title) {
     if (/^\d+\.\s/.test(line)) {
 
       flushParagraph();
-
+    
       let items = [];
-
-      while (
-        i < lines.length &&
-        /^\d+\.\s/.test(lines[i].trim())
-      ) {
-
-        items.push(
-          lines[i].trim().replace(/^\d+\.\s/, "")
-        );
-
+    
+      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
+    
+        let item = lines[i].trim().replace(/^\d+\.\s/, "");
         i++;
-
+    
+        // 收集该 item 的描述段落
+        while (
+          i < lines.length &&
+          lines[i].trim() &&
+          !/^\d+\.\s/.test(lines[i].trim()) &&
+          !lines[i].startsWith("#")
+        ) {
+    
+          item += " " + lines[i].trim();
+          i++;
+    
+        }
+    
+        items.push(item);
+    
       }
-
+    
       blocks.push({
         type: "ol",
         items: items
       });
-
+    
       continue;
-
+    
     }
 
     /* ================================
