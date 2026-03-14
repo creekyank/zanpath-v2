@@ -229,13 +229,6 @@ function renderBlock(block: any, index: number) {
         </div>
       );
 
-      case "disclaimer":
-        return (
-          <div key={index} className="mt-14 p-4 bg-gray-50 rounded-lg border text-sm text-gray-600">
-            {block.text}
-          </div>
-        );
-
     /* ===== RELATED ARTICLES (block版) ===== */
 
     case "related":
@@ -384,6 +377,23 @@ const ctaUrl =
         : null}
 
       </article>
+
+      
+{/* ===== Disclaimer ===== */}
+
+<div className="mt-14 p-4 bg-gray-50 rounded-lg border text-xs text-gray-500 leading-relaxed">
+
+<p className="font-semibold mb-1 text-gray-700">
+{locale === "es" ? "Aviso Editorial" : "Editorial Notice"}
+</p >
+
+{locale === "es"
+  ? "Este artículo es solo para fines culturales y educativos. Las interpretaciones de la metafísica china son subjetivas y no deben considerarse consejos profesionales ni predicciones definitivas."
+  : "This article is for cultural and educational purposes only. Interpretations of Chinese metaphysics are subjective and should not be taken as professional advice or factual predictions."
+}
+
+</div>
+
 {/* ===== Dynamic CTA Section (简洁统一版) ===== */}
 {ctaText && (
           /* 将 mt-28 改为 mt-14 让它离正文近一点，mb-16 改为 mb-10 让它离相关文章近一点 */
