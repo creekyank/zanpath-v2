@@ -199,7 +199,7 @@ function mdToBlocks(text, imageFolder, slug, title) {
 
         paragraph = paragraph.replace(
           regex,
-          `<a href=" " class="text-blue-600 underline">${link.keyword}</a >`
+          `<a href=" " class="text-blue-600 underline">${link.keyword}</a>`
         );
 
         linkInserted = true;
@@ -238,53 +238,29 @@ function mdToBlocks(text, imageFolder, slug, title) {
     if (line.startsWith("# ")) {
 
       flushParagraph();
-
+    
       const h1 = line.replace(/^# /, "");
-
+    
       blocks.push({
         type: "h1",
         text: h1
       });
-
+    
       if (!firstImageInserted) {
-
+    
         blocks.push({
           type: "image",
           src: img1,
           alt: title
         });
-
+    
         firstImageInserted = true;
-
+    
       }
-
+    
       i++;
       continue;
-
-    }   if (line.startsWith("# ")) {
-
-      flushParagraph();
-
-      const h1 = line.replace(/^# /, "");
-
-      blocks.push({
-        type: "h1",
-        text: h1
-      });
-
-      if (!firstImageInserted) {
-
-        blocks.push({
-          type: "image",
-          src: img1,
-          alt: title
-        });
-
-        firstImageInserted = true;
-      }
-
-      continue;
-
+    
     }
 
     /* ================================

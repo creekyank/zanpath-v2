@@ -98,6 +98,7 @@ function renderBlock(block: any, index: number) {
         <ol
           key={index}
           className="list-decimal pl-6 space-y-3 mb-6 text-[#4a7c6d]"
+          style={{ listStyleType: "decimal" }}
         >
           {block.items?.map((item: string, i: number) => (
             <li
