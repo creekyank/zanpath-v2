@@ -113,12 +113,17 @@ function cleanAIText(text) {
 /* =================================
 Markdown → HTML
 ================================= */
-function mdToBlocks(text, imageFolder, slug, title) {
+function mdToBlocks(text, imageFolder, slug, title, locale) {
 
   if (!text) return [];
 
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
+
+  const disclaimerText =
+  locale === "es"
+    ? "Aviso: Este artículo es solo para fines culturales y educativos. Las interpretaciones de la metafísica china son subjetivas y no deben considerarse consejos profesionales ni predicciones definitivas."
+    : "Disclaimer: This article is for cultural and educational purposes only. Interpretations of Chinese metaphysics are subjective and should not be taken as professional advice or factual predictions.";
 
   /* ================================
   工具函数
@@ -371,6 +376,14 @@ function mdToBlocks(text, imageFolder, slug, title) {
     });
 
   }
+
+/* ================================
+插入 Disclaimer
+================================ */
+blocks.push({
+  type: "disclaimer",
+  text: disclaimerText
+});
 
 
   return blocks;

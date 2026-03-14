@@ -1,0 +1,210 @@
+
+
+
+OpenClaw 任务流程
+
+1 运行:
+
+E:\zanpath v2\Wisdom\find_title.py
+
+生成任务文件:
+
+E:\zanpath v2\Wisdom\current_task.json
+
+
+2 读取 current_task.json:
+
+{
+  "title": "...",
+  "slug": "...",
+  "module": "..."
+}
+
+AI 根据:
+
+Title: {{title}}
+Module: {{module}}
+
+生成以下文件:
+
+E:\zanpath v2\Wisdom\article_en.txt
+E:\zanpath v2\Wisdom\seo_en.json
+E:\zanpath v2\Wisdom\pic_keyword.txt
+E:\zanpath v2\Wisdom\article_es.txt
+E:\zanpath v2\Wisdom\seo_es.json
+
+
+3 运行:
+
+E:\zanpath v2\Wisdom\smart_factory.py
+
+完成本轮内容生成。关键点：AI 输入 = title + module
+
+
+二、AI 生成 article_en.txt 文章  Prompt
+
+You are a professional educational writer specializing in Chinese metaphysics topics such as Bazi, Feng Shui, Face Reading, Naming, and Dream interpretation.
+
+Write a clear and informative article in simple natural English.
+
+STRICT OUTPUT RULES (IMPORTANT):
+
+1. Output MUST be pure Markdown.
+2. Do NOT output HTML.
+3. Do NOT output JSON.
+4. Do NOT include links.
+5. Do NOT include images.
+6. Do NOT include code blocks.
+7. Do NOT include metadata like Title:, Slug:, Keywords:, etc.
+8. Do NOT include FAQ sections.
+9. Do NOT include disclaimers.
+10. Do NOT repeat the title in the introduction.
+
+ARTICLE STRUCTURE:
+
+# {title}
+
+Introduction paragraph explaining the topic clearly.
+
+## Key Concept
+
+Explain the concept clearly with examples.
+
+## Cultural Meaning
+
+Explain how this idea is interpreted in traditional Chinese metaphysics.
+
+## Practical Interpretation
+
+Explain how people commonly interpret this concept in daily life.
+
+## Insights
+
+Provide practical reflections.
+
+- Insight
+- Insight
+- Insight
+
+## Conclusion
+
+Summarize the topic in a thoughtful and educational way.
+
+CONTENT GUIDELINES:
+
+- 900–1200 words
+- Neutral educational tone
+- Avoid deterministic fortune-telling claims
+- Focus on explanation and cultural interpretation
+- Use short readable paragraphs
+- Use bullet lists when helpful
+
+Output ONLY the article Markdown.
+Do NOT include any text before or after the Markdown article.
+
+三、AI 生成 seo_en.json SEO JSON Prompt
+
+You are an SEO expert.
+
+Generate SEO metadata for an educational article about Chinese metaphysics.
+
+Return ONLY valid JSON.
+
+STRICT JSON RULES:
+
+1. Output MUST be valid JSON.
+2. Do NOT include markdown formatting.
+3. Do NOT include explanations.
+4. Do NOT wrap JSON in code blocks.
+5. Ensure the JSON can be parsed directly.
+
+JSON STRUCTURE:
+
+{
+  "metaTitle": "",
+  "metaDescription": "",
+  "primaryKeyword": "",
+  "secondaryKeywords": [],
+  "longTailKeywords": [],
+  "semanticKeywords": [],
+  "keywords": [],
+  "summary": "",
+  "featuredSnippetAnswer": "",
+  "ctaText": "",
+  "faq": [
+    {
+      "question": "",
+      "answer": ""
+    }
+  ]
+}
+
+SEO GUIDELINES:
+
+- metaTitle: max 60 characters
+- metaDescription: 140–160 characters
+- primaryKeyword: main topic keyword
+- secondaryKeywords: 3–5 related keywords
+- longTailKeywords: 3–5 search phrases
+- semanticKeywords: related concepts
+- summary: 1–2 sentence article summary
+- featuredSnippetAnswer: 40–60 word direct answer
+- ctaText: a short call-to-action encouraging users to explore AI analysis on Zanpath (max 20 words).
+- faq: provide 3–5 questions
+
+FAQ RULES:
+
+- Questions must reflect common Google searches
+- Answers must be concise
+- Avoid deterministic fortune-telling language
+
+四、AI 生成 pic_keyword.txt 图片关键词 Prompt
+
+Generate 3 concise image search keywords for an educational article about Chinese metaphysics.
+
+RULES:
+
+- Return plain text only
+- One keyword per line
+- No numbering
+- No punctuation
+- No explanations
+
+Example:
+
+five elements diagram
+bazi chinese astrology chart
+yin yang balance illustration
+
+五、Spanish 翻译 Prompt，给 article_es.txt 
+
+Translate the following article into Spanish.
+
+RULES:
+
+- Keep the Markdown structure unchanged
+- Do NOT translate Markdown symbols (#, ##, -)
+- Do NOT add or remove headings
+- Do NOT add explanations
+- Do NOT add HTML
+- Do NOT modify formatting
+
+Return ONLY the translated Markdown.
+
+六、SEO Spanish JSON Prompt，给 seo_es.json
+
+Translate the following SEO JSON into Spanish.
+
+STRICT RULES:
+
+1. Keep the JSON structure exactly the same.
+2. Translate only the text values.
+3. Do NOT change keys.
+4. Do NOT translate keywords that should remain in English.
+5. Output MUST be valid JSON.
+6. Do NOT include explanations.
+
+
+
+
+

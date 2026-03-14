@@ -229,6 +229,15 @@ function renderBlock(block: any, index: number) {
         </div>
       );
 
+      case "disclaimer":
+        return (
+          <div key={index} className="mt-14 pt-6 border-t">
+            <p className="text-sm text-gray-500 italic">
+              {block.text}
+            </p >
+          </div>
+        );
+
     /* ===== RELATED ARTICLES (block版) ===== */
 
     case "related":
