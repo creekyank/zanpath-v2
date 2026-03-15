@@ -329,6 +329,7 @@ export default function DreamPage() {
 
 
   return (
+    <>
       <main className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 order-1">
           <div className="mb-6 text-center max-w-3xl mx-auto">
@@ -482,6 +483,8 @@ export default function DreamPage() {
           />
         </div>
 
+      </main>
+
         {/* =============================
             Sample Analysis Block
           ============================= */}
@@ -528,7 +531,6 @@ export default function DreamPage() {
           </div>
 
           </div>      
-
-      </main>
+          </>
   );
 }
