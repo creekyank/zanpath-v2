@@ -493,7 +493,7 @@ export default function NamingPage() {
                     Sample Analysis Block
                   ============================= */}
 
-        <div className="mt-12 p-6 bg-[#f8fcfb] rounded-2xl border border-[#eaf7f2]">
+<div className="mt-12 p-6 bg-[#f8fcfb] rounded-2xl border border-[#eaf7f2] text-center">
 
             <h2 className="text-2xl font-bold text-[#0f3d2e] mb-3">
               {sample.title}
