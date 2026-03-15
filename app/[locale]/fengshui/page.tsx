@@ -513,16 +513,13 @@ export default function FengShuiPage() {
          {/* =============================
           Sample Analysis Block
         ============================= */}
-        <div className="max-w-4xl mx-auto mt-20 px-6 text-center">
-
+       <div className="mt-12 p-6 bg-[#f8fcfb] rounded-2xl border border-[#eaf7f2] text-center">
         <h2 className="text-2xl font-bold text-[#0f3d2e] mb-3">
           {sample.title}
         </h2>
-
         <p className="text-sm text-[#356f5b] mb-6 max-w-xl mx-auto">
           {sample.desc}
         </p >
-
         <Link
           href={sample.link}
           className="inline-block mb-10 px-6 py-3 rounded-xl bg-[#0f3d2e] text-white font-semibold hover:opacity-90 transition"
