@@ -670,6 +670,194 @@ Normalmente respondemos en un plazo de 48 horas.`
 
 
 
+/* =============================
+   SAMPLE ANALYSIS BLOCK
+   Tool Page Bottom Example Section
+============================= */
+
+export const SAMPLE_ANALYSIS_BLOCK = {
+
+  bazi: {
+    en: {
+      title: "See a Sample BaZi Analysis",
+      desc: "Curious what a BaZi life path reading looks like? View an example AI-generated report before starting your own.",
+      button: "View Sample BaZi Reading",
+      link: "/en/wisdom/life-path/sample-bazi-reading",
+      preview: [
+        {
+          title: "Life Path Overview",
+          text: "Your BaZi chart shows strong Wood and Fire elements, suggesting creativity, leadership potential, and natural enthusiasm."
+        },
+        {
+          title: "Career Direction",
+          text: "Fields involving creativity, management, or entrepreneurship may bring long-term fulfillment."
+        }
+      ]
+    },
+
+    es: {
+      title: "Ver un ejemplo de análisis BaZi",
+      desc: "¿Quieres ver cómo es una lectura BaZi? Mira un ejemplo generado por IA antes de comenzar tu propio análisis.",
+      button: "Ver ejemplo de lectura BaZi",
+      link: "/es/wisdom/life-path/sample-bazi-reading",
+      preview: [
+        {
+          title: "Resumen del camino de vida",
+          text: "Tu carta BaZi muestra una fuerte energía de Madera y Fuego, indicando creatividad y liderazgo natural."
+        },
+        {
+          title: "Dirección profesional",
+          text: "Las áreas relacionadas con la creatividad o la gestión pueden traer mayor satisfacción."
+        }
+      ]
+    }
+  },
+
+  naming: {
+    en: {
+      title: "See a Sample Name Analysis",
+      desc: "Explore an example AI-generated name analysis before creating a personalized name report.",
+      button: "View Sample Naming Report",
+      link: "/en/wisdom/naming/sample-baby-name-analysis",
+      preview: [
+        {
+          title: "Name Meaning",
+          text: "The name carries symbolism related to harmony, intelligence, and inner strength."
+        },
+        {
+          title: "Personality Influence",
+          text: "It suggests a calm yet determined personality with the ability to inspire others."
+        }
+      ]
+    },
+
+    es: {
+      title: "Ver un ejemplo de análisis de nombre",
+      desc: "Explora un ejemplo de análisis de nombres generado por IA antes de crear el tuyo.",
+      button: "Ver ejemplo de análisis de nombre",
+      link: "/es/wisdom/naming/sample-baby-name-analysis",
+      preview: [
+        {
+          title: "Significado del nombre",
+          text: "El nombre simboliza armonía, inteligencia y fortaleza interior."
+        },
+        {
+          title: "Influencia en la personalidad",
+          text: "Sugiere una personalidad tranquila pero decidida con capacidad de liderazgo."
+        }
+      ]
+    }
+  },
+
+  dream: {
+    en: {
+      title: "See a Sample Dream Interpretation",
+      desc: "Wondering how AI interprets dreams? Explore an example analysis.",
+      button: "View Sample Dream Interpretation",
+      link: "/en/wisdom/dream/sample-dream-interpretation",
+      preview: [
+        {
+          title: "Symbol Meaning",
+          text: "Dreaming about flying often reflects a desire for freedom or new possibilities."
+        },
+        {
+          title: "Emotional Insight",
+          text: "Such dreams may suggest growing confidence or the need to overcome limitations."
+        }
+      ]
+    },
+
+    es: {
+      title: "Ver interpretación de sueño",
+      desc: "Descubre cómo la IA interpreta los sueños con este ejemplo.",
+      button: "Ver ejemplo de interpretación",
+      link: "/es/wisdom/dream/sample-dream-interpretation",
+      preview: [
+        {
+          title: "Significado del símbolo",
+          text: "Soñar con volar suele reflejar deseo de libertad o nuevas oportunidades."
+        },
+        {
+          title: "Interpretación emocional",
+          text: "Puede indicar crecimiento personal o la necesidad de superar límites."
+        }
+      ]
+    }
+  },
+
+  fengshui: {
+    en: {
+      title: "See a Sample Feng Shui Analysis",
+      desc: "Discover how AI evaluates home energy and layout with a sample report.",
+      button: "View Sample Feng Shui Report",
+      link: "/en/wisdom/fengshui/sample-fengshui-analysis",
+      preview: [
+        {
+          title: "Energy Flow",
+          text: "The entrance placement allows positive energy to circulate naturally through the home."
+        },
+        {
+          title: "Improvement Suggestion",
+          text: "Adding natural light and plants can strengthen vitality and balance."
+        }
+      ]
+    },
+
+    es: {
+      title: "Ver ejemplo de Feng Shui",
+      desc: "Descubre cómo la IA analiza el flujo de energía del hogar.",
+      button: "Ver informe Feng Shui",
+      link: "/es/wisdom/fengshui/sample-fengshui-analysis",
+      preview: [
+        {
+          title: "Flujo de energía",
+          text: "La entrada permite que la energía positiva circule naturalmente."
+        },
+        {
+          title: "Sugerencia",
+          text: "Agregar plantas o luz natural puede mejorar el equilibrio energético."
+        }
+      ]
+    }
+  },
+
+  face: {
+    en: {
+      title: "See a Sample Face Reading",
+      desc: "Explore how AI analyzes facial features and personality traits.",
+      button: "View Sample Face Reading",
+      link: "/en/wisdom/face/sample-face-reading",
+      preview: [
+        {
+          title: "Facial Feature Insight",
+          text: "A well-defined jawline often represents determination and leadership."
+        },
+        {
+          title: "Personality Tendency",
+          text: "Balanced facial proportions may suggest emotional stability and confidence."
+        }
+      ]
+    },
+
+    es: {
+      title: "Ver ejemplo de lectura facial",
+      desc: "Explora cómo la IA interpreta rasgos faciales.",
+      button: "Ver ejemplo de lectura facial",
+      link: "/es/wisdom/face/sample-face-reading",
+      preview: [
+        {
+          title: "Interpretación facial",
+          text: "Una mandíbula definida suele representar determinación y liderazgo."
+        },
+        {
+          title: "Tendencia de personalidad",
+          text: "Las proporciones equilibradas sugieren estabilidad emocional."
+        }
+      ]
+    }
+  }
+
+};
 
 
 

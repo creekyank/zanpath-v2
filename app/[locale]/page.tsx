@@ -11,7 +11,8 @@ import {
   NAV_MENU,
   PAGE_SPECIFIC_CONTENT,
   COMMON_FOOTER,
-  DISCLAIMER_TEXT
+  DISCLAIMER_TEXT,
+  SAMPLE_ANALYSIS_BLOCK
 } from "@/config/site-content";
 import RecoveryModal from "@/components/RecoveryModal";
 import DailyReflectionSection from "@/components/DailyReflectionSection";
@@ -43,6 +44,9 @@ export default function HomePage() {
   const menuItems = NAV_MENU[locale] || NAV_MENU.en;
 
   const MODULE_TYPE = "bazi";
+  const sample =
+  SAMPLE_ANALYSIS_BLOCK[MODULE_TYPE][locale] ||
+  SAMPLE_ANALYSIS_BLOCK[MODULE_TYPE].en;
 
   const [flowState, setFlowState] = useState<FlowState>("IDLE");
   const [loading, setLoading] = useState(false);
@@ -512,6 +516,54 @@ export default function HomePage() {
             }}
           />
         </div>
+
+            {/* =============================
+            Sample Analysis Block
+          ============================= */}
+
+          <div className="max-w-4xl mx-auto mt-20 px-6 text-center">
+
+          <h2 className="text-2xl font-bold text-[#0f3d2e] mb-3">
+            {sample.title}
+          </h2>
+
+          <p className="text-sm text-[#356f5b] mb-6 max-w-xl mx-auto">
+            {sample.desc}
+          </p >
+
+          <Link
+            href={sample.link}
+            className="inline-block mb-10 px-6 py-3 rounded-xl bg-[#0f3d2e] text-white font-semibold hover:opacity-90 transition"
+          >
+            {sample.button}
+          </Link>
+
+          {/* Preview */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm text-left max-w-2xl mx-auto">
+
+            <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">
+              Example Preview
+            </p >
+
+            {sample.preview.map((p, i) => (
+              <div key={i} className="mb-4">
+                <h4 className="font-semibold text-[#0f3d2e] text-sm mb-1">
+                  {p.title}
+                </h4>
+                <p className="text-sm text-[#356f5b] leading-relaxed">
+                  {p.text}
+                </p >
+              </div>
+            ))}
+
+            <p className="text-xs text-gray-400 mt-4 italic">
+              This is a simplified preview. Your personal report will be more detailed.
+            </p >
+
+          </div>
+
+          </div>
+
       </main> 
 </>
   );
