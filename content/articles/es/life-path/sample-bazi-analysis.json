@@ -1,0 +1,78 @@
+
+{
+  "id": "sample-bazi-analysis",
+  "locale": "es",
+  "module": "life-path",
+  "slug": "sample-bazi-analysis",
+  "title": "Ejemplo de Análisis BaZi del Camino de Vida (IA)",
+  "description": "Explora un ejemplo de análisis BaZi generado por IA basado en conceptos metafísicos tradicionales. Este ejemplo ficticio demuestra el tipo de información que puede proporcionar un informe de ZanPath.",
+  "content": [
+
+    {
+      "type": "intro",
+      "text": "Esta página muestra un **ejemplo de lectura BaZi generado por IA** para demostrar cómo funciona un análisis del camino de vida en ZanPath. La persona descrita es ficticia y se utiliza solo como demostración."
+    },
+
+    {
+      "type": "highlight",
+      "title": "Lo que recibirás en tu informe completo",
+      "items": [
+        "Análisis del equilibrio de los cinco elementos",
+        "Tendencias de personalidad y vida",
+        "Perspectivas sobre carrera y potencial económico",
+        "Ciclos y oportunidades del camino de vida",
+        "Recomendaciones personalizadas de estilo de vida"
+      ]
+    },
+
+    {
+      "type": "section",
+      "title": "Información de nacimiento (ejemplo)",
+      "text": "Fecha de nacimiento: 6 de mayo de 2014\nHora: 7:29 AM\nGénero: Masculino\nElemento principal: Fuego Ding"
+    },
+
+    {
+      "type": "section",
+      "title": "Equilibrio de los elementos",
+      "text": "En este ejemplo, el Maestro del Día es Fuego Ding. En la interpretación tradicional BaZi, el Fuego Ding simboliza una luz interior refinada asociada con inteligencia, intuición y sensibilidad. La carta presenta una fuerte presencia de Tierra y apoyo de Madera, mientras que Agua y Metal aparecen más débiles."
+    },
+
+    {
+      "type": "section",
+      "title": "Tendencias de personalidad",
+      "text": "Las personas asociadas con el simbolismo del Fuego Ding suelen ser observadoras, creativas y analíticas. Suelen destacar en entornos que permiten la investigación, el pensamiento estratégico y la resolución de problemas."
+    },
+
+    {
+      "type": "section",
+      "title": "Orientación profesional",
+      "text": "Según la simbología metafísica tradicional, áreas como tecnología, finanzas, investigación, ingeniería o estrategia pueden resonar con esta configuración elemental. Los entornos que valoran la especialización y el pensamiento independiente suelen ser favorables."
+    },
+
+    {
+      "type": "section",
+      "title": "Desarrollo del camino de vida",
+      "text": "Las interpretaciones clásicas sugieren que ciertos ciclos de la vida pueden traer mayor claridad y oportunidades. Durante estos períodos, las personas pueden experimentar crecimiento profesional y avances personales."
+    },
+
+    {
+      "type": "section",
+      "title": "Estilo de vida y entorno",
+      "text": "Espacios tranquilos, rutinas equilibradas y entornos estructurados pueden ayudar a canalizar la creatividad y la energía personal de manera positiva."
+    },
+
+    {
+      "type": "disclaimer",
+      "text": "Este informe de ejemplo ha sido generado por IA utilizando conceptos metafísicos tradicionales. Se proporciona únicamente con fines de entretenimiento y auto-reflexión. La persona descrita es ficticia. Las interpretaciones no predicen eventos ni garantizan resultados."
+    },
+
+    {
+      "type": "cta",
+      "title": "Descubre tu propio camino de vida",
+      "text": "Genera tu análisis personalizado basado en tu fecha y hora de nacimiento.",
+      "button": "Comenzar mi análisis",
+      "link": "https://www.zanpath.com/es"
+    }
+
+  ]
+}

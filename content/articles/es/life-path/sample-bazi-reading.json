@@ -1,0 +1,77 @@
+{
+  "id": "sample-bazi-reading",
+  "locale": "es",
+  "module": "life-path",
+  "slug": "sample-bazi-reading",
+  "title": "Ejemplo de Análisis BaZi del Camino de Vida (IA)",
+  "description": "Explora un ejemplo de análisis BaZi generado por IA basado en conceptos metafísicos tradicionales. Este ejemplo ficticio muestra el estilo y la profundidad de los informes de ZanPath.",
+  "content": [
+
+    {
+      "type": "intro",
+      "text": "Esta página presenta un **ejemplo ficticio de lectura BaZi generado por IA**. El propósito es mostrar cómo podría verse un análisis del camino de vida en ZanPath. La persona descrita no corresponde a un individuo real."
+    },
+
+    {
+      "type": "highlight",
+      "title": "Lo que recibirás en tu informe completo",
+      "items": [
+        "Análisis del equilibrio de los cinco elementos",
+        "Tendencias de personalidad y vida",
+        "Perspectivas sobre carrera y potencial financiero",
+        "Ciclos del camino de vida",
+        "Recomendaciones personalizadas de energía y estilo de vida"
+      ]
+    },
+
+    {
+      "type": "section",
+      "title": "Información de nacimiento (ejemplo)",
+      "text": "Fecha de nacimiento: 8 de agosto de 2014\nHora: 8:08 AM\nGénero: Masculino\nElemento principal: Metal Xin"
+    },
+
+    {
+      "type": "section",
+      "title": "Equilibrio de los elementos",
+      "text": "En este ejemplo, el Maestro del Día es Metal Xin. En la interpretación tradicional BaZi, el Metal simboliza precisión, claridad y estructura. La carta muestra influencias significativas de Agua y Madera, lo que sugiere creatividad e intensa actividad mental."
+    },
+
+    {
+      "type": "section",
+      "title": "Tendencias de personalidad",
+      "text": "Las personas asociadas con el simbolismo del Metal Xin suelen ser analíticas, observadoras y orientadas al detalle. Suelen sentirse cómodas en entornos estructurados donde el pensamiento lógico y la organización son valorados."
+    },
+
+    {
+      "type": "section",
+      "title": "Orientación profesional",
+      "text": "Según la simbología metafísica tradicional, campos como finanzas, ingeniería, investigación, consultoría o tecnología pueden resonar con esta configuración elemental. Los entornos estables y colaborativos suelen favorecer el progreso."
+    },
+
+    {
+      "type": "section",
+      "title": "Desarrollo del camino de vida",
+      "text": "Las interpretaciones clásicas sugieren que las personas con fuerte energía de producción pueden beneficiarse de equilibrar actividad con estabilidad. La planificación a largo plazo y los entornos de apoyo ayudan a transformar habilidades en logros duraderos."
+    },
+
+    {
+      "type": "section",
+      "title": "Estilo de vida y entorno",
+      "text": "La simbología tradicional sugiere que espacios tranquilos y estructurados pueden favorecer el bienestar. Rutinas equilibradas y relaciones de apoyo ayudan a canalizar la energía personal de manera productiva."
+    },
+
+    {
+      "type": "disclaimer",
+      "text": "Este informe de ejemplo ha sido generado por IA utilizando conceptos metafísicos tradicionales. Se ofrece únicamente con fines de entretenimiento y auto-reflexión. La persona descrita es ficticia. Las interpretaciones no predicen eventos ni garantizan resultados."
+    },
+
+    {
+      "type": "cta",
+      "title": "Descubre tu propio camino de vida",
+      "text": "Genera tu análisis personalizado basado en tu fecha y hora de nacimiento.",
+      "button": "Comenzar mi análisis",
+      "link": "https://www.zanpath.com/es"
+    }
+
+  ]
+}
