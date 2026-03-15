@@ -4,75 +4,118 @@
   "locale": "es",
   "module": "life-path",
   "slug": "sample-bazi-analysis",
-  "title": "Ejemplo de Análisis BaZi del Camino de Vida (IA)",
-  "description": "Explora un ejemplo de análisis BaZi generado por IA basado en conceptos metafísicos tradicionales. Este ejemplo ficticio demuestra el tipo de información que puede proporcionar un informe de ZanPath.",
+  "status": "published",
+  "featured": false,
+  "title": "Ejemplo de Análisis del Camino de Vida (IA)",
+  "metaTitle": "Ejemplo de Análisis del Camino de Vida: Lectura Inspirada en BaZi con IA",
+  "metaDescription": "Explora un ejemplo de análisis del camino de vida generado por IA inspirado en principios tradicionales de BaZi. Este ejemplo ficticio demuestra el tipo de información que puede ofrecer un informe personalizado.",
+  "primaryKeyword": "ejemplo de análisis del camino de vida",
+  "secondaryKeywords": [
+    "ejemplo bazi ia",
+    "lectura de camino de vida ejemplo",
+    "análisis bazi ejemplo"
+  ],
+  "keywords": [
+    "análisis camino de vida",
+    "ejemplo bazi",
+    "lectura metafísica con IA"
+  ],
+  "cluster": "ejemplos-camino-de-vida",
+  "pillar": "guia-camino-de-vida",
+  "clusterIntent": "informational",
+  "summary": "Este ejemplo ficticio generado por IA demuestra cómo un análisis del camino de vida inspirado en BaZi puede presentar tendencias de personalidad, equilibrio de elementos y posibles direcciones en la vida.",
+  "readingTime": 6,
+  "datePublished": "2026-03-15",
+  "dateModified": "2026-03-15",
+  "author": {
+    "name": "Equipo Editorial de Zanpath",
+    "type": "Organization"
+  },
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+  "coverImage": "/images/sample-bazi-analysis.jpg",
+  "coverAlt": "Ilustración de ejemplo de análisis de BaZi",
+  "canonical": "https://zanpath.com/es/life-path/sample-bazi-analysis",
+  "robots": "index, follow",
+  "breadcrumbs": [
+    { "name": "Sabiduría", "url": "/es/wisdom" },
+    { "name": "Camino de Vida", "url": "/es/life-path" },
+    { "name": "Ejemplo de Análisis del Camino de Vida", "url": "" }
+  ],
   "content": [
-
     {
-      "type": "intro",
-      "text": "Esta página muestra un **ejemplo de lectura BaZi generado por IA** para demostrar cómo funciona un análisis del camino de vida en ZanPath. La persona descrita es ficticia y se utiliza solo como demostración."
+      "type": "p",
+      "text": "Esta página muestra un ejemplo de análisis del camino de vida generado por IA inspirado en conceptos tradicionales de BaZi. El ejemplo es ficticio y se presenta únicamente para demostrar cómo podría verse un informe típico."
     },
-
     {
-      "type": "highlight",
-      "title": "Lo que recibirás en tu informe completo",
-      "items": [
-        "Análisis del equilibrio de los cinco elementos",
-        "Tendencias de personalidad y vida",
-        "Perspectivas sobre carrera y potencial económico",
-        "Ciclos y oportunidades del camino de vida",
-        "Recomendaciones personalizadas de estilo de vida"
-      ]
+      "type": "h2",
+      "text": "Información de nacimiento (ejemplo)"
     },
-
     {
-      "type": "section",
-      "title": "Información de nacimiento (ejemplo)",
-      "text": "Fecha de nacimiento: 6 de mayo de 2014\nHora: 7:29 AM\nGénero: Masculino\nElemento principal: Fuego Ding"
+      "type": "p",
+      "text": "Fecha de nacimiento: 6 de mayo de 2014\nHora de nacimiento: 7:29 AM\nGénero: Masculino\nElemento principal del día: Fuego Ding"
     },
-
     {
-      "type": "section",
-      "title": "Equilibrio de los elementos",
-      "text": "En este ejemplo, el Maestro del Día es Fuego Ding. En la interpretación tradicional BaZi, el Fuego Ding simboliza una luz interior refinada asociada con inteligencia, intuición y sensibilidad. La carta presenta una fuerte presencia de Tierra y apoyo de Madera, mientras que Agua y Metal aparecen más débiles."
+      "type": "h2",
+      "text": "Resumen del equilibrio de los elementos"
     },
-
     {
-      "type": "section",
-      "title": "Tendencias de personalidad",
-      "text": "Las personas asociadas con el simbolismo del Fuego Ding suelen ser observadoras, creativas y analíticas. Suelen destacar en entornos que permiten la investigación, el pensamiento estratégico y la resolución de problemas."
+      "type": "p",
+      "text": "En este ejemplo, el Maestro del Día es Fuego Ding. En la interpretación tradicional de BaZi, el Fuego Ding suele compararse con la luz de una vela o una lámpara, simbolizando inteligencia, percepción y sensibilidad. El gráfico presenta una fuerte influencia de Tierra, apoyo moderado de Madera y una presencia relativamente débil de Agua y Metal."
     },
-
     {
-      "type": "section",
-      "title": "Orientación profesional",
-      "text": "Según la simbología metafísica tradicional, áreas como tecnología, finanzas, investigación, ingeniería o estrategia pueden resonar con esta configuración elemental. Los entornos que valoran la especialización y el pensamiento independiente suelen ser favorables."
+      "type": "h2",
+      "text": "Tendencias de personalidad"
     },
-
     {
-      "type": "section",
-      "title": "Desarrollo del camino de vida",
-      "text": "Las interpretaciones clásicas sugieren que ciertos ciclos de la vida pueden traer mayor claridad y oportunidades. Durante estos períodos, las personas pueden experimentar crecimiento profesional y avances personales."
+      "type": "p",
+      "text": "Las personas asociadas con el simbolismo del Fuego Ding suelen mostrar una mente observadora, curiosidad intelectual y sensibilidad emocional. A menudo disfrutan explorar ideas, analizar situaciones complejas y comprender patrones más profundos en la vida."
     },
-
     {
-      "type": "section",
-      "title": "Estilo de vida y entorno",
-      "text": "Espacios tranquilos, rutinas equilibradas y entornos estructurados pueden ayudar a canalizar la creatividad y la energía personal de manera positiva."
+      "type": "h2",
+      "text": "Orientación profesional"
     },
-
     {
-      "type": "disclaimer",
-      "text": "Este informe de ejemplo ha sido generado por IA utilizando conceptos metafísicos tradicionales. Se proporciona únicamente con fines de entretenimiento y auto-reflexión. La persona descrita es ficticia. Las interpretaciones no predicen eventos ni garantizan resultados."
+      "type": "p",
+      "text": "Según la simbología metafísica tradicional, configuraciones similares pueden resonar con carreras relacionadas con tecnología, investigación, ingeniería, estrategia o análisis. Los entornos que valoran la creatividad, la innovación y el pensamiento independiente pueden resultar especialmente favorables."
     },
-
     {
-      "type": "cta",
-      "title": "Descubre tu propio camino de vida",
-      "text": "Genera tu análisis personalizado basado en tu fecha y hora de nacimiento.",
-      "button": "Comenzar mi análisis",
-      "link": "https://www.zanpath.com/es"
+      "type": "h2",
+      "text": "Ciclos de desarrollo de la vida"
+    },
+    {
+      "type": "p",
+      "text": "Las interpretaciones clásicas de BaZi analizan ciclos de largo plazo que representan distintas fases de aprendizaje y oportunidad. Durante ciclos más favorables, las personas pueden experimentar mayor claridad en su dirección profesional y oportunidades para el crecimiento personal."
+    },
+    {
+      "type": "h2",
+      "text": "Estilo de vida y equilibrio"
+    },
+    {
+      "type": "p",
+      "text": "Mantener rutinas equilibradas, espacios tranquilos y relaciones de apoyo puede ayudar a canalizar la energía personal de forma positiva. Las prácticas que favorecen la claridad mental y el bienestar emocional suelen ser especialmente beneficiosas."
+    },
+    {
+      "type": "h2",
+      "text": "Acerca de este ejemplo"
+    },
+    {
+      "type": "p",
+      "text": "Este análisis es una demostración simplificada generada por IA utilizando ideas metafísicas tradicionales. La persona descrita es ficticia. Las interpretaciones se ofrecen únicamente con fines de entretenimiento y reflexión personal."
+    },
+    {
+      "type": "h2",
+      "text": "Explora tu propio análisis"
+    },
+    {
+      "type": "p",
+      "text": "Tu informe personalizado ofrece un análisis más profundo basado en tu información de nacimiento. Si tienes curiosidad sobre tus propios patrones de vida, puedes generar tu análisis personal a continuación."
     }
-
-  ]
+  ],
+  "cta": {
+    "text": "Genera tu análisis personalizado del Camino de Vida con IA.",
+    "url": "https://zanpath.com/es"
+  }
 }

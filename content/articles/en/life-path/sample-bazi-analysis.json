@@ -4,75 +4,138 @@
   "locale": "en",
   "module": "life-path",
   "slug": "sample-bazi-analysis",
-  "title": "Sample BaZi Life Path Analysis (AI Example)",
-  "description": "Explore a sample AI-generated BaZi life path analysis based on traditional Chinese metaphysical concepts. This fictional example demonstrates the insights a ZanPath report can provide.",
+  "status": "published",
+  "featured": false,
+  "title": "Sample Life Path Analysis (AI Example)",
+  "metaTitle": "Sample Life Path Analysis: Example of an AI BaZi Reading",
+  "metaDescription": "Explore a sample AI-generated life path analysis inspired by traditional BaZi principles. This fictional example demonstrates the type of insights a personalized report may provide.",
+  "primaryKeyword": "sample life path analysis",
+  "secondaryKeywords": [
+    "AI bazi example",
+    "life path reading example",
+    "bazi analysis sample"
+  ],
+  "keywords": [
+    "life path analysis",
+    "bazi example",
+    "ai metaphysics reading"
+  ],
+  "cluster": "life-path-examples",
+  "pillar": "life-path-guide",
+  "clusterIntent": "informational",
+  "summary": "This fictional AI-generated example demonstrates how a life path analysis inspired by BaZi principles may present personality tendencies, elemental balance, and potential life directions.",
+  "readingTime": 6,
+  "datePublished": "2026-03-15",
+  "dateModified": "2026-03-15",
+  "author": {
+    "name": "Zanpath Editorial Team",
+    "type": "Organization"
+  },
+  "publisher": {
+    "name": "Zanpath",
+    "logo": "/images/logo.png"
+  },
+  "coverImage": "/images/sample-bazi-analysis.jpg",
+  "coverAlt": "Example BaZi life path analysis illustration",
+  "canonical": "https://zanpath.com/en/life-path/sample-bazi-analysis",
+  "robots": "index, follow",
+  "breadcrumbs": [
+    { "name": "Wisdom", "url": "/en/wisdom" },
+    { "name": "Life Path", "url": "/en/life-path" },
+    { "name": "Sample Life Path Analysis", "url": "" }
+  ],
+
   "content": [
 
     {
-      "type": "intro",
-      "text": "This page shows a **sample AI-generated BaZi life path reading** created to demonstrate how a ZanPath analysis works. The individual described is fictional and used only as an example."
+      "type": "p",
+      "text": "This page presents a sample AI-generated life path analysis inspired by traditional BaZi concepts. The example below is fictional and is intended only to demonstrate how a typical report may look."
     },
 
     {
-      "type": "highlight",
-      "title": "What You'll Receive in Your Full Report",
-      "items": [
-        "Five element balance analysis",
-        "Personality and life tendencies",
-        "Career and wealth insights",
-        "Life timing cycles and opportunities",
-        "Lifestyle and energy recommendations"
-      ]
+      "type": "h2",
+      "text": "Sample Birth Information"
     },
 
     {
-      "type": "section",
-      "title": "Sample Birth Information",
+      "type": "p",
       "text": "Birth Date: May 6, 2014\nBirth Time: 7:29 AM\nGender: Male\nDay Master: Ding Fire"
     },
 
     {
-      "type": "section",
-      "title": "Elemental Balance Overview",
-      "text": "In this example chart, the Day Master is Ding Fire. In traditional BaZi interpretation, Ding Fire symbolizes a refined inner flame — representing intelligence, insight, and the ability to illuminate others. The chart contains strong Earth influence and moderate Wood support, while Water and Metal appear relatively weak."
+      "type": "h2",
+      "text": "Elemental Balance Overview"
     },
 
     {
-      "type": "section",
-      "title": "Personality Tendencies",
-      "text": "Individuals associated with Ding Fire symbolism often display perceptive thinking, emotional awareness, and a natural curiosity about the world. They may excel in environments that encourage creativity, analysis, and strategic problem solving."
+      "type": "p",
+      "text": "In this example chart, the Day Master is Ding Fire. In traditional BaZi interpretation, Ding Fire is often compared to the flame of a candle or lantern — representing intelligence, warmth, and refined perception. The chart shows strong Earth influence, moderate Wood support, and relatively weak Water and Metal elements."
     },
 
     {
-      "type": "section",
-      "title": "Career Direction Insights",
-      "text": "Based on traditional metaphysical symbolism, this configuration may resonate with fields involving research, engineering, finance, technology, strategy, or diplomacy. Careers that reward independent thinking and specialized expertise may provide the most satisfaction."
+      "type": "h2",
+      "text": "Personality Tendencies"
     },
 
     {
-      "type": "section",
-      "title": "Life Path Development",
-      "text": "Traditional BaZi interpretations suggest that certain life phases bring stronger supportive elements. During these periods individuals may experience greater clarity in career direction, improved opportunities, and personal growth."
+      "type": "p",
+      "text": "Individuals associated with Ding Fire symbolism may demonstrate perceptiveness, curiosity, and emotional awareness. They often enjoy exploring ideas, solving problems, and understanding deeper patterns in life."
     },
 
     {
-      "type": "section",
-      "title": "Lifestyle and Environment",
-      "text": "Symbolically supportive environments may include structured routines, calm spaces, and balanced daily habits. Maintaining mental clarity and emotional balance can help channel natural creativity and intelligence effectively."
+      "type": "h2",
+      "text": "Career Direction Insights"
     },
 
     {
-      "type": "disclaimer",
-      "text": "This sample report is generated by AI using traditional metaphysical concepts. It is provided solely for entertainment and self-reflection. The example person is fictional. Interpretations do not predict specific events or guarantee outcomes."
+      "type": "p",
+      "text": "Based on traditional metaphysical symbolism, charts with similar configurations may resonate with careers involving research, technology, engineering, strategy, or analytical work. Environments that encourage innovation and independent thinking may feel particularly rewarding."
     },
 
     {
-      "type": "cta",
-      "title": "Discover Your Personal Life Path",
-      "text": "Generate your own AI-powered life path analysis based on your birth information.",
-      "button": "Start Your Personal Analysis",
-      "link": "https://www.zanpath.com/en"
+      "type": "h2",
+      "text": "Life Development Cycles"
+    },
+
+    {
+      "type": "p",
+      "text": "Traditional BaZi interpretations often examine long-term cycles that represent phases of opportunity, learning, and growth. During supportive cycles, individuals may experience clearer direction and stronger momentum in personal or professional development."
+    },
+
+    {
+      "type": "h2",
+      "text": "Lifestyle and Balance"
+    },
+
+    {
+      "type": "p",
+      "text": "Balanced routines, calm environments, and supportive relationships can help individuals channel their energy productively. Practices that support mental clarity and emotional balance may enhance personal well-being."
+    },
+
+    {
+      "type": "h2",
+      "text": "About This Example"
+    },
+
+    {
+      "type": "p",
+      "text": "This analysis is a simplified demonstration created by AI using traditional metaphysical ideas. The example person is fictional. Interpretations are provided for entertainment and self-reflection purposes only."
+    },
+
+    {
+      "type": "h2",
+      "text": "Explore Your Personal Analysis"
+    },
+
+    {
+      "type": "p",
+      "text": "Your personalized report provides deeper insights based on your birth information. If you're curious about your own life path patterns, you can generate your personal analysis below."
     }
 
-  ]
+  ],
+
+  "cta": {
+    "text": "Generate your personalized Life Path Analysis with AI.",
+    "url": "https://zanpath.com/en"
+  }
 }

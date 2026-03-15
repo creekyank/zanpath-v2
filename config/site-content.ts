@@ -682,7 +682,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "See a Sample Life Path Analysis",
       desc: "Curious how an AI life path analysis works? View an example report before starting your own.",
       button: "View Sample Life Path Report",
-      link: "https://www.zanpath.com/en/wisdom/life-path/sample-bazi-analysis.json",
+      link: "https://www.zanpath.com/en/wisdom/life-path/sample-bazi-analysis",
       preview: [
         {
           title: "Life Path Overview",
@@ -699,7 +699,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "Ver un ejemplo de análisis de camino de vida",
       desc: "¿Tienes curiosidad por saber cómo funciona un análisis de camino de vida con IA? Mira un ejemplo antes de comenzar.",
       button: "Ver ejemplo de informe",
-      link: "https://www.zanpath.com/es/wisdom/life-path/sample-bazi-analysis.json",
+      link: "https://www.zanpath.com/es/wisdom/life-path/sample-bazi-analysis",
       preview: [
         {
           title: "Resumen del camino de vida",
