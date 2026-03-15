@@ -360,7 +360,6 @@ export default function NamingPage() {
 
   /* ===== 以下 JSX 原样保持，不再重复解释 ===== */
   return (
-
       <main className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 order-1">
           <div className="mb-6 text-center max-w-3xl mx-auto">
@@ -490,6 +489,52 @@ export default function NamingPage() {
               </div>
             )}
           </div>
+                {/* =============================
+                    Sample Analysis Block
+                  ============================= */}
+
+          <div className="max-w-4xl mx-auto mt-20 px-6 text-center">
+
+            <h2 className="text-2xl font-bold text-[#0f3d2e] mb-3">
+              {sample.title}
+            </h2>
+
+            <p className="text-sm text-[#356f5b] mb-6 max-w-xl mx-auto">
+              {sample.desc}
+            </p >
+
+            <Link
+              href={sample.link}
+              className="inline-block mb-10 px-6 py-3 rounded-xl bg-[#0f3d2e] text-white font-semibold hover:opacity-90 transition"
+            >
+              {sample.button}
+            </Link>
+
+            {/* Preview */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm text-left max-w-2xl mx-auto">
+
+              <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">
+                Example Preview
+              </p >
+
+              {sample.preview.map((p, i) => (
+                <div key={i} className="mb-4">
+                  <h4 className="font-semibold text-[#0f3d2e] text-sm mb-1">
+                    {p.title}
+                  </h4>
+                  <p className="text-sm text-[#356f5b] leading-relaxed">
+                    {p.text}
+                  </p >
+                </div>
+              ))}
+
+              <p className="text-xs text-gray-400 mt-4 italic">
+                This is a simplified preview. Your personal report will be more detailed.
+              </p >
+
+            </div>
+
+            </div>
         </div>
 
         <div className="space-y-6 lg:space-y-8 order-2">
@@ -519,54 +564,6 @@ export default function NamingPage() {
             }}
           />
         </div>
-
-      {/* =============================
-        Sample Analysis Block
-      ============================= */}
-
-      <div className="max-w-4xl mx-auto mt-20 px-6 text-center">
-
-        <h2 className="text-2xl font-bold text-[#0f3d2e] mb-3">
-          {sample.title}
-        </h2>
-
-        <p className="text-sm text-[#356f5b] mb-6 max-w-xl mx-auto">
-          {sample.desc}
-        </p >
-
-        <Link
-          href={sample.link}
-          className="inline-block mb-10 px-6 py-3 rounded-xl bg-[#0f3d2e] text-white font-semibold hover:opacity-90 transition"
-        >
-          {sample.button}
-        </Link>
-
-        {/* Preview */}
-        <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm text-left max-w-2xl mx-auto">
-
-          <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">
-            Example Preview
-          </p >
-
-          {sample.preview.map((p, i) => (
-            <div key={i} className="mb-4">
-              <h4 className="font-semibold text-[#0f3d2e] text-sm mb-1">
-                {p.title}
-              </h4>
-              <p className="text-sm text-[#356f5b] leading-relaxed">
-                {p.text}
-              </p >
-            </div>
-          ))}
-
-          <p className="text-xs text-gray-400 mt-4 italic">
-            This is a simplified preview. Your personal report will be more detailed.
-          </p >
-
-        </div>
-
-      </div>
-
       </main>
   );
 }

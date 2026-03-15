@@ -329,7 +329,6 @@ export default function DreamPage() {
 
 
   return (
-    <>
       <main className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 order-1">
           <div className="mb-6 text-center max-w-3xl mx-auto">
@@ -451,41 +450,7 @@ export default function DreamPage() {
               </div>
             )}
           </div>
-        </div>
-
-        <div className="space-y-6 lg:space-y-8 order-2">
-          <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white space-y-4 shadow-sm">
-            <h3 className="font-bold text-sm text-[#0f3d2e] flex items-center">✨ Dream Reflection</h3>
-            <p className="text-[13px] text-[#4a7c6d] leading-relaxed">
-              Every dream is a letter from your subconscious. Our AI decodes cultural symbols and psychological patterns to help you find clarity.
-            </p>
-          </div>
-          
-          <RecoveryModal 
-            locale={locale} 
-            moduleType="dream" 
-            onResultFound={(content, inputData) => { 
-              setResult(content); 
-              setShowResult(true);
-              if (inputData) setFormDataState(inputData);
-              localStorage.removeItem("dream_backup_content"); 
-            }}
-            onNeedsReRun={(inputData) => { 
-              setShowResult(false); 
-              setResult(""); 
-              setFlowState("IDLE");
-
-              if (inputData) setFormDataState(inputData);
-              // 🟢 新增：自動捲動到頂部
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              alert(locale === "es" ? "Pago verificado. Puede generar ahora." : "Payment verified. You can generate now.");
-            }}
-          />
-        </div>
-
-      </main>
-
-        {/* =============================
+                  {/* =============================
             Sample Analysis Block
           ============================= */}
 
@@ -531,6 +496,37 @@ export default function DreamPage() {
           </div>
 
           </div>      
-          </>
+        </div>
+
+        <div className="space-y-6 lg:space-y-8 order-2">
+          <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white space-y-4 shadow-sm">
+            <h3 className="font-bold text-sm text-[#0f3d2e] flex items-center">✨ Dream Reflection</h3>
+            <p className="text-[13px] text-[#4a7c6d] leading-relaxed">
+              Every dream is a letter from your subconscious. Our AI decodes cultural symbols and psychological patterns to help you find clarity.
+            </p>
+          </div>
+          
+          <RecoveryModal 
+            locale={locale} 
+            moduleType="dream" 
+            onResultFound={(content, inputData) => { 
+              setResult(content); 
+              setShowResult(true);
+              if (inputData) setFormDataState(inputData);
+              localStorage.removeItem("dream_backup_content"); 
+            }}
+            onNeedsReRun={(inputData) => { 
+              setShowResult(false); 
+              setResult(""); 
+              setFlowState("IDLE");
+
+              if (inputData) setFormDataState(inputData);
+              // 🟢 新增：自動捲動到頂部
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              alert(locale === "es" ? "Pago verificado. Puede generar ahora." : "Payment verified. You can generate now.");
+            }}
+          />
+        </div>
+      </main>
   );
 }
