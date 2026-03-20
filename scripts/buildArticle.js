@@ -106,6 +106,9 @@ function cleanAIText(text) {
   t = t.replace(/## FAQ[\s\S]*/i, "");
   t = t.replace (/^---$/gm,"");
 
+  t = t.replace(/^\[(#{1,3})\s*(.*?)\]/gm, "$1 $2");
+  t = t.replace(/^\[(.*?)\]$/gm, "$1");
+
 
   return t.trim();
 }
