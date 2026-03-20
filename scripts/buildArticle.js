@@ -305,6 +305,15 @@ function flushParagraph() {
         id: anchor
       });
 
+      if (!secondImageInserted && h2Count === 1) {
+        blocks.push({
+          type: "image",
+          src: img2,
+          alt: title
+        });
+        secondImageInserted = true; // 插完锁死
+      }      
+
       i++;
       continue;
 
