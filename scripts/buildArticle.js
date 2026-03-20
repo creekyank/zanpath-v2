@@ -399,17 +399,25 @@ function mdToBlocks(text, imageFolder, slug, title, locale) {
 
   flushParagraph();
 
-  /* ================================
+/* ================================
   插入 TOC
   ================================ */
 
   if (toc.length > 2) {
+    // 定义多语言标题字典
+    const tocTitles = {
+      es: "Contenido",
+      en: "Table of Contents",
+      // 你可以随时在这里增加其他语言
+      zh: "目录" 
+    };
 
     blocks.splice(2, 0, {
       type: "toc",
+      // 根据 locale 取值，如果找不到则默认为 "Contents"
+      title: tocTitles[locale] || "Contents",
       items: toc
     });
-
   }
 
 /* ================================
@@ -562,7 +570,7 @@ function build(locale, article, seo) {
   }
 
   // 3. 生成 HTML 内容 (传入参数，内部会自动处理第 2 张图的插入)
-  let blocks = mdToBlocks(article, imageFolder, slug, displayTitle);
+  let blocks = mdToBlocks(article, imageFolder, slug, displayTitle, locale);
 
   return {
   
