@@ -110,16 +110,38 @@ function cleanAIText(text) {
   t = t.replace(/^\[(.*?)\]$/gm, "$1");
 
   // 2. 删除 AI 结构垃圾
+// ✅ 删除 TÍTULO / CONTENIDO（不管是不是一行）
+  t = t.replace(/TÍTULO[\s\S]*?CONTENIDO/gi, "");
+
+// ✅ 删除单独残留
   t = t.replace(/^TÍTULO.*$/gim, "");
   t = t.replace(/^CONTENIDO.*$/gim, "");
-  t = t.replace(/^Table of Contents[\s\S]*?\n\n/im, "");
 
-  // 3. 删除重复标题
-  const lines = t.split("\n").filter(Boolean);
+// ✅ 删除 Table of Contents 整块（直到遇到真正正文）
+  t = t.replace(
+  /Table of Contents[\s\S]*?(?=\n[A-ZÁÉÍÓÚÑ¿])/i,
+  ""
+);
+
+  // ✅ 删除重复标题
+  let lines = t.split("\n").map(l => l.trim()).filter(Boolean);
+
   if (lines.length > 1 && lines[0].includes(lines[1])) {
-   lines.shift();
-}
+    lines.shift();
+  }
+
+  // ✅ 删除第一行伪标题（西语专用）
+  if (lines.length > 1) {
+    if (
+      lines[0].length < 80 &&
+      lines[1].length > lines[0].length
+    ) {
+      lines.shift();
+    }
+  }
+
   t = lines.join("\n");
+
   return t.trim();
 }
 
