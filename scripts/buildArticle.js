@@ -10,6 +10,8 @@ const SITE_URL = "https://zanpath.com";
 let title = process.argv[2];
 let slug = process.argv[3];
 let moduleName = process.argv[4];
+let paragraphCount = 0;
+let secondImageInserted = false;
 
 if (!title || !moduleName) {
   console.error("Missing arguments");
@@ -192,7 +194,9 @@ function mdToBlocks(text, imageFolder, slug, title, locale) {
     let buffer = "";
   
     let h2Count = 0;
+    let paragraphCount = 0;
     let firstImageInserted = false;
+    let secondImageInserted = false;
     let snippetInserted = false;
   
     let i = 0;
@@ -202,18 +206,31 @@ function mdToBlocks(text, imageFolder, slug, title, locale) {
   ================================ */
 
 
-  function flushParagraph() {
+function flushParagraph() {
 
-    if (!buffer.trim()) return;
-  
+  if (!buffer.trim()) return;
+
+  blocks.push({
+    type: "p",
+    text: buffer.trim()
+  });
+
+  paragraphCount++;
+
+  // ✅ 在第3段后插入第二张图
+  if (!secondImageInserted && paragraphCount === 3) {
+
     blocks.push({
-      type: "p",
-      text: buffer.trim()
+      type: "image",
+      src: img2,
+      alt: title
     });
-  
-    buffer = "";
-  
+
+    secondImageInserted = true;
   }
+
+  buffer = "";
+}
 
   /* ================================
   main loop
@@ -287,16 +304,6 @@ function mdToBlocks(text, imageFolder, slug, title, locale) {
         text: h2,
         id: anchor
       });
-
-      if (h2Count === 2) {
-
-        blocks.push({
-          type: "image",
-          src: img2,
-          alt: title
-        });
-
-      }
 
       i++;
       continue;
