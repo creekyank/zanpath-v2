@@ -204,7 +204,7 @@ function renderBlock(block: any, index: number) {
         <div key={index} className="my-10 p-6 bg-gray-50 rounded-xl border">
     
           <strong className="text-[#0f3d2e]">
-            Table of Contents
+            {block.title || (locale === "es" ? "Contenido" : "Table of Contents")}
           </strong>
     
           <ul className="mt-4 list-disc pl-5 space-y-2">
