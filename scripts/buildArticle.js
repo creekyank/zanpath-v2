@@ -3,7 +3,7 @@ const path = require("path");
 const { enhanceArticleSEO } = require("./seoEnhancer");
 
 const SITE_URL = "https://zanpath.com";
-
+const BASE_URL = process.env.SITE_URL || "";
 
 const folderMap = {
   "life-path": "bazi",
@@ -168,9 +168,12 @@ function mdToBlocks(md, title) {
       continue;
     }
 
-    if (line.startsWith("- ")) {
+    if (line.startsWith("- ") || line.startsWith("* ")) {
       pushP();
-      blocks.push({ type: "li", text: line.replace("- ", "") });
+      blocks.push({
+        type: "li",
+        text: line.replace(/^[-*]\s*/, "")
+      });
       continue;
     }
 
@@ -205,6 +208,18 @@ function build(locale, raw, seo, fallbackTitle) {
 
   let title = extractTitle(raw, fallbackTitle);
   let content = cleanContent(raw);
+  // 🔥 【新增修复逻辑】删除正文开头重复的标题文字
+  // 我们检查 content 是否以 currentTitle 开头，忽略大小写和标点干扰
+  const titleForCompare = title.toLowerCase().trim();
+  if (content.toLowerCase().startsWith(titleForCompare)) {
+    // 切掉标题长度，并重新 trim
+    content = content.slice(title.length).trim();
+    // 如果切完之后开头剩下问号、冒号或换行，继续清理
+    content = content.replace(/^[:：?？\s]+/, "");
+    console.log(`[DEBUG] 已从 ${locale} 正文开头切除重复标题`);
+  }
+
+
 
   if (locale === "es") {
     content = fixSpanish(content);
