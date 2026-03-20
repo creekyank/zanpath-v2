@@ -109,7 +109,17 @@ function cleanAIText(text) {
   t = t.replace(/^\[(#{1,3})\s*(.*?)\]/gm, "$1 $2");
   t = t.replace(/^\[(.*?)\]$/gm, "$1");
 
+  // 2. 删除 AI 结构垃圾
+  t = t.replace(/^TÍTULO.*$/gim, "");
+  t = t.replace(/^CONTENIDO.*$/gim, "");
+  t = t.replace(/^Table of Contents[\s\S]*?\n\n/im, "");
 
+  // 3. 删除重复标题
+  const lines = t.split("\n").filter(Boolean);
+  if (lines.length > 1 && lines[0].includes(lines[1])) {
+   lines.shift();
+}
+  t = lines.join("\n");
   return t.trim();
 }
 
