@@ -62,9 +62,14 @@ Explain how modern people understand it:
 
 ## Insights
 
-- Insight
-- Insight
-- Insight
+Write 3–5 bullet points.
+
+Each bullet MUST:
+- Be a complete sentence
+- Be at least 12 words
+- Provide a concrete insight
+
+DO NOT leave this section empty.
 
 ## Conclusion
 
