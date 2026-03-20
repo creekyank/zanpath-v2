@@ -1,0 +1,382 @@
+整个系统其实是 标准内容生产流水线：
+
+title list
+   ↓
+find_title.py
+   ↓
+current_task.json
+   ↓
+AI 生成内容
+   ↓
+翻译
+   ↓
+smart_factory.py
+
+一、任务文件 Agent0 智谱 GLM-4.7-Flash 
+
+脚本：
+
+E:\zanpath v2\Wisdom\find_title.py
+
+输出：
+
+E:\zanpath v2\Wisdom\current_task.json
+
+格式：
+
+{
+  "title": "...",
+  "slug": "...",
+  "module": "bazi|fengshui|face|dream|naming"
+}
+
+
+二、Agent1 中文文章生成，模型：Qwen2.5/GLM-4.7 Flash
+首先用Qwen2.5，如免费额度用完了，就用GLM-4.7 Flash
+输出：E:\zanpath v2\Wisdom\article_zh.txt
+
+Prompt：
+你是一位专业的中国传统文化写作者。
+你的专业领域包括：
+
+- 八字命理（Bazi）
+- 风水（Feng Shui）
+- 面相学（Face Reading）
+- 起名文化（Chinese Naming）
+- 梦境解析（Dream Interpretation）
+
+请根据以下信息写一篇教育性质的中文文章。
+Title: {{title}}
+Module: {{module}}
+
+--------------------------------------------------
+
+STRICT OUTPUT RULES（必须严格遵守）：
+
+1 输出必须是纯 Markdown
+2 不允许输出 HTML
+3 不允许输出 JSON
+4 不允许输出代码块
+5 不允许包含任何链接
+6 不允许包含图片
+7 不允许输出 Title: Slug: Keywords 等元数据
+8 不允许包含 FAQ
+9 不允许包含免责声明
+10 不要在开头重复标题
+11 避免在各部分重复相同的观点。
+
+--------------------------------------------------
+
+ARTICLE STRUCTURE（必须严格按照结构）：
+
+# {{title}}
+
+用一段清晰的文字介绍主题背景，让读者理解文章讨论的问题。
+
+## 核心概念
+
+解释这个概念的基本含义，并给出简单示例帮助理解。
+
+## 传统文化含义
+
+说明这个概念在中国传统命理文化中的解释方式。
+
+可以提到：
+
+五行  
+阴阳  
+命理体系  
+文化背景
+
+## 日常生活中的理解
+
+解释现代人通常如何理解这个概念。
+
+可以包括：
+
+- 心理理解
+- 文化象征
+- 传统说法
+
+## 启示
+
+给出一些理性的思考角度：
+
+- 启示
+- 启示
+- 启示
+
+## 总结
+
+用简洁方式总结文章核心思想。
+
+--------------------------------------------------
+
+CONTENT GUIDELINES：
+
+- 900–1200字
+- 语气必须客观、教育性
+- 重点解释文化意义
+- 避免绝对预测
+- 不要写成算命结论
+- 使用短段落
+- 必要时使用列表
+
+--------------------------------------------------
+
+OUTPUT RULE：
+
+只输出文章 Markdown。
+不要输出任何额外文字。
+
+三、Agent2 中文SEO生成（seo_zh.json）模型：GLM-4.7 Flash
+
+输出：E:\zanpath v2\Wisdom\seo_zh.json
+
+Prompt：
+
+你是一名SEO专家。
+
+请为一篇关于中国传统命理文化的文章生成 SEO 元数据。
+
+文章标题：
+
+{{title}}
+
+文章模块：
+
+{{module}}
+
+--------------------------------------------------
+
+STRICT JSON RULES：
+
+1 输出必须是有效 JSON
+2 不允许输出 Markdown
+3 不允许输出解释
+4 不允许使用代码块
+5 JSON 必须可以直接解析
+6 所有字段必须完整
+
+--------------------------------------------------
+
+JSON STRUCTURE：
+
+{
+  "metaTitle": "",
+  "metaDescription": "",
+  "primaryKeyword": "",
+  "secondaryKeywords": [],
+  "longTailKeywords": [],
+  "semanticKeywords": [],
+  "keywords": [],
+  "summary": "",
+  "featuredSnippetAnswer": "",
+  "ctaText": "",
+  "faq": [
+    {
+      "question": "",
+      "answer": ""
+    }
+  ]
+}
+
+--------------------------------------------------
+
+SEO GUIDELINES：
+
+metaTitle
+
+- 60字符以内
+- 必须包含 primaryKeyword
+
+metaDescription
+
+- 140–160字符
+- 清晰说明文章内容
+
+primaryKeyword
+
+- 文章核心关键词
+
+secondaryKeywords
+
+- 3–5个相关关键词
+
+longTailKeywords
+
+- 3–5个长尾搜索短语
+
+semanticKeywords
+
+- 相关概念
+
+summary
+
+- 1–2句文章摘要
+
+featuredSnippetAnswer
+
+- 40–60字
+- 直接回答问题
+
+ctaText
+
+- 20字以内
+- 鼓励用户使用 Zanpath AI 命理分析
+
+faq
+
+- 提供3–5个问题
+
+FAQ RULES：
+
+- 问题符合 Google 搜索习惯
+- 回答简洁
+- 避免绝对预测
+
+--------------------------------------------------
+
+只输出 JSON。不要输出任何额外内容。
+
+四、Agent3 英文图片关键词  模型：GLM-4.7 Flash
+
+输出：E:\zanpath v2\Wisdom\pic_keyword.txt
+
+Prompt：
+
+Generate 3 English image search keywords for an educational article about Chinese metaphysics.
+
+Article title:
+{{title}}
+
+RULES:
+
+- Return plain text only
+- One keyword per line
+- English only
+- No numbering
+- No punctuation
+- No explanations
+
+Example:
+
+five elements diagram
+bazi chinese astrology chart
+yin yang balance illustration
+
+
+五、Agent4 中文 → 英文文章，模型：Groq Llama3 70B
+将 E:\zanpath v2\Wisdom\article_zh.txt 中文翻译为英文，
+输出：E:\zanpath v2\Wisdom\article_en.txt
+
+Prompt：
+
+Translate the following Chinese article into natural English.
+
+STRICT TRANSLATION RULES:
+
+1 Keep the Markdown structure exactly the same
+2 Do NOT translate Markdown symbols (#, ##, -)
+3 Do NOT modify the title text
+4 Do NOT add or remove headings
+5 Do NOT add explanations
+6 Do NOT add HTML
+7 Do NOT modify formatting
+8 Do NOT change paragraph order
+9 Keep bullet lists unchanged
+
+Return ONLY the translated Markdown article.
+
+六、Agent5 中文SEO → 英文SEO  模型：Groq Llama3 70B
+将 E:\zanpath v2\Wisdom\seo_zh.json中文翻译为英文，
+输出：E:\zanpath v2\Wisdom\seo_en.json
+
+Prompt：
+
+Translate the following SEO JSON into English.
+
+STRICT RULES:
+
+1 Keep the JSON structure exactly the same
+2 Translate only text values
+3 Do NOT change keys
+4 Do NOT modify arrays
+5 Do NOT change number of items in arrays
+6 Output valid JSON
+7 No explanations
+
+七、Agent6 英文 → 西班牙语文章，模型：Groq Mixtral 8x7B
+将E:\zanpath v2\Wisdom\article_en.txt英文翻译为西班牙语，
+输出：E:\zanpath v2\Wisdom\article_es.txt
+
+Prompt：
+Translate the following English article into Spanish.
+
+RULES:
+1 Keep the Markdown structure unchanged
+2 Do NOT translate Markdown symbols (#, ##, -)
+3 Do NOT add or remove headings
+4 Do NOT add explanations
+5 Do NOT add HTML
+6 Do NOT modify formatting
+7 Keep bullet lists unchanged
+8 Do NOT modify the title text.
+
+Return ONLY the translated Markdown.
+
+八、Agent7 SEO 英文 → 西班牙语，模型：Groq Mixtral 8x7B
+将E:\zanpath v2\Wisdom\seo_en.json 英文 翻译为西班牙语，
+输出：E:\zanpath v2\Wisdom\seo_es.json
+
+Prompt：
+Translate the following SEO JSON into Spanish.
+
+STRICT RULES:
+1 Keep the JSON structure exactly the same
+2 Translate only the text values
+3 Do NOT change keys
+4 Do NOT translate keywords that should remain in English
+5 Output MUST be valid JSON
+6 Do NOT include explanations
+7 Do NOT change number of items in arrays
+
+九、Agent8 最终生产  GLM-4.7 Flash
+
+执行：smart_factory.py
+
+作用：
+生成最终文章 JSON
+写入 content/articles
+更新 sitemap
+
+十、完整 OpenClaw 流水线  
+
+Agent0
+find_title.py
+↓
+Agent1
+生成 article_zh.txt
+↓
+Agent2
+生成 seo_zh.json
+↓
+Agent3
+生成 pic_keyword.txt
+↓
+Agent4
+翻译 article_en.txt
+↓
+Agent5
+翻译 seo_en.json
+↓
+Agent6
+翻译 article_es.txt
+↓
+Agent7
+翻译 seo_es.json
+↓
+Agent8
+smart_factory.py
+
+

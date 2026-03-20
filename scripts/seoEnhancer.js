@@ -47,11 +47,8 @@ function countWords(text) {
 }
 
 function readingTime(text) {
-
   const words = countWords(text)
-
-  return Math.max(1, Math.round(words / 200))
-
+  return Math.max(3, Math.round(words / 200))
 }
 
 /* =======================================================
@@ -329,127 +326,109 @@ function buildFAQSchema(article) {
 }
 
 /* =======================================================
-ARTICLE SCHEMA
+ARTICLE SCHEMA (FIXED)
 ======================================================= */
-
 function buildArticleSchema(article) {
-
   return {
-
     "@context": "https://schema.org",
-
     "@type": "Article",
-
     "headline": article.title,
-
     "description": article.metaDescription,
-
-    "image": `${BASE_URL}${article.coverImage}`,
-
-    "author": {
-
-      "@type": "Organization",
-      "name": "ZanPath"
-
-    },
-
+    "image": article.image, // 直接使用 buildArticle.js 传进来的完整 URL
+    "author": { "@type": "Organization", "name": "ZanPath" },
     "publisher": {
-
       "@type": "Organization",
-
       "name": "ZanPath",
-
-      "logo": {
-
-        "@type": "ImageObject",
-        "url": `${BASE_URL}/logo.png`
-
-      }
-
+      "logo": { "@type": "ImageObject", "url": `${BASE_URL}/logo.png` }
     },
-
     "datePublished": article.datePublished,
-
     "dateModified": article.dateModified,
+    "mainEntityOfPage": { "@type": "WebPage", "@id": article.canonical }
+  };
+}
 
-    "mainEntityOfPage": {
+/* =======================================================
+INTERNAL LINK INJECTION (SAFER)
+======================================================= */
+function injectInternalLinks(html, links) {
+  if (!links || links.length === 0) return html;
+  let modified = html;
 
-      "@type": "WebPage",
-
-      "@id": article.canonical
-
+  for (let link of links) {
+    const anchor = link.anchor;
+    const url = link.url;
+    // 只替换不在 HTML 标签内部的文本
+    const regex = new RegExp(`(?<!<[^>]*)${anchor}(?![^<]*>)`, "i");
+    if (regex.test(modified)) {
+      modified = modified.replace(regex, `<a href="${url}">${anchor}</a>`);
     }
-
   }
-
+  return modified;
 }
 
 /* =======================================================
 BREADCRUMB SCHEMA
 ======================================================= */
 
+/* =======================================================
+BREADCRUMB SCHEMA (美化版)
+======================================================= */
 function buildBreadcrumbSchema(article) {
-  const loc = article.locale; // 获取语言代码
+  const loc = article.locale;
+  
+  // 1. 定义模块名称的翻译映射
+  const moduleNameMap = {
+    "en": {
+      "life-path": "Life Path",
+      "feng-shui": "Feng Shui",
+      "face-reading": "Face Reading",
+      "dream": "Dream Interpretation",
+      "naming": "Baby Naming"
+    },
+    "es": {
+      "life-path": "Camino de la Vida",
+      "feng-shui": "Feng Shui",
+      "face-reading": "Lectura de Rostro",
+      "dream": "Interpretación de Sueños",
+      "naming": "Nombres de Bebés"
+    }
+  };
+
+  // 2. 获取当前语言下的美化名称，如果没有匹配则首字母大写
+  const rawModule = article.module;
+  const prettyModuleName = (moduleNameMap[loc] && moduleNameMap[loc][rawModule]) 
+    || rawModule.charAt(0).toUpperCase() + rawModule.slice(1);
+
   return {
-
     "@context": "https://schema.org",
-
     "@type": "BreadcrumbList",
-
     "itemListElement": [
-
       {
-
         "@type": "ListItem",
-
         "position": 1,
-
-        "name": "Home",
-
+        "name": loc === "es" ? "Inicio" : "Home", // 首页也顺便翻译了
         "item": `${BASE_URL}/${loc}`
-
       },
-
       {
-
         "@type": "ListItem",
-
         "position": 2,
-
-        "name": "Wisdom",
-
+        "name": loc === "es" ? "Sabiduría" : "Wisdom", // Wisdom 也可以翻译
         "item": `${BASE_URL}/${loc}/wisdom`
-
       },
-
       {
-
         "@type": "ListItem",
-
         "position": 3,
-
-        "name": article.module,
-
+        "name": prettyModuleName, // 这里使用了美化后的名称
         "item": `${BASE_URL}/${loc}/wisdom/${article.module}`
-
       },
-
       {
-
         "@type": "ListItem",
-
         "position": 4,
-
         "name": article.title,
-
         "item": article.canonical
-
       }
-
     ]
-
-  }
-
+  };
 }
 
 /* =======================================================
@@ -467,37 +446,6 @@ function optimizeImageAlt(html, keyword) {
 
 }
 
-/* =======================================================
-INJECT INTERNAL LINKS INTO HTML
-======================================================= */
-
-function injectInternalLinks(html, links) {
-
-  if (!links || links.length === 0) return html
-
-  let modified = html
-
-  for (let link of links) {
-
-    const anchor = link.anchor
-    const url = link.url
-    const regex = new RegExp(anchor, "i")
-
-    if (regex.test(modified)) {
-
-      // --- 修复处：填入正确的 URL 并去掉标签内多余空格 ---
-      modified = modified.replace(
-        regex,
-        `<a href="${url}">${anchor}</a>`
-      )
-
-    }
-
-  }
-
-  return modified
-
-}
 
 /* =======================================================
 TOPIC GRAPH
@@ -547,89 +495,53 @@ ENHANCE SEO MAIN FUNCTION
 ======================================================= */
 
 function enhanceArticleSEO(article) {
+  if (!article) return article;
+  
+  // 1. 获取当前语言的所有文章
+  const allArticles = loadAllArticles(article.locale);
+  
+  // 2. 获取相关的文章原始对象（包含 slug, module 等所有信息）
+  const fullRelatedObjects = buildRelatedArticles(article, allArticles);
 
-  if (!article) return article
+  // 3. 生成内链（传入原始对象，因为 buildInternalLinks 需要这些字段）
+  article.internalLinks = buildInternalLinks(article, fullRelatedObjects);
 
-  const allArticles = loadAllArticles(article.locale)
-
-  /* -------------------------------- */
-
-  const related = buildRelatedArticles(article, allArticles)
-
-  article.relatedArticles = related.map(r => ({
-
+  // 4. 生成展示用的相关文章（映射成只有 title 和 url 的简略版）
+  article.relatedArticles = fullRelatedObjects.map(r => ({
     title: r.title,
-
     url: `/${article.locale}/wisdom/${r.module}/${r.slug}`
+  }));
+  
+  // 5. 主题集群和支柱页面
+  const cluster = detectCluster(article);
+  article.topicCluster = cluster;
+  article.pillarPage = buildPillar(cluster, article.locale);
 
-  }))
+  // 6. HTML 处理
+  if (article.content && article.content.length > 0 && article.content[0].text) {
+    let html = article.content[0].text;
+    
+    // html = insertImages(html); // 保持注释状态
+    html = optimizeImageAlt(html, article.primaryKeyword);
+    html = injectInternalLinks(html, article.internalLinks); 
 
-  /* -------------------------------- */
-
-  article.internalLinks = buildInternalLinks(article, related)
-
-  /* -------------------------------- */
-
-  const cluster = detectCluster(article)
-
-  article.topicCluster = cluster
-
-  article.pillarPage = buildPillar(cluster, article.locale)
-
-  /* -------------------------------- */
-
-  if (
-    article.content &&
-    article.content.length > 0 &&
-    article.content[0].text
-  ) {
-
-    let html = article.content[0].text
-
-    html = insertImages(html)
-
-    html = optimizeImageAlt(html, article.primaryKeyword)
-
-    html = injectInternalLinks(html, article.internalLinks)
-
-    article.content[0].text = html
-
+    article.content[0].text = html;
   }
 
-  /* -------------------------------- */
-
-  article = optimizeSnippet(article)
-
-  article = optimizeMetaDescription(article)
-
-  article = fixCanonical(article)
-
-  /* -------------------------------- */
-
-  if (
-    article.content &&
-    article.content.length > 0
-  ) {
-
-    article.readingTime =
-      readingTime(article.content[0].text)
-
+  // 7. SEO 元数据优化
+  article = optimizeSnippet(article);
+  article = optimizeMetaDescription(article);
+  article = fixCanonical(article);
+  
+  if (article.content && article.content.length > 0) {
+    article.readingTime = readingTime(article.content[0].text);
   }
 
-  /* -------------------------------- */
+  // 8. 图谱和结构化数据
+  article.topicGraph = buildTopicGraph(article, fullRelatedObjects); 
+  article.structuredData = buildStructuredData(article); 
 
-  article.topicGraph =
-    buildTopicGraph(article, related)
-
-  /* -------------------------------- */
-
-  article.structuredData =
-    buildStructuredData(article)
-
-  /* -------------------------------- */
-
-  return article
-
+  return article;
 }
 
 /* =======================================================

@@ -197,7 +197,10 @@ async function searchWikimedia(keyword) {
   
     try {
       const res = await fetch(url, { timeout: 10000 });
-      if (!res.ok) return null;
+      if (res.status === 429) {
+        console.error("⚠️ 触发频率限制，跳过当前 API");
+        return null;
+      }
       const data = await res.json();
       
       // 修正：Wikimedia 的判断逻辑不同

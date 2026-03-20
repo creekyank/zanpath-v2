@@ -58,44 +58,45 @@ function generate() {
   // 2. 生成 Image Sitemap
   let imageXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
 
-  articles.forEach(art => {
-    const url = art.canonical || `${SITE_URL}/${art.locale}/wisdom/${art.module}/${art.slug}`;
-    
-    // 1. 添加文章链接
-    articleXml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${art.dateModified || art.datePublished}</lastmod>\n  </url>\n`;
+articles.forEach(art => {
+  // 优先使用 canonical，没有则按规则拼接
+  const url = art.canonical || `${SITE_URL}/${art.locale}/wisdom/${art.module}/${art.slug}`;
+  
+  // 1. 添加文章链接
+  articleXml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${art.dateModified || art.datePublished || new Date().toISOString().split('T')[0]}</lastmod>\n  </url>\n`;
 
-    // 2. 提取图片逻辑
-    let imageUrls = [];
+  // 2. 提取图片逻辑
+  let imageUrls = [];
 
-    // 提取封面图
-    if (art.coverImage) imageUrls.push(art.coverImage);
+  // 对应你 buildArticle.js 中的字段名
+  if (art.image) imageUrls.push(art.image);
 
-    // 提取正文 HTML 中的所有 <img> 标签的 src
-    if (art.content && Array.isArray(art.content)) {
-      art.content.forEach(section => {
-        if (section.type === 'html' && section.text) {
-          // 使用正则匹配 src="..." 里的路径
-          const imgReg = /<img [^>]*src="([^"]+)"/g;
-          let match;
-          while ((match = imgReg.exec(section.text)) !== null) {
-            imageUrls.push(match[1]);
-          }
+  // 提取正文 HTML
+  if (art.content && Array.isArray(art.content)) {
+    art.content.forEach(section => {
+      if (section.text) { // 兼容可能是 section.text 直接是 HTML 的情况
+        const imgReg = /<img [^>]*src="([^"]+)"/g;
+        let match;
+        while ((match = imgReg.exec(section.text)) !== null) {
+          imageUrls.push(match[1]);
         }
-      });
-    }
+      }
+    });
+  }
 
-    // 去重并过滤掉不合法的路径
-    const uniqueImages = [...new Set(imageUrls)].filter(img => img && img.startsWith('/'));
+  const uniqueImages = [...new Set(imageUrls)].filter(img => img);
 
-    // 3. 写入 Image Sitemap
-    if (uniqueImages.length > 0) {
-      imageXml += `  <url>\n    <loc>${url}</loc>\n`;
-      uniqueImages.forEach(imgUrl => {
-        imageXml += `    <image:image>\n      <image:loc>${SITE_URL}${imgUrl}</image:loc>\n      <image:title>${escapeXml(art.title)}</image:title>\n      <image:caption>${escapeXml(art.metaDescription)}</image:caption>\n    </image:image>\n`;
-      });
-      imageXml += `  </url>\n`;
-    }
-  });
+  // 3. 写入 Image Sitemap
+  if (uniqueImages.length > 0) {
+    imageXml += `  <url>\n    <loc>${url}</loc>\n`;
+    uniqueImages.forEach(imgUrl => {
+      // 智能拼接完整路径
+      const fullImgUrl = imgUrl.startsWith('http') ? imgUrl : `${SITE_URL}${imgUrl.startsWith('/') ? '' : '/'}${imgUrl}`;
+      imageXml += `    <image:image>\n      <image:loc>${escapeXml(fullImgUrl)}</image:loc>\n      <image:title>${escapeXml(art.title)}</image:title>\n    </image:image>\n`;
+    });
+    imageXml += `  </url>\n`;
+  }
+});
 
   articleXml += `</urlset>`;
   imageXml += `</urlset>`;

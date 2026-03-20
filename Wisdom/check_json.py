@@ -7,68 +7,86 @@ sys.stdout.reconfigure(encoding='utf-8')
 SEO_EN = r"E:\zanpath v2\Wisdom\seo_en.json"
 SEO_ES = r"E:\zanpath v2\Wisdom\seo_es.json"
 
+
 def clean_and_fix_json(text):
-    """提取 JSON 部分并修复常见格式错误"""
     try:
-        # 1. 尝试提取 {} 之间的内容（防止 AI 返回多余的文字或 Markdown 标签）
         match = re.search(r'(\{.*\})', text, re.DOTALL)
         if match:
             text = match.group(1)
-        
-        text = text.strip()
 
-        # 2. 基础语法清理：删除多余的末尾逗号
+        text = text.strip()
         text = re.sub(r",\s*}", "}", text)
         text = re.sub(r",\s*]", "]", text)
 
-        # 3. 简单的闭合修复 (如果缺失最后一个引号或花括号)
-        # 注意：这只是为了应对极其微小的截断
         if not text.endswith("}"):
-            # 如果最后不是 }，尝试补全
             if text.count('{') > text.count('}'):
                 text += "}"
 
         return text
-    except Exception:
+    except:
         return text
+
+
+def is_valid_seo(data):
+    required = ["metaTitle", "metaDescription", "primaryKeyword"]
+
+    for f in required:
+        if f not in data or not str(data[f]).strip():
+            return False
+
+    if len(data.get("metaDescription", "")) < 50:
+        return False
+
+    return True
+
 
 def validate_json(file_path):
     if not os.path.exists(file_path):
-        print("文件不存在:", file_path)
+        print("❌ 文件不存在:", file_path)
         return False
 
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # 先尝试直接解析
     try:
-        json.loads(content)
-        print("JSON正常:", file_path)
-        return True
-    except Exception:
-        print("JSON错误，尝试深度清理并修复:", file_path)
-        
-        fixed_content = clean_and_fix_json(content)
-        
+        obj = json.loads(content)
+    except:
+        print("⚠️ JSON错误，尝试修复:", file_path)
+        content = clean_and_fix_json(content)
         try:
-            obj = json.loads(fixed_content)
-            # 修复后写回文件，确保后续 Node.js 脚本读取的是干净的 JSON
-            with open(file_path, "w", encoding="utf-8") as f:
-                json.dump(obj, f, ensure_ascii=False, indent=2)
-            print("修复并保存成功:", file_path)
-            return True
+            obj = json.loads(content)
         except Exception as e:
-            print(f"深度修复依然失败: {e}")
+            print("❌ 修复失败:", e)
             return False
 
+    # ✅ 关键：质量检测
+    if not is_valid_seo(obj):
+        print("❌ SEO质量不合格:", file_path)
+        return False
+
+    # 回写干净JSON
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
+
+    print("✅ JSON通过:", file_path)
+    return True
+
+
 def main():
-    # 只要文件存在且能通过/修复，就返回 True
-    ok1 = validate_json(SEO_EN)
-    ok2 = validate_json(SEO_ES)
-    return ok1 and ok2
+    ok_en = validate_json(SEO_EN)
+    ok_es = validate_json(SEO_ES)
+
+    print("\n结果：")
+    print("EN:", "✅" if ok_en else "❌")
+    print("ES:", "✅" if ok_es else "❌")
+
+    return ok_en and ok_es
+
 
 if __name__ == "__main__":
     if main():
-        print("\n✅ 所有 JSON 检查/修复通过")
+        print("\n✅ 所有 JSON 检查通过")
+        exit(0)
     else:
-        print("\n❌ 存在无法修复的 JSON 错误")
+        print("\n❌ JSON 存在问题")
+        exit(1)
