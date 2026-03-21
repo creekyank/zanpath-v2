@@ -602,7 +602,6 @@ function build(locale, article, seo) {
   };
 
   const imageFolder = folderMap[moduleName] || moduleName;
-  const fallback = "/images/default.webp";
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
 
