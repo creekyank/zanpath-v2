@@ -135,28 +135,26 @@ Return ONLY valid JSON. No Markdown markers. No preamble.
 # Agent3 图片关键词（优化：更具视觉感）
 # =========================
 def agent3(title):
-    return f"""Generate 3 UNIQUE image search keywords for stock photo sites.
+    return f"""Generate 3 visual, concrete image search keywords for stock photo sites.
 
 Article title: {title}
 
 RULES:
-- Focus on: nature, energy, abstract, chinese aesthetics
-- Avoid people, face, portrait
-- Each keyword must be visually different
+- MUST be visually describable (real-world scenes or objects)
+- Avoid abstract words like energy, metaphysics, destiny
+- Use nature, objects, or environments
 - English only
 - One per line
-- No punctuation
 
 STYLE HINTS:
 - mountain mist
 - flowing water
-- energy lines
 - ink painting
-- light and shadow
 
 Example:
 misty mountain landscape zen
-abstract energy flow particles
+zen meditation room
+burning incense smoke
 chinese ink painting minimal
 """
 

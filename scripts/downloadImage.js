@@ -173,7 +173,7 @@ async function downloadAndProcess(url, savePath) {
       const lower = keyword.toLowerCase();
 
       if (badWords.some(w => lower.includes(w))) {
-        return -999; // ❌ 直接废掉
+        score -= 3; // ❌ 直接废掉
       }
 
       // ✅ 高级感关键词（加分）
@@ -356,7 +356,7 @@ async function searchWikimedia(keyword) {
 
 async function findImage(keyword, module = "default") {
     // 1. 关键词智能增强：根据模块特性自动补全英文描述，提升搜图精准度
-    let baseStyle = "zen minimal abstract landscape chinese ink painting soft light calm atmosphere no people no face no portrait no human";
+    let baseStyle = "zen minimal abstract landscape chinese ink painting soft light calm atmosphere";
 
     let searchKeyword = `${keyword} ${baseStyle}`;
     
