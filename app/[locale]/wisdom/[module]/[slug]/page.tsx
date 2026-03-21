@@ -194,6 +194,10 @@ function renderBlock(block: any, index: number) {
           loading="lazy"
           decoding="async"
           className="rounded-xl my-8 w-full"
+          onError={(e: any) => {
+            e.target.onerror = null; // 防止死循环
+            e.target.src = block.fallback || "/images/default.webp"; // 如果数据里没传 fallback，用默认图
+          }}
         />
       );
 

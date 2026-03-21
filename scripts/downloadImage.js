@@ -15,6 +15,7 @@ if (fs.existsSync(envLocalPath)) { dotenv.config({ path: envLocalPath }); }
 
 // 2. 【核心修复】将变量定义移到最上方
 const IMAGE_DIR = "E:/zanpath v2/public/images";
+const HASH_FILE = "E:/zanpath v2/used-images.json";
 
 const folderMap = {
   "life-path": "bazi",
@@ -41,7 +42,17 @@ console.log("PIXABAY_KEY:", PIXABAY_KEY ? "✅ 已获取" : "❌ 未找到");
 console.log("图片存储路径:", IMAGE_DIR); 
 console.log("-------------------\n");
 
-const usedHashes = new Set();
+let usedHashes = new Set();
+
+if (fs.existsSync(HASH_FILE)) {
+  try {
+    const data = JSON.parse(fs.readFileSync(HASH_FILE, "utf8"));
+    usedHashes = new Set(data.used || []);
+    console.log(`📦 已加载历史图片 hash: ${usedHashes.size} 个`);
+  } catch (e) {
+    console.log("⚠️ hash 文件读取失败，重新创建");
+  }
+}
 
 /* ------------------------- */
 /* 判断图片质量 */
@@ -83,25 +94,45 @@ async function downloadAndProcess(url, savePath) {
         console.error("❌ 下载的文件过小或损坏 (0KB)，已跳过");
         return false;
       }
-  
-      const hash = crypto.createHash("md5").update(buffer).digest("hex");
-      if (usedHashes.has(hash)) {
-        console.log("⚠️ 检测到重复图片，已跳过");
+      if (buffer.length < 50 * 1024) { 
+        console.log(`⚠️ 图片文件仅有 ${(buffer.length / 1024).toFixed(1)} KB，质量太差，已跳过`);
         return false;
       }
-      usedHashes.add(hash);
   
+      const hash = crypto.createHash("md5").update(buffer).digest("hex");
+
+      if (usedHashes.has(hash)) {
+        console.log("⚠️ 检测到重复图片（全站），已跳过");
+        return false;
+      }
+  
+      if (usedHashes.size > 3000) {
+        usedHashes = new Set(Array.from(usedHashes).slice(-2000));
+      }
       // 使用 Sharp 处理
       const pipeline = sharp(buffer);
       const metadata = await pipeline.metadata(); // 先读取元数据确认有效性
 
       if (!metadata.width) throw new Error("无效的图片数据");
 
-      const resized = pipeline.resize(1200, null, { withoutEnlargement: true });
+      const resized = pipeline
+        .resize(1200, null, { withoutEnlargement: true })
+        .modulate({
+          brightness: 1.05,
+          saturation: 0.9
+        })
+        .sharpen();
 
       // 写入物理文件
       await resized.clone().jpeg({ quality: 80 }).toFile(savePath + ".jpg");
       await resized.clone().webp({ quality: 80 }).toFile(savePath + ".webp");
+
+      usedHashes.add(hash);     
+      // ✅ 写入 JSON（关键）
+      fs.writeFileSync(
+        HASH_FILE,
+        JSON.stringify({ used: Array.from(usedHashes) }, null, 2)
+      );
       
       console.log(`✅ 成功保存: ${path.basename(savePath)}.webp`);
       return true;
@@ -112,21 +143,77 @@ async function downloadAndProcess(url, savePath) {
     }
 }
 
+
+    function scoreImage(meta = {}, keyword = "") {
+      let score = 0;
+
+      // ✅ 分辨率权重（最重要）
+      if (meta.width && meta.height) {
+        const area = meta.width * meta.height;
+
+        if (area > 3000000) score += 5;      // > 3MP
+        else if (area > 1500000) score += 3;
+        else score -= 2;
+      }
+
+      // ✅ 横图优先（适合文章）
+      if (meta.width > meta.height) score += 2;
+      // ✅ 竖图降权（关键）
+      if (meta.width && meta.height) {
+        const ratio = meta.width / meta.height;
+        if (ratio < 1) score -= 2;
+      }
+
+      // ✅ 关键词过滤（丑图来源）
+      const badWords = [
+        "people", "person", "face", "portrait",
+        "man", "woman", "smile", "selfie",
+        "group", "crowd", "ugly", "deformed"
+      ];
+      const lower = keyword.toLowerCase();
+
+      if (badWords.some(w => lower.includes(w))) {
+        return -999; // ❌ 直接废掉
+      }
+
+      // ✅ 高级感关键词（加分）
+      const goodWords = ["zen", "minimal", "abstract", "nature", "landscape", "mountain"];
+      if (goodWords.some(w => lower.includes(w))) {
+        score += 2;
+      }
+
+      return score;
+    }
 /* ------------------------- */
 /* PEXELS */
 /* ------------------------- */
 
 async function searchPexels(keyword) {
     if (!PEXELS_KEY) return null;
-    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(keyword)}&per_page=5`;
+    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(keyword)}&per_page=15`;
   
     try {
       const res = await fetch(url, { headers: { Authorization: PEXELS_KEY }, timeout: 10000 });
       const data = await res.json();
       if (!data.photos) return null;
-      for (const p of data.photos) {
-        if (isGoodQuality(p.width, p.height)) return p.src.large;
+      let best = null;
+      let bestScore = -999;
+
+      for (const p of data.photos){
+        if (!isGoodQuality(p.width, p.height)) continue;
+
+        const s = scoreImage(
+          { width: p.width, height: p.height },
+          keyword + " " + (p.alt || "")
+        );
+
+        if (s > bestScore) {
+          bestScore = s;
+          best = p.urls.regular;
+        }
       }
+
+      return best;
     } catch (e) {
       console.error(`⚠️ Pexels 接口连接超时`);
       return null;
@@ -143,7 +230,7 @@ async function searchUnsplash(keyword) {
   if (!UNSPLASH_KEY) return null;
 
   const url =
-    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=5&client_id=${UNSPLASH_KEY}`;
+    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=15&client_id=${UNSPLASH_KEY}`;
 
     try {
         const res = await fetch(url, { timeout: 10000 });
@@ -151,9 +238,24 @@ async function searchUnsplash(keyword) {
         const data = await res.json();
         if (!data.results) return null;
     
+        let best = null;
+        let bestScore = -999;
+        
         for (const p of data.results) {
-          if (isGoodQuality(p.width, p.height)) return p.urls.regular;
+          if (!isGoodQuality(p.width, p.height)) continue;
+        
+          const s = scoreImage(
+            { width: p.width, height: p.height },
+            keyword + " " + (p.alt_description || "")
+          );
+        
+          if (s > bestScore) {
+            bestScore = s;
+            best = p.urls.regular;
+          }
         }
+        
+        return best;
       } catch (e) {
         console.error(`⚠️ Unsplash 接口连接超时或重置`);
         return null; // 触发 findImage 尝试下一个 API
@@ -168,7 +270,7 @@ async function searchUnsplash(keyword) {
 
 async function searchPixabay(keyword) {
     if (!PIXABAY_KEY) return null;
-    const url = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${encodeURIComponent(keyword)}&image_type=photo&per_page=5`;
+    const url = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${encodeURIComponent(keyword)}&image_type=photo&per_page=15`;
   
     try {
       const res = await fetch(url, { timeout: 10000 });
@@ -177,10 +279,24 @@ async function searchPixabay(keyword) {
       // 修正：Pixabay 使用的是 .hits
       if (!data.hits) return null; 
   
+      let best = null;
+      let bestScore = -999;
+
       for (const p of data.hits) {
-        // 修正：Pixabay 的宽高字段名不同
-        if (isGoodQuality(p.imageWidth, p.imageHeight)) return p.largeImageURL;
+        if (!isGoodQuality(p.width, p.height)) continue;
+
+        const s = scoreImage(
+          { width: p.width, height: p.height },
+          keyword
+        );
+
+        if (s > bestScore) {
+          bestScore = s;
+          best = p.largeImageURL;
+        }
       }
+
+      return best;
     } catch (e) {
       console.error(`⚠️ Pixabay 接口连接超时或重置`);
       return null;
@@ -191,33 +307,48 @@ async function searchPixabay(keyword) {
 /* ------------------------- */
 /* WIKIMEDIA */
 /* ------------------------- */
-
 async function searchWikimedia(keyword) {
-    const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(keyword)}&gsrlimit=5&prop=imageinfo&iiprop=url&format=json&origin=*`;
-  
-    try {
-      const res = await fetch(url, { timeout: 10000 });
-      if (res.status === 429) {
-        console.error("⚠️ 触发频率限制，跳过当前 API");
-        return null;
-      }
-      const data = await res.json();
-      
-      // 修正：Wikimedia 的判断逻辑不同
-      if (!data.query || !data.query.pages) return null; 
-      
-      const pages = Object.values(data.query.pages);
-      for (const p of pages) {
-        if (p.imageinfo && p.imageinfo[0]) {
-          return p.imageinfo[0].url;
-        }
-      }
-    } catch (e) {
-      console.error(`⚠️ Wikimedia 接口连接超时`);
+  // 1. URL 关键修改：iiprop 加入了 size
+  const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(keyword)}&gsrlimit=5&prop=imageinfo&iiprop=url|size&format=json&origin=*`;
+
+  try {
+    const res = await fetch(url, { timeout: 10000 });
+    if (res.status === 429) {
+      console.error("⚠️ 触发频率限制，跳过当前 API");
       return null;
     }
+    const data = await res.json();
+
+    if (!data.query || !data.query.pages) return null;
+
+    const pages = Object.values(data.query.pages);
+    for (const p of pages) {
+      if (p.imageinfo && p.imageinfo[0]) {
+        const info = p.imageinfo[0];
+        const imageUrl = info.url.toLowerCase();
+
+        // 2. 综合判断：格式必须对，且尺寸必须达标
+        const isCorrectFormat = 
+          imageUrl.endsWith(".jpg") || 
+          imageUrl.endsWith(".jpeg") || 
+          imageUrl.endsWith(".png") ||
+          imageUrl.endsWith(".webp");
+
+        const isLargeEnough = info.width > 800 && info.height > 600;
+
+        if (isCorrectFormat && isLargeEnough) {
+          return info.url; // 只有两个条件都满足才返回
+        }
+        
+        // 如果其中一个不满足，循环会继续尝试下一张图
+      }
+    }
+  } catch (e) {
+    console.error(`⚠️ Wikimedia 接口连接超时`);
     return null;
   }
+  return null;
+}
 
 /* ------------------------- */
 /* 多API查找（智能增强 + 模块优先级版） */
@@ -225,20 +356,19 @@ async function searchWikimedia(keyword) {
 
 async function findImage(keyword, module = "default") {
     // 1. 关键词智能增强：根据模块特性自动补全英文描述，提升搜图精准度
-    let searchKeyword = keyword;
+    let baseStyle = "zen minimal abstract landscape chinese ink painting soft light calm atmosphere no people no face no portrait no human";
+
+    let searchKeyword = `${keyword} ${baseStyle}`;
     
     if (module === 'dream') {
-      // 梦境：增加“超现实、神秘”感，避免搜出太生活化的图
-      searchKeyword = `${keyword} surreal mystery fantasy`; 
+      searchKeyword = `${keyword} dreamlike surreal night sky mist ${baseStyle}`;
     } else if (module === 'face') {
-      // 面相：强制聚焦头部和肖像，避免搜出全身远景图
-      searchKeyword = `${keyword} portrait headshot facial`;
+      // ❌ 不要人脸
+      searchKeyword = `${keyword} abstract aura energy glow ${baseStyle}`;
     } else if (module === 'fengshui') {
-      // 风水：强化环境、建筑和景观感
-      searchKeyword = `${keyword} architecture landscape oriental`; 
+      searchKeyword = `${keyword} architecture space light shadow ${baseStyle}`;
     } else if (module === 'bazi') {
-      // 八字：增加意境词，更符合命理的深邃感
-      searchKeyword = `${keyword} zen atmosphere ethereal`;
+      searchKeyword = `${keyword} five elements energy flow fire water earth ${baseStyle}`;
     }
   
     // 2. 定义不同模块的 API 搜索优先级
@@ -255,27 +385,39 @@ async function findImage(keyword, module = "default") {
     const searchOrder = priorities[module] || priorities.default;
   
     console.log(`\n针对模块 [${module}]，原始词: "${keyword}"`);
-    if (searchKeyword !== keyword) {
-      console.log(`✨ 增强搜索词: "${searchKeyword}"`);
-    }
-  
-    // 4. 按优先级轮询各个 API
+    let candidates = []; // 用于存放所有 API 返回的可选图片
+
+    // 我们依然按顺序请求，但不再中途 return
     for (const searchFunc of searchOrder) {
       try {
-        // 这里的 searchFunc 对应 searchUnsplash, searchPexels 等函数
         const img = await searchFunc(searchKeyword);
         
         if (img) {
-          // 提取函数名去掉 'search' 前缀作为日志显示
           const apiName = searchFunc.name.replace('search', '');
-          console.log(`✅ 命中成功！来源: ${apiName}`);
-          return img;
+          console.log(`✅ ${apiName} 提供了候选图`);
+          candidates.push(img);
+          
+          // 可选性能优化：如果已经拿到 2-3 个候选了，可以提前停止，没必要跑完所有 API
+          if (candidates.length >= 2) break; 
         }
       } catch (error) {
-        console.error(`❌ API [${searchFunc.name}] 调用异常，尝试下一个...`);
+        console.error(`❌ API [${searchFunc.name}] 调用异常`);
       }
     }
-  
+
+    // 最后判断是否有候选图
+    if (candidates.length > 0) {
+      // 方案 A：返回第一个（最符合优先级的）
+      // return candidates[0]; 
+
+      // 方案 B：随机选一个（增加多样性，防止每次搜出来的都一样）
+      const finalImg = candidates[Math.floor(Math.random() * candidates.length)];
+      console.log(`🚀 从 ${candidates.length} 个候选源中筛选出最终图片`);
+      return finalImg;
+    }
+
+    // --- 修改结束 ---
+
     console.log(`⚠️ 很遗憾，所有 API 均未找到符合关键词 "${keyword}" 的图片。`);
     return null;
   }

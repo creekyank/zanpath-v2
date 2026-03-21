@@ -135,20 +135,29 @@ Return ONLY valid JSON. No Markdown markers. No preamble.
 # Agent3 图片关键词（优化：更具视觉感）
 # =========================
 def agent3(title):
-    return f"""Generate 3 high-quality image search keywords for stock photo sites (Pexels/Unsplash).
+    return f"""Generate 3 UNIQUE image search keywords for stock photo sites.
 
 Article title: {title}
 
 RULES:
-- Focus on concepts: Chinese culture, Zen, Nature, Elements, Meditation, Abstract textures.
-- English only.
-- One keyword/phrase per line.
-- NO numbers, NO punctuation, NO explanation.
+- Focus on: nature, energy, abstract, chinese aesthetics
+- Avoid people, face, portrait
+- Each keyword must be visually different
+- English only
+- One per line
+- No punctuation
 
-Example for 'Fire Element':
-Chinese Zen fire aesthetic
-Red abstract energy flow
-Burning incense close up
+STYLE HINTS:
+- mountain mist
+- flowing water
+- energy lines
+- ink painting
+- light and shadow
+
+Example:
+misty mountain landscape zen
+abstract energy flow particles
+chinese ink painting minimal
 """
 
 # =========================

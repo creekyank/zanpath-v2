@@ -153,9 +153,13 @@ Markdown → HTML
 function mdToBlocks(text, imageFolder, slug, title, locale) {
 
   if (!text) return [];
-
+  const fallback = "/images/default.webp";
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
+
+  const altBase = `${title} chinese metaphysics illustration`;
+  const alt1 = `${altBase} zen style`;      // 第一张图：禅意风格
+  const alt2 = `${altBase} abstract energy`; // 第二张图：抽象能量
 
   const disclaimerText =
   locale === "es"
@@ -223,7 +227,7 @@ function flushParagraph() {
     blocks.push({
       type: "image",
       src: img2,
-      alt: title
+      alt: alt2
     });
 
     secondImageInserted = true;
@@ -269,7 +273,7 @@ function flushParagraph() {
         blocks.push({
           type: "image",
           src: img1,
-          alt: title
+          alt: alt1
         });
 
         firstImageInserted = true;
@@ -303,16 +307,7 @@ function flushParagraph() {
         type: "h2",
         text: h2,
         id: anchor
-      });
-
-      if (!secondImageInserted && h2Count === 1) {
-        blocks.push({
-          type: "image",
-          src: img2,
-          alt: title
-        });
-        secondImageInserted = true; // 插完锁死
-      }      
+      });    
 
       i++;
       continue;
@@ -419,53 +414,84 @@ function flushParagraph() {
   插入 TOC
   ================================ */
 
-  if (toc.length > 2) {
-    // 定义多语言标题字典
-    const tocTitles = {
-      es: "Contenido",
-      en: "Table of Contents",
-      // 你可以随时在这里增加其他语言
-      zh: "目录" 
-    };
+  /* ================================
+  插入 TOC
+================================ */
+if (toc.length > 2) {
+  // 1. 定义多语言标题
+  const tocTitles = {
+    es: "Contenido",
+    en: "Table of Contents",
+    zh: "目录" 
+  };
 
-    blocks.splice(2, 0, {
-      type: "toc",
-      // 根据 locale 取值，如果找不到则默认为 "Contents"
-      title: tocTitles[locale] || "Contents",
-      items: toc
-    });
+  const tocBlock = {
+    type: "toc",
+    title: tocTitles[locale] || "Contents",
+    items: toc
+  };
+
+  // 2. 核心修改：寻找第一个 H2 的索引
+  const firstH2Index = blocks.findIndex(b => b.type === "h2");
+
+  if (firstH2Index !== -1) {
+    // 如果找到了 H2，就插在它前面
+    blocks.splice(firstH2Index, 0, tocBlock);
+  } else {
+    // 兜底方案：如果没有 H2（虽然概率极低），插在第 3 个位置
+    const insertPos = Math.min(blocks.length, 2);
+    blocks.splice(insertPos, 0, tocBlock);
   }
+}
 
 /* ================================
-插入 Disclaimer
-================================ */
-let inserted = false;
+  2. 第二张图兜底 (确保在 Disclaimer 之前)
+  ================================ */
+  if (!secondImageInserted) {
+    // 逻辑：如果有 H2，插在最后一个 H2 之前；如果没有，直接推到末尾
+    const lastH2Index = [];
+    blocks.forEach((b, idx) => { if(b.type === 'h2') lastH2Index.push(idx); });
+    
+    if (lastH2Index.length > 0) {
+      // 插在最后一个 H2 之前，增加视觉丰富度
+      blocks.splice(lastH2Index[lastH2Index.length - 1], 0, {
+        type: "image",
+        src: img2,
+        alt: alt2
+      });
+    } else {
+      // 极端情况：完全没 H2，直接放末尾
+      blocks.push({
+        type: "image",
+        src: img2,
+        alt: alt2
+      });
+    }
+    secondImageInserted = true;
+  }
 
-for (let i = blocks.length - 1; i >= 0; i--) {
+  /* ================================
+  3. 插入 Disclaimer (免责声明)
+  ================================ */
+  let insertedDisclaimer = false;
+  // 重新从后往前找最后一个 H2，确保声明在最后一段话之后
+  for (let i = blocks.length - 1; i >= 0; i--) {
+    if (blocks[i].type === "h2") {
+      blocks.splice(i + 1, 0, {
+        type: "disclaimer",
+        text: disclaimerText
+      });
+      insertedDisclaimer = true;
+      break;
+    }
+  }
 
-  if (blocks[i].type === "h2") {
-
-    blocks.splice(i + 1, 0, {
+  if (!insertedDisclaimer) {
+    blocks.push({
       type: "disclaimer",
       text: disclaimerText
     });
-
-    inserted = true;
-    break;
-
   }
-
-}
-
-if (!inserted) {
-
-  blocks.push({
-    type: "disclaimer",
-    text: disclaimerText
-  });
-
-}
-
 
   return blocks;
 
@@ -576,6 +602,7 @@ function build(locale, article, seo) {
   };
 
   const imageFolder = folderMap[moduleName] || moduleName;
+  const fallback = "/images/default.webp";
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
 
@@ -627,7 +654,7 @@ function build(locale, article, seo) {
     canonical:
       `${SITE_URL}/${locale}/wisdom/${moduleName}/${slug}`,
   
-    coverImage: img1,
+    coverImage: Math.random() > 0.5 ? img1 : img2,
     ogImage: img1,
   
     faq: seo.faq || [],
