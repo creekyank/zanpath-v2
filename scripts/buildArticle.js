@@ -147,6 +147,14 @@ function cleanAIText(text) {
   return t.trim();
 }
 
+function imageExists(localPath) {
+  try {
+    const fullPath = path.join("E:/zanpath v2/public", localPath);
+    return fs.existsSync(fullPath);
+  } catch {
+    return false;
+  }
+}
 /* =================================
 Markdown → HTML
 ================================= */
@@ -156,6 +164,9 @@ function mdToBlocks(text, imageFolder, slug, title, locale) {
   const fallback = "/images/default.webp";
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
+
+  const hasImg1 = imageExists(img1);
+  const hasImg2 = imageExists(img2);
 
   const altBase = `${title} chinese metaphysics illustration`;
   const alt1 = `${altBase} zen style`;      // 第一张图：禅意风格
@@ -222,8 +233,7 @@ function flushParagraph() {
   paragraphCount++;
 
   // ✅ 在第3段后插入第二张图
-  if (!secondImageInserted && paragraphCount === 3) {
-
+  if (!secondImageInserted && paragraphCount === 3 && hasImg2) {
     blocks.push({
       type: "image",
       src: img2,
@@ -268,8 +278,7 @@ function flushParagraph() {
         id: slugifyAnchor(h1)
       });
 
-      if (!firstImageInserted) {
-
+      if (!firstImageInserted && hasImg1) {
         blocks.push({
           type: "image",
           src: img1,
@@ -447,25 +456,16 @@ if (toc.length > 2) {
 /* ================================
   2. 第二张图兜底 (确保在 Disclaimer 之前)
   ================================ */
-  if (!secondImageInserted) {
-    // 逻辑：如果有 H2，插在最后一个 H2 之前；如果没有，直接推到末尾
+  if (!secondImageInserted && hasImg2) {
     const lastH2Index = [];
     blocks.forEach((b, idx) => { if(b.type === 'h2') lastH2Index.push(idx); });
     
     if (lastH2Index.length > 0) {
-      // 插在最后一个 H2 之前，增加视觉丰富度
       blocks.splice(lastH2Index[lastH2Index.length - 1], 0, {
-        type: "image",
-        src: img2,
-        alt: alt2
+        type: "image", src: img2, alt: alt2
       });
     } else {
-      // 极端情况：完全没 H2，直接放末尾
-      blocks.push({
-        type: "image",
-        src: img2,
-        alt: alt2
-      });
+      blocks.push({ type: "image", src: img2, alt: alt2 });
     }
     secondImageInserted = true;
   }
@@ -604,6 +604,17 @@ function build(locale, article, seo) {
   const imageFolder = folderMap[moduleName] || moduleName;
   const img1 = `/images/${imageFolder}/${slug}-1.webp`;
   const img2 = `/images/${imageFolder}/${slug}-2.webp`;
+  const hasImg1 = imageExists(img1);
+  const hasImg2 = imageExists(img2);
+
+  let finalCoverImage = `/images/default-${imageFolder}.webp`; // 👈 根据分类显示默认图// 设一个默认图，防止全空
+  if (hasImg1 && hasImg2) {
+    finalCoverImage = Math.random() > 0.5 ? img1 : img2;
+  } else if (hasImg1) {
+    finalCoverImage = img1;
+  } else if (hasImg2) {
+    finalCoverImage = img2;
+  }
 
   // 2. 西语标题处理
   let displayTitle = title;
@@ -653,8 +664,8 @@ function build(locale, article, seo) {
     canonical:
       `${SITE_URL}/${locale}/wisdom/${moduleName}/${slug}`,
   
-    coverImage: Math.random() > 0.5 ? img1 : img2,
-    ogImage: img1,
+    coverImage: finalCoverImage,
+    ogImage: finalCoverImage,
   
     faq: seo.faq || [],
   

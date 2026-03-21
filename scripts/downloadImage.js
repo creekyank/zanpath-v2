@@ -8,6 +8,12 @@ import sharp from "sharp";
 import crypto from "crypto";
 import dotenv from "dotenv";
 
+import { HttpsProxyAgent } from "https-proxy-agent";
+
+// 如果环境变量里有代理，就创建一个 Agent
+const proxy = process.env.HTTPS_PROXY || process.env.https_proxy || "http://127.0.0.1:7897";
+const agent = new HttpsProxyAgent(proxy);
+
 const envPath = "E:/zanpath v2/.env";
 const envLocalPath = "E:/zanpath v2/.env.local";
 if (fs.existsSync(envPath)) { dotenv.config({ path: envPath }); }
@@ -193,7 +199,8 @@ async function searchPexels(keyword) {
     const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(keyword)}&per_page=15`;
   
     try {
-      const res = await fetch(url, { headers: { Authorization: PEXELS_KEY }, timeout: 10000 });
+      const res = await fetch(url, { headers: { Authorization: PEXELS_KEY }, timeout: 15000,
+        agent: agent });
       const data = await res.json();
       if (!data.photos) return null;
       let best = null;
@@ -233,7 +240,11 @@ async function searchUnsplash(keyword) {
     `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=15&client_id=${UNSPLASH_KEY}`;
 
     try {
-        const res = await fetch(url, { timeout: 10000 });
+      const res = await fetch(url, { 
+        headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` }, // 加上 Client-ID 前缀
+        timeout: 15000,
+        agent: agent 
+    });
         if (!res.ok) return null;
         const data = await res.json();
         if (!data.results) return null;
@@ -273,7 +284,11 @@ async function searchPixabay(keyword) {
     const url = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${encodeURIComponent(keyword)}&image_type=photo&per_page=15`;
   
     try {
-      const res = await fetch(url, { timeout: 10000 });
+      const res = await fetch(url, { 
+        headers: { Authorization: PIXABAY_KEY }, 
+        timeout: 15000,
+        agent: agent // <--- 关键：这里也要加
+      });
       if (!res.ok) return null;
       const data = await res.json();
       // 修正：Pixabay 使用的是 .hits
@@ -312,7 +327,8 @@ async function searchWikimedia(keyword) {
   const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(keyword)}&gsrlimit=5&prop=imageinfo&iiprop=url|size&format=json&origin=*`;
 
   try {
-    const res = await fetch(url, { timeout: 10000 });
+    const res = await fetch(url, { timeout: 10000,
+      agent: agent });
     if (res.status === 429) {
       console.error("⚠️ 触发频率限制，跳过当前 API");
       return null;
@@ -384,44 +400,103 @@ async function findImage(keyword, module = "default") {
     // 3. 获取当前模块的搜索顺序
     const searchOrder = priorities[module] || priorities.default;
   
-    console.log(`\n针对模块 [${module}]，原始词: "${keyword}"`);
-    let candidates = []; // 用于存放所有 API 返回的可选图片
-
-    // 我们依然按顺序请求，但不再中途 return
+    console.log(`\n🔍 正在搜寻唯一图片: "${keyword}" (模块: ${module})`);
+    // 3. 核心逻辑：遍历 API 寻找非重复图
     for (const searchFunc of searchOrder) {
       try {
-        const img = await searchFunc(searchKeyword);
-        
-        if (img) {
+          const imgUrl = await searchFunc(searchKeyword);
+          if (!imgUrl) continue;
+
           const apiName = searchFunc.name.replace('search', '');
-          console.log(`✅ ${apiName} 提供了候选图`);
-          candidates.push(img);
+          console.log(`📡 ${apiName} 返回了图片: ${imgUrl.substring(0, 40)}...`);
+
+          // 预下载并计算 Hash
+          const res = await fetch(imgUrl, { 
+              timeout: 30000, 
+              agent: agent,
+              headers: { 
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8'
+            }
+          });
+
+          if (!res.ok) {
+              console.log(`⚠️ ${apiName} 下载图片失败 (HTTP ${res.status})`);
+              continue;
+          }
+
+          const arrayBuffer = await res.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
           
-          // 可选性能优化：如果已经拿到 2-3 个候选了，可以提前停止，没必要跑完所有 API
-          if (candidates.length >= 2) break; 
+          // 基础质量拦截
+          if (buffer.length < 30 * 1024) {
+            console.log(`⚠️ ${apiName} 图片体积过小 (${(buffer.length/1024).toFixed(1)}KB)，跳过`);
+            continue;
         }
+
+          const hash = crypto.createHash("md5").update(buffer).digest("hex");
+
+          // 检查重复
+          if (usedHashes.has(hash)) {
+              console.log(`❌ ${apiName} 提供的图片全站重复 (Hash 冲突)，强制换源搜索...`);
+              continue; // 👈 关键：发现重复，不退出，继续找下一个 API
+          }
+
+          // 走到这里说明找到了全站唯一的图
+          console.log(`✅ 找到唯一图片！来源: ${apiName} (${(buffer.length/1024).toFixed(1)}KB)`);
+            return { buffer, hash, url: imgUrl };
+
       } catch (error) {
-        console.error(`❌ API [${searchFunc.name}] 调用异常`);
+        console.error(`❌ API [${searchFunc.name}] 异常: ${error.message}`);
       }
-    }
-
-    // 最后判断是否有候选图
-    if (candidates.length > 0) {
-      // 方案 A：返回第一个（最符合优先级的）
-      // return candidates[0]; 
-
-      // 方案 B：随机选一个（增加多样性，防止每次搜出来的都一样）
-      const finalImg = candidates[Math.floor(Math.random() * candidates.length)];
-      console.log(`🚀 从 ${candidates.length} 个候选源中筛选出最终图片`);
-      return finalImg;
-    }
-
-    // --- 修改结束 ---
-
-    console.log(`⚠️ 很遗憾，所有 API 均未找到符合关键词 "${keyword}" 的图片。`);
-    return null;
   }
 
+    return null; // 所有 API 都跑完了也没找到不重复的
+  }
+
+
+  /* ------------------------- */
+/* 图像处理与保存 (针对探测后的 Buffer) */
+/* ------------------------- */
+async function processAndSave(buffer, hash, savePath) {
+  try {
+      // 使用 Sharp 处理
+      const pipeline = sharp(buffer);
+      const metadata = await pipeline.metadata();
+
+      if (!metadata.width) throw new Error("无效的图片数据");
+
+      // 图像增强处理
+      const resized = pipeline
+          .resize(1200, null, { withoutEnlargement: true })
+          .modulate({
+              brightness: 1.05,
+              saturation: 0.9
+          })
+          .sharpen();
+
+      // 同时写入 JPG (备份) 和 WebP (前端使用)
+      await resized.clone().jpeg({ quality: 80 }).toFile(savePath + ".jpg");
+      await resized.clone().webp({ quality: 85 }).toFile(savePath + ".webp");
+
+      // 记录 Hash 并持久化
+      if (usedHashes.size > 5000) {
+        usedHashes = new Set(Array.from(usedHashes).slice(-3000));
+    }
+      usedHashes.add(hash); 
+      fs.writeFileSync(
+          HASH_FILE,
+          JSON.stringify({ used: Array.from(usedHashes) }, null, 2)
+      );
+      
+      console.log(`💾 物理文件已保存: ${path.basename(savePath)}.webp`);
+      return true;
+
+  } catch (error) {
+      console.error(`❌ 图像处理失败: ${error.message}`);
+      return false; 
+  }
+}
 /* ------------------------- */
 /* ALT 文本生成 */
 /* ------------------------- */
@@ -448,33 +523,42 @@ async function main() {
   }
 
 
-const keywords = rawKeywords.join(',').split(',').map(k => k.trim()).filter(k => k);
-
-  // 2. 映射实际物理文件夹 (如 fengshui -> fengshui, space -> fengshui)
+  const keywords = rawKeywords.join(',').split(',').map(k => k.trim()).filter(k => k);
   const actualFolderName = folderMap[moduleIn] || moduleIn;
-
-  // 3. 确定存储目录
   const dir = path.join(IMAGE_DIR, actualFolderName);
+
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+      fs.mkdirSync(dir, { recursive: true });
   }
 
-  console.log(`🚀 开始搜图。物理路径: /images/${actualFolderName}/`);
+  console.log(`🚀 开始任务: ${title}`);
+  console.log(`📂 目标文件夹: /images/${actualFolderName}/`);
 
-  let index = 1;
+  let downloadedCount = 0;
+  
+  // 遍历所有提供的关键词，直到凑齐 2 张图
   for (const keyword of keywords) {
-    if (index > 2) break; // 每篇文章下载 2 张图
+      if (downloadedCount >= 2) break;
 
-    const imgUrl = await findImage(keyword, moduleIn);
-    if (!imgUrl) continue;
+      // findImage 内部已经集成了：搜索 API -> 下载 -> 校验 Hash -> 换 API 尝试
+      const result = await findImage(keyword, moduleIn);
+      
+      if (result) {
+          const savePath = path.join(dir, `${slug}-${downloadedCount + 1}`);
+          const success = await processAndSave(result.buffer, result.hash, savePath);
+          
+          if (success) {
+              downloadedCount++;
+          }
+      } else {
+          console.log(`⚠️ 关键词 "${keyword}" 下的所有图片在全站均已存在或搜图失败。`);
+      }
+  }
 
-    // 4. 拼接完整文件名路径 (不包含后缀)
-    const savePath = path.join(dir, `${slug}-${index}`);
-
-    const success = await downloadAndProcess(imgUrl, savePath);
-    if (success) {
-      index++;
-    }
+  if (downloadedCount === 0) {
+      console.error(`❌ 严重警告: 未能为文章 "${title}" 下载到任何唯一图片。`);
+  } else {
+      console.log(`✨ 任务完成：成功下载 ${downloadedCount} 张唯一图片。`);
   }
 }
 main();
