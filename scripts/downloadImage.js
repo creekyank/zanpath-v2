@@ -395,18 +395,7 @@ async function findImage(keyword, module = "default") {
         console.error(`❌ API [${searchFunc.name}] 异常: ${error.message}`);
       }
   }
-    // 4. 【关键改动】全线失败后的兜底逻辑
-    console.log("⚠️ 所有 API 失效，启动 Picsum 种子图兜底");
-    const fallbackUrl = await searchPicsum(keyword);
-    const fallbackBuffer = await fetchImageBuffer(fallbackUrl);
-    
-    if (fallbackBuffer) {
-        return {
-            buffer: fallbackBuffer,
-            hash: "fallback-" + crypto.createHash("md5").update(keyword).digest("hex").substring(0, 8),
-            url: fallbackUrl
-        };
-    }
+    console.log("⚠️ 所有 API 失效，且未找到唯一图片。将回退到系统默认背景图。");
     return null; // 所有 API 都跑完了也没找到不重复的
   }
 
