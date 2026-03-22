@@ -241,13 +241,16 @@ def process():
 
     kw1, kw2 = read_keywords()
 
+    # 🚀 修改这里：先下载图片！！！
+    # 这样当执行 build 的时候，硬盘里已经有真正的图片文件了
+    print("\n[STEP] 正在下载图片...")
+    download_images(title, slug, module, kw1, kw2)
+
     # ✅ 3. build（带强校验）
+    print("\n[STEP] 正在生成文章 JSON...")
     if not build_article(title, slug, module):
         print("❌ 文章生成失败")
         return
-
-    # ✅ 4. 图片
-    download_images(title, slug, module, kw1, kw2)
 
     # ✅ 5. sitemap
     update_sitemap()

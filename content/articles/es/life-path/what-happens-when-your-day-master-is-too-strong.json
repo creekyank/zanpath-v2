@@ -35,8 +35,8 @@
   "dateModified": "2026-03-22",
   "lastReviewed": "2026-03-22",
   "canonical": "https://zanpath.com/es/wisdom/life-path/what-happens-when-your-day-master-is-too-strong",
-  "coverImage": "/images/default-bazi.webp",
-  "ogImage": "/images/default-bazi.webp",
+  "coverImage": "/images/bazi/what-happens-when-your-day-master-is-too-strong-2.webp",
+  "ogImage": "/images/bazi/what-happens-when-your-day-master-is-too-strong-2.webp",
   "faq": [
     {
       "question": "¿Qué efectos tienen en las relaciones un Maestro del Día fuerte?",
@@ -101,6 +101,11 @@
       "text": "Desde una perspectiva de la metafísica china, el concepto de un Maestro del Día fuerte se encuentra en las bases de los principios de Yin-Yang y los Cinco Elementos. Los Cinco Elementos – Madera, Fuego, Tierra, Metales y Agua – están interconectados e interdependientes, y cada elemento tiene sus propias características y energías únicas. Un Maestro del Día fuerte puede perturbar el equilibrio de los Cinco Elementos, lo que conduce a una sobreactividad de la energía de un elemento particular. Por ejemplo, un exceso de elemento Fuego puede hacer que una persona se vuelva demasiado agresiva o impulsiva, mientras que una sobreactividad de elemento Agua puede llevar a la inestabilidad emocional. El significado tradicional de un Maestro del Día fuerte también se ve influenciado por el contexto cultural, con diferentes culturas dando énfasis variable a la importancia del equilibrio y la armonía en la carta Bazi."
     },
     {
+      "type": "image",
+      "src": "/images/bazi/what-happens-when-your-day-master-is-too-strong-2.webp",
+      "alt": "Maestro del Día El Maestro del Día Muy Fuerte chinese metaphysics illustration abstract energy"
+    },
+    {
       "type": "h2",
       "text": "Interpretación moderna",
       "id": "interpretacin-moderna"
@@ -140,38 +145,46 @@
   ],
   "internalLinks": [
     {
-      "anchor": "El Maestro del Día en el Gráfico de Bazi",
-      "url": "/es/wisdom/life-path/why-is-the-day-master-the-core-of-a-bazi-chart"
+      "anchor": "¿Bazi se Basa en el Calendario Solar o Lunar?",
+      "url": "/es/wisdom/camino-de-vida/bazi-calendario-solar-o-lunar"
     },
     {
-      "anchor": "Elemento Maestro del Día: Descubriendo tus destinos",
-      "url": "/es/wisdom/life-path/how-can-you-understand-your-day-master-element"
+      "anchor": "¿Cómo Revela Bazi Tu Potencial de Riqueza?",
+      "url": "/es/wisdom/camino-de-vida/como-revela-bazi-tu-potencial-de-riqueza"
+    },
+    {
+      "anchor": "¿Cuál Es la Diferencia Entre Bazi y el Zodiaco Chino?",
+      "url": "/es/wisdom/camino-de-vida/cual-es-la-diferencia-entre-bazi-y-zodiaco-chino"
+    },
+    {
+      "anchor": "¿Qué Representa Cada Uno de los Cinco Elementos en Bazi?",
+      "url": "/es/wisdom/camino-de-vida/que-representa-cada-uno-de-los-cinco-elementos"
     },
     {
       "anchor": "Símbolos Bazi Explicados",
       "url": "/es/wisdom/life-path/what-are-the-most-important-symbols-in-bazi"
-    },
-    {
-      "anchor": "Insightos de Personalidad del Señor del Día",
-      "url": "/es/wisdom/life-path/what-does-your-day-master-reveal-about-your-personality"
     }
   ],
   "relatedArticles": [
     {
-      "title": "El Maestro del Día en el Gráfico de Bazi",
-      "url": "/es/wisdom/life-path/why-is-the-day-master-the-core-of-a-bazi-chart"
+      "title": "¿Bazi se Basa en el Calendario Solar o Lunar?",
+      "url": "/es/wisdom/camino-de-vida/bazi-calendario-solar-o-lunar"
     },
     {
-      "title": "Elemento Maestro del Día: Descubriendo tus destinos",
-      "url": "/es/wisdom/life-path/how-can-you-understand-your-day-master-element"
+      "title": "¿Cómo Revela Bazi Tu Potencial de Riqueza?",
+      "url": "/es/wisdom/camino-de-vida/como-revela-bazi-tu-potencial-de-riqueza"
+    },
+    {
+      "title": "¿Cuál Es la Diferencia Entre Bazi y el Zodiaco Chino?",
+      "url": "/es/wisdom/camino-de-vida/cual-es-la-diferencia-entre-bazi-y-zodiaco-chino"
+    },
+    {
+      "title": "¿Qué Representa Cada Uno de los Cinco Elementos en Bazi?",
+      "url": "/es/wisdom/camino-de-vida/que-representa-cada-uno-de-los-cinco-elementos"
     },
     {
       "title": "Símbolos Bazi Explicados",
       "url": "/es/wisdom/life-path/what-are-the-most-important-symbols-in-bazi"
-    },
-    {
-      "title": "Insightos de Personalidad del Señor del Día",
-      "url": "/es/wisdom/life-path/what-does-your-day-master-reveal-about-your-personality"
     }
   ],
   "topicCluster": "life-path",
@@ -182,7 +195,7 @@
       "@type": "Article",
       "headline": "El Maestro del Día Muy Fuerte",
       "description": "Descubre los peligros ocultos de un fuerte Maestro del Día en astrología Bazi y cómo afecta tu vida",
-      "image": "/images/default-bazi.webp",
+      "image": "/images/bazi/what-happens-when-your-day-master-is-too-strong-2.webp",
       "author": {
         "@type": "Organization",
         "name": "ZanPath"
@@ -268,20 +281,24 @@
     "pillar": "/es/wisdom/life-path",
     "articles": [
       {
-        "title": "El Maestro del Día en el Gráfico de Bazi",
-        "url": "/es/wisdom/life-path/why-is-the-day-master-the-core-of-a-bazi-chart"
+        "title": "¿Bazi se Basa en el Calendario Solar o Lunar?",
+        "url": "/es/wisdom/camino-de-vida/bazi-calendario-solar-o-lunar"
       },
       {
-        "title": "Elemento Maestro del Día: Descubriendo tus destinos",
-        "url": "/es/wisdom/life-path/how-can-you-understand-your-day-master-element"
+        "title": "¿Cómo Revela Bazi Tu Potencial de Riqueza?",
+        "url": "/es/wisdom/camino-de-vida/como-revela-bazi-tu-potencial-de-riqueza"
+      },
+      {
+        "title": "¿Cuál Es la Diferencia Entre Bazi y el Zodiaco Chino?",
+        "url": "/es/wisdom/camino-de-vida/cual-es-la-diferencia-entre-bazi-y-zodiaco-chino"
+      },
+      {
+        "title": "¿Qué Representa Cada Uno de los Cinco Elementos en Bazi?",
+        "url": "/es/wisdom/camino-de-vida/que-representa-cada-uno-de-los-cinco-elementos"
       },
       {
         "title": "Símbolos Bazi Explicados",
         "url": "/es/wisdom/life-path/what-are-the-most-important-symbols-in-bazi"
-      },
-      {
-        "title": "Insightos de Personalidad del Señor del Día",
-        "url": "/es/wisdom/life-path/what-does-your-day-master-reveal-about-your-personality"
       }
     ]
   }

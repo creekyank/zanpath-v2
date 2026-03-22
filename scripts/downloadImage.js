@@ -38,7 +38,7 @@ const UNSPLASH_KEY = process.env.UNSPLASH_KEY;
 const PIXABAY_KEY = process.env.PIXABAY_KEY;
 
 const AXIOS_INSTANCE = axios.create({
-  timeout: 20000,
+  timeout: 40 * 1000,
   headers: {
     "User-Agent": "Mozilla/5.0"
   }
@@ -320,11 +320,6 @@ async function searchWallhaven(keyword) {
   }
 }
 
-// 免 API 方案 2：Unsplash Source (直接返回图)
-async function searchUnsplashSource(keyword) {
-  return `https://source.unsplash.com/1200x800/?${encodeURIComponent(keyword)}`;
-}
-
 // 免 API 方案 3：Picsum (兜底种子图)
 async function searchPicsum(keyword) {
   return `https://picsum.photos/seed/${encodeURIComponent(keyword)}/1200/800`;
@@ -352,12 +347,12 @@ async function findImage(keyword, module = "default") {
   
     // 2. 定义不同模块的 API 搜索优先级
     const priorities = {
-      bazi: [searchPixabay, searchWikimedia, searchUnsplash, searchPexels, searchWallhaven, searchUnsplashSource],     // 优先要意境 (Unsplash强项)
-      fengshui: [searchUnsplash, searchWallhaven,searchPexels, searchWikimedia, searchPixabay, searchUnsplashSource], // 优先要建筑/景观
-      naming: [searchPixabay, searchPexels, searchUnsplash,searchWallhaven, searchWikimedia, searchUnsplashSource],   // 优先要具体实物 (Pixabay强项)
-      dream: [searchPixabay, searchUnsplash, searchWallhaven,searchPexels, searchWikimedia, searchUnsplashSource],    // 优先要插画/幻想感
-      face: [searchPexels, searchPixabay,searchWallhaven, searchUnsplash, searchWikimedia, searchUnsplashSource],     // 优先要人像 (Pexels人像质量高)
-      default: [searchPexels, searchUnsplash, searchWallhaven,searchPixabay, searchWikimedia, searchUnsplashSource]   // 默认顺序
+      bazi: [searchPixabay, searchWikimedia, searchUnsplash, searchPexels, searchWallhaven],     // 优先要意境 (Unsplash强项)
+      fengshui: [searchUnsplash, searchWallhaven,searchPexels, searchWikimedia, searchPixabay], // 优先要建筑/景观
+      naming: [searchPixabay, searchPexels, searchUnsplash,searchWallhaven, searchWikimedia],   // 优先要具体实物 (Pixabay强项)
+      dream: [searchPixabay, searchUnsplash, searchWallhaven,searchPexels, searchWikimedia],    // 优先要插画/幻想感
+      face: [searchPexels, searchPixabay,searchWallhaven, searchUnsplash, searchWikimedia],     // 优先要人像 (Pexels人像质量高)
+      default: [searchPexels, searchUnsplash, searchWallhaven,searchPixabay, searchWikimedia]   // 默认顺序
     };
   
     // 3. 获取当前模块的搜索顺序

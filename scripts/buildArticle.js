@@ -149,9 +149,23 @@ function cleanAIText(text) {
 
 function imageExists(localPath) {
   try {
-    const fullPath = path.join("E:/zanpath v2/public", localPath);
-    return fs.existsSync(fullPath);
-  } catch {
+    // 1. 去掉路径开头的斜杠（如果有），防止 path.join 解析出错
+    const relativePath = localPath.startsWith('/') ? localPath.substring(1) : localPath;
+    
+    // 2. 组合绝对路径并规范化（自动处理 / 和 \）
+    const fullPath = path.normalize(path.join("E:/zanpath v2/public", relativePath));
+    
+    const exists = fs.existsSync(fullPath);
+    
+    // 调试日志（成功后可以删掉）
+    if (!exists) {
+      console.log(`[DEBUG] 图片未找到: ${fullPath}`);
+    } else {
+      console.log(`[DEBUG] 图片确认存在: ${fullPath}`);
+    }
+    
+    return exists;
+  } catch (e) {
     return false;
   }
 }
