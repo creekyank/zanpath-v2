@@ -2,19 +2,16 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import fetch from "node-fetch";
 import slugify from "slugify";
 import sharp from "sharp";
 import crypto from "crypto";
 import dotenv from "dotenv";
+import axios from "axios";
 
-import { HttpsProxyAgent } from "https-proxy-agent";
 
 // 如果环境变量里有代理，就创建一个 Agent
-const proxy = process.env.HTTPS_PROXY || process.env.https_proxy || "http://127.0.0.1:7897";
-const agent = new HttpsProxyAgent(proxy);
 
-const envPath = "E:/zanpath v2/.env";
+const envPath = path.join(process.cwd(), ".env");
 const envLocalPath = "E:/zanpath v2/.env.local";
 if (fs.existsSync(envPath)) { dotenv.config({ path: envPath }); }
 if (fs.existsSync(envLocalPath)) { dotenv.config({ path: envLocalPath }); }
@@ -39,6 +36,27 @@ const folderMap = {
 const PEXELS_KEY = process.env.PEXELS_KEY;
 const UNSPLASH_KEY = process.env.UNSPLASH_KEY;
 const PIXABAY_KEY = process.env.PIXABAY_KEY;
+
+const AXIOS_INSTANCE = axios.create({
+  timeout: 20000,
+  headers: {
+    "User-Agent": "Mozilla/5.0"
+  }
+});
+
+// 统一下载图片
+export async function fetchImageBuffer(url) {
+  try {
+    const res = await AXIOS_INSTANCE.get(url, {
+      responseType: "arraybuffer"
+    });
+
+    return Buffer.from(res.data);
+  } catch (err) {
+    console.log("❌ axios 下载失败:", err.message);
+    return null;
+  }
+}
 
 // 4. 定义完之后再打印日志（这样就不会报 ReferenceError 了）
 console.log("--- 环境加载检查 ---");
@@ -74,79 +92,6 @@ function isGoodQuality(width, height) {
 
   return true;
 
-}
-
-/* ------------------------- */
-/* 下载并处理图片 (健壮版) */
-/* ------------------------- */
-async function downloadAndProcess(url, savePath) {
-    try {
-      console.log(`正在从 URL 下载: ${url.substring(0, 50)}...`);
-      const res = await fetch(url, { 
-        timeout: 20000, // 增加到 20 秒
-        headers: { 'User-Agent': 'Mozilla/5.0' } 
-      }); 
-  
-      if (!res.ok) {
-        console.error(`❌ 下载请求失败: ${res.status}`);
-        return false;
-      }
-  
-      const arrayBuffer = await res.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
-      // 核心修复：检查 Buffer 长度，防止 0KB 文件写入
-      if (buffer.length < 1000) { 
-        console.error("❌ 下载的文件过小或损坏 (0KB)，已跳过");
-        return false;
-      }
-      if (buffer.length < 50 * 1024) { 
-        console.log(`⚠️ 图片文件仅有 ${(buffer.length / 1024).toFixed(1)} KB，质量太差，已跳过`);
-        return false;
-      }
-  
-      const hash = crypto.createHash("md5").update(buffer).digest("hex");
-
-      if (usedHashes.has(hash)) {
-        console.log("⚠️ 检测到重复图片（全站），已跳过");
-        return false;
-      }
-  
-      if (usedHashes.size > 3000) {
-        usedHashes = new Set(Array.from(usedHashes).slice(-2000));
-      }
-      // 使用 Sharp 处理
-      const pipeline = sharp(buffer);
-      const metadata = await pipeline.metadata(); // 先读取元数据确认有效性
-
-      if (!metadata.width) throw new Error("无效的图片数据");
-
-      const resized = pipeline
-        .resize(1200, null, { withoutEnlargement: true })
-        .modulate({
-          brightness: 1.05,
-          saturation: 0.9
-        })
-        .sharpen();
-
-      // 写入物理文件
-      await resized.clone().jpeg({ quality: 80 }).toFile(savePath + ".jpg");
-      await resized.clone().webp({ quality: 80 }).toFile(savePath + ".webp");
-
-      usedHashes.add(hash);     
-      // ✅ 写入 JSON（关键）
-      fs.writeFileSync(
-        HASH_FILE,
-        JSON.stringify({ used: Array.from(usedHashes) }, null, 2)
-      );
-      
-      console.log(`✅ 成功保存: ${path.basename(savePath)}.webp`);
-      return true;
-  
-    } catch (error) {
-      console.error(`❌ 处理图片时发生错误: ${error.message}`);
-      return false; 
-    }
 }
 
 
@@ -199,9 +144,8 @@ async function searchPexels(keyword) {
     const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(keyword)}&per_page=15`;
   
     try {
-      const res = await fetch(url, { headers: { Authorization: PEXELS_KEY }, timeout: 15000,
-        agent: agent });
-      const data = await res.json();
+      const res = await AXIOS_INSTANCE.get(url, { headers: { Authorization: PEXELS_KEY } });
+      const data = res.data;
       if (!data.photos) return null;
       let best = null;
       let bestScore = -999;
@@ -237,16 +181,13 @@ async function searchUnsplash(keyword) {
   if (!UNSPLASH_KEY) return null;
 
   const url =
-    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=15&client_id=${UNSPLASH_KEY}`;
+    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=15`;
 
     try {
-      const res = await fetch(url, { 
-        headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` }, // 加上 Client-ID 前缀
-        timeout: 15000,
-        agent: agent 
+      const res = await AXIOS_INSTANCE.get(url, { 
+        headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` }
     });
-        if (!res.ok) return null;
-        const data = await res.json();
+        const data = res.data;
         if (!data.results) return null;
     
         let best = null;
@@ -284,13 +225,10 @@ async function searchPixabay(keyword) {
     const url = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${encodeURIComponent(keyword)}&image_type=photo&per_page=15`;
   
     try {
-      const res = await fetch(url, { 
-        headers: { Authorization: PIXABAY_KEY }, 
-        timeout: 15000,
-        agent: agent // <--- 关键：这里也要加
+      const res = await AXIOS_INSTANCE.get(url, { 
+        headers: { Authorization: PIXABAY_KEY }
       });
-      if (!res.ok) return null;
-      const data = await res.json();
+      const data = res.data;
       // 修正：Pixabay 使用的是 .hits
       if (!data.hits) return null; 
   
@@ -327,13 +265,12 @@ async function searchWikimedia(keyword) {
   const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(keyword)}&gsrlimit=5&prop=imageinfo&iiprop=url|size&format=json&origin=*`;
 
   try {
-    const res = await fetch(url, { timeout: 10000,
-      agent: agent });
+    const res = await AXIOS_INSTANCE.get(url);
     if (res.status === 429) {
       console.error("⚠️ 触发频率限制，跳过当前 API");
       return null;
     }
-    const data = await res.json();
+    const data = res.data;
 
     if (!data.query || !data.query.pages) return null;
 
@@ -360,12 +297,38 @@ async function searchWikimedia(keyword) {
       }
     }
   } catch (e) {
-    console.error(`⚠️ Wikimedia 接口连接超时`);
+    if (e.response && e.response.status === 429) {
+      console.error("⚠️ 触发 Wikimedia 频率限制");
+    } else {
+      console.error(`⚠️ Wikimedia 接口连接超时: ${e.message}`);
+    }
     return null;
-  }
-  return null;
+}
 }
 
+// 免 API 方案 1：Wallhaven 爬取
+async function searchWallhaven(keyword) {
+  const url = `https://wallhaven.cc/search?q=${encodeURIComponent(keyword)}&purity=100`;
+  try {
+    const res = await AXIOS_INSTANCE.get(url, { responseType: 'text' });
+    const html = res.data;
+    // 匹配第一张缩略图对应的原图链接
+    const match = html.match(/data-src="(https:\/\/w\.wallhaven\.cc\/full\/.*?\.jpg)"/);
+    return match ? match[1] : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// 免 API 方案 2：Unsplash Source (直接返回图)
+async function searchUnsplashSource(keyword) {
+  return `https://source.unsplash.com/1200x800/?${encodeURIComponent(keyword)}`;
+}
+
+// 免 API 方案 3：Picsum (兜底种子图)
+async function searchPicsum(keyword) {
+  return `https://picsum.photos/seed/${encodeURIComponent(keyword)}/1200/800`;
+}
 /* ------------------------- */
 /* 多API查找（智能增强 + 模块优先级版） */
 /* ------------------------- */
@@ -389,12 +352,12 @@ async function findImage(keyword, module = "default") {
   
     // 2. 定义不同模块的 API 搜索优先级
     const priorities = {
-      bazi: [searchUnsplash, searchPexels, searchPixabay, searchWikimedia],     // 优先要意境 (Unsplash强项)
-      fengshui: [searchUnsplash, searchPexels, searchWikimedia, searchPixabay], // 优先要建筑/景观
-      naming: [searchPixabay, searchPexels, searchUnsplash, searchWikimedia],   // 优先要具体实物 (Pixabay强项)
-      dream: [searchPixabay, searchUnsplash, searchPexels, searchWikimedia],    // 优先要插画/幻想感
-      face: [searchPexels, searchPixabay, searchUnsplash, searchWikimedia],     // 优先要人像 (Pexels人像质量高)
-      default: [searchPexels, searchUnsplash, searchPixabay, searchWikimedia]   // 默认顺序
+      bazi: [searchPixabay, searchWikimedia, searchUnsplash, searchPexels, searchWallhaven, searchUnsplashSource],     // 优先要意境 (Unsplash强项)
+      fengshui: [searchUnsplash, searchWallhaven,searchPexels, searchWikimedia, searchPixabay, searchUnsplashSource], // 优先要建筑/景观
+      naming: [searchPixabay, searchPexels, searchUnsplash,searchWallhaven, searchWikimedia, searchUnsplashSource],   // 优先要具体实物 (Pixabay强项)
+      dream: [searchPixabay, searchUnsplash, searchWallhaven,searchPexels, searchWikimedia, searchUnsplashSource],    // 优先要插画/幻想感
+      face: [searchPexels, searchPixabay,searchWallhaven, searchUnsplash, searchWikimedia, searchUnsplashSource],     // 优先要人像 (Pexels人像质量高)
+      default: [searchPexels, searchUnsplash, searchWallhaven,searchPixabay, searchWikimedia, searchUnsplashSource]   // 默认顺序
     };
   
     // 3. 获取当前模块的搜索顺序
@@ -409,25 +372,12 @@ async function findImage(keyword, module = "default") {
 
           const apiName = searchFunc.name.replace('search', '');
           console.log(`📡 ${apiName} 返回了图片: ${imgUrl.substring(0, 40)}...`);
+          const buffer = await fetchImageBuffer(imgUrl);
 
-          // 预下载并计算 Hash
-          const res = await fetch(imgUrl, { 
-              timeout: 30000, 
-              agent: agent,
-              headers: { 
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8'
-            }
-          });
-
-          if (!res.ok) {
-              console.log(`⚠️ ${apiName} 下载图片失败 (HTTP ${res.status})`);
-              continue;
+          if (!buffer) {
+            console.log("⚠️ 图片下载失败");
+            continue;
           }
-
-          const arrayBuffer = await res.arrayBuffer();
-          const buffer = Buffer.from(arrayBuffer);
-          
           // 基础质量拦截
           if (buffer.length < 30 * 1024) {
             console.log(`⚠️ ${apiName} 图片体积过小 (${(buffer.length/1024).toFixed(1)}KB)，跳过`);
@@ -450,7 +400,18 @@ async function findImage(keyword, module = "default") {
         console.error(`❌ API [${searchFunc.name}] 异常: ${error.message}`);
       }
   }
-
+    // 4. 【关键改动】全线失败后的兜底逻辑
+    console.log("⚠️ 所有 API 失效，启动 Picsum 种子图兜底");
+    const fallbackUrl = await searchPicsum(keyword);
+    const fallbackBuffer = await fetchImageBuffer(fallbackUrl);
+    
+    if (fallbackBuffer) {
+        return {
+            buffer: fallbackBuffer,
+            hash: "fallback-" + crypto.createHash("md5").update(keyword).digest("hex").substring(0, 8),
+            url: fallbackUrl
+        };
+    }
     return null; // 所有 API 都跑完了也没找到不重复的
   }
 
@@ -541,12 +502,13 @@ async function main() {
       if (downloadedCount >= 2) break;
 
       // findImage 内部已经集成了：搜索 API -> 下载 -> 校验 Hash -> 换 API 尝试
-      const result = await findImage(keyword, moduleIn);
-      
+      const result = await findImage(keyword, moduleIn); 
+
       if (result) {
           const savePath = path.join(dir, `${slug}-${downloadedCount + 1}`);
+          // 2. 处理并保存 (内部用了 Sharp 和 fs.writeFileSync)
           const success = await processAndSave(result.buffer, result.hash, savePath);
-          
+
           if (success) {
               downloadedCount++;
           }
