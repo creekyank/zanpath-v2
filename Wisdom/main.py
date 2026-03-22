@@ -301,7 +301,40 @@ def run():
         clear_lock()
 
 # =========================
-# 单次执行（稳定）
+# 循环调度执行
 # =========================
 if __name__ == "__main__":
-    run()
+    print("🚀 自动化任务启动，每 15 分钟运行一次（带随机波动）...")
+    
+    while True:
+        try:
+            # 执行主流程
+            run()
+            
+            # 设定基础间隔（15分钟 = 900秒）
+            base_interval = 15 * 60 
+            
+            # 设定随机波动（例如：前后随机 3 分钟，即 -180秒 到 +180秒）
+            # 你可以根据需要调整这个数值
+            offset = random.randint(-180, 180) 
+            
+            wait_time = base_interval + offset
+            
+            # 防止随机出负数（极端情况）
+            if wait_time < 300: 
+                wait_time = 300
+                
+            print(f"\n✅ 本轮结束。")
+            print(f"⏳ 随机等待时间: {wait_time // 60} 分 {wait_time % 60} 秒...")
+            print(f"📅 预计下一轮启动时间: {time.strftime('%H:%M:%S', time.localtime(time.time() + wait_time))}")
+            
+            time.sleep(wait_time)
+            
+        except KeyboardInterrupt:
+            print("\n🛑 用户停止，退出程序。")
+            clear_lock() # 退出前确保锁已清除
+            break
+        except Exception as e:
+            print(f"⚠️ 循环遇到未知错误: {e}")
+            traceback.print_exc()
+            time.sleep(60) # 出错后等 1 分钟重试
