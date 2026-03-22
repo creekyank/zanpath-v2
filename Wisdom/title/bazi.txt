@@ -29,19 +29,19 @@
 [DONE] What Are the Most Important Symbols in Bazi?
 [RUNNING] How Does Bazi Connect With Chinese Philosophy?
 [RUNNING] What Does Your Day Master Reveal About Your Personality?
-How Can You Understand Your Day Master Element?
-Why Is the Day Master the Core of a Bazi Chart?
-What Happens When Your Day Master Is Too Strong?
-What Happens When Your Day Master Is Too Weak?
-How Does Your Day Master Affect Life Decisions?
-What Careers Fit Each Day Master Element?
-How Do Different Day Masters Handle Stress?
-Which Day Masters Are Naturally Competitive?
-Which Day Masters Are Naturally Creative?
-How Do Fire Day Masters Express Their Energy?
-How Do Water Day Masters Approach Life Challenges?
-What Makes Metal Day Masters Natural Leaders?
-How Do Earth Day Masters Build Stability?
+[RUNNING] How Can You Understand Your Day Master Element?
+[DONE] Why Is the Day Master the Core of a Bazi Chart?
+[RUNNING] What Happens When Your Day Master Is Too Strong?
+[RUNNING] What Happens When Your Day Master Is Too Weak?
+[RUNNING] How Does Your Day Master Affect Life Decisions?
+[RUNNING] What Careers Fit Each Day Master Element?
+[RUNNING] How Do Different Day Masters Handle Stress?
+[DONE] Which Day Masters Are Naturally Competitive?
+[RUNNING] Which Day Masters Are Naturally Creative?
+[DONE] How Do Fire Day Masters Express Their Energy?
+[DONE] How Do Water Day Masters Approach Life Challenges?
+[RUNNING] What Makes Metal Day Masters Natural Leaders?
+[DONE] How Do Earth Day Masters Build Stability?
 Why Are Wood Day Masters Often Visionary?
 How Does Your Element Shape Your Communication Style?
 Can Your Element Influence Your Confidence?

@@ -201,7 +201,7 @@ def run():
         # 1️⃣ 英文文章
         # =========================
         article_en = safe_generate(
-            MODELS["agent_en_seo"],
+            MODELS["agent_en_article"],
             prompts.agent_en_article(title, module),
             min_len=900
         )
@@ -236,7 +236,7 @@ def run():
         # 3️⃣ 图片关键词
         # =========================
         pic = safe_generate(
-            [("groq", "llama-3.3-70b-versatile")],
+            MODELS["agent3"],
             prompts.agent3(title),
             min_len=10
         )
@@ -250,7 +250,7 @@ def run():
         # 4️⃣ 西语
         # =========================
         article_es = safe_generate(
-            [("groq", "llama-3.1-8b-instant")],
+            MODELS["agent6"],
             prompts.agent6(title, article_en),
             min_len=600
         )
@@ -262,7 +262,7 @@ def run():
         # 5️⃣ 西语 SEO (补全这一步)
         # =========================
         seo_es = safe_generate(
-            [("groq", "llama-3.1-8b-instant")],
+            MODELS["agent7"],
             prompts.agent7(seo_en),
             is_json=True
         )

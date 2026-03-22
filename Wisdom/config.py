@@ -2,34 +2,42 @@ import os
 
 MODELS = {
     # 1️⃣ 英文文章生成 (Agent EN) - 切换回 DeepSeek
-    "agent_en": [
-        ("deepseek", "deepseek-chat"), # 使用 DeepSeek 官方模型名
+    "agent_en_article": [
+       # ("deepseek", "deepseek-chat"), # 使用 DeepSeek 官方模型名
         ("groq", "llama-3.3-70b-versatile"),   # 备选方案，万一 DeepSeek 挂了会用 Groq
+        #("groq", "llama-3.1-8b-instant"),
     ],
 
     # 2️⃣ 英文 SEO 生成 (Agent EN SEO) - 保持使用 Groq
     "agent_en_seo": [
-        ("groq", "llama-3.3-70b-versatile"), 
+        ("groq", "llama-3.1-8b-instant"), 
+        ("groq", "mixtral-8x7b-32768"),
+        ("groq", "gemma2-9b-it"),
     ],
 
     # 3️⃣ 图片关键词 (Agent 3) 
     "agent3": [
-        ("groq", "llama-3.3-70b-versatile"),
+        ("groq", "llama-3.1-8b-instant"),
     ],
 
     # 4️⃣ 英文 -> 西语文章 (Agent 6)
     "agent6": [
         ("groq", "llama-3.1-8b-instant"),
+        ("groq", "gemma2-9b-it"),      # Google 模型对西语支持很好
+        ("groq", "mixtral-8x7b-32768"),
     ],
 
     # 5️⃣ SEO -> 西语 (Agent 7)
     "agent7": [
         ("groq", "llama-3.1-8b-instant"),
+        ("groq", "gemma2-9b-it"),      # Google 模型对西语支持很好
+        ("groq", "mixtral-8x7b-32768"),
     ],
 
     # 6️⃣ 最终评分 (Scorer Final)
     "scorer_final": [
         ("groq", "llama-3.3-70b-versatile"),
+        ("groq", "mixtral-8x7b-32768"),
     ],
 
     # 其他兼容项
@@ -44,8 +52,8 @@ API_CONFIG = {
         "key": os.getenv("DEEPSEEK_API_KEY") 
     },
     "longcat": {
-        "base_url": "https://api.longcat.chat/openai/v1", 
-        "key": os.getenv("LONGCAT_API_KEY") 
+        "base_url": "https://api.longcat.chat/openai", # 注意！后面不要带 /v1
+        "key": os.getenv("LONGCAT_API_KEY")
     },
     "zai": {
         "base_url": "https://open.bigmodel.cn/api/paas/v4", 

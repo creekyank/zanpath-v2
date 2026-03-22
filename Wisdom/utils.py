@@ -48,6 +48,11 @@ def call_api(provider, model, prompt, max_retry=3):
 
             if res and len(res.strip()) > 0:
                 print(f"   [DEBUG] 成功获取响应，长度: {len(res)} 字符")
+                if provider == "groq":
+                    import random
+                    wait_time = random.uniform(30, 50)  # Groq 建议等 25-40 秒
+                    print(f"   [WAIT] Groq 频率保护：随机等待 {wait_time:.1f} 秒...")
+                    time.sleep(wait_time)
                 return res
             else:
                 print("   [DEBUG] API 返回了空字符串")
