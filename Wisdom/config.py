@@ -3,16 +3,13 @@ import os
 MODELS = {
     # 1️⃣ 英文文章生成 (Agent EN) - 切换回 DeepSeek
     "agent_en_article": [
-       # ("deepseek", "deepseek-chat"), # 使用 DeepSeek 官方模型名
-        ("groq", "llama-3.3-70b-versatile"),   # 备选方案，万一 DeepSeek 挂了会用 Groq
-        #("groq", "llama-3.1-8b-instant"),
+        ("deepseek", "deepseek-chat"), # 使用 DeepSeek 官方模型名
+        #("groq", "llama-3.3-70b-versatile"),   # 备选方案，万一 DeepSeek 挂了会用 Groq
     ],
 
     # 2️⃣ 英文 SEO 生成 (Agent EN SEO) - 保持使用 Groq
     "agent_en_seo": [
         ("groq", "llama-3.1-8b-instant"), 
-        ("groq", "mixtral-8x7b-32768"),
-        ("groq", "gemma2-9b-it"),
     ],
 
     # 3️⃣ 图片关键词 (Agent 3) 
@@ -22,22 +19,18 @@ MODELS = {
 
     # 4️⃣ 英文 -> 西语文章 (Agent 6)
     "agent6": [
-        ("groq", "llama-3.1-8b-instant"),
-        ("groq", "gemma2-9b-it"),      # Google 模型对西语支持很好
-        ("groq", "mixtral-8x7b-32768"),
+        ("deepseek", "deepseek-chat"), 
     ],
 
     # 5️⃣ SEO -> 西语 (Agent 7)
     "agent7": [
         ("groq", "llama-3.1-8b-instant"),
-        ("groq", "gemma2-9b-it"),      # Google 模型对西语支持很好
-        ("groq", "mixtral-8x7b-32768"),
     ],
 
     # 6️⃣ 最终评分 (Scorer Final)
     "scorer_final": [
         ("groq", "llama-3.3-70b-versatile"),
-        ("groq", "mixtral-8x7b-32768"),
+        ("groq", "llama-3.1-8b-instant"),
     ],
 
     # 其他兼容项
