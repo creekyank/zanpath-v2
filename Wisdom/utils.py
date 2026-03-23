@@ -66,7 +66,7 @@ def call_api(provider, model, prompt, max_retry=3):
 # ======================
 # 2. 带有 Fallback 机制的调用
 # ======================
-def call_with_fallback(models, prompt, is_article=True):
+def call_with_fallback(models, prompt, min_len=10):
     best = None
     best_len = 0
 
@@ -81,8 +81,8 @@ def call_with_fallback(models, prompt, is_article=True):
             res = res.strip()
             length = len(res)
 
-            if length < 800:
-                print(f"⚠️ 太短丢弃: {length}")
+            if length < min_len:
+                print(f"⚠️ 太短丢弃: {length} (要求至少 {min_len})")
                 continue
 
             if length > best_len:

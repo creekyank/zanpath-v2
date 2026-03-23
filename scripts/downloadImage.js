@@ -329,76 +329,79 @@ async function searchPicsum(keyword) {
 /* ------------------------- */
 
 async function findImage(keyword, module = "default") {
-    // 1. 关键词智能增强：根据模块特性自动补全英文描述，提升搜图精准度
-    let baseStyle = "zen minimal abstract landscape chinese ink painting soft light calm atmosphere";
+  // 1️⃣ 基础风格
+  const baseStyle = "zen minimal photography";
 
-    let searchKeyword = `${keyword} ${baseStyle}`;
-    
-    if (module === 'dream') {
-      searchKeyword = `${keyword} dreamlike surreal night sky mist ${baseStyle}`;
-    } else if (module === 'face') {
-      // ❌ 不要人脸
-      searchKeyword = `${keyword} abstract aura energy glow ${baseStyle}`;
-    } else if (module === 'fengshui') {
-      searchKeyword = `${keyword} architecture space light shadow ${baseStyle}`;
-    } else if (module === 'bazi') {
-      searchKeyword = `${keyword} five elements energy flow fire water earth ${baseStyle}`;
-    }
+  // 2️⃣ 核心修改：直接合并，不要层层叠加
+  // 我们只拿 AI 给的 keyword，加上最基础的 baseStyle 即可
+  let searchKeyword = `${keyword} ${baseStyle}`;
   
-    // 2. 定义不同模块的 API 搜索优先级
-    const priorities = {
-      bazi: [searchPixabay, searchWikimedia, searchUnsplash, searchPexels, searchWallhaven],     // 优先要意境 (Unsplash强项)
-      fengshui: [searchUnsplash, searchWallhaven,searchPexels, searchWikimedia, searchPixabay], // 优先要建筑/景观
-      naming: [searchPixabay, searchPexels, searchUnsplash,searchWallhaven, searchWikimedia],   // 优先要具体实物 (Pixabay强项)
-      dream: [searchPixabay, searchUnsplash, searchWallhaven,searchPexels, searchWikimedia],    // 优先要插画/幻想感
-      face: [searchPexels, searchPixabay,searchWallhaven, searchUnsplash, searchWikimedia],     // 优先要人像 (Pexels人像质量高)
-      default: [searchPexels, searchUnsplash, searchWallhaven,searchPixabay, searchWikimedia]   // 默认顺序
-    };
-  
-    // 3. 获取当前模块的搜索顺序
-    const searchOrder = priorities[module] || priorities.default;
-  
-    console.log(`\n🔍 正在搜寻唯一图片: "${keyword}" (模块: ${module})`);
-    // 3. 核心逻辑：遍历 API 寻找非重复图
-    for (const searchFunc of searchOrder) {
-      try {
-          const imgUrl = await searchFunc(searchKeyword);
-          if (!imgUrl) continue;
+  // 3️⃣ 模块化微调（仅在必要时添加一个词，不要用 += 堆砌）
+  if (module === 'dream') {
+    searchKeyword += " ethereal";
+  } else if (module === 'face' || module === 'visual') {
+    searchKeyword += " abstract energy";
+  } else if (module === 'fengshui' || module === 'space') {
+    searchKeyword += " interior";
+  }
 
-          const apiName = searchFunc.name.replace('search', '');
-          console.log(`📡 ${apiName} 返回了图片: ${imgUrl.substring(0, 40)}...`);
-          const buffer = await fetchImageBuffer(imgUrl);
+  // =========================
+  // API 优先级
+  // =========================
+  const priorities = {
+    bazi: [searchPixabay, searchWikimedia, searchUnsplash, searchPexels, searchWallhaven],
+    fengshui: [searchUnsplash, searchWallhaven, searchPexels, searchWikimedia, searchPixabay],
+    naming: [searchPixabay, searchPexels, searchUnsplash, searchWallhaven, searchWikimedia],
+    dream: [searchPixabay, searchUnsplash, searchWallhaven, searchPexels, searchWikimedia],
+    face: [searchPixabay, searchWallhaven, searchUnsplash, searchPexels, searchWikimedia], // ✅ 已去人像优先
+    default: [searchPexels, searchUnsplash, searchWallhaven, searchPixabay, searchWikimedia]
+  };
 
-          if (!buffer) {
-            console.log("⚠️ 图片下载失败");
-            continue;
-          }
-          // 基础质量拦截
-          if (buffer.length < 30 * 1024) {
-            console.log(`⚠️ ${apiName} 图片体积过小 (${(buffer.length/1024).toFixed(1)}KB)，跳过`);
+  const searchOrder = priorities[module] || priorities.default;
+
+  console.log(`\n🔍 搜图关键词: ${searchKeyword}`);
+
+  // =========================
+  // 搜图核心逻辑
+  // =========================
+  for (const searchFunc of searchOrder) {
+    try {
+        const imgUrl = await searchFunc(searchKeyword);
+        if (!imgUrl) continue;
+
+        const apiName = searchFunc.name.replace('search', '');
+        console.log(`📡 ${apiName} 返回图片`);
+
+        const buffer = await fetchImageBuffer(imgUrl);
+
+        if (!buffer) {
+          console.log("⚠️ 下载失败");
+          continue;
+        }
+
+        if (buffer.length < 30 * 1024) {
+          console.log(`⚠️ 图片太小，跳过`);
+          continue;
+        }
+
+        const hash = crypto.createHash("md5").update(buffer).digest("hex");
+
+        if (usedHashes.has(hash)) {
+            console.log(`❌ 重复图片，换源`);
             continue;
         }
 
-          const hash = crypto.createHash("md5").update(buffer).digest("hex");
+        console.log(`✅ 命中图片 (${(buffer.length/1024).toFixed(1)}KB)`);
+        return { buffer, hash, url: imgUrl };
 
-          // 检查重复
-          if (usedHashes.has(hash)) {
-              console.log(`❌ ${apiName} 提供的图片全站重复 (Hash 冲突)，强制换源搜索...`);
-              continue; // 👈 关键：发现重复，不退出，继续找下一个 API
-          }
-
-          // 走到这里说明找到了全站唯一的图
-          console.log(`✅ 找到唯一图片！来源: ${apiName} (${(buffer.length/1024).toFixed(1)}KB)`);
-            return { buffer, hash, url: imgUrl };
-
-      } catch (error) {
-        console.error(`❌ API [${searchFunc.name}] 异常: ${error.message}`);
-      }
-  }
-    console.log("⚠️ 所有 API 失效，且未找到唯一图片。将回退到系统默认背景图。");
-    return null; // 所有 API 都跑完了也没找到不重复的
+    } catch (error) {
+      console.error(`❌ API异常: ${error.message}`);
+    }
   }
 
+  console.log("⚠️ 所有API失败");
+  return null;
+}
 
   /* ------------------------- */
 /* 图像处理与保存 (针对探测后的 Buffer) */
@@ -471,6 +474,7 @@ async function main() {
   const keywords = rawKeywords.join(',').split(',').map(k => k.trim()).filter(k => k);
   const actualFolderName = folderMap[moduleIn] || moduleIn;
   const dir = path.join(IMAGE_DIR, actualFolderName);
+  keywords.sort(() => Math.random() - 0.5);
 
   if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -482,24 +486,28 @@ async function main() {
   let downloadedCount = 0;
   
   // 遍历所有提供的关键词，直到凑齐 2 张图
+  const MAX_TRY = 10;
+  let tryCount = 0;
+
   for (const keyword of keywords) {
-      if (downloadedCount >= 2) break;
+    if (downloadedCount >= 2) break;
+    if (tryCount >= MAX_TRY) break;
 
-      // findImage 内部已经集成了：搜索 API -> 下载 -> 校验 Hash -> 换 API 尝试
-      const result = await findImage(keyword, moduleIn); 
+    tryCount++; // ✅ 每次尝试都+1（更稳定）
 
-      if (result) {
-          const savePath = path.join(dir, `${slug}-${downloadedCount + 1}`);
-          // 2. 处理并保存 (内部用了 Sharp 和 fs.writeFileSync)
-          const success = await processAndSave(result.buffer, result.hash, savePath);
+    const result = await findImage(keyword, moduleIn);
 
-          if (success) {
-              downloadedCount++;
-          }
-      } else {
-          console.log(`⚠️ 关键词 "${keyword}" 下的所有图片在全站均已存在或搜图失败。`);
-      }
-  }
+    if (result) {
+        const savePath = path.join(dir, `${slug}-${downloadedCount + 1}`);
+        const success = await processAndSave(result.buffer, result.hash, savePath);
+
+        if (success) {
+            downloadedCount++;
+        }
+    } else {
+        console.log(`⚠️ 关键词 "${keyword}" 搜图失败`);
+    }
+}
 
   if (downloadedCount === 0) {
       console.error(`❌ 严重警告: 未能为文章 "${title}" 下载到任何唯一图片。`);

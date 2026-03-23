@@ -82,14 +82,11 @@ def check_json():
 
 def read_keywords():
     if not os.path.exists(PIC_KEYWORD):
-        return "", ""
+        return []
     with open(PIC_KEYWORD, "r", encoding="utf-8") as f:
-        lines = f.read().splitlines()
-    if len(lines) >= 2:
-        return lines[0], lines[1]
-    if len(lines) == 1:
-        return lines[0], ""
-    return "", ""
+        # 读取所有非空行并去重
+        lines = [line.strip() for line in f.read().splitlines() if len(line.strip()) > 2]
+    return lines  # 直接返回列表
 
 def validate_article(module, slug):
     path = os.path.join(
@@ -125,9 +122,19 @@ def build_article(title, slug, module):
 
     return False
 
-def download_images(title, slug, module, kw1, kw2):
+def download_images(title, slug, module, keywords):
     script_path = os.path.join(ROOT_DIR, "scripts", "downloadImage.js")
-    ok = run_cmd(f'node "{script_path}" "{title}" "{slug}" "{module}" "{kw1}" "{kw2}"')
+    
+    # 确保有关键词，如果没有，给个保底词
+    if not keywords:
+        keywords = ["chinese metaphysics", "zen landscape"]
+
+    # 构造传参字符串
+    kw_args = " ".join([f'"{k}"' for k in keywords])
+    
+    # 执行命令
+    ok = run_cmd(f'node "{script_path}" "{title}" "{slug}" "{module}" {kw_args}')
+    
     if not ok:
         print("图片生成失败，跳过")
 
@@ -239,12 +246,12 @@ def process():
         print("JSON检查失败")
         return
 
-    kw1, kw2 = read_keywords()
+    keywords = read_keywords()
 
     # 🚀 修改这里：先下载图片！！！
     # 这样当执行 build 的时候，硬盘里已经有真正的图片文件了
     print("\n[STEP] 正在下载图片...")
-    download_images(title, slug, module, kw1, kw2)
+    download_images(title, slug, module, keywords)
 
     # ✅ 3. build（带强校验）
     print("\n[STEP] 正在生成文章 JSON...")

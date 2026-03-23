@@ -118,6 +118,8 @@ function cleanAIText(text) {
 // ✅ 删除单独残留
   t = t.replace(/^TÍTULO.*$/gim, "");
   t = t.replace(/^CONTENIDO.*$/gim, "");
+// ✅ 只删除“行尾的 CONTENT”
+  t = t.replace(/\s+(CONTENT|CONTENIDO)$/gim, "");
 
 // ✅ 删除 Table of Contents 整块（直到遇到真正正文）
   t = t.replace(

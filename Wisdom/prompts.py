@@ -135,26 +135,26 @@ Return ONLY valid JSON. No Markdown markers. No preamble.
 # Agent3 图片关键词（优化：更具视觉感）
 # =========================
 def agent3(title):
-    return f"""Generate 3 visual, concrete image search keywords for stock photo sites.
+    return f"""Generate 10 visual, concrete image search keywords for stock photo sites.
 
 Article title: {title}
 
 RULES:
-- MUST be visually describable (real-world scenes or objects)
-- Avoid abstract words like energy, metaphysics, destiny
-- Use nature, objects, or environments
-- English only
-- One per line
+- OUTPUT ONLY the keywords.
+- NO introductory text, NO conversational fillers (e.g., "Here are...").
+- NO numbering (NO 1. 2. 3.).
+- MUST be visually describable (real-world scenes or objects).
+- Avoid abstract words like energy, metaphysics, destiny.
+- Use nature, objects, or environments.
+- English only.
+- One keyword per line.
 
 STYLE HINTS:
-- mountain mist
-- flowing water
-- ink painting
+- mountain mist, flowing water, ink painting.
 
 Example:
 misty mountain landscape zen
 zen meditation room
-burning incense smoke
 chinese ink painting minimal
 """
 

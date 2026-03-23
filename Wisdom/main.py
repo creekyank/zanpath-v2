@@ -143,7 +143,7 @@ def safe_generate(models, prompt, min_len=200, is_json=False, retry=3):
 
     for i in range(retry):
         try:
-            result = call_with_fallback(models, prompt)
+            result = call_with_fallback(models, prompt, min_len=min_len)
 
             if not result:
                 continue
@@ -298,7 +298,18 @@ def run():
         # 🚨 关键：同步执行（不会被清）
         # =========================
         print(f"[DEBUG] 准备启动后处理，当前 BASE_DIR: {BASE_DIR}")
-        run_cmd(f'python "{os.path.join(BASE_DIR, "smart_factory.py")}"')
+        
+        # 1. 提取关键词列表（确保处理掉空行）
+        pic_list = [line.strip() for line in pic.split('\n') if len(line.strip()) > 3]
+        
+        # 2. 构造传参字符串 (加双引号防止空格断词)
+        # 我们把这 10 个词封装好，准备传给下游
+        pic_args = " ".join([f'"{word}"' for word in pic_list[:10]]) 
+        
+        # 3. 将这些词传给 smart_factory.py 或者直接传给后续脚本
+        # 注意：你需要确认你的 smart_factory.py 是否能接收并透传这些参数
+        # 如果 smart_factory.py 内部是调用 downloadImage.js 的，它需要接收这些 args
+        run_cmd(f'python "{os.path.join(BASE_DIR, "smart_factory.py")}" {pic_args}')
 
     finally:
         clear_lock()
