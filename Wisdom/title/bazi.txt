@@ -34,12 +34,12 @@
 [DONE] What Happens When Your Day Master Is Too Strong?
 [DONE] What Happens When Your Day Master Is Too Weak?
 [DONE] How Does Your Day Master Affect Life Decisions?
-What Careers Fit Each Day Master Element?
-How Do Different Day Masters Handle Stress?
-Which Day Masters Are Naturally Competitive?
-Which Day Masters Are Naturally Creative?
-How Do Fire Day Masters Express Their Energy?
-How Do Water Day Masters Approach Life Challenges?
+[RUNNING] What Careers Fit Each Day Master Element?
+[DONE] How Do Different Day Masters Handle Stress?
+[DONE] Which Day Masters Are Naturally Competitive?
+[DONE] Which Day Masters Are Naturally Creative?
+[DONE] How Do Fire Day Masters Express Their Energy?
+[DONE] How Do Water Day Masters Approach Life Challenges?
 What Makes Metal Day Masters Natural Leaders?
 How Do Earth Day Masters Build Stability?
 Why Are Wood Day Masters Often Visionary?

@@ -509,6 +509,57 @@ if (toc.length > 2) {
     });
   }
 
+  /* ================================
+  4. 第一张图兜底（终极安全版）
+================================ */
+if (!firstImageInserted && hasImg1) {
+
+  // 找 H1
+  const h1Index = blocks.findIndex(b => b.type === "h1");
+
+  if (h1Index !== -1) {
+    // 插在 H1 后
+    blocks.splice(h1Index + 1, 0, {
+      type: "image",
+      src: img1,
+      alt: alt1
+    });
+
+  } else {
+
+    // 没有 H1 → 插在 TOC 前 或 第一段后
+    const tocIndex = blocks.findIndex(b => b.type === "toc");
+
+    if (tocIndex !== -1) {
+      blocks.splice(tocIndex, 0, {
+        type: "image",
+        src: img1,
+        alt: alt1
+      });
+
+    } else {
+      // 最兜底：插在第一个段落后
+      const firstP = blocks.findIndex(b => b.type === "p");
+
+      if (firstP !== -1) {
+        blocks.splice(firstP + 1, 0, {
+          type: "image",
+          src: img1,
+          alt: alt1
+        });
+      } else {
+        blocks.unshift({
+          type: "image",
+          src: img1,
+          alt: alt1
+        });
+      }
+    }
+  }
+
+  firstImageInserted = true;
+}
+
   return blocks;
 
 }
