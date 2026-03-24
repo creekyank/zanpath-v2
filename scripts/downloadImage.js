@@ -8,6 +8,7 @@ import crypto from "crypto";
 import dotenv from "dotenv";
 import axios from "axios";
 
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 // 如果环境变量里有代理，就创建一个 Agent
 
@@ -43,6 +44,40 @@ const AXIOS_INSTANCE = axios.create({
     "User-Agent": "Mozilla/5.0"
   }
 });
+
+const R2 = new S3Client({
+  region: "auto",
+  endpoint: "https://fd7286ae4e5cfbc38be81b407ddda676.r2.cloudflarestorage.com",
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY,
+    secretAccessKey: process.env.R2_SECRET_KEY
+  }
+});
+
+const BUCKET = "zanpath-v2";
+const BASE_URL = "https://img.zanpath.com";
+
+const MANIFEST_FILE = "E:/zanpath v2/data/image-manifest.json";
+
+
+let manifest = {};
+
+if (fs.existsSync(MANIFEST_FILE)) {
+  try {
+    manifest = JSON.parse(fs.readFileSync(MANIFEST_FILE, "utf8"));
+  } catch {
+    manifest = {};
+  }
+}
+
+async function uploadToR2(buffer, key) {
+  await R2.send(new PutObjectCommand({
+    Bucket: BUCKET,
+    Key: key,
+    Body: buffer,
+    ContentType: "image/webp"
+  }));
+}
 
 // 统一下载图片
 export async function fetchImageBuffer(url) {
@@ -406,43 +441,34 @@ async function findImage(keyword, module = "default") {
   /* ------------------------- */
 /* 图像处理与保存 (针对探测后的 Buffer) */
 /* ------------------------- */
-async function processAndSave(buffer, hash, savePath) {
+async function processAndUpload(buffer, hash, folder, slug, index) {
   try {
-      // 使用 Sharp 处理
-      const pipeline = sharp(buffer);
-      const metadata = await pipeline.metadata();
+    const webpBuffer = await sharp(buffer)
+      .resize(1200, null, { withoutEnlargement: true })
+      .webp({ quality: 85 })
+      .toBuffer();
 
-      if (!metadata.width) throw new Error("无效的图片数据");
+    const key = `${folder}/${slug}-${index}.webp`;
 
-      // 图像增强处理
-      const resized = pipeline
-          .resize(1200, null, { withoutEnlargement: true })
-          .modulate({
-              brightness: 1.05,
-              saturation: 0.9
-          })
-          .sharpen();
+    await uploadToR2(webpBuffer, key);
 
-      // 同时写入 JPG (备份) 和 WebP (前端使用)
-      await resized.clone().jpeg({ quality: 80 }).toFile(savePath + ".jpg");
-      await resized.clone().webp({ quality: 85 }).toFile(savePath + ".webp");
-
-      // 记录 Hash 并持久化
-      if (usedHashes.size > 5000) {
-        usedHashes = new Set(Array.from(usedHashes).slice(-3000));
+    if (usedHashes.size > 5000) {
+      usedHashes = new Set(Array.from(usedHashes).slice(-3000));
     }
-      usedHashes.add(hash); 
-      fs.writeFileSync(
-          HASH_FILE,
-          JSON.stringify({ used: Array.from(usedHashes) }, null, 2)
-      );
-      
-      console.log(`💾 物理文件已保存: ${path.basename(savePath)}.webp`);
-      return true;
 
-  } catch (error) {
-      console.error(`❌ 图像处理失败: ${error.message}`);
-      return false; 
+    usedHashes.add(hash);
+
+    fs.writeFileSync(
+      HASH_FILE,
+      JSON.stringify({ used: Array.from(usedHashes) }, null, 2)
+    );
+
+    console.log(`☁️ 已上传 R2: ${key}`);
+    return true;
+
+  } catch (e) {
+    console.log("❌ 上传失败:", e.message);
+    return false;
   }
 }
 /* ------------------------- */
@@ -498,8 +524,15 @@ async function main() {
     const result = await findImage(keyword, moduleIn);
 
     if (result) {
-        const savePath = path.join(dir, `${slug}-${downloadedCount + 1}`);
-        const success = await processAndSave(result.buffer, result.hash, savePath);
+        const index = downloadedCount + 1;
+
+const success = await processAndUpload(
+  result.buffer,
+  result.hash,
+  actualFolderName,
+  slug,
+  index
+);
 
         if (success) {
             downloadedCount++;
@@ -514,5 +547,35 @@ async function main() {
   } else {
       console.log(`✨ 任务完成：成功下载 ${downloadedCount} 张唯一图片。`);
   }
+
+  // =========================
+// ✅ 写入 manifest（只在有图时）
+// =========================
+  if (downloadedCount > 0) {
+
+    const imageUrls = [];
+
+    for (let i = 1; i <= downloadedCount; i++) {
+      imageUrls.push(`${BASE_URL}/${actualFolderName}/${slug}-${i}.webp`);
+    }
+
+    manifest[slug] = {
+      module: actualFolderName,
+      images: imageUrls
+    };
+
+    fs.writeFileSync(
+      MANIFEST_FILE,
+      JSON.stringify(manifest, null, 2)
+    );
+
+    console.log("🧾 manifest 更新:", slug);
+
+  } else {
+    console.log("⚠️ 没有图片，不写入 manifest（前端将不显示图片）");
+  }
+
 }
+
+
 main();

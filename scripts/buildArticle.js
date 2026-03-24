@@ -18,6 +18,8 @@ if (!title || !moduleName) {
   process.exit(1);
 }
 
+
+
 /* =================================
 Slug 修复
 ================================= */
@@ -148,41 +150,17 @@ function cleanAIText(text) {
 
   return t.trim();
 }
-
-function imageExists(localPath) {
-  try {
-    // 1. 去掉路径开头的斜杠（如果有），防止 path.join 解析出错
-    const relativePath = localPath.startsWith('/') ? localPath.substring(1) : localPath;
-    
-    // 2. 组合绝对路径并规范化（自动处理 / 和 \）
-    const fullPath = path.normalize(path.join("E:/zanpath v2/public", relativePath));
-    
-    const exists = fs.existsSync(fullPath);
-    
-    // 调试日志（成功后可以删掉）
-    if (!exists) {
-      console.log(`[DEBUG] 图片未找到: ${fullPath}`);
-    } else {
-      console.log(`[DEBUG] 图片确认存在: ${fullPath}`);
-    }
-    
-    return exists;
-  } catch (e) {
-    return false;
-  }
-}
 /* =================================
 Markdown → HTML
 ================================= */
-function mdToBlocks(text, imageFolder, slug, title, locale) {
+function mdToBlocks(text, imageFolder, slug, title, locale, images = []) {
 
   if (!text) return [];
-  const fallback = "/images/default.webp";
-  const img1 = `/images/${imageFolder}/${slug}-1.webp`;
-  const img2 = `/images/${imageFolder}/${slug}-2.webp`;
-
-  const hasImg1 = imageExists(img1);
-  const hasImg2 = imageExists(img2);
+  const img1 = images[0] || null;
+  const img2 = images[1] || null;
+  
+  const hasImg1 = !!img1;
+  const hasImg2 = !!img2;
 
   const altBase = `${title} chinese metaphysics illustration`;
   const alt1 = `${altBase} zen style`;      // 第一张图：禅意风格
@@ -669,10 +647,20 @@ function build(locale, article, seo) {
   };
 
   const imageFolder = folderMap[moduleName] || moduleName;
-  const img1 = `/images/${imageFolder}/${slug}-1.webp`;
-  const img2 = `/images/${imageFolder}/${slug}-2.webp`;
-  const hasImg1 = imageExists(img1);
-  const hasImg2 = imageExists(img2);
+  const MANIFEST_FILE = "E:/zanpath v2/data/image-manifest.json";
+
+let manifest = {};
+if (fs.existsSync(MANIFEST_FILE)) {
+  manifest = JSON.parse(fs.readFileSync(MANIFEST_FILE, "utf8"));
+}
+
+const images = manifest[slug]?.images || [];
+
+const img1 = images[0] || null;
+const img2 = images[1] || null;
+
+const hasImg1 = !!img1;
+const hasImg2 = !!img2;
 
   let finalCoverImage = `/images/default-${imageFolder}.webp`; // 👈 根据分类显示默认图// 设一个默认图，防止全空
   if (hasImg1 && hasImg2) {
@@ -690,7 +678,7 @@ function build(locale, article, seo) {
   }
 
   // 3. 生成 HTML 内容 (传入参数，内部会自动处理第 2 张图的插入)
-  let blocks = mdToBlocks(article, imageFolder, slug, displayTitle, locale);
+  let blocks = mdToBlocks(article, imageFolder, slug, displayTitle, locale, images);
 
   return {
   
