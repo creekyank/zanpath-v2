@@ -173,15 +173,15 @@
 [DONE] How Can Bazi Help You Understand Yourself Better?
 [DONE] Can Bazi Reveal Hidden Opportunities in Life?
 [DONE] Why Do Some People Experience Dramatic Life Changes?
-How Does Bazi Explain Personal Growth Over Time?
-Can Bazi Help Improve Major Life Decisions?
-Why Do Some People Attract Success Naturally?
-How Can Bazi Reveal Your Hidden Potential?
-What Makes Some Destiny Paths Unique?
-Can Bazi Help You Discover Your Strengths?
-Why Do Some People Feel Lost in Life According to Bazi?
-How Can Bazi Reveal Your Natural Advantages?
-What Bazi Insights Help Personal Development?
+[DONE] How Does Bazi Explain Personal Growth Over Time?
+[DONE] Can Bazi Help Improve Major Life Decisions?
+[DONE] Why Do Some People Attract Success Naturally?
+[DONE] How Can Bazi Reveal Your Hidden Potential?
+[DONE] What Makes Some Destiny Paths Unique?
+[DONE] Can Bazi Help You Discover Your Strengths?
+[RUNNING] Why Do Some People Feel Lost in Life According to Bazi?
+[DONE] How Can Bazi Reveal Your Natural Advantages?
+[RUNNING] What Bazi Insights Help Personal Development?
 Can Bazi Reveal Talents You Didn’t Know You Had?
 Why Do Some Life Paths Change Suddenly?
 How Can Bazi Help You Understand Timing in Life?
