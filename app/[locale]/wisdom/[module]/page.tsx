@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: any) {
 export default async function ModulePage({ params, searchParams }: any) {
   const { locale, module } = params;
 
-  const normalizedModule = module.toLowerCase();
+  const normalizedModule = module?.toLowerCase?.() || "";
 
   const category = searchParams?.category || "all";
   const keyword = searchParams?.q || "";
@@ -218,7 +218,7 @@ export default async function ModulePage({ params, searchParams }: any) {
         {categories.map((c) => (
           <Link
             key={c}
-            href={`/${locale}/wisdom/${module}?category=${c}&q=${keyword}`}
+            href={`/${locale}/wisdom/${module}?category=${c}${keyword ? `&q=${keyword}` : ""}`}
             className={`px-4 py-2 rounded-full border ${
               c === category
                 ? "bg-[#0f3d2e] text-white"
