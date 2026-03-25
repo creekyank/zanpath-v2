@@ -147,12 +147,12 @@
 [DONE] How Do Elements Influence Confidence Levels?
 [DONE] What Charts Suggest Strong Mental Resilience?
 [DONE] Why Do Some People Adapt Quickly to Change?
-[RUNNING] How Can Bazi Reveal Personal Motivation?
-What Happens When Elements Clash in a Bazi Chart?
-How Do Hidden Stems Affect Bazi Interpretation?
-What Are Special Bazi Chart Structures?
-How Do Element Transformations Work in Bazi?
-What Is the Meaning of Element Harmony in Bazi?
+[DONE] How Can Bazi Reveal Personal Motivation?
+[DONE] What Happens When Elements Clash in a Bazi Chart?
+[DONE] How Do Hidden Stems Affect Bazi Interpretation?
+[DONE] What Are Special Bazi Chart Structures?
+[DONE] How Do Element Transformations Work in Bazi?
+[DONE] What Is the Meaning of Element Harmony in Bazi?
 How Do Element Conflicts Create Life Challenges?
 What Rare Bazi Chart Patterns Exist?
 How Do Experts Recognize Powerful Bazi Charts?
