@@ -1,6 +1,6 @@
 [DONE] How Do Five Elements Influence Personality Balance?
 [DONE] Why Is Birth Season Important in Bazi Analysis?
-[RUNNING] How Can Element Cycles Affect Life Direction?
+[DONE] How Can Element Cycles Affect Life Direction?
 [DONE] Why Do Some Charts Indicate Entrepreneurial Potential?
 [DONE] How Do Element Conflicts Affect Decision Making?
 [DONE] Why Do Some Bazi Charts Indicate Strong Leadership?
@@ -34,7 +34,7 @@
 [DONE] What Happens When Your Day Master Is Too Strong?
 [DONE] What Happens When Your Day Master Is Too Weak?
 [DONE] How Does Your Day Master Affect Life Decisions?
-[RUNNING] What Careers Fit Each Day Master Element?
+[DONE] What Careers Fit Each Day Master Element?
 [DONE] How Do Different Day Masters Handle Stress?
 [DONE] Which Day Masters Are Naturally Competitive?
 [DONE] Which Day Masters Are Naturally Creative?
@@ -145,9 +145,9 @@
 [DONE] How Can Bazi Reveal Hidden Personality Strengths?
 [DONE] What Bazi Traits Indicate Strong Determination?
 [DONE] How Do Elements Influence Confidence Levels?
-What Charts Suggest Strong Mental Resilience?
-Why Do Some People Adapt Quickly to Change?
-How Can Bazi Reveal Personal Motivation?
+[DONE] What Charts Suggest Strong Mental Resilience?
+[DONE] Why Do Some People Adapt Quickly to Change?
+[RUNNING] How Can Bazi Reveal Personal Motivation?
 What Happens When Elements Clash in a Bazi Chart?
 How Do Hidden Stems Affect Bazi Interpretation?
 What Are Special Bazi Chart Structures?
