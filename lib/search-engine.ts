@@ -1,25 +1,39 @@
-
 export function searchArticles(articles: any[], keyword: string) {
-  if (!keyword) return articles;
+  if (!keyword || keyword.trim() === "") {
+    return articles;
+  }
 
-  const k = keyword.toLowerCase();
+  const lower = keyword.toLowerCase();
 
-  return articles.filter(a => {
+  return articles.filter((a) => {
     const text = (
-      a.title +
+      (a.title || "") +
       " " +
       (a.description || "") +
       " " +
-      (a.keywords || []).join(" ")
+      (a.primaryKeyword || "")
     ).toLowerCase();
 
-    return text.includes(k);
+    return text.includes(lower);
   });
 }
 
-export function highlight(text: string, keyword: string) {
-  if (!keyword) return text;
+/* ================================
+关键词高亮（修复版）
+================================ */
 
-  const reg = new RegExp(`(${keyword})`, "gi");
-  return text.replace(reg, `<mark>$1</mark>`);
+export function highlight(text: string, keyword: string) {
+  if (!keyword || keyword.trim() === "") return text;
+
+  try {
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // 防止正则报错
+    const regex = new RegExp(`(${escaped})`, "gi");
+
+    return text.replace(
+      regex,
+      `<mark class="bg-yellow-200 px-1 rounded">`
+    );
+  } catch (e) {
+    return text; // 出错直接返回原文（防炸）
+  }
 }

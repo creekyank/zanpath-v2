@@ -153,11 +153,11 @@
 [DONE] What Are Special Bazi Chart Structures?
 [DONE] How Do Element Transformations Work in Bazi?
 [DONE] What Is the Meaning of Element Harmony in Bazi?
-How Do Element Conflicts Create Life Challenges?
-What Rare Bazi Chart Patterns Exist?
-How Do Experts Recognize Powerful Bazi Charts?
-What Makes a Bazi Chart Balanced?
-How Do Professional Bazi Readers Analyze Charts?
+[DONE] How Do Element Conflicts Create Life Challenges?
+[DONE] What Rare Bazi Chart Patterns Exist?
+[DONE] How Do Experts Recognize Powerful Bazi Charts?
+[DONE] What Makes a Bazi Chart Balanced?
+[RUNNING] How Do Professional Bazi Readers Analyze Charts?
 What Role Does Timing Play in Bazi Predictions?
 How Do Element Cycles Influence Life Events?
 What Happens When Key Elements Are Missing?
