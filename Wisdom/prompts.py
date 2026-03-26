@@ -15,19 +15,35 @@ Module: dream
 
 --------------------------------------------------
 
+ CRITICAL ANTI-DUPLICATION RULES (VERY IMPORTANT):
+
+1. The title "# {title}" must appear ONLY ONCE at the very top.
+2. NEVER repeat the title again anywhere in the article.
+3. DO NOT restate or paraphrase the full title in the introduction.
+4. DO NOT start with phrases like:
+   - "What does it mean to dream about..."
+   - "This dream means..."
+   - "Dreaming about X is..."
+5. The introduction must feel natural, NOT like explaining the title.
+6. DO NOT duplicate paragraphs or rephrase the same opening twice.
+7. DO NOT reuse the same sentence structure across sections.
+
+--------------------------------------------------
+
 STRICT OUTPUT RULES:
 
-1 Output MUST be pure Markdown
-2 NO HTML
-3 NO JSON
-4 NO code blocks
-5 NO links
-6 NO images
-7 NO metadata
-8 NO FAQ
-9 NO disclaimers
-10 Do NOT repeat the title explanation mechanically
-11 Avoid generic or vague interpretations
+1. Output MUST be pure Markdown
+2. NO HTML
+3. NO JSON
+4. NO code blocks
+5. NO links
+6. NO images
+7. NO metadata
+8. NO FAQ
+9. NO disclaimers
+10. Avoid repetition completely
+11. Avoid generic explanations
+12. Each section must provide NEW information
 
 --------------------------------------------------
 
@@ -35,33 +51,64 @@ ARTICLE STRUCTURE:
 
 # {title}
 
-Write a natural introduction explaining why people have this dream and why it matters.
+Write a NATURAL introduction.
+
+ Start with a feeling, scenario, or psychological observation  
+ DO NOT define the dream immediately  
+ DO NOT restate the title  
+ Make it immersive and human  
+
+Example style (DO NOT copy):
+"A sudden moment of panic in a dream can feel incredibly real..."
+
+--------------------------------------------------
 
 ## What Does This Dream Mean?
 
-Explain the most common interpretation clearly and directly.
+ Give a direct but concise interpretation  
+ Avoid repeating the introduction  
+ Focus on symbolic meaning  
+
+--------------------------------------------------
 
 ## Symbolism in Traditional Chinese Culture
 
-Explain meanings using:
+Explain using:
+
 - Zhougong dream interpretation tradition
 - Cultural symbolism (fortune, warning, transformation)
 - Yin-Yang balance if relevant
 
+ Avoid superstition tone  
+ Keep it cultural and symbolic  
+
+--------------------------------------------------
+
 ## Psychological Interpretation
 
-Explain modern meaning:
-- Emotions (fear, anxiety, desire)
+Explain from modern perspective:
+
+- Emotions (fear, anxiety, insecurity, desire)
 - Subconscious signals
-- Life situations (stress, relationships, change)
+- Real-life triggers (stress, relationships, change)
+
+ Make it relatable  
+ Avoid repeating earlier explanations  
+
+--------------------------------------------------
 
 ## Common Variations of This Dream
 
-List 3–5 variations and explain differences.
+List 3–5 variations.
 
-Example format:
-- Dreaming of X → meaning
-- Dreaming of Y → meaning
+Format:
+- Dreaming of X → Meaning
+- Dreaming of Y → Meaning
+
+ Each variation MUST be unique  
+ Avoid repeating same explanation  
+
+--------------------------------------------------
 
 ## Insights
 
@@ -70,21 +117,36 @@ Write 3–5 bullet points.
 Each MUST:
 - Be a full sentence
 - At least 12 words
-- Give practical understanding (NOT prediction)
+- Provide practical psychological or symbolic insight
+- NOT be repetitive
+
+--------------------------------------------------
 
 ## Conclusion
 
-Summarize the meaning and how to reflect on it in real life.
+ Summarize naturally  
+ Focus on reflection and awareness  
+ DO NOT repeat earlier sentences  
 
 --------------------------------------------------
 
 CONTENT GUIDELINES:
 
 - 800–1300 words
-- Clear and human tone
+- Clear, human tone
+- Short paragraphs
 - Avoid fortune-telling or guarantees
-- Focus on interpretation, not prediction
-- Make it relatable (real-life feelings)
+- Focus on interpretation, NOT prediction
+- Avoid redundancy across sections
+
+--------------------------------------------------
+
+FINAL CHECK BEFORE OUTPUT:
+
+- Title appears ONLY once 
+- No repeated intro sentences 
+- No "What does it mean to dream..." opening 
+- No duplicated paragraphs 
 
 --------------------------------------------------
 
@@ -97,41 +159,35 @@ Return ONLY Markdown content.
 # Agent EN SEO：SEO 元数据生成（Llama3 强力约束版）
 # ============================================================
 def agent_en_seo(title, module):
-    clean_subject = title.lower().replace("why do people dream about", "").replace("what does it mean to dream about", "").replace("dreaming about", "").replace("why do i dream about", "").strip("? ")
-    
+    clean_subject = title.lower()\
+        .replace("what does it mean to dream about", "")\
+        .replace("dreaming about", "")\
+        .replace("why do i dream about", "")\
+        .strip("? ")
+
     return f"""You are a Senior SEO Specialist focusing on Dream Interpretation content.
 
 Article Title: "{title}"
-Core Subject to use in keywords: "{clean_subject}"
+Core Subject: "{clean_subject}"
 
 --------------------------------------------------
 STRICT CONTENT RULES:
 
-1. NO EMPTY FIELDS.
-2. Keywords MUST match real user search intent (dream meaning queries).
-3. Focus on "what does this dream mean" style queries.
-4. metaDescription MUST be between 120–140 characters (Crucial: leave space for future Spanish translation).
-5. IMPORTANT: Use ONLY the core subject "{clean_subject}" in keywords, meta titles, and FAQs. Do NOT include the full question title in these fields.
---------------------------------------------------
-KEYWORD STRATEGY:
-
-- Use patterns like:
-  - "dream meaning"
-  - "what does it mean when you dream about {clean_subject}"
-  - "dream interpretation {clean_subject}"
-  - "is dreaming about {clean_subject} good or bad"
+1. NO EMPTY FIELDS
+2. Keywords MUST match real user search intent
+3. metaDescription MUST be 120–140 chars
+4. IMPORTANT: Do NOT include SEO phrases like "SEO optimized" anywhere
 
 --------------------------------------------------
-JSON STRUCTURE:
 
 {{
-  "metaTitle": "Dream Meaning of {clean_subject.capitalize()} (SEO Optimized Interpretation)",
-  "metaDescription": "Discover the hidden meaning of {clean_subject} dreams. Learn how to interpret your subconscious thoughts and emotions with our expert analysis. Analyze now.",
+  "metaTitle": "Dream Meaning of {clean_subject.capitalize()} (Complete Interpretation Guide)",
+  "metaDescription": "Discover the meaning of {clean_subject} dreams. Explore symbolism, psychology, and hidden messages behind your dreams.",
   "primaryKeyword": "dream about {clean_subject} meaning",
   "secondaryKeywords": [
     "what does it mean to dream about {clean_subject}",
     "{clean_subject} dream interpretation",
-    "is dreaming about {clean_subject} good or bad"
+    "dream meaning {clean_subject}"
   ],
   "longTailKeywords": [
     "why do I dream about {clean_subject}",
@@ -144,21 +200,21 @@ JSON STRUCTURE:
     "dream analysis"
   ],
   "keywords": ["dream meaning", "dream interpretation", "{clean_subject}"],
-  "summary": "This article explains the meaning of {clean_subject} dreams using both traditional symbolism and modern psychology.",
-  "featuredSnippetAnswer": "Dreaming about {clean_subject} usually reflects emotional states, subconscious thoughts, or symbolic transformations depending on the context of the dream.",
+  "summary": "This article explains {clean_subject} dream meanings using symbolism and psychology.",
+  "featuredSnippetAnswer": "Dreaming about {clean_subject} reflects subconscious emotions and symbolic meanings connected to real-life situations.",
   "ctaText": "Analyze your dream with ZanPath AI",
   "faq": [
     {{
       "question": "What does it mean to dream about {clean_subject}?",
-      "answer": "It often reflects subconscious emotions, symbolic meanings, or life situations related to the dream context."
+      "answer": "It reflects subconscious emotions, symbolic meanings, or life situations."
     }},
     {{
       "question": "Is dreaming about {clean_subject} good or bad?",
-      "answer": "It depends on the details of the dream, as symbols can have both positive and negative meanings."
+      "answer": "It depends on context and emotional tone."
     }},
     {{
       "question": "Why do I keep dreaming about {clean_subject}?",
-      "answer": "Recurring dreams usually indicate unresolved emotions or repeated patterns in your waking life."
+      "answer": "Recurring dreams often indicate unresolved emotions or stress."
     }}
   ]
 }}
@@ -203,12 +259,15 @@ def agent6(title, article):
 Context: Chinese Metaphysics.
 
 STRICT RULES:
-1. PROFESSIONAL Spanish (formal tone)
-2. KEEP structure (#, ##, -)
-3. TRANSLATE title correctly
-4. DO NOT repeat the TITLE inside the [CONTENT] section. 
-5. The [CONTENT] should start directly with the translated introduction paragraph, NO H1 header.
-"6. If the TITLE is a question, translate it into a natural 'What does it mean to dream about [Subject]' format in Spanish."
+1. Translate TITLE separately
+2. DO NOT include the title inside CONTENT
+3. DO NOT repeat the introduction paragraph
+4. DO NOT duplicate any paragraph
+5. CONTENT must start directly from the introduction
+6. NEVER include phrases like:
+   - "Interpretación optimizada para SEO"
+   - "SEO"
+7. Keep structure (#, ##, -)
 
 CRITICAL TERMINOLOGY RULES:
 - "Chinese Metaphysics" → "metafísica china"
@@ -217,14 +276,15 @@ CRITICAL TERMINOLOGY RULES:
 -"Symbolism" → "Simbolismo"
 - NEVER use "metabolítica"
 
+--------------------------------------------------
 OUTPUT FORMAT:
 
 [TITLE]
 (Only the translated Spanish title here)
 
 [CONTENT]
-(Start directly with the translated body text/introduction. Do NOT include the title or # header here.)
-
+(Start directly with the translated body text/introduction. NO title, NO repetition or # header here.)
+--------------------------------------------------
 TITLE: {title}
 
 ARTICLE:
