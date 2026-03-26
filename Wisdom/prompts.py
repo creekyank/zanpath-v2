@@ -97,65 +97,67 @@ Return ONLY Markdown content.
 # Agent EN SEO：SEO 元数据生成（Llama3 强力约束版）
 # ============================================================
 def agent_en_seo(title, module):
+    clean_subject = title.lower().replace("why do people dream about", "").replace("what does it mean to dream about", "").replace("dreaming about", "").replace("why do i dream about", "").strip("? ")
+    
     return f"""You are a Senior SEO Specialist focusing on Dream Interpretation content.
 
-Generate full metadata for:
-"{title}"
+Article Title: "{title}"
+Core Subject to use in keywords: "{clean_subject}"
 
 --------------------------------------------------
 STRICT CONTENT RULES:
 
-1. NO EMPTY FIELDS
-2. Keywords MUST match real user search intent (dream meaning queries)
-3. Focus on "what does this dream mean" style queries
-4. metaDescription MUST be highly clickable (140–160 chars)
-
+1. NO EMPTY FIELDS.
+2. Keywords MUST match real user search intent (dream meaning queries).
+3. Focus on "what does this dream mean" style queries.
+4. metaDescription MUST be between 120–140 characters (Crucial: leave space for future Spanish translation).
+5. IMPORTANT: Use ONLY the core subject "{clean_subject}" in keywords, meta titles, and FAQs. Do NOT include the full question title in these fields.
 --------------------------------------------------
 KEYWORD STRATEGY:
 
 - Use patterns like:
   - "dream meaning"
-  - "what does it mean when you dream about X"
-  - "dream interpretation X"
-  - "is dreaming about X good or bad"
+  - "what does it mean when you dream about {clean_subject}"
+  - "dream interpretation {clean_subject}"
+  - "is dreaming about {clean_subject} good or bad"
 
 --------------------------------------------------
 JSON STRUCTURE:
 
 {{
-  "metaTitle": "Dream meaning of {title} (SEO optimized)",
-  "metaDescription": "A professional SEO summary between 140-155 characters. Do NOT just copy the title into the sentence; rephrase it naturally so it provides value to the searcher. End with a call to action.",
-  "primaryKeyword": "dream about {title} meaning",
+  "metaTitle": "Dream Meaning of {clean_subject.capitalize()} (SEO Optimized Interpretation)",
+  "metaDescription": "Discover the hidden meaning of {clean_subject} dreams. Learn how to interpret your subconscious thoughts and emotions with our expert analysis. Analyze now.",
+  "primaryKeyword": "dream about {clean_subject} meaning",
   "secondaryKeywords": [
-    "what does it mean to dream about {title} ",
-    "{title} dream interpretation",
-    "is dreaming about {title} good or bad"
+    "what does it mean to dream about {clean_subject}",
+    "{clean_subject} dream interpretation",
+    "is dreaming about {clean_subject} good or bad"
   ],
   "longTailKeywords": [
-    "why do I dream about {title} ",
-    "spiritual meaning of {title} in dreams",
-    "psychological meaning of dreaming about {title} "
+    "why do I dream about {clean_subject}",
+    "spiritual meaning of {clean_subject} in dreams",
+    "psychological meaning of dreaming about {clean_subject}"
   ],
   "semanticKeywords": [
     "dream symbolism",
     "subconscious mind",
     "dream analysis"
   ],
-  "keywords": ["dream meaning", "dream interpretation", "{title}"],
-  "summary": "This article explains the meaning of {title} dreams using both traditional symbolism and modern psychology.",
-  "featuredSnippetAnswer": "Dreaming about {title} usually reflects emotional states, subconscious thoughts, or symbolic transformations depending on context.",
+  "keywords": ["dream meaning", "dream interpretation", "{clean_subject}"],
+  "summary": "This article explains the meaning of {clean_subject} dreams using both traditional symbolism and modern psychology.",
+  "featuredSnippetAnswer": "Dreaming about {clean_subject} usually reflects emotional states, subconscious thoughts, or symbolic transformations depending on the context of the dream.",
   "ctaText": "Analyze your dream with ZanPath AI",
   "faq": [
     {{
-      "question": "What does it mean to dream about {title} ?",
+      "question": "What does it mean to dream about {clean_subject}?",
       "answer": "It often reflects subconscious emotions, symbolic meanings, or life situations related to the dream context."
     }},
     {{
-      "question": "Is dreaming about {title} good or bad?",
+      "question": "Is dreaming about {clean_subject} good or bad?",
       "answer": "It depends on the details of the dream, as symbols can have both positive and negative meanings."
     }},
     {{
-      "question": "Why do I keep dreaming about {title} ?",
+      "question": "Why do I keep dreaming about {clean_subject}?",
       "answer": "Recurring dreams usually indicate unresolved emotions or repeated patterns in your waking life."
     }}
   ]
@@ -206,6 +208,7 @@ STRICT RULES:
 3. TRANSLATE title correctly
 4. DO NOT repeat the TITLE inside the [CONTENT] section. 
 5. The [CONTENT] should start directly with the translated introduction paragraph, NO H1 header.
+"6. If the TITLE is a question, translate it into a natural 'What does it mean to dream about [Subject]' format in Spanish."
 
 CRITICAL TERMINOLOGY RULES:
 - "Chinese Metaphysics" → "metafísica china"
@@ -240,6 +243,8 @@ STRICT RULES:
 3. Ensure 'metaTitle' and 'metaDescription' remain within SEO length limits in Spanish.
 4. Output valid JSON ONLY. No explanation.
 5. Pay attention to Spanish gender agreement, e.g., 'análisis' is masculine (use 'nuestro análisis', not 'nuestra').
+"6. CRITICAL: The Spanish 'metaDescription' MUST NOT exceed 155 characters. Shorten the sentence if necessary to fit."
+"7. Ensure consistency: If you correct a gender agreement in 'metaDescription', apply the exact same correction to 'structuredData' fields."
 
 JSON:
 {seo}
