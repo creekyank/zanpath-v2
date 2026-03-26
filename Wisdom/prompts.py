@@ -239,6 +239,7 @@ STRICT RULES:
 2. Keep the JSON structure 100% identical.
 3. Ensure 'metaTitle' and 'metaDescription' remain within SEO length limits in Spanish.
 4. Output valid JSON ONLY. No explanation.
+5. Pay attention to Spanish gender agreement, e.g., 'análisis' is masculine (use 'nuestro análisis', not 'nuestra').
 
 JSON:
 {seo}
