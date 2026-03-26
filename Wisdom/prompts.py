@@ -2,19 +2,16 @@
 # Agent EN：英文文章（DeepSeek）
 # =========================
 def agent_en_article(title, module):
-    return f"""You are an expert in Chinese metaphysics.
+    return f"""You are an expert in dream interpretation combining:
 
-Your expertise includes:
-- Bazi (Four Pillars)
-- Feng Shui
-- Face Reading
-- Chinese Naming
-- Dream Interpretation
+- Traditional Chinese dream symbolism (Zhougong Dream Dictionary)
+- Cultural symbolism
+- Modern psychology (subconscious, emotions, stress)
 
 Write a high-quality educational article.
 
 Title: {title}
-Module: {module}
+Module: dream
 
 --------------------------------------------------
 
@@ -29,8 +26,8 @@ STRICT OUTPUT RULES:
 7 NO metadata
 8 NO FAQ
 9 NO disclaimers
-10 Do NOT explain the title at the beginning
-11 Avoid repetition
+10 Do NOT repeat the title explanation mechanically
+11 Avoid generic or vague interpretations
 
 --------------------------------------------------
 
@@ -38,53 +35,56 @@ ARTICLE STRUCTURE:
 
 # {title}
 
-Write a clear introduction explaining the topic.
+Write a natural introduction explaining why people have this dream and why it matters.
 
-## Core Concept
+## What Does This Dream Mean?
 
-Explain the concept with simple examples.
+Explain the most common interpretation clearly and directly.
 
-## Traditional Meaning
+## Symbolism in Traditional Chinese Culture
 
-Explain from Chinese metaphysics perspective:
+Explain meanings using:
+- Zhougong dream interpretation tradition
+- Cultural symbolism (fortune, warning, transformation)
+- Yin-Yang balance if relevant
 
-- Yin-Yang
-- Five Elements
-- Cultural background
+## Psychological Interpretation
 
-## Modern Interpretation
+Explain modern meaning:
+- Emotions (fear, anxiety, desire)
+- Subconscious signals
+- Life situations (stress, relationships, change)
 
-Explain how modern people understand it:
+## Common Variations of This Dream
 
-- Psychological perspective
-- Cultural symbolism
-- Common interpretations
+List 3–5 variations and explain differences.
+
+Example format:
+- Dreaming of X → meaning
+- Dreaming of Y → meaning
 
 ## Insights
 
 Write 3–5 bullet points.
 
-Each bullet MUST:
-- Be a complete sentence
-- Be at least 12 words
-- Provide a concrete insight
-
-DO NOT leave this section empty.
+Each MUST:
+- Be a full sentence
+- At least 12 words
+- Give practical understanding (NOT prediction)
 
 ## Conclusion
 
-Summarize clearly.
+Summarize the meaning and how to reflect on it in real life.
 
 --------------------------------------------------
 
 CONTENT GUIDELINES:
 
-- 800–1200 words
-- Educational tone
-- Clear structure
-- Short paragraphs
-- Avoid fortune-telling conclusions
-- Focus on explanation, not prediction
+- 800–1300 words
+- Clear and human tone
+- Avoid fortune-telling or guarantees
+- Focus on interpretation, not prediction
+- Make it relatable (real-life feelings)
 
 --------------------------------------------------
 
@@ -97,65 +97,98 @@ Return ONLY Markdown content.
 # Agent EN SEO：SEO 元数据生成（Llama3 强力约束版）
 # ============================================================
 def agent_en_seo(title, module):
-    return f"""You are a Senior SEO Specialist. Generate full metadata for the article "{title}".
+    return f"""You are a Senior SEO Specialist focusing on Dream Interpretation content.
+
+Generate full metadata for:
+"{title}"
 
 --------------------------------------------------
 STRICT CONTENT RULES:
-1. NO EMPTY FIELDS: All arrays MUST contain at least 3-5 high-quality items.
-2. RELEVANCE: Keywords must be derived directly from "{title}". 
-3. DO NOT use generic "Bazi guide" text. Focus strictly on the specific topic.
-4. metaDescription: Must be a compelling click-bait style summary (140-160 chars).
+
+1. NO EMPTY FIELDS
+2. Keywords MUST match real user search intent (dream meaning queries)
+3. Focus on "what does this dream mean" style queries
+4. metaDescription MUST be highly clickable (140–160 chars)
+
+--------------------------------------------------
+KEYWORD STRATEGY:
+
+- Use patterns like:
+  - "dream meaning"
+  - "what does it mean when you dream about X"
+  - "dream interpretation X"
+  - "is dreaming about X good or bad"
 
 --------------------------------------------------
 JSON STRUCTURE:
+
 {{
-  "metaTitle": "SEO title with primary keyword (max 60 chars)",
-  "metaDescription": "Compelling summary for {title}",
-  "primaryKeyword": "The main focus keyword",
-  "secondaryKeywords": ["Extracted keyword 1", "Extracted keyword 2", "Extracted keyword 3"],
-  "longTailKeywords": ["Question about {title}?", "Specific phrase 2", "Specific phrase 3"],
-  "semanticKeywords": ["Related concept 1", "Related concept 2", "Related concept 3"],
-  "keywords": ["Bazi", "Metaphysics", "{title}"],
-  "summary": "2-3 sentences summarizing the core value of the article",
-  "featuredSnippetAnswer": "A direct 40-50 word answer to the question in the title",
-  "ctaText": "Discover your destiny with ZanPath AI",
+  "metaTitle": "Dream meaning of {title} (SEO optimized)",
+  "metaDescription": "What does it mean to dream about {title}? Discover the secret Zhougong symbolism and psychological analysis of {title} in our deep dive guide.",
+  "primaryKeyword": "dream about {title} meaning",
+  "secondaryKeywords": [
+    "what does it mean to dream about {title} ",
+    "{title} dream interpretation",
+    "is dreaming about {title}  good or bad"
+  ],
+  "longTailKeywords": [
+    "why do I dream about {title} ",
+    "spiritual meaning of {title}  in dreams",
+    "psychological meaning of dreaming about {title} "
+  ],
+  "semanticKeywords": [
+    "dream symbolism",
+    "subconscious mind",
+    "dream analysis"
+  ],
+  "keywords": ["dream meaning", "dream interpretation", "{title}"],
+  "summary": "This article explains the meaning of {title}  dreams using both traditional symbolism and modern psychology.",
+  "featuredSnippetAnswer": "Dreaming about {title}  usually reflects emotional states, subconscious thoughts, or symbolic transformations depending on context.",
+  "ctaText": "Analyze your dream with ZanPath AI",
   "faq": [
-    {{ "question": "Question specific to {title}?", "answer": "Detailed answer." }},
-    {{ "question": "Another specific question?", "answer": "Detailed answer." }},
-    {{ "question": "Why does {title} matter?", "answer": "Detailed answer." }}
+    {{
+      "question": "What does it mean to dream about {title} ?",
+      "answer": "It often reflects subconscious emotions, symbolic meanings, or life situations related to the dream context."
+    }},
+    {{
+      "question": "Is dreaming about {title}  good or bad?",
+      "answer": "It depends on the details of the dream, as symbols can have both positive and negative meanings."
+    }},
+    {{
+      "question": "Why do I keep dreaming about {title} ?",
+      "answer": "Recurring dreams usually indicate unresolved emotions or repeated patterns in your waking life."
+    }}
   ]
 }}
 
 --------------------------------------------------
 OUTPUT RULE:
+
 Return ONLY valid JSON. No Markdown markers. No preamble.
 """
-
 # =========================
 # Agent3 图片关键词（优化：更具视觉感）
 # =========================
 def agent3(title):
-    return f"""Generate 10 visual, concrete image search keywords for stock photo sites.
+     return f"""Generate 10 visual image keywords for dream-related content.
 
 Article title: {title}
 
 RULES:
-- OUTPUT ONLY the keywords.
-- NO introductory text, NO conversational fillers (e.g., "Here are...").
-- NO numbering (NO 1. 2. 3.).
-- MUST be visually describable (real-world scenes or objects).
-- Avoid abstract words like energy, metaphysics, destiny.
-- Use nature, objects, or environments.
-- English only.
-- One keyword per line.
+- MUST be visually concrete
+- Include mood / atmosphere
+- NO abstract words (like destiny)
+- English only
+- One per line
 
-STYLE HINTS:
-- mountain mist, flowing water, ink painting.
+STYLE:
+- night, surreal, symbolic, emotional
 
 Example:
-misty mountain landscape zen
-zen meditation room
-chinese ink painting minimal
+foggy forest night
+person sleeping moonlight
+surreal floating objects
+dark ocean dreamscape
 """
 
 # =========================
@@ -174,8 +207,9 @@ STRICT RULES:
 
 CRITICAL TERMINOLOGY RULES:
 - "Chinese Metaphysics" → "metafísica china"
-- "Day Master" → "Maestro del Día"
-- "chart" → "carta"
+-"Dream Interpretation" → "Interpretación de los sueños"
+-"Subconscious" → "Subconsciente"
+-"Symbolism" → "Simbolismo"
 - NEVER use "metabolítica"
 
 OUTPUT FORMAT:
