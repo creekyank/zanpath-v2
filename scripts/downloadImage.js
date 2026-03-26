@@ -39,7 +39,7 @@ const UNSPLASH_KEY = process.env.UNSPLASH_KEY;
 const PIXABAY_KEY = process.env.PIXABAY_KEY;
 
 const AXIOS_INSTANCE = axios.create({
-  timeout: 40 * 1000,
+  timeout: 15 * 1000,
   headers: {
     "User-Agent": "Mozilla/5.0"
   }
@@ -212,43 +212,69 @@ async function searchPexels(keyword) {
 /* ------------------------- */
 
 async function searchUnsplash(keyword) {
-
   if (!UNSPLASH_KEY) return null;
 
-  const url =
-    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=15`;
+  // 1. 随机生成 1 到 20 之间的页码
+  const randomPage = Math.floor(Math.random() * 20) + 1;
 
-    try {
-      const res = await AXIOS_INSTANCE.get(url, { 
-        headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` }
+  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=15&page=${randomPage}`;
+
+  try {
+    const res = await AXIOS_INSTANCE.get(url, {
+      headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` }
     });
-        const data = res.data;
-        if (!data.results) return null;
-    
-        let best = null;
-        let bestScore = -999;
-        
-        for (const p of data.results) {
-          if (!isGoodQuality(p.width, p.height)) continue;
-        
-          const s = scoreImage(
-            { width: p.width, height: p.height },
-            keyword + " " + (p.alt_description || "")
-          );
-        
-          if (s > bestScore) {
-            bestScore = s;
-            best = p.urls.regular;
-          }
-        }
-        
-        return best;
-      } catch (e) {
-        console.error(`⚠️ Unsplash 接口连接超时或重置`);
-        return null; // 触发 findImage 尝试下一个 API
-      }
-      return null;
 
+    const data = res.data;
+
+    // 2. 如果这一页没结果（有些冷门词可能没20页），尝试回退到第 1 页
+    if (!data.results || data.results.length === 0) {
+      if (randomPage === 1) return null; // 如果第1页也没图，彻底返回null
+      console.log(`⚠️ 第 ${randomPage} 页无结果，回退至第 1 页: ${keyword}`);
+      // 这里的逻辑可以改为直接请求第1页，避免死循环
+      const fallbackRes = await AXIOS_INSTANCE.get(
+        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keyword)}&per_page=15&page=1`,
+        { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } }
+      );
+      if (!fallbackRes.data.results) return null;
+      data.results = fallbackRes.data.results;
+    }
+
+    let best = null;
+    let bestScore = -999;
+
+    // 3. 【核心优化】打乱本页拿到的 15 张图的顺序
+    // 这样即使多次随机到同一页，也不会总是挑中分最高的那同一张
+    const shuffledResults = data.results.sort(() => Math.random() - 0.5);
+
+    for (const p of shuffledResults) {
+      if (!isGoodQuality(p.width, p.height)) continue;
+
+      // 4. 评分逻辑
+      const s = scoreImage(
+        { width: p.width, height: p.height },
+        keyword + " " + (p.alt_description || "")
+      );
+
+      if (s > bestScore) {
+        bestScore = s;
+        best = p.urls.regular;
+      }
+    }
+
+    if (best) {
+      console.log(`📡 Unsplash 命中 (第 ${randomPage} 页随机挑选)`);
+    }
+    
+    return best;
+
+  } catch (e) {
+    if (e.response && e.response.status === 403) {
+      console.error(`❌ Unsplash API 额度耗尽 (403)`);
+    } else {
+      console.error(`⚠️ Unsplash 接口故障: ${e.message}`);
+    }
+    return null;
+  }
 }
 
 /* ------------------------- */
@@ -384,12 +410,12 @@ async function findImage(keyword, module = "default") {
   // API 优先级
   // =========================
   const priorities = {
-    bazi: [searchPixabay, searchWikimedia, searchUnsplash, searchPexels, searchWallhaven],
+    bazi: [searchUnsplash, searchPixabay, searchWikimedia, searchPexels, searchWallhaven],
     fengshui: [searchUnsplash, searchWallhaven, searchPexels, searchWikimedia, searchPixabay],
-    naming: [searchPixabay, searchPexels, searchUnsplash, searchWallhaven, searchWikimedia],
-    dream: [searchPixabay, searchUnsplash, searchWallhaven, searchPexels, searchWikimedia],
-    face: [searchPixabay, searchWallhaven, searchUnsplash, searchPexels, searchWikimedia], // ✅ 已去人像优先
-    default: [searchPexels, searchUnsplash, searchWallhaven, searchPixabay, searchWikimedia]
+    naming: [searchUnsplash, searchPixabay, searchPexels, searchWallhaven, searchWikimedia],
+    dream: [searchUnsplash, searchPixabay, searchWallhaven, searchPexels, searchWikimedia],
+    face: [searchUnsplash, searchPixabay, searchWallhaven, searchPexels, searchWikimedia], // ✅ 已去人像优先
+    default: [searchUnsplash, searchPexels, searchWallhaven, searchPixabay, searchWikimedia]
   };
 
   const searchOrder = priorities[module] || priorities.default;
