@@ -239,5 +239,5 @@
 [DONE] What is the difference between Bazi and Chinese zodiac
 [DONE] When will I get married according to Bazi
 [DONE] Which Bazi elements attract financial success
-Why do some people attract wealth more easily than others
-Why do some people experience extreme ups and downs in life
+[DONE] Why do some people attract wealth more easily than others
+[DONE] Why do some people experience extreme ups and downs in life
