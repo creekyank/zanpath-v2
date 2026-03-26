@@ -204,6 +204,8 @@ STRICT RULES:
 1. PROFESSIONAL Spanish (formal tone)
 2. KEEP structure (#, ##, -)
 3. TRANSLATE title correctly
+4. DO NOT repeat the TITLE inside the [CONTENT] section. 
+5. The [CONTENT] should start directly with the translated introduction paragraph, NO H1 header.
 
 CRITICAL TERMINOLOGY RULES:
 - "Chinese Metaphysics" → "metafísica china"
@@ -215,10 +217,10 @@ CRITICAL TERMINOLOGY RULES:
 OUTPUT FORMAT:
 
 [TITLE]
-Spanish title
+(Only the translated Spanish title here)
 
 [CONTENT]
-Spanish content
+(Start directly with the translated body text/introduction. Do NOT include the title or # header here.)
 
 TITLE: {title}
 
