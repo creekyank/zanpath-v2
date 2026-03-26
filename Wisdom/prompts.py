@@ -124,16 +124,16 @@ JSON STRUCTURE:
 
 {{
   "metaTitle": "Dream meaning of {title} (SEO optimized)",
-  "metaDescription": "What does it mean to dream about {title}? Discover the secret Zhougong symbolism and psychological analysis of {title} in our deep dive guide.",
+  "metaDescription": "A professional SEO summary between 140-155 characters. Do NOT just copy the title into the sentence; rephrase it naturally so it provides value to the searcher. End with a call to action.",
   "primaryKeyword": "dream about {title} meaning",
   "secondaryKeywords": [
     "what does it mean to dream about {title} ",
     "{title} dream interpretation",
-    "is dreaming about {title}  good or bad"
+    "is dreaming about {title} good or bad"
   ],
   "longTailKeywords": [
     "why do I dream about {title} ",
-    "spiritual meaning of {title}  in dreams",
+    "spiritual meaning of {title} in dreams",
     "psychological meaning of dreaming about {title} "
   ],
   "semanticKeywords": [
@@ -142,8 +142,8 @@ JSON STRUCTURE:
     "dream analysis"
   ],
   "keywords": ["dream meaning", "dream interpretation", "{title}"],
-  "summary": "This article explains the meaning of {title}  dreams using both traditional symbolism and modern psychology.",
-  "featuredSnippetAnswer": "Dreaming about {title}  usually reflects emotional states, subconscious thoughts, or symbolic transformations depending on context.",
+  "summary": "This article explains the meaning of {title} dreams using both traditional symbolism and modern psychology.",
+  "featuredSnippetAnswer": "Dreaming about {title} usually reflects emotional states, subconscious thoughts, or symbolic transformations depending on context.",
   "ctaText": "Analyze your dream with ZanPath AI",
   "faq": [
     {{
@@ -151,7 +151,7 @@ JSON STRUCTURE:
       "answer": "It often reflects subconscious emotions, symbolic meanings, or life situations related to the dream context."
     }},
     {{
-      "question": "Is dreaming about {title}  good or bad?",
+      "question": "Is dreaming about {title} good or bad?",
       "answer": "It depends on the details of the dream, as symbols can have both positive and negative meanings."
     }},
     {{
