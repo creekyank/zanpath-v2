@@ -215,13 +215,13 @@
 [DONE] Can Bazi show if you will become rich
 [DONE] Can your element type affect your career success
 [DONE] How accurate is Bazi for predicting life events
-How does Bazi predict marriage compatibility
-How does Bazi reveal your wealth potential
-How does your birth time influence your personality in Bazi
-How do I find my day master in Bazi
-How do I read my own Bazi chart step by step
-How do luck pillars affect your income
-How to analyze relationship luck in Bazi
+[DONE] How does Bazi predict marriage compatibility
+[DONE] How does Bazi reveal your wealth potential
+[DONE] How does your birth time influence your personality in Bazi
+[DONE] How do I find my day master in Bazi
+[DONE] How do I read my own Bazi chart step by step
+[DONE] How do luck pillars affect your income
+[DONE] How to analyze relationship luck in Bazi
 How to identify business talent in a Bazi chart
 How to know if you have a strong or weak day master
 Is Bazi based on solar or lunar calendar

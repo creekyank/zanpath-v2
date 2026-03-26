@@ -865,5 +865,46 @@
       "https://img.zanpath.com/bazi/how-accurate-is-bazi-for-predicting-life-events-1.webp",
       "https://img.zanpath.com/bazi/how-accurate-is-bazi-for-predicting-life-events-2.webp"
     ]
+  },
+  "how-does-bazi-predict-marriage-compatibility": {
+    "module": "bazi",
+    "images": [
+      "https://img.zanpath.com/bazi/how-does-bazi-predict-marriage-compatibility-1.webp",
+      "https://img.zanpath.com/bazi/how-does-bazi-predict-marriage-compatibility-2.webp"
+    ]
+  },
+  "how-does-bazi-reveal-your-wealth-potential": {
+    "module": "bazi",
+    "images": [
+      "https://img.zanpath.com/bazi/how-does-bazi-reveal-your-wealth-potential-1.webp",
+      "https://img.zanpath.com/bazi/how-does-bazi-reveal-your-wealth-potential-2.webp"
+    ]
+  },
+  "how-does-your-birth-time-influence-your-personality-in-bazi": {
+    "module": "bazi",
+    "images": [
+      "https://img.zanpath.com/bazi/how-does-your-birth-time-influence-your-personality-in-bazi-1.webp"
+    ]
+  },
+  "how-do-i-find-my-day-master-in-bazi": {
+    "module": "bazi",
+    "images": [
+      "https://img.zanpath.com/bazi/how-do-i-find-my-day-master-in-bazi-1.webp",
+      "https://img.zanpath.com/bazi/how-do-i-find-my-day-master-in-bazi-2.webp"
+    ]
+  },
+  "how-do-i-read-my-own-bazi-chart-step-by-step": {
+    "module": "bazi",
+    "images": [
+      "https://img.zanpath.com/bazi/how-do-i-read-my-own-bazi-chart-step-by-step-1.webp",
+      "https://img.zanpath.com/bazi/how-do-i-read-my-own-bazi-chart-step-by-step-2.webp"
+    ]
+  },
+  "how-do-luck-pillars-affect-your-income": {
+    "module": "bazi",
+    "images": [
+      "https://img.zanpath.com/bazi/how-do-luck-pillars-affect-your-income-1.webp",
+      "https://img.zanpath.com/bazi/how-do-luck-pillars-affect-your-income-2.webp"
+    ]
   }
 }
