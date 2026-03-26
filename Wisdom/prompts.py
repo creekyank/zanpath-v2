@@ -243,8 +243,11 @@ STRICT RULES:
 3. Ensure 'metaTitle' and 'metaDescription' remain within SEO length limits in Spanish.
 4. Output valid JSON ONLY. No explanation.
 5. Pay attention to Spanish gender agreement, e.g., 'análisis' is masculine (use 'nuestro análisis', not 'nuestra').
-"6. CRITICAL: The Spanish 'metaDescription' MUST NOT exceed 155 characters. Shorten the sentence if necessary to fit."
-"7. Ensure consistency: If you correct a gender agreement in 'metaDescription', apply the exact same correction to 'structuredData' fields."
+6. CRITICAL LENGTH RULE: 
+   - The Spanish 'metaDescription' MUST be between 140 and 155 characters.
+   - If the translation exceeds 155, do NOT just cut it; instead, REWRITE it to be shorter while keeping the meaning intact.
+   - NEVER leave trailing dots or incomplete words at the end.
+7. Ensure consistency: If you correct a gender agreement in 'metaDescription', apply the exact same correction to 'structuredData' fields.
 
 JSON:
 {seo}
