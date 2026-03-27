@@ -32,7 +32,7 @@ STRICT OUTPUT RULES:
 9 NO disclaimers
 10 Do NOT explain the title at the beginning
 11 Avoid repetition
-
+12 NO Chinese characters (Strictly ONLY English)
 --------------------------------------------------
 
 ARTICLE STRUCTURE:
