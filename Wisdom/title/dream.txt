@@ -11,13 +11,13 @@
 [DONE] Why Do I Dream About My Ex Partner?
 [DONE] What Does Dreaming About Gold Mean?
 [DONE] Why Do I Dream About Being Lost?
-What Does Dreaming About the Ocean Symbolize?
-Why Do I Dream About Being Unable to Speak?
-What Does Dreaming About Birds Mean?
-Why Do I Dream About Missing a Flight?
-What Does Dreaming About Mountains Mean?
-Why Do I Dream About Running Away?
-What Does Dreaming About a Storm Symbolize?
+[DONE] What Does Dreaming About the Ocean Symbolize?
+[DONE] Why Do I Dream About Being Unable to Speak?
+[DONE] What Does Dreaming About Birds Mean?
+[DONE] Why Do I Dream About Missing a Flight?
+[DONE] What Does Dreaming About Mountains Mean?
+[DONE] Why Do I Dream About Running Away?
+[RUNNING] What Does Dreaming About a Storm Symbolize?
 Why Do I Dream About Being Trapped?
 What Does Dreaming About Darkness Mean?
 Why Do I Dream About Broken Glass?
