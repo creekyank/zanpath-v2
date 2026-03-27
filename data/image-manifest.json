@@ -1074,5 +1074,19 @@
       "https://img.zanpath.com/dream/why-do-i-dream-about-being-chased-1.webp",
       "https://img.zanpath.com/dream/why-do-i-dream-about-being-chased-2.webp"
     ]
+  },
+  "why-do-i-dream-about-my-childhood-home": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/why-do-i-dream-about-my-childhood-home-1.webp",
+      "https://img.zanpath.com/dream/why-do-i-dream-about-my-childhood-home-2.webp"
+    ]
+  },
+  "what-does-dreaming-about-fire-symbolize": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-dreaming-about-fire-symbolize-1.webp",
+      "https://img.zanpath.com/dream/what-does-dreaming-about-fire-symbolize-2.webp"
+    ]
   }
 }

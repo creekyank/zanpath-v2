@@ -1,49 +1,37 @@
 # =========================
 # Agent EN：英文文章（DeepSeek）
 # =========================
-def agent_en_article(title, module):
-    return f"""You are an expert in dream interpretation combining:
 
-- Traditional Chinese dream symbolism (Zhougong Dream Dictionary)
-- Cultural symbolism
-- Modern psychology (subconscious, emotions, stress)
+def agent_en_article(title, module):
+    return f"""You are an expert in Dream Interpretation and Chinese metaphysical symbolism.
+
+Your expertise includes:
+- Dream Interpretation
+- Symbolism in Dreams
+- Subconscious Mind Analysis
+- Cultural Dream Meanings
+- Psychological Dream Analysis
 
 Write a high-quality educational article.
 
 Title: {title}
-Module: dream
-
---------------------------------------------------
-
- CRITICAL ANTI-DUPLICATION RULES (VERY IMPORTANT):
-
-1. The title "# {title}" must appear ONLY ONCE at the very top.
-2. NEVER repeat the title again anywhere in the article.
-3. DO NOT restate or paraphrase the full title in the introduction.
-4. DO NOT start with phrases like:
-   - "What does it mean to dream about..."
-   - "This dream means..."
-   - "Dreaming about X is..."
-5. The introduction must feel natural, NOT like explaining the title.
-6. DO NOT duplicate paragraphs or rephrase the same opening twice.
-7. DO NOT reuse the same sentence structure across sections.
+Module: {module}
 
 --------------------------------------------------
 
 STRICT OUTPUT RULES:
 
-1. Output MUST be pure Markdown
-2. NO HTML
-3. NO JSON
-4. NO code blocks
-5. NO links
-6. NO images
-7. NO metadata
-8. NO FAQ
-9. NO disclaimers
-10. Avoid repetition completely
-11. Avoid generic explanations
-12. Each section must provide NEW information
+1 Output MUST be pure Markdown
+2 NO HTML
+3 NO JSON
+4 NO code blocks
+5 NO links
+6 NO images
+7 NO metadata
+8 NO FAQ
+9 NO disclaimers
+10 Do NOT explain the title at the beginning
+11 Avoid repetition
 
 --------------------------------------------------
 
@@ -51,102 +39,53 @@ ARTICLE STRUCTURE:
 
 # {title}
 
-Write a NATURAL introduction.
+Write a clear introduction explaining the topic.
 
- Start with a feeling, scenario, or psychological observation  
- DO NOT define the dream immediately  
- DO NOT restate the title  
- Make it immersive and human  
+## Core Concept
 
-Example style (DO NOT copy):
-"A sudden moment of panic in a dream can feel incredibly real..."
+Explain the dream symbol or scenario with simple examples.
 
---------------------------------------------------
+## Traditional Meaning
 
-## What Does This Dream Mean?
+Explain from traditional and cultural perspectives:
 
- Give a direct but concise interpretation  
- Avoid repeating the introduction  
- Focus on symbolic meaning  
+- Yin-Yang balance in dreams
+- Symbolism and Five Elements associations
+- Cultural interpretations of dreams
 
---------------------------------------------------
+## Modern Interpretation
 
-## Symbolism in Traditional Chinese Culture
+Explain how modern people understand it:
 
-Explain using:
-
-- Zhougong dream interpretation tradition
-- Cultural symbolism (fortune, warning, transformation)
-- Yin-Yang balance if relevant
-
- Avoid superstition tone  
- Keep it cultural and symbolic  
-
---------------------------------------------------
-
-## Psychological Interpretation
-
-Explain from modern perspective:
-
-- Emotions (fear, anxiety, insecurity, desire)
-- Subconscious signals
-- Real-life triggers (stress, relationships, change)
-
- Make it relatable  
- Avoid repeating earlier explanations  
-
---------------------------------------------------
-
-## Common Variations of This Dream
-
-List 3–5 variations.
-
-Format:
-- Dreaming of X → Meaning
-- Dreaming of Y → Meaning
-
- Each variation MUST be unique  
- Avoid repeating same explanation  
-
---------------------------------------------------
+- Psychological perspective
+- Subconscious mind explanations
+- Common interpretations in daily life
 
 ## Insights
 
 Write 3–5 bullet points.
 
-Each MUST:
-- Be a full sentence
-- At least 12 words
-- Provide practical psychological or symbolic insight
-- NOT be repetitive
+Each bullet MUST:
+- Be a complete sentence
+- Be at least 12 words
+- Provide a concrete insight
 
---------------------------------------------------
+DO NOT leave this section empty.
 
 ## Conclusion
 
- Summarize naturally  
- Focus on reflection and awareness  
- DO NOT repeat earlier sentences  
+Summarize clearly.
 
 --------------------------------------------------
 
 CONTENT GUIDELINES:
 
-- 800–1300 words
-- Clear, human tone
+- 800–1200 words
+- Educational tone
+- Clear structure
 - Short paragraphs
-- Avoid fortune-telling or guarantees
-- Focus on interpretation, NOT prediction
-- Avoid redundancy across sections
-
---------------------------------------------------
-
-FINAL CHECK BEFORE OUTPUT:
-
-- Title appears ONLY once 
-- No repeated intro sentences 
-- No "What does it mean to dream..." opening 
-- No duplicated paragraphs 
+- Avoid fortune-telling conclusions
+- Focus on explanation, not prediction
 
 --------------------------------------------------
 
@@ -159,94 +98,65 @@ Return ONLY Markdown content.
 # Agent EN SEO：SEO 元数据生成（Llama3 强力约束版）
 # ============================================================
 def agent_en_seo(title, module):
-    clean_subject = title.lower()\
-        .replace("what does it mean to dream about", "")\
-        .replace("dreaming about", "")\
-        .replace("why do i dream about", "")\
-        .strip("? ")
-
-    return f"""You are a Senior SEO Specialist focusing on Dream Interpretation content.
-
-Article Title: "{title}"
-Core Subject: "{clean_subject}"
+    return f"""You are a Senior SEO Specialist. Generate full metadata for the article "{title}".
 
 --------------------------------------------------
 STRICT CONTENT RULES:
-
-1. NO EMPTY FIELDS
-2. Keywords MUST match real user search intent
-3. metaDescription MUST be 120–140 chars
-4. IMPORTANT: Do NOT include SEO phrases like "SEO optimized" anywhere
+1. NO EMPTY FIELDS: All arrays MUST contain at least 3-5 high-quality items.
+2. RELEVANCE: Keywords must be derived directly from "{title}". 
+3. DO NOT use generic "dream guide" text. Focus strictly on the specific dream topic.
+4. metaDescription: Must be a compelling click-bait style summary (100-120 chars).
 
 --------------------------------------------------
-
+JSON STRUCTURE:
 {{
-  "metaTitle": "Dream Meaning of {clean_subject.capitalize()} (Complete Interpretation Guide)",
-  "metaDescription": "Discover the meaning of {clean_subject} dreams. Explore symbolism, psychology, and hidden messages behind your dreams.",
-  "primaryKeyword": "dream about {clean_subject} meaning",
-  "secondaryKeywords": [
-    "what does it mean to dream about {clean_subject}",
-    "{clean_subject} dream interpretation",
-    "dream meaning {clean_subject}"
-  ],
-  "longTailKeywords": [
-    "why do I dream about {clean_subject}",
-    "spiritual meaning of {clean_subject} in dreams",
-    "psychological meaning of dreaming about {clean_subject}"
-  ],
-  "semanticKeywords": [
-    "dream symbolism",
-    "subconscious mind",
-    "dream analysis"
-  ],
-  "keywords": ["dream meaning", "dream interpretation", "{clean_subject}"],
-  "summary": "This article explains {clean_subject} dream meanings using symbolism and psychology.",
-  "featuredSnippetAnswer": "Dreaming about {clean_subject} reflects subconscious emotions and symbolic meanings connected to real-life situations.",
-  "ctaText": "Analyze your dream with ZanPath AI",
+  "metaTitle": "SEO title with primary keyword (max 60 chars)",
+  "metaDescription": "Compelling summary for {title}",
+  "primaryKeyword": "The main focus keyword",
+  "secondaryKeywords": ["dream meaning keyword 1", "dream symbol keyword 2", "dream interpretation keyword 3"],
+  "longTailKeywords": ["What does {title} mean in dreams?", "Why do I dream about this?", "Specific dream scenario meaning"],
+  "semanticKeywords": ["dream symbolism", "subconscious mind", "psychological meaning"],
+  "keywords": ["Dream Interpretation", "Dream Meaning", "{title}"],
+  "summary": "2-3 sentences summarizing the core value of the article",
+  "featuredSnippetAnswer": "A direct 40-50 word answer explaining the dream meaning clearly",
+  "ctaText": "Explore your dreams with ZanPath AI",
   "faq": [
-    {{
-      "question": "What does it mean to dream about {clean_subject}?",
-      "answer": "It reflects subconscious emotions, symbolic meanings, or life situations."
-    }},
-    {{
-      "question": "Is dreaming about {clean_subject} good or bad?",
-      "answer": "It depends on context and emotional tone."
-    }},
-    {{
-      "question": "Why do I keep dreaming about {clean_subject}?",
-      "answer": "Recurring dreams often indicate unresolved emotions or stress."
-    }}
+    {{ "question": "What does {title} mean in dreams?", "answer": "Detailed answer." }},
+    {{ "question": "Is this dream common?", "answer": "Detailed answer." }},
+    {{ "question": "Why do people experience {title}?", "answer": "Detailed answer." }}
   ]
 }}
 
 --------------------------------------------------
 OUTPUT RULE:
-
 Return ONLY valid JSON. No Markdown markers. No preamble.
 """
+
 # =========================
 # Agent3 图片关键词（优化：更具视觉感）
 # =========================
 def agent3(title):
-     return f"""Generate 10 visual image keywords for dream-related content.
+    return f"""Generate 10 visual, concrete image search keywords for stock photo sites.
 
 Article title: {title}
 
 RULES:
-- MUST be visually concrete
-- Include mood / atmosphere
-- NO abstract words (like destiny)
-- English only
-- One per line
+- OUTPUT ONLY the keywords.
+- NO introductory text, NO conversational fillers (e.g., "Here are...").
+- NO numbering (NO 1. 2. 3.).
+- MUST be visually describable (real-world scenes or objects).
+- Avoid abstract words like energy, metaphysics, destiny.
+- Use nature, objects, or environments.
+- English only.
+- One keyword per line.
 
-STYLE:
-- night, surreal, symbolic, emotional
+STYLE HINTS:
+- surreal dream scene, night sky, fog, shadows, symbolic objects.
 
 Example:
-foggy forest night
-person sleeping moonlight
-surreal floating objects
-dark ocean dreamscape
+foggy forest path night
+surreal floating objects dream
+dark bedroom moonlight window
 """
 
 # =========================
@@ -256,35 +166,27 @@ dark ocean dreamscape
 def agent6(title, article):
     return f"""Translate the following English article and its TITLE into Spanish.
 
-Context: Chinese Metaphysics.
+Context: Dream Interpretation.
 
 STRICT RULES:
-1. Translate TITLE separately
-2. DO NOT include the title inside CONTENT
-3. DO NOT repeat the introduction paragraph
-4. DO NOT duplicate any paragraph
-5. CONTENT must start directly from the introduction
-6. NEVER include phrases like:
-   - "Interpretación optimizada para SEO"
-   - "SEO"
-7. Keep structure (#, ##, -)
+1. PROFESSIONAL Spanish (formal tone)
+2. KEEP structure (#, ##, -)
+3. TRANSLATE title correctly
 
 CRITICAL TERMINOLOGY RULES:
-- "Chinese Metaphysics" → "metafísica china"
--"Dream Interpretation" → "Interpretación de los sueños"
--"Subconscious" → "Subconsciente"
--"Symbolism" → "Simbolismo"
-- NEVER use "metabolítica"
+- "Dream Interpretation" → "interpretación de los sueños"
+- "subconscious mind" → "subconsciente"
+- "symbolism" → "simbolismo"
+- NEVER use incorrect literal translations
 
---------------------------------------------------
 OUTPUT FORMAT:
 
 [TITLE]
-(Only the translated Spanish title here)
+Spanish title
 
 [CONTENT]
-(Start directly with the translated body text/introduction. NO title, NO repetition or # header here.)
---------------------------------------------------
+Spanish content
+
 TITLE: {title}
 
 ARTICLE:
@@ -302,12 +204,6 @@ STRICT RULES:
 2. Keep the JSON structure 100% identical.
 3. Ensure 'metaTitle' and 'metaDescription' remain within SEO length limits in Spanish.
 4. Output valid JSON ONLY. No explanation.
-5. Pay attention to Spanish gender agreement, e.g., 'análisis' is masculine (use 'nuestro análisis', not 'nuestra').
-6. CRITICAL LENGTH RULE: 
-   - The Spanish 'metaDescription' MUST be between 140 and 155 characters.
-   - If the translation exceeds 155, do NOT just cut it; instead, REWRITE it to be shorter while keeping the meaning intact.
-   - NEVER leave trailing dots or incomplete words at the end.
-7. Ensure consistency: If you correct a gender agreement in 'metaDescription', apply the exact same correction to 'structuredData' fields.
 
 JSON:
 {seo}
