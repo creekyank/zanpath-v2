@@ -179,7 +179,7 @@ CRITICAL TERMINOLOGY RULES:
 - "Dream Interpretation" → "interpretación de los sueños"
 - "subconscious mind" → "subconsciente"
 - "symbolism" → "simbolismo"
-- NEVER use incorrect literal translations
+- "Write like a native Spanish content editor. Use natural phrasing, not literal translations from English.”
 
 OUTPUT FORMAT:
 
