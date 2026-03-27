@@ -170,8 +170,10 @@ Context: Dream Interpretation.
 
 STRICT RULES:
 1. PROFESSIONAL Spanish (formal tone)
-2. KEEP structure (#, ##, -)
-3. TRANSLATE title correctly
+2. KEEP structure (#, ##, -) EXACTLY the same
+3. DO NOT add, remove, or duplicate any headings
+4. DO NOT repeat the title anywhere in the content
+5. TRANSLATE title correctly
 
 CRITICAL TERMINOLOGY RULES:
 - "Dream Interpretation" → "interpretación de los sueños"
