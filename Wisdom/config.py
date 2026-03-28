@@ -20,11 +20,13 @@ MODELS = {
     # 4️⃣ 英文 -> 西语文章 (Agent 6)
     "agent6": [
         ("gemini", "gemini-2.5-flash"), 
+        ("deepseek", "deepseek-chat"), 
     ],
 
     # 5️⃣ SEO -> 西语 (Agent 7)
     "agent7": [
         ("gemini", "gemini-2.5-flash"), 
+        ("groq", "llama-3.1-8b-instant"),
     ],
 
     # 6️⃣ 最终评分 (Scorer Final)

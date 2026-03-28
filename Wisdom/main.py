@@ -250,33 +250,45 @@ def run():
         safe_write("pic_keyword.txt", pic)
 
         # =========================
-        # 4️⃣ 西语
+        # 4️⃣ 西语文章 (直接生成，Gemini 挂了自动切 DeepSeek)
         # =========================
+        print(f"🚀 正在翻译西语文章 (优先使用 Gemini)...")
+        # 移除了这里的 time.sleep(65)，直接开始
+        
         article_es = safe_generate(
             MODELS["agent6"],
             prompts.agent6(title, article_en),
             min_len=600,
-            max_tokens=8192
+            max_tokens=8192,
+            retry=1 # 减少内部重试，快速触发 fallback 切换到备选模型
         )
 
-        safe_write("article_es.txt", article_es or "")
+        if not article_es:
+            print("[ERROR] 西语文章生成最终失败")
+        else:
+            safe_write("article_es.txt", article_es)
+            print(f"✅ 西语文章翻译完成。")
 
 
-       # =========================
-        # 5️⃣ 西语 SEO (补全这一步)
         # =========================
+        # 5️⃣ 西语 SEO (为了 Gemini 配额，这里必须强制冷却)
+        # =========================
+        print(f"⏳ 翻译 SEO 前强制冷却 65 秒，确保 Gemini 接口恢复...")
+        time.sleep(65) 
+
         seo_es = safe_generate(
             MODELS["agent7"],
             prompts.agent7(seo_en),
-            is_json=True
+            is_json=True,
+            retry=2
         )
 
         if not seo_es:
             print("[WARN] 西语 SEO 生成失败，使用英文版兜底")
-            # 这里的目的是保证 smart_factory.py 不会因为找不到文件而报错
             safe_write("seo_es.json", seo_en) 
         else:
             safe_write("seo_es.json", seo_es)
+            print(f"✅ 西语 SEO 翻译完成。")
 
         # =========================
         # 评分
