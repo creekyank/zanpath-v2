@@ -139,11 +139,11 @@ def score_final_check(article, seo):
 # =========================
 # 核心生成器
 # =========================
-def safe_generate(models, prompt, min_len=200, is_json=False, retry=3):
+def safe_generate(models, prompt, min_len=200, is_json=False, retry=3, max_tokens=None):
 
     for i in range(retry):
         try:
-            result = call_with_fallback(models, prompt, min_len=min_len)
+            result = call_with_fallback(models, prompt, min_len=min_len, max_tokens=max_tokens)
 
             if not result:
                 continue
@@ -255,7 +255,8 @@ def run():
         article_es = safe_generate(
             MODELS["agent6"],
             prompts.agent6(title, article_en),
-            min_len=600
+            min_len=600,
+            max_tokens=8192
         )
 
         safe_write("article_es.txt", article_es or "")

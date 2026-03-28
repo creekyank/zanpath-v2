@@ -169,17 +169,18 @@ def agent6(title, article):
 Context: Dream Interpretation.
 
 STRICT RULES:
-1. PROFESSIONAL Spanish (formal tone)
-2. KEEP structure (#, ##, -) EXACTLY the same
-3. DO NOT add, remove, or duplicate any headings
-4. DO NOT repeat the title anywhere in the content
-5. TRANSLATE title correctly
+1. Native Spanish (informal 'tú'): Use tu/tus instead of su/sus.
+2. KEEP structure (#, ##, -) EXACTLY the same.
+3. DO NOT add, remove, or duplicate any headings.
+4. DO NOT repeat the title anywhere in the content.
+5. NO literal English translations (natural flow).
+6. Max output length: 8000+ words.
 
-CRITICAL TERMINOLOGY RULES:
+CRITICAL TERMINOLOGY & REPLACEMENT:
 - "Dream Interpretation" → "interpretación de los sueños"
 - "subconscious mind" → "subconsciente"
 - "symbolism" → "simbolismo"
-- "Write like a native Spanish content editor. Use natural phrasing, not literal translations from English.”
+- Use "Claves para tu sueño" instead of "Percepciones" for the section title.
 
 OUTPUT FORMAT:
 

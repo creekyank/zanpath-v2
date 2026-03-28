@@ -13,7 +13,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # ======================
 # 1. API调用核心（带重试 & 代理支持）
 # ======================
-def call_api(provider, model, prompt, max_retry=3):
+def call_api(provider, model, prompt, max_retry=3, max_tokens=None):
     conf = API_CONFIG.get(provider)
     if not conf or not conf.get("key"):
         raise Exception(f"Provider {provider} 的 API Key 未设置，请检查环境变量")
@@ -30,6 +30,9 @@ def call_api(provider, model, prompt, max_retry=3):
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.7
     }
+    # 如果调用时传了 max_tokens，就加入到请求中
+    if max_tokens:
+        data["max_tokens"] = max_tokens
 
     for attempt in range(max_retry):
         try:
@@ -66,14 +69,14 @@ def call_api(provider, model, prompt, max_retry=3):
 # ======================
 # 2. 带有 Fallback 机制的调用
 # ======================
-def call_with_fallback(models, prompt, min_len=10):
+def call_with_fallback(models, prompt, min_len=10, max_tokens=None):
     best = None
     best_len = 0
 
     for provider, model in models:
         try:
             print(f"🔄 正在尝试模型: {provider}/{model}")
-            res = call_api(provider, model, prompt)
+            res = call_api(provider, model, prompt, max_tokens=max_tokens)
 
             if not res:
                 continue
