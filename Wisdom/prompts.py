@@ -164,35 +164,26 @@ dark bedroom moonlight window
 # =========================
 
 def agent6(title, article):
-    return f"""Translate the following English article and its TITLE into Spanish.
-
-Context: Dream Interpretation.
+    return f"""Translate the English article into Spanish. 
 
 STRICT RULES:
 1. Native Spanish (informal 'tú'): Use tu/tus instead of su/sus.
 2. KEEP structure (#, ##, -) EXACTLY the same.
 3. DO NOT add, remove, or duplicate any headings.
-4. DO NOT repeat the title anywhere in the content.
-5. NO literal English translations (natural flow).
-6. Max output length: 8000+ words.
+4. DO NOT output labels like "[TITLE]" or "[CONTENT]". 
+5. DO NOT repeat the title at the top of the article body.
+6. NO literal English translations (natural flow).
 
-CRITICAL TERMINOLOGY & REPLACEMENT:
+CRITICAL TERMINOLOGY:
 - "Dream Interpretation" → "interpretación de los sueños"
 - "subconscious mind" → "subconsciente"
 - "symbolism" → "simbolismo"
 - Use "Claves para tu sueño" instead of "Percepciones" for the section title.
 
-OUTPUT FORMAT:
-
-[TITLE]
-Spanish title
-
-[CONTENT]
-Spanish content
-
-TITLE: {title}
-
-ARTICLE:
+---
+TARGET TITLE (Translate this as the only H1): {title}
+---
+ARTICLE TO TRANSLATE:
 {article}
 """
 
@@ -206,7 +197,7 @@ STRICT RULES:
 1. Translate ONLY the values (text), NOT the keys.
 2. Keep the JSON structure 100% identical.
 3. Ensure 'metaTitle' and 'metaDescription' remain within SEO length limits in Spanish.
-4. Output valid JSON ONLY. No explanation.
+4. Output valid JSON ONLY. No explanation. DO NOT include Markdown code blocks (```json) or any preamble.
 
 JSON:
 {seo}

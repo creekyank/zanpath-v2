@@ -112,6 +112,9 @@ function cleanAIText(text) {
 
   t = t.replace(/^\[(#{1,3})\s*(.*?)\]/gm, "$1 $2");
   t = t.replace(/^\[(.*?)\]$/gm, "$1");
+  
+// ✅ 新增：删除行首的 TITLE 标识行
+  t = t.replace(/^TITLE[:：].*$/gim, "");
 
   // 2. 删除 AI 结构垃圾
 // ✅ 删除 TÍTULO / CONTENIDO（不管是不是一行）
