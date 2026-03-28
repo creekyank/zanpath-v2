@@ -5,7 +5,7 @@
   "slug": "sample-life-path-report",
   "status": "published",
   "featured": false,
-  "title": "Ejemplo de Informe del Camino de Vida (Análisis con IA)",
+  "title": "Ejemplo de lectura Bazi profesional",
   "metaTitle": "Ejemplo de Informe del Camino de Vida: Análisis inspirado en BaZi",
   "metaDescription": "Explora un ejemplo de informe del camino de vida generado por IA inspirado en principios tradicionales de BaZi. Este ejemplo ficticio muestra cómo un análisis personalizado puede interpretar personalidad, ciclos de vida y posibles direcciones.",
   "primaryKeyword": "ejemplo informe camino de vida",
@@ -39,9 +39,18 @@
   "canonical": "https://zanpath.com/es/life-path/sample-life-path-report",
   "robots": "index, follow",
   "breadcrumbs": [
-    { "name": "Sabiduría", "url": "/es/wisdom" },
-    { "name": "Camino de Vida", "url": "/es/life-path" },
-    { "name": "Ejemplo de Informe del Camino de Vida", "url": "" }
+    {
+      "name": "Sabiduría",
+      "url": "/es/wisdom"
+    },
+    {
+      "name": "Camino de Vida",
+      "url": "/es/life-path"
+    },
+    {
+      "name": "Ejemplo de Informe del Camino de Vida",
+      "url": ""
+    }
   ],
   "content": [
     {
@@ -52,7 +61,6 @@
       "type": "p",
       "text": "Esta página muestra solo una breve vista previa de un informe personalizado completo. Tu análisis completo incluye información más profunda basada en tus datos exactos de nacimiento."
     },
-
     {
       "type": "h2",
       "text": "Información de nacimiento (ejemplo)"
@@ -65,7 +73,6 @@
       "type": "p",
       "text": "En el simbolismo BaZi, la Madera Jia suele compararse con un árbol alto que crece lentamente hacia el cielo. Este símbolo representa crecimiento continuo, determinación y una tendencia natural a desarrollarse a largo plazo."
     },
-
     {
       "type": "h2",
       "text": "Resumen del equilibrio de los elementos"
@@ -82,7 +89,6 @@
       "type": "p",
       "text": "Una estructura de este tipo suele asociarse simbólicamente con personalidades orientadas al crecimiento, la creatividad y el desarrollo continuo. El apoyo del elemento Agua también puede indicar curiosidad intelectual y deseo de aprender."
     },
-
     {
       "type": "h2",
       "text": "Tendencias de personalidad"
@@ -99,7 +105,6 @@
       "type": "p",
       "text": "Sin embargo, una fuerte orientación hacia el crecimiento también puede generar impaciencia cuando el progreso parece lento. Aprender a valorar el proceso gradual puede ayudar a mantener un equilibrio emocional más estable."
     },
-
     {
       "type": "h2",
       "text": "Posibles direcciones profesionales"
@@ -116,7 +121,6 @@
       "type": "p",
       "text": "Las carreras que ofrecen oportunidades de aprendizaje continuo y expansión personal suelen alinearse bien con este tipo de configuración energética."
     },
-
     {
       "type": "h2",
       "text": "Relaciones y estilo interpersonal"
@@ -133,7 +137,6 @@
       "type": "p",
       "text": "Las relaciones que fomentan apoyo mutuo y desarrollo personal pueden resultar especialmente satisfactorias."
     },
-
     {
       "type": "h2",
       "text": "Energía personal y estilo de vida"
@@ -150,7 +153,6 @@
       "type": "p",
       "text": "Equilibrar la actividad con momentos de descanso y reflexión también puede contribuir al bienestar a largo plazo."
     },
-
     {
       "type": "h2",
       "text": "Ciclos de desarrollo de la vida"
@@ -167,7 +169,6 @@
       "type": "p",
       "text": "Los ciclos más desafiantes pueden incentivar reflexión personal y reajuste de prioridades, lo que a menudo conduce a mayor claridad en el futuro."
     },
-
     {
       "type": "h2",
       "text": "Equilibrio entre entorno y estilo de vida"
@@ -184,7 +185,6 @@
       "type": "p",
       "text": "Mantener equilibrio entre ambición y descanso puede ayudar a sostener progreso constante en el largo plazo."
     },
-
     {
       "type": "h2",
       "text": "Acerca de este ejemplo"
@@ -197,7 +197,6 @@
       "type": "p",
       "text": "Las interpretaciones se proporcionan únicamente con fines de entretenimiento y reflexión personal."
     },
-
     {
       "type": "h2",
       "text": "Explora tu análisis personal"

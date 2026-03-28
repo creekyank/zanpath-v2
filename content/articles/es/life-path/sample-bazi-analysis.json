@@ -5,7 +5,7 @@
   "slug": "sample-bazi-analysis",
   "status": "published",
   "featured": false,
-  "title": "Ejemplo de Análisis del Camino de Vida (IA)",
+  "title": "Ejemplo de análisis Bazi detallado",
   "metaTitle": "Ejemplo de Análisis del Camino de Vida: Lectura BaZi con IA",
   "metaDescription": "Explora un ejemplo de análisis del camino de vida generado por IA inspirado en los principios tradicionales de BaZi. Este ejemplo ficticio demuestra el tipo de información que puede ofrecer un informe personalizado.",
   "primaryKeyword": "ejemplo análisis camino de vida",
@@ -39,9 +39,18 @@
   "canonical": "https://zanpath.com/es/life-path/sample-bazi-analysis",
   "robots": "index, follow",
   "breadcrumbs": [
-    { "name": "Sabiduría", "url": "/es/wisdom" },
-    { "name": "Camino de Vida", "url": "/es/life-path" },
-    { "name": "Ejemplo de Análisis del Camino de Vida", "url": "" }
+    {
+      "name": "Sabiduría",
+      "url": "/es/wisdom"
+    },
+    {
+      "name": "Camino de Vida",
+      "url": "/es/life-path"
+    },
+    {
+      "name": "Ejemplo de Análisis del Camino de Vida",
+      "url": ""
+    }
   ],
   "content": [
     {
