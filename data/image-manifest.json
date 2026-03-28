@@ -1290,5 +1290,12 @@
       "https://img.zanpath.com/dream/why-do-i-dream-about-strange-cities-1.webp",
       "https://img.zanpath.com/dream/why-do-i-dream-about-strange-cities-2.webp"
     ]
+  },
+  "what-does-dreaming-about-the-moon-mean": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-dreaming-about-the-moon-mean-1.webp",
+      "https://img.zanpath.com/dream/what-does-dreaming-about-the-moon-mean-2.webp"
+    ]
   }
 }
