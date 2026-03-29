@@ -4,7 +4,7 @@ MODELS = {
     # 1️⃣ 英文文章生成 (Agent EN) - 切换回 DeepSeek
     "agent_en_article": [
         ("deepseek", "deepseek-chat"), # 使用 DeepSeek 官方模型名
-        ("gemini", "gemini-2.5-flash"),   # 备选方案，万一 DeepSeek 挂了会用 Groq
+        #("gemini", "gemini-2.5-flash"),   # 备选方案，万一 DeepSeek 挂了会用 Groq
     ],
 
     # 2️⃣ 英文 SEO 生成 (Agent EN SEO) - 保持使用 Groq
@@ -19,13 +19,11 @@ MODELS = {
 
     # 4️⃣ 英文 -> 西语文章 (Agent 6)
     "agent6": [
-        ("gemini", "gemini-2.5-flash"), 
         ("deepseek", "deepseek-chat"), 
     ],
 
     # 5️⃣ SEO -> 西语 (Agent 7)
     "agent7": [
-        ("gemini", "gemini-2.5-flash"), 
         ("groq", "llama-3.1-8b-instant"),
     ],
 
@@ -48,7 +46,7 @@ API_CONFIG = {
     },
     "gemini": {
         "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/", 
-        "key": "AIzaSyDZmh5YU0dI-vx4canfzA2m2eBCexrqJ3o" # 建议用 os.getenv("GEMINI_API_KEY")
+        "key": os.getenv("GEMINI_API_KEY")
     },
     "longcat": {
         "base_url": "https://api.longcat.chat/openai", # 注意！后面不要带 /v1

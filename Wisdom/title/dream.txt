@@ -3,7 +3,7 @@
 [DONE] Why Do People Dream About Flying?
 [DONE] What Does It Mean to Dream About Losing Teeth?
 [DONE] Why Do I Dream About Being Chased?
-[RUNNING] What Does It Mean to Dream About Death?
+ What Does It Mean to Dream About Death?
 [DONE] Why Do I Dream About My Childhood Home?
 [DONE] What Does Dreaming About Fire Symbolize?
 [DONE] Why Do I Dream About Being Late?
@@ -36,91 +36,90 @@
 [DONE] What Does Dreaming About a Forest Mean?
 [DONE] Why Do I Dream About Strange Cities?
 [DONE] What Does Dreaming About the Moon Mean?
-[RUNNING] Why Do I Dream About Being Stuck in a Loop?
-[RUNNING] What Does Dreaming About Ice Symbolize?
+ Why Do I Dream About Being Stuck in a Loop?
+ What Does Dreaming About Ice Symbolize?
 [DONE] What Does Dreaming About Keys Mean?
-Why Do I Dream About Broken Doors?
-What Does Dreaming About a River Mean?
-Why Do I Dream About Missing Important Events?
-What Does Dreaming About a Ladder Symbolize?
-Why Do I Dream About Being Tested?
-What Does Dreaming About a School Mean?
-Why Do I Dream About Losing My Way?
-What Does Dreaming About the Sun Mean?
-Why Do I Dream About Strange Creatures?
-What Does It Mean to Dream About Snakes?
-What Does It Mean to Dream About Being Bitten by a Snake?
-What Does It Mean to Dream About Black Snakes?
-What Does It Mean to Dream About White Snakes?
-What Does It Mean to Dream About Killing a Snake in a Dream?
-What Does It Mean to Dream About Dogs?
-What Does It Mean to Dream About a Dog Attacking You?
-What Does It Mean to Dream About Friendly Dogs?
-What Does It Mean to Dream About Lost Dogs?
-What Does It Mean to Dream About Puppies?
-What Does It Mean to Dream About Cats?
-What Does It Mean to Dream About Black Cats?
-What Does It Mean to Dream About Angry Cats?
-What Does It Mean to Dream About Cats Attacking You?
-What Does It Mean to Dream About Kittens?
-What Does It Mean to Dream About Fish?
-What Does It Mean to Dream About Catching Fish?
-What Does It Mean to Dream About Dead Fish?
-What Does It Mean to Dream About Swimming With Fish?
-What Does It Mean to Dream About Big Fish?
-What Does It Mean to Dream About Frogs?
-What Does It Mean to Dream About Killing Frogs?
-What Does It Mean to Dream About Frogs Jumping?
-What Does It Mean to Dream About Green Frogs?
-What Does It Mean to Dream About Many Frogs?
-What Does It Mean to Dream About Spiders?
-What Does It Mean to Dream About Spider Webs?
-What Does It Mean to Dream About Killing Spiders?
-What Does It Mean to Dream About Giant Spiders?
-What Does It Mean to Dream About Spiders Crawling on You?
-What Does It Mean to Dream About Bears?
-What Does It Mean to Dream About Being Chased by a Bear?
-What Does It Mean to Dream About Friendly Bears?
-What Does It Mean to Dream About Brown Bears?
-What Does It Mean to Dream About Black Bears?
-What Does It Mean to Dream About Tigers?
-What Does It Mean to Dream About Lions?
-What Does It Mean to Dream About Wolves?
-What Does It Mean to Dream About Foxes?
-What Does It Mean to Dream About Wild Animals?
-What Does It Mean to Dream About Being Pregnant?
-What Does It Mean to Dream About Giving Birth?
-What Does It Mean to Dream About Babies?
-What Does It Mean to Dream About Holding a Baby?
-What Does It Mean to Dream About Crying Babies?
-What Does It Mean to Dream About Teeth Falling Out?
-What Does It Mean to Dream About Broken Teeth?
-What Does It Mean to Dream About Pulling Out Teeth?
-What Does It Mean to Dream About Losing Teeth Without Pain?
-What Does It Mean to Dream About Bleeding Teeth?
-What Does It Mean to Dream About Falling?
-What Does It Mean to Dream About Falling From a Building?
-What Does It Mean to Dream About Falling From the Sky?
-What Does It Mean to Dream About Falling and Waking Up Suddenly?
-What Does It Mean to Dream About Flying?
-What Does It Mean to Dream About Flying Over Cities?
-What Does It Mean to Dream About Flying Without Wings?
-What Does It Mean to Dream About Struggling to Fly?
-What Does It Mean to Dream About Flying High in the Sky?
-What Does It Mean to Dream About Someone Dying?
-What Does It Mean to Dream About Your Own Death?
-What Does It Mean to Dream About a Dead Person Talking?
-What Does It Mean to Dream About Dead Relatives?
-What Does It Mean to Dream About Blood?
-What Does It Mean to Dream About Bleeding?
-What Does It Mean to Dream About Blood on the Floor?
-What Does It Mean to Dream About Blood on Your Hands?
-What Does It Mean to Dream About Heavy Bleeding?
-What Does It Mean to Dream About a House Fire?
-What Does It Mean to Dream About Escaping a Fire?
-What Does It Mean to Dream About Fire Burning Everything?
-What Does It Mean to Dream About Controlling Fire?
-What Does It Mean to Dream About Floods?
+[DONE] Why Do I Dream About Broken Doors?
+[DONE] What Does Dreaming About a River Mean?
+ Why Do I Dream About Missing Important Events?
+ What Does Dreaming About a Ladder Symbolize?
+[DONE] Why Do I Dream About Being Tested?
+[DONE] What Does Dreaming About a School Mean?
+[DONE] Why Do I Dream About Losing My Way?
+[DONE] What Does Dreaming About the Sun Mean?
+[DONE] Why Do I Dream About Strange Creatures?
+[DONE] What Does It Mean to Dream About Snakes?
+[DONE] What Does It Mean to Dream About Being Bitten by a Snake?
+[DONE] What Does It Mean to Dream About Black Snakes?
+[DONE] What Does It Mean to Dream About White Snakes?
+[DONE] What Does It Mean to Dream About Killing a Snake in a Dream?
+[DONE] What Does It Mean to Dream About Dogs?
+[DONE] What Does It Mean to Dream About a Dog Attacking You?
+[DONE] What Does It Mean to Dream About Friendly Dogs?
+[DONE] What Does It Mean to Dream About Lost Dogs?
+[DONE] What Does It Mean to Dream About Puppies?
+[DONE] What Does It Mean to Dream About Cats?
+[DONE] What Does It Mean to Dream About Black Cats?
+[DONE] What Does It Mean to Dream About Angry Cats?
+[DONE] What Does It Mean to Dream About Cats Attacking You?
+[DONE] What Does It Mean to Dream About Kittens?
+[DONE] What Does It Mean to Dream About Fish?
+[DONE] What Does It Mean to Dream About Catching Fish?
+[DONE] What Does It Mean to Dream About Dead Fish?
+[DONE] What Does It Mean to Dream About Swimming With Fish?
+[DONE] What Does It Mean to Dream About Big Fish?
+[DONE] What Does It Mean to Dream About Frogs?
+[DONE] What Does It Mean to Dream About Killing Frogs?
+[DONE] What Does It Mean to Dream About Frogs Jumping?
+[DONE] What Does It Mean to Dream About Green Frogs?
+[DONE] What Does It Mean to Dream About Many Frogs?
+[DONE] What Does It Mean to Dream About Spiders?
+[DONE] What Does It Mean to Dream About Spider Webs?
+[DONE] What Does It Mean to Dream About Killing Spiders?
+[DONE] What Does It Mean to Dream About Giant Spiders?
+[DONE] What Does It Mean to Dream About Spiders Crawling on You?
+[DONE] What Does It Mean to Dream About Bears?
+[DONE] What Does It Mean to Dream About Being Chased by a Bear?
+[DONE] What Does It Mean to Dream About Friendly Bears?
+[DONE] What Does It Mean to Dream About Brown Bears?
+[DONE] What Does It Mean to Dream About Black Bears?
+[DONE] What Does It Mean to Dream About Tigers?
+[DONE] What Does It Mean to Dream About Lions?
+[DONE] What Does It Mean to Dream About Wolves?
+[DONE] What Does It Mean to Dream About Foxes?
+[DONE] What Does It Mean to Dream About Wild Animals?
+[DONE] What Does It Mean to Dream About Being Pregnant?
+[DONE] What Does It Mean to Dream About Giving Birth?
+[DONE] What Does It Mean to Dream About Babies?
+[DONE] What Does It Mean to Dream About Holding a Baby?
+[DONE] What Does It Mean to Dream About Crying Babies?
+[DONE] What Does It Mean to Dream About Teeth Falling Out?
+[DONE] What Does It Mean to Dream About Broken Teeth?
+[DONE] What Does It Mean to Dream About Pulling Out Teeth?
+[DONE] What Does It Mean to Dream About Losing Teeth Without Pain?
+[DONE] What Does It Mean to Dream About Bleeding Teeth?
+[DONE] What Does It Mean to Dream About Falling?
+[DONE] What Does It Mean to Dream About Falling From a Building?
+[DONE] What Does It Mean to Dream About Falling From the Sky?
+[DONE] What Does It Mean to Dream About Falling and Waking Up Suddenly?
+[DONE] What Does It Mean to Dream About Flying?
+[DONE] What Does It Mean to Dream About Flying Over Cities?
+[DONE] What Does It Mean to Dream About Flying Without Wings?
+[DONE] What Does It Mean to Dream About Struggling to Fly?
+[DONE] What Does It Mean to Dream About Flying High in the Sky?
+[DONE] What Does It Mean to Dream About Someone Dying?
+[DONE] What Does It Mean to Dream About Your Own Death?
+[DONE] What Does It Mean to Dream About a Dead Person Talking?
+[DONE] What Does It Mean to Dream About Dead Relatives? What Does It Mean to Dream About Blood?
+ What Does It Mean to Dream About Bleeding?
+ What Does It Mean to Dream About Blood on the Floor?
+ What Does It Mean to Dream About Blood on Your Hands?
+ What Does It Mean to Dream About Heavy Bleeding?
+ What Does It Mean to Dream About a House Fire?
+ What Does It Mean to Dream About Escaping a Fire?
+ What Does It Mean to Dream About Fire Burning Everything?
+ What Does It Mean to Dream About Controlling Fire?
+ What Does It Mean to Dream About Floods?
 What Does It Mean to Dream About Tsunamis?
 What Does It Mean to Dream About Drowning?
 What Does It Mean to Dream About Being Swept Away by Water?

@@ -88,17 +88,14 @@ def call_with_fallback(models, prompt, min_len=10, max_tokens=None):
                 print(f"⚠️ 太短丢弃: {length} (要求至少 {min_len})")
                 continue
 
-            if length > best_len:
-                best = res
-                best_len = length
+            # ✨ 核心改动：只要这一个成功且达标，直接返回，不再循环下一个
+            print(f"✅ {provider}/{model} 成功且长度达标，直接采用")
+            return res, "best_model" 
 
         except Exception as e:
             print(f"❌ {provider}/{model} 失败: {e}")
 
-    if best:
-        print(f"✅ 使用最佳结果，长度: {best_len}")
-        return best, "best_model"
-
+    # 如果循环走完了（即前面的模型都报错或太短），最后统一处理
     print("❌ 所有模型失败")
     return None
 

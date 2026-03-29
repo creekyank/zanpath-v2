@@ -250,10 +250,9 @@ def run():
         safe_write("pic_keyword.txt", pic)
 
         # =========================
-        # 4️⃣ 西语文章 (直接生成，Gemini 挂了自动切 DeepSeek)
+        # 4️⃣ 西语文章 ( DeepSeek)
         # =========================
-        print(f"🚀 正在翻译西语文章 (优先使用 Gemini)...")
-        # 移除了这里的 time.sleep(65)，直接开始
+        print(f"🚀 正在翻译西语文章...")
         
         article_es = safe_generate(
             MODELS["agent6"],
@@ -271,10 +270,8 @@ def run():
 
 
         # =========================
-        # 5️⃣ 西语 SEO (为了 Gemini 配额，这里必须强制冷却)
+        # 5️⃣ 西语 SEO 
         # =========================
-        print(f"⏳ 翻译 SEO 前强制冷却 65 秒，确保 Gemini 接口恢复...")
-        time.sleep(65) 
 
         seo_es = safe_generate(
             MODELS["agent7"],
