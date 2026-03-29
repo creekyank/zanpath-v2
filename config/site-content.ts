@@ -754,7 +754,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "See a Sample Dream Insight",
       desc: "Wondering how AI interprets dream symbols and emotions? Explore an example analysis.",
       button: "View Sample Dream Insight",
-      link: "/wisdom/dream/what-does-dreaming-about-a-flood-symbolize",
+      link: "/wisdom/dream/zanpath-ai-dream-flood-sample-report",
       preview: [
         {
           title: "Symbol Meaning",
@@ -771,7 +771,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "Ver ejemplo de interpretación de sueños",
       desc: "Descubre cómo la IA interpreta símbolos y emociones en los sueños.",
       button: "Ver ejemplo",
-      link: "/wisdom/dream/what-does-dreaming-about-a-flood-symbolize",
+      link: "/wisdom/dream/zanpath-ai-dream-flood-sample-report",
       preview: [
         {
           title: "Significado del símbolo",
