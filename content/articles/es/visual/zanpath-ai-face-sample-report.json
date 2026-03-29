@@ -6,8 +6,8 @@
   "slug": "zanpath-ai-face-sample-report",
   "status": "published",
   "title": "Tu Informe de Análisis con IA de ZanPath - ROSTRO",
-  "summary": "Este informe de muestra muestra cómo ZanPath AI analiza los rasgos faciales a través del simbolismo cultural, la estructura visual y patrones de personalidad para ofrecer una interpretación personalizada y profunda.",
-  "readingTime": 5,
+  "summary": "Este informe de muestra presenta un análisis facial detallado basado en simbolismo cultural, estructura visual y patrones de personalidad, diseñado para ofrecer una interpretación profunda y personalizada.",
+  "readingTime": 7,
   "datePublished": "2026-03-29",
   "dateModified": "2026-03-29",
   "canonical": "https://zanpath.com/es/wisdom/face/zanpath-ai-face-sample-report",
@@ -20,16 +20,21 @@
     },
     {
       "type": "p",
-      "text": "Este es un ejemplo de tu análisis facial personalizado. Cada informe se genera de manera única según tus rasgos faciales, estructura y patrones visuales, combinando interpretación cultural y modelos modernos de análisis."
+      "text": "Este es un ejemplo de tu informe de análisis facial personalizado. Cada informe es generado de forma única a partir de tus rasgos, proporciones y patrones visuales, combinando interpretación cultural tradicional con modelos modernos de análisis."
+    },
+    {
+      "type": "image",
+      "src": "https://img.zanpath.com/face/zanpath-ai-face-sample-report-1.webp",
+      "alt": "analisis facial ejemplo fisiognomia estructura rostro zonas faciales"
     },
 
     {
       "type": "h3",
-      "text": "Análisis de Características Visuales y Resonancia Cultural"
+      "text": "Análisis de Características Visuales y Marco Cultural"
     },
     {
       "type": "p",
-      "text": "Este análisis se basa en marcos simbólicos y culturales de la fisiognomía tradicional y la interpretación visual. Está diseñado para la reflexión personal y el autoconocimiento. No ofrece predicciones fijas, sino que destaca tendencias, fortalezas y patrones que pueden ayudarte a comprenderte mejor."
+      "text": "Este análisis se basa en principios simbólicos derivados de la fisiognomía clásica y la observación visual estructurada. Su objetivo es ofrecer autoconocimiento, reflexión personal y comprensión de patrones internos. No se trata de predicciones absolutas, sino de una interpretación de tendencias, cualidades y dinámicas que pueden influir en tu forma de pensar, sentir y actuar."
     },
 
     {
@@ -38,7 +43,11 @@
     },
     {
       "type": "p",
-      "text": "La estructura facial presenta un equilibrio natural, lo que sugiere estabilidad y adaptabilidad. La zona superior refleja claridad mental y visión. La zona media indica interacción activa con el entorno y las relaciones. La zona inferior muestra constancia y una base sólida. La estructura ósea es definida pero armoniosa, generando una presencia firme y accesible."
+      "text": "La estructura facial presenta un equilibrio notable entre sus diferentes zonas, lo que sugiere una base interna estable y una capacidad natural de adaptación. La zona superior del rostro refleja claridad mental, visión y capacidad de planificación. La zona media muestra dinamismo y participación activa en el entorno social y profesional."
+    },
+    {
+      "type": "p",
+      "text": "La zona inferior transmite estabilidad, perseverancia y una conexión con la realidad práctica. Este equilibrio general indica una personalidad que puede moverse entre reflexión y acción con cierta armonía. La estructura ósea es firme pero no rígida, lo que genera una presencia que combina solidez con accesibilidad."
     },
 
     {
@@ -47,7 +56,11 @@
     },
     {
       "type": "p",
-      "text": "Los ojos transmiten profundidad y sensibilidad, asociados a la observación y la percepción emocional. Las cejas reflejan organización mental y criterio. La nariz sugiere dirección y seguridad personal. La boca indica comunicación medida y confiable. La mandíbula aporta determinación y consistencia en las acciones."
+      "text": "Los ojos reflejan profundidad emocional y capacidad de observación. Su expresión sugiere sensibilidad y una tendencia a analizar antes de actuar. Las cejas aportan estructura al pensamiento, indicando criterio y una forma organizada de tomar decisiones."
+    },
+    {
+      "type": "p",
+      "text": "La nariz representa dirección personal y confianza en uno mismo, asociada con la capacidad de asumir responsabilidades. La boca indica una comunicación medida, lo que sugiere prudencia al hablar y fiabilidad en las relaciones. La mandíbula aporta determinación y constancia, reflejando la capacidad de sostener decisiones a lo largo del tiempo."
     },
 
     {
@@ -56,16 +69,28 @@
     },
     {
       "type": "p",
-      "text": "Esta composición facial se relaciona con arquetipos clásicos asociados a la calma, la reflexión y la fortaleza interior. Refleja una personalidad que valora la profundidad, la coherencia y las conexiones significativas más allá de lo superficial."
+      "text": "Esta configuración facial se relaciona con arquetipos clásicos vinculados a la calma, la introspección y la fortaleza interior. Refleja una personalidad que valora la coherencia, la profundidad emocional y las relaciones significativas por encima de lo superficial."
+    },
+    {
+      "type": "p",
+      "text": "Desde una perspectiva estética, transmite una presencia equilibrada, con una combinación de serenidad y firmeza. Este tipo de rasgos suele asociarse con personas que generan confianza de forma natural sin necesidad de imponerse."
     },
 
     {
       "type": "h3",
-      "text": "Guía Reflexiva"
+      "text": "Reflexión y Orientación Personal"
     },
     {
       "type": "p",
-      "text": "Tu fortaleza natural está en el equilibrio y la conciencia interior. Ambientes que fomenten la calma, el aprendizaje y la reflexión pueden ayudarte a mantener claridad mental. Expresar cercanía emocional de forma más abierta puede fortalecer tus relaciones sin perder tu esencia."
+      "text": "Tu fortaleza principal se encuentra en el equilibrio interno y la capacidad de reflexión. Mantener entornos que favorezcan la calma, el aprendizaje y la claridad mental puede ayudarte a potenciar tus cualidades naturales."
+    },
+    {
+      "type": "p",
+      "text": "En el ámbito personal, expresar tus emociones de forma más abierta puede mejorar la conexión con los demás, manteniendo al mismo tiempo tu profundidad. Encontrar un balance entre análisis interno y expresión externa es clave para tu desarrollo."
+    },
+    {
+      "type": "p",
+      "text": "Pequeñas acciones consistentes en tu vida diaria pueden reforzar tu estabilidad y ayudarte a proyectar con mayor claridad tu identidad y tus valores."
     },
 
     {
@@ -74,12 +99,12 @@
     },
     {
       "type": "p",
-      "text": "Este informe ha sido generado por ZanPath AI utilizando marcos culturales y análisis visual. Está destinado al autoconocimiento y la reflexión personal. No sustituye asesoramiento profesional ni garantiza resultados específicos."
+      "text": "Este informe ha sido generado por ZanPath AI utilizando modelos de interpretación cultural y análisis visual. Está diseñado para el autoconocimiento y la reflexión personal. No sustituye asesoramiento profesional ni garantiza resultados específicos en áreas como salud, relaciones o destino."
     },
 
     {
       "type": "p",
-      "text": "Tu informe completo incluirá un análisis mucho más detallado de las zonas faciales, una interpretación más profunda de tu personalidad y recomendaciones personalizadas basadas en tus rasgos únicos."
+      "text": "Tu informe completo incluirá un análisis más profundo de cada zona facial, interpretaciones más detalladas de tus rasgos únicos y recomendaciones personalizadas adaptadas específicamente a tu caso."
     }
   ]
 }
