@@ -3,7 +3,7 @@
 [DONE] Why Do People Dream About Flying?
 [DONE] What Does It Mean to Dream About Losing Teeth?
 [DONE] Why Do I Dream About Being Chased?
- What Does It Mean to Dream About Death?
+[DONE] What Does It Mean to Dream About Death?
 [DONE] Why Do I Dream About My Childhood Home?
 [DONE] What Does Dreaming About Fire Symbolize?
 [DONE] Why Do I Dream About Being Late?
@@ -36,13 +36,13 @@
 [DONE] What Does Dreaming About a Forest Mean?
 [DONE] Why Do I Dream About Strange Cities?
 [DONE] What Does Dreaming About the Moon Mean?
- Why Do I Dream About Being Stuck in a Loop?
- What Does Dreaming About Ice Symbolize?
+[DONE] Why Do I Dream About Being Stuck in a Loop?
+[DONE] What Does Dreaming About Ice Symbolize?
 [DONE] What Does Dreaming About Keys Mean?
 [DONE] Why Do I Dream About Broken Doors?
 [DONE] What Does Dreaming About a River Mean?
- Why Do I Dream About Missing Important Events?
- What Does Dreaming About a Ladder Symbolize?
+[DONE] Why Do I Dream About Missing Important Events?
+[DONE] What Does Dreaming About a Ladder Symbolize?
 [DONE] Why Do I Dream About Being Tested?
 [DONE] What Does Dreaming About a School Mean?
 [DONE] Why Do I Dream About Losing My Way?
@@ -111,13 +111,13 @@
 [DONE] What Does It Mean to Dream About Your Own Death?
 [DONE] What Does It Mean to Dream About a Dead Person Talking?
 [DONE] What Does It Mean to Dream About Dead Relatives? What Does It Mean to Dream About Blood?
- What Does It Mean to Dream About Bleeding?
- What Does It Mean to Dream About Blood on the Floor?
- What Does It Mean to Dream About Blood on Your Hands?
- What Does It Mean to Dream About Heavy Bleeding?
- What Does It Mean to Dream About a House Fire?
- What Does It Mean to Dream About Escaping a Fire?
- What Does It Mean to Dream About Fire Burning Everything?
+[DONE] What Does It Mean to Dream About Bleeding?
+[DONE] What Does It Mean to Dream About Blood on the Floor?
+[DONE] What Does It Mean to Dream About Blood on Your Hands?
+[DONE] What Does It Mean to Dream About Heavy Bleeding?
+[DONE] What Does It Mean to Dream About a House Fire?
+[DONE] What Does It Mean to Dream About Escaping a Fire?
+[DONE] What Does It Mean to Dream About Fire Burning Everything?
  What Does It Mean to Dream About Controlling Fire?
  What Does It Mean to Dream About Floods?
 What Does It Mean to Dream About Tsunamis?
