@@ -718,7 +718,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "See a Sample Name Analysis",
       desc: "Explore an example AI-generated name analysis before creating a personalized name report.",
       button: "View Sample Naming Report",
-      link: "/en/wisdom/naming/sample-baby-name-analysis",
+      link: "/wisdom/naming/zanpath-ai-naming-full-report",
       preview: [
         {
           title: "Name Meaning",
@@ -735,7 +735,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "Ver un ejemplo de análisis de nombre",
       desc: "Explora un ejemplo de análisis de nombres generado por IA antes de crear el tuyo.",
       button: "Ver ejemplo de análisis",
-      link: "/es/wisdom/naming/sample-baby-name-analysis",
+      link: "/wisdom/naming/zanpath-ai-naming-full-report",
       preview: [
         {
           title: "Significado del nombre",

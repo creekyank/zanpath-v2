@@ -2018,5 +2018,19 @@
       "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-car-accidents-1.webp",
       "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-car-accidents-2.webp"
     ]
+  },
+  "what-does-it-mean-to-dream-about-driving-fast": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-driving-fast-1.webp",
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-driving-fast-2.webp"
+    ]
+  },
+  "what-does-it-mean-to-dream-about-losing-control-of-a-car": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-losing-control-of-a-car-1.webp",
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-losing-control-of-a-car-2.webp"
+    ]
   }
 }
