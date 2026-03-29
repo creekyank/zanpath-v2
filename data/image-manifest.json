@@ -2004,5 +2004,12 @@
       "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-opening-doors-1.webp",
       "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-opening-doors-2.webp"
     ]
+  },
+  "what-does-it-mean-to-dream-about-cars": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-cars-1.webp",
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-cars-2.webp"
+    ]
   }
 }
