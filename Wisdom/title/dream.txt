@@ -134,9 +134,9 @@
 [DONE] What Does It Mean to Dream About Haunted Houses?
 [DONE] What Does It Mean to Dream About Losing Keys?
 [DONE] What Does It Mean to Dream About Finding Keys?
-What Does It Mean to Dream About Locked Doors?
-What Does It Mean to Dream About Opening Doors?
-What Does It Mean to Dream About Cars?
+[DONE] What Does It Mean to Dream About Locked Doors?
+[DONE] What Does It Mean to Dream About Opening Doors?
+[RUNNING] What Does It Mean to Dream About Cars?
 What Does It Mean to Dream About Car Accidents?
 What Does It Mean to Dream About Driving Fast?
 What Does It Mean to Dream About Losing Control of a Car?

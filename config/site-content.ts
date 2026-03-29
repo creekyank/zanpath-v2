@@ -790,7 +790,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "See a Sample Space Energy Analysis",
       desc: "Discover how AI evaluates spatial harmony and environmental energy with a sample report.",
       button: "View Sample Space Report",
-      link: "/en/wisdom/fengshui/sample-fengshui-analysis",
+      link: "/wisdom/space/zanpath-ai-fengshui-sample-report",
       preview: [
         {
           title: "Energy Flow",
@@ -807,7 +807,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "Ver ejemplo de análisis de espacio",
       desc: "Descubre cómo la IA analiza la armonía energética de un espacio.",
       button: "Ver informe de ejemplo",
-      link: "/es/wisdom/fengshui/sample-fengshui-analysis",
+      link: "/wisdom/space/zanpath-ai-fengshui-sample-report",
       preview: [
         {
           title: "Flujo de energía",
