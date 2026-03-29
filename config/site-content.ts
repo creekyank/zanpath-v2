@@ -826,7 +826,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "See a Sample Visual Trait Analysis",
       desc: "Explore how AI analyzes facial structure and visual personality indicators.",
       button: "View Sample Visual Analysis",
-      link: "/en/wisdom/face/sample-face-reading",
+      link: "/wisdom/visual/zanpath-ai-face-sample-report",
       preview: [
         {
           title: "Feature Insight",
@@ -843,7 +843,7 @@ export const SAMPLE_ANALYSIS_BLOCK = {
       title: "Ver ejemplo de análisis visual",
       desc: "Explora cómo la IA interpreta rasgos faciales y tendencias de personalidad.",
       button: "Ver análisis visual",
-      link: "/es/wisdom/face/sample-face-reading",
+      link: "/wisdom/visual/zanpath-ai-face-sample-report",
       preview: [
         {
           title: "Interpretación de rasgos",

@@ -1955,5 +1955,26 @@
       "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-houses-1.webp",
       "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-houses-2.webp"
     ]
+  },
+  "what-does-it-mean-to-dream-about-old-houses": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-old-houses-1.webp",
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-old-houses-2.webp"
+    ]
+  },
+  "what-does-it-mean-to-dream-about-big-houses": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-big-houses-1.webp",
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-big-houses-2.webp"
+    ]
+  },
+  "what-does-it-mean-to-dream-about-haunted-houses": {
+    "module": "dream",
+    "images": [
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-haunted-houses-1.webp",
+      "https://img.zanpath.com/dream/what-does-it-mean-to-dream-about-haunted-houses-2.webp"
+    ]
   }
 }
