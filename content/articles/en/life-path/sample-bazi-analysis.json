@@ -28,110 +28,99 @@
       "answer": "In BaZi, balance between elements determines harmony. Missing or weak elements highlight areas where support or adjustment is beneficial."
     }
   ],
-  "content": [
-    {
-      "type": "h2",
-      "text": "ZANPATH AI - SPIRITUAL GUIDANCE REPORT"
-    },
-    {
-      "type": "p",
-      "text": "Life Path Analysis based on BaZi Four Pillars of Destiny"
-    },
-
-    {
-      "type": "h2",
-      "text": "Birth Information and Core Structure"
-    },
-    {
-      "type": "p",
-      "text": "Birth Date and Time: May 6, 2014, 7:29 AM (Gregorian Calendar). Gender: Male. This corresponds to the 7th day of the 4th Lunar month in the Year of Jia Wu 甲午. The time falls within the Chen 辰 hour (7:00–9:00 AM)."
-    },
-    {
-      "type": "p",
-      "text": "Four Pillars 八字: Year Pillar 甲午 (Jia Wu, Yang Wood over Yang Fire). Month Pillar 己巳 (Ji Si, Yin Earth over Yin Fire). Day Pillar 丁丑 (Ding Chou, Yin Fire over Yin Earth). Hour Pillar 甲辰 (Jia Chen, Yang Wood over Yang Earth)."
-    },
-    {
-      "type": "p",
-      "text": "Day Master 日主: 丁火 (Ding Fire). This represents a refined inner flame, like a candle or star, symbolizing intelligence, sensitivity, and quiet influence."
-    },
-
-    {
-      "type": "h2",
-      "text": "Elemental Energy Analysis"
-    },
-    {
-      "type": "p",
-      "text": "Fire 火 is strong, supported by multiple pillars and forming a stable core identity. Earth 土 is very strong and dominant, appearing in several positions and absorbing energy from Fire. Wood 木 is present and supportive, feeding the Fire element. Metal 金 is weak and hidden within Earth, limiting its function. Water 水 is extremely weak and nearly absent."
-    },
-    {
-      "type": "p",
-      "text": "Overall, this is a 身旺 strong structure. While the core self is powerful, excessive Earth drains energy and creates imbalance. The key issue is too much Earth and not enough Water and Metal."
-    },
-    {
-      "type": "p",
-      "text": "Favorable elements 喜神 include Metal 金 as the top priority, helping regulate Earth and generate Water, and Water 水, which brings structure, discipline, and direction. Unfavorable elements 忌神 include excessive Earth 土 and additional Fire 火."
-    },
-
-    {
-      "type": "h2",
-      "text": "Life Dimensions Analysis"
-    },
-    {
-      "type": "p",
-      "text": "Wealth and Career: Strong intelligence is indicated by the 伤官 pattern, showing creativity and analytical ability. However, lack of control from Water means difficulty with rigid systems. Best suited fields include technology, engineering, finance, law, and strategic roles. Career peaks during Metal and Water cycles, especially after age 30."
-    },
-    {
-      "type": "p",
-      "text": "Health: Strong Earth influences digestive system, leading to possible stomach or fatigue issues. Weak Metal affects lungs and respiratory health. Lack of Water suggests attention to kidneys and hydration. Mental calmness and balanced lifestyle are essential."
-    },
-    {
-      "type": "p",
-      "text": "Marriage and Relationships: The spouse palace 丑 Earth suggests high standards and emotional distance. Water element representing partner is weak, indicating later or effort-based relationships. Ideal partner carries calm, rational Water or Metal qualities."
-    },
-    {
-      "type": "p",
-      "text": "Family: Early life shows support but also pressure to perform. Parental influence is caring but demanding. Sibling dynamics may involve competition. Future children bring emotional balance and personal growth."
-    },
-
-    {
-      "type": "h2",
-      "text": "Future Cycles and Timing"
-    },
-    {
-      "type": "p",
-      "text": "Age 4–13 Geng Wu cycle introduces Metal but with Fire conflict. Age 14–23 Xin Wei cycle continues support with challenges. Age 24–33 Ren Shen cycle is highly favorable with strong Metal and Water, marking major life breakthroughs."
-    },
-    {
-      "type": "p",
-      "text": "Key upcoming years include 2031 Xin Hai and 2032 Ren Zi, which are highly beneficial with strong Water and Metal energy, bringing clarity, opportunities, and growth."
-    },
-
-    {
-      "type": "h2",
-      "text": "Lifestyle and Feng Shui Guidance"
-    },
-    {
-      "type": "p",
-      "text": "Favorable colors include white, metallic tones, gold, silver, black, navy, and dark gray. Avoid excessive yellow, brown, red, and purple."
-    },
-    {
-      "type": "p",
-      "text": "Recommended materials include metal-based jewelry such as silver or white gold, and crystals like clear quartz or aquamarine. Avoid overly earthy or fiery accessories."
-    },
-    {
-      "type": "p",
-      "text": "Favorable directions include West and North. Sleeping with head facing North enhances balance. Career opportunities are stronger in western or northern regions."
-    },
-
-    {
-      "type": "h2",
-      "text": "Final Insight"
-    },
-    {
-      "type": "p",
-      "text": "Your Life Path is defined not by limitation, but by balance. When supported by the right elements, your natural intelligence and inner fire become powerful tools for growth, leadership, and long-term success."
-    },
-
+  "content":[
+  {
+    "type": "h2",
+    "text": "Birth Information and Core Structure"
+  },
+  {
+    "type": "p",
+    "text": "Birth Date and Time: May 6, 2014, 7:29 AM (Gregorian Calendar). Gender: Male. Solar Date Conversion: This birth time corresponds to the 7th day of the 4th Lunar month in the Year of Jia Wu (2014). As the hour is 7:29 AM, it falls within the Chen hour (7:00-9:00 AM)."
+  },
+  {
+    "type": "p",
+    "text": "Four Pillars: Year Pillar Jia Wu (Yang Wood over Yang Fire). Month Pillar Ji Si (Yin Earth over Yin Fire). Day Pillar Ding Chou (Yin Fire over Yin Earth). Hour Pillar Jia Chen (Yang Wood over Yang Earth)."
+  },
+  {
+    "type": "p",
+    "text": "Day Master: Ding Fire (Yin Fire). You are born on a Ding Fire day. Ding Fire is likened to the flame of a candle, a lantern, or the stars—refined, intelligent, observant, and possessing an inner radiance that illuminates others subtly."
+  },
+  {
+    "type": "h2",
+    "text": "Elemental Energy Analysis"
+  },
+  {
+    "type": "p",
+    "text": "Elemental Breakdown and Balance: Fire: Strong. Represented by the Day Master (Ding), supported by the Fire in the Month Branch (Si), and the Fire in the Year Branch (Wu). This forms a robust foundation. Earth: Very Strong. The Month Stem (Ji), Day Branch (Chou), and Hour Branch (Chen) are all Earth. Earth is excessively abundant, draining the Fire's energy. Wood: Present. Represented by the Year Stem (Jia) and Hour Stem (Jia). Wood produces Fire, providing crucial support to the Day Master. Metal: Weak. Hidden within the Earth branches (Chou, Chen). It is suppressed and cannot effectively perform its function. Water: Extremely Weak. Virtually absent from the visible pillars. Water is needed to control the excessive Earth and temper the strong Fire, but it is missing."
+  },
+  {
+    "type": "p",
+    "text": "Overall Assessment: This is a Strong Body configuration. The Day Master (Ding Fire) is inherently strong, but it is heavily drained and obscured by the overwhelming presence of Earth (the Hurting Officer and Eating God stars). This creates a pattern where intelligence and talent (Earth) are abundant, but they consume one's spirit and energy. The key imbalance is excessive Earth and a severe lack of Water and Metal."
+  },
+  {
+    "type": "p",
+    "text": "Most Favorable Elements: 1. Metal: The top priority. Metal can drain the excessive Earth (Earth produces Metal) and attract the missing Water (Metal produces Water). It serves as a crucial channel to regulate the elemental flow. 2. Water: Highly favorable. Water is the official star, representing career, discipline, and structure. It is urgently needed to control the Earth, bring balance, and provide a clear direction for the strong Fire's energy."
+  },
+  {
+    "type": "p",
+    "text": "Most Unfavorable Elements: 1. Earth: The primary unfavorable element. Excessive Earth smothers the Fire's brilliance, leads to overthinking, worry, and energy dispersion. 2. Fire: Secondary unfavorable. Adding more Fire strengthens the already strong Day Master without solving the core issue of Earth excess and Water deficiency. It can lead to stubbornness and impatience."
+  },
+  {
+    "type": "h2",
+    "text": "Life Dimensions Analysis"
+  },
+  {
+    "type": "p",
+    "text": "Wealth and Career: Your chart shows a strong Hurting Officer intelligence, indicating sharp wit, creativity, and technical aptitude. However, the excessive Earth without proper control suggests a tendency to be a brilliant but unconstrained thinker, potentially struggling with authority and systematic career paths. Wealth is represented by Metal, which is weak. True wealth accumulation will come when Metal and Water fortunes arrive. You are not suited for rigid, bureaucratic environments. Ideal fields involve technology, engineering, strategic analysis, finance, law, or diplomacy. Careers requiring deep specialization, research, or innovative problem-solving are favorable. Your career peak will align with Grand Cycles and Annual Years strong in Metal and Water, typically in your 30s and beyond."
+  },
+  {
+    "type": "p",
+    "text": "Health: The overwhelming Earth element puts pressure on the spleen and stomach systems. Digestive issues, poor nutrient absorption, and a tendency to overthink leading to fatigue are areas for attention. The weak Metal correlates with the lungs and respiratory system, making you potentially susceptible to allergies or minor respiratory ailments. The lack of Water hints at the need to care for the kidneys and urinary system. Regular hydration, a light diet, and practices that calm the mind (like meditation) are beneficial."
+  },
+  {
+    "type": "p",
+    "text": "Marriage and Romance: The Spouse Palace (the Day Branch) is Chou (Earth), an unfavorable element. This suggests your innate perspective on relationships may involve high standards or a focus on intellectual companionship, which can create distance. The official star representing the partner is hidden and extremely weak. This indicates that marriage may come later in life or require conscious effort to nurture. Your ideal partner will likely be someone with a calm, structured, and rational (Water/Metal) demeanor, who can provide the stability and grounding your chart lacks. They may appear during years when Water or Metal is strengthened."
+  },
+  {
+    "type": "p",
+    "text": "Family: The Year Pillar represents ancestors and early environment. Jia Wood over Wu Fire indicates initial family support, though the Fire adds some early pressure to perform. The Parent Palace shows Earth and Fire, suggesting parents may be caring but potentially exert high expectations. Sibling relationships are influenced by the competitive Earth-Fire dynamic, indicating a need for clear communication to avoid misunderstandings. Your relationship with future children will be a significant source of joy and balance for you, encouraging your own personal growth and discipline."
+  },
+  {
+    "type": "h2",
+    "text": "Grand Cycles and Future Trends"
+  },
+  {
+    "type": "p",
+    "text": "Current 10-Year Grand Cycle: Age 4-13: Geng Wu Cycle. Geng Metal appears on the surface, offering some early relief and intellectual development, but it sits on Wu Fire, creating a conflict. This is a period of learning and internal adjustment. Age 14-23: Xin Wei Cycle. Xin Metal continues to provide support. However, the Wei Earth branch is unfavorable, indicating ongoing challenges with peers, studies, and self-expression. Focus on skill-building is key. Age 24-33: Ren Shen Cycle. This is a pivotal and highly favorable cycle. Ren Water and Shen Metal arrive together. This decade brings career opportunities, structure, recognition, and significant personal growth. It is the time to establish your professional foundation."
+  },
+  {
+    "type": "p",
+    "text": "Annual Trends for the Next 10 Years (2024-2033): 2024: Jia Wood, Chen Earth. Steady growth amidst some mental burdens. 2025: Yi Wood, Si Fire. Focus on studies and personal interests. 2026: Bing Fire, Wu Fire. Strong peer influence and external activity. 2027: Ding Fire, Wei Earth. High energy but high drain. 2028: Wu Earth, Shen Metal. Positive turn, bringing new ideas or mentors. 2029: Ji Earth, You Metal. Technical learning and refinement. 2030: Geng Metal, Xu Earth. Complex year requiring patience. 2031: Xin Metal, Hai Water. Excellent year bringing clarity and opportunities. 2032: Ren Water, Zi Water. Peak year benefiting career and discipline. 2033: Gui Water, Chou Earth. Consolidate gains from previous years."
+  },
+  {
+    "type": "h2",
+    "text": "Lifestyle and Feng Shui Guide"
+  },
+  {
+    "type": "p",
+    "text": "Auspicious Suggestions: Colors: White, metallic shades, gold, silver (Metal); Black, navy blue, dark gray (Water). Numbers: 4, 9 (Metal); 1, 6 (Water). Avoid: Yellow, brown, red, purple (Earth and Fire)."
+  },
+  {
+    "type": "p",
+    "text": "Beneficial Accessories: Wear: Jewelry made of platinum, white gold, silver, or stainless steel. Crystals like clear quartz, white jade, or aquamarine. Shapes related to circles or metals. Avoid: Excessive earthenware pottery, red coral, or accessories in bright red/yellow tones."
+  },
+  {
+    "type": "p",
+    "text": "Spatial Directions: House/Bedroom/Headboard Orientation: Favorable directions are West (Metal) and North (Water). Sleeping with your head towards the North is particularly beneficial. Career Development Direction: Geographically, seek opportunities in cities or regions to the West and North of your birthplace."
+  },
+  {
+    "type": "h2",
+    "text": "Final Insight"
+  },
+  {
+    "type": "p",
+    "text": "Your Life Path is defined not by limitation, but by balance. When supported by the right elements, your natural intelligence and inner fire become powerful tools for growth, leadership, and long-term success."
+  },
     {
       "type": "disclaimer",
       "text": "This analysis is generated by AI for cultural exploration and self-reflection. It does not guarantee specific outcomes and should not replace professional advice in health, finance, or legal matters."

@@ -30,108 +30,98 @@
     }
   ],
   "content": [
-    {
-      "type": "h2",
-      "text": "ZANPATH AI - INFORME DE GUÍA ESPIRITUAL"
-    },
-    {
-      "type": "p",
-      "text": "Análisis de Camino de Vida basado en BaZi (Cuatro Pilares del Destino)"
-    },
-
-    {
-      "type": "h2",
-      "text": "Información de Nacimiento y Estructura Base"
-    },
-    {
-      "type": "p",
-      "text": "Fecha y hora de nacimiento: 6 de mayo de 2014, 7:29 AM (calendario gregoriano). Género: masculino. Esto corresponde al día 7 del cuarto mes lunar en el año Jia Wu 甲午. La hora cae dentro del periodo Chen 辰 (7:00–9:00 AM)."
-    },
-    {
-      "type": "p",
-      "text": "Cuatro Pilares 八字: Pilar del Año 甲午 (Jia Wu, Madera Yang sobre Fuego Yang). Pilar del Mes 己巳 (Ji Si, Tierra Yin sobre Fuego Yin). Pilar del Día 丁丑 (Ding Chou, Fuego Yin sobre Tierra Yin). Pilar de la Hora 甲辰 (Jia Chen, Madera Yang sobre Tierra Yang)."
-    },
-    {
-      "type": "p",
-      "text": "Maestro del Día 日主: 丁火 (Fuego Ding). Representa una llama refinada, como una vela o una estrella, simbolizando inteligencia, sensibilidad y una influencia sutil."
-    },
-
-    {
-      "type": "h2",
-      "text": "Análisis de Energía de los Elementos"
-    },
-    {
-      "type": "p",
-      "text": "El Fuego 火 es fuerte y forma el núcleo de la identidad. La Tierra 土 es muy fuerte y dominante, absorbiendo energía del Fuego. La Madera 木 está presente y apoya al Fuego. El Metal 金 es débil y está oculto dentro de la Tierra. El Agua 水 es extremadamente débil y casi inexistente."
-    },
-    {
-      "type": "p",
-      "text": "En conjunto, se trata de una estructura 身旺 fuerte. Aunque el núcleo es poderoso, el exceso de Tierra genera desequilibrio. El problema principal es demasiada Tierra y falta de Agua y Metal."
-    },
-    {
-      "type": "p",
-      "text": "Elementos favorables 喜神: Metal 金 como prioridad principal, seguido de Agua 水 para aportar equilibrio y dirección. Elementos desfavorables 忌神: exceso de Tierra 土 y Fuego 火 adicional."
-    },
-
-    {
-      "type": "h2",
-      "text": "Análisis de las Dimensiones de la Vida"
-    },
-    {
-      "type": "p",
-      "text": "Riqueza y carrera: La presencia de 伤官 indica inteligencia y creatividad. Sin embargo, la falta de Agua implica dificultad en estructuras rígidas. Campos ideales incluyen tecnología, ingeniería, finanzas, derecho y análisis estratégico. El pico profesional ocurre en ciclos de Metal y Agua, especialmente después de los 30 años."
-    },
-    {
-      "type": "p",
-      "text": "Salud: El exceso de Tierra afecta el sistema digestivo. El Metal débil se relaciona con los pulmones. La falta de Agua indica atención a riñones e hidratación. Es importante mantener equilibrio mental y físico."
-    },
-    {
-      "type": "p",
-      "text": "Relaciones y matrimonio: El palacio del cónyuge 丑 sugiere estándares altos y cierta distancia emocional. El elemento Agua es débil, lo que indica relaciones tardías o que requieren esfuerzo consciente. La pareja ideal posee cualidades de Agua o Metal."
-    },
-    {
-      "type": "p",
-      "text": "Familia: Existe apoyo en la infancia pero también presión. Los padres son exigentes. Relaciones entre hermanos pueden ser competitivas. Los hijos aportarán equilibrio emocional en el futuro."
-    },
-
-    {
-      "type": "h2",
-      "text": "Ciclos de Vida y Tendencias Futuras"
-    },
-    {
-      "type": "p",
-      "text": "Edad 4–13 ciclo Geng Wu: presencia de Metal con conflicto de Fuego. Edad 14–23 ciclo Xin Wei: apoyo con desafíos. Edad 24–33 ciclo Ren Shen: etapa altamente favorable con crecimiento y oportunidades."
-    },
-    {
-      "type": "p",
-      "text": "Años clave incluyen 2031 Xin Hai y 2032 Ren Zi, con fuerte energía de Agua y Metal que traerán claridad, oportunidades y desarrollo."
-    },
-
-    {
-      "type": "h2",
-      "text": "Guía de Estilo de Vida y Feng Shui"
-    },
-    {
-      "type": "p",
-      "text": "Colores favorables: blanco, metálicos, dorado, plateado, negro, azul oscuro y gris. Evitar amarillo, marrón, rojo y púrpura."
-    },
-    {
-      "type": "p",
-      "text": "Accesorios recomendados: metales como plata u oro blanco, y cristales como cuarzo o aguamarina. Evitar tonos tierra o fuego en exceso."
-    },
-    {
-      "type": "p",
-      "text": "Direcciones favorables: Oeste y Norte. Dormir con la cabeza hacia el Norte es beneficioso. Oportunidades profesionales se fortalecen en regiones hacia el Norte o Oeste."
-    },
-
-    {
-      "type": "h2",
-      "text": "Conclusión Final"
-    },
-    {
-      "type": "p",
-      "text": "Tu camino de vida no está definido por limitaciones, sino por equilibrio. Cuando los elementos adecuados te apoyan, tu inteligencia y energía interna se convierten en una poderosa fuerza para el crecimiento y el éxito."
-    },
+  {
+    "type": "h2",
+    "text": "Información de Nacimiento y Estructura Central"
+  },
+  {
+    "type": "p",
+    "text": "Fecha y Hora de Nacimiento: 6 de mayo de 2014, 7:29 AM (Calendario Gregoriano). Género: Masculino. Conversión de Fecha Solar: Esta hora de nacimiento corresponde al séptimo día del cuarto mes lunar en el Año de Jia Wu (2014). Como la hora es las 7:29 AM, cae dentro de la hora Chen (7:00-9:00 AM)."
+  },
+  {
+    "type": "p",
+    "text": "Cuatro Pilares: Pilar del Año Jia Wu (Madera Yang sobre Fuego Yang). Pilar del Mes Ji Si (Tierra Yin sobre Fuego Yin). Pilar del Día Ding Chou (Fuego Yin sobre Tierra Yin). Pilar de la Hora Jia Chen (Madera Yang sobre Tierra Yang)."
+  },
+  {
+    "type": "p",
+    "text": "Maestro del Día: Ding Fuego (Fuego Yin). Has nacido en un día de Fuego Ding. El Fuego Ding se asemeja a la llama de una vela, una linterna o las estrellas: refinado, inteligente, observador y poseedor de un resplandor interior que ilumina a los demás sutilmente."
+  },
+  {
+    "type": "h2",
+    "text": "Análisis de la Energía Elemental"
+  },
+  {
+    "type": "p",
+    "text": "Desglose y Equilibrio Elemental: Fuego: Fuerte. Representado por el Maestro del Día (Ding), apoyado por el Fuego en la Rama del Mes (Si) y el Fuego en la Rama del Año (Wu). Esto forma una base robusta. Tierra: Muy Fuerte. El Tallo del Mes (Ji), la Rama del Día (Chou) y la Rama de la Hora (Chen) son todos Tierra. La Tierra es excesivamente abundante, drenando la energía del Fuego. Madera: Presente. Representada por el Tallo del Año (Jia) y el Tallo de la Hora (Jia). La Madera produce Fuego, proporcionando un apoyo crucial al Maestro del Día. Metal: Débil. Oculto dentro de las ramas de Tierra (Chou, Chen). Está suprimido y no puede realizar su función de manera efectiva. Agua: Extremadamente Débil. Prácticamente ausente de los pilares visibles. El Agua es necesaria para controlar el exceso de Tierra y templar el fuerte Fuego, pero no está presente."
+  },
+  {
+    "type": "p",
+    "text": "Evaluación General: Esta es una configuración de Cuerpo Fuerte (Sheng Wang). El Maestro del Día es intrínsecamente fuerte, pero está fuertemente drenado y oscurecido por la presencia abrumadora de la Tierra (las estrellas del Oficial Herido y el Dios de la Comida). Esto crea un patrón donde la inteligencia y el talento (Tierra) son abundantes, pero consumen el espíritu y la energía de uno. El desequilibrio clave es el exceso de Tierra y una grave falta de Agua y Metal."
+  },
+  {
+    "type": "p",
+    "text": "Elementos Más Favorables: 1. Metal: La máxima prioridad. El Metal puede drenar el exceso de Tierra (la Tierra produce Metal) y atraer el Agua faltante (el Metal produce Agua). Sirve como un canal crucial para regular el flujo elemental. 2. Agua: Muy favorable. El Agua es la estrella oficial, representando la carrera, la disciplina y la estructura. Es urgentemente necesaria para controlar la Tierra, aportar equilibrio y proporcionar una dirección clara para la energía del fuerte Fuego."
+  },
+  {
+    "type": "p",
+    "text": "Elementos Más Desfavorables: 1. Tierra: El elemento desfavorable principal. La Tierra excesiva sofoca el brillo del Fuego, conduce al exceso de pensamiento, la preocupación y la dispersión de energía. 2. Fuego: Desfavorable secundario. Añadir más Fuego fortalece al ya fuerte Maestro del Día sin resolver el problema central del exceso de Tierra y la deficiencia de Agua. Puede conducir a la terquedad y la impaciencia."
+  },
+  {
+    "type": "h2",
+    "text": "Análisis de las Dimensiones de Vida"
+  },
+  {
+    "type": "p",
+    "text": "Riqueza y Carrera: Tu carta muestra una fuerte inteligencia de Oficial Herido, lo que indica un ingenio agudo, creatividad y aptitud técnica. Sin embargo, el exceso de Tierra sin un control adecuado sugiere una tendencia a ser un pensador brillante pero sin restricciones, luchando potencialmente con la autoridad y las trayectorias profesionales sistemáticas. La riqueza está representada por el Metal, que es débil. La verdadera acumulación de riqueza llegará cuando arriben las fortunas de Metal y Agua. No eres apto para entornos burocráticos rígidos. Los campos ideales incluyen tecnología, ingeniería, análisis estratégico, finanzas, leyes o diplomacia. Las carreras que requieren una especialización profunda, investigación o resolución innovadora de problemas son favorables. Tu pico profesional se alineará con los Grandes Ciclos y años anuales fuertes en Metal y Agua, típicamente a partir de los 30 años."
+  },
+  {
+    "type": "p",
+    "text": "Salud: El abrumador elemento Tierra ejerce presión sobre los sistemas del bazo y el estómago. Los problemas digestivos, la mala absorción de nutrientes y la tendencia a pensar demasiado que conduce a la fatiga son áreas que requieren atención. El Metal débil se correlaciona con los pulmones y el sistema respiratorio, haciéndote potencialmente susceptible a alergias o dolencias respiratorias menores. La falta de Agua insinúa la necesidad de cuidar los riñones y el sistema urinario. La hidratación regular, una dieta ligera y las prácticas que calman la mente (como la meditación) son beneficiosas."
+  },
+  {
+    "type": "p",
+    "text": "Matrimonio y Romance: El Palacio del Esposo (la Rama del Día) es Chou (Tierra), un elemento desfavorable. Esto sugiere que tu perspectiva innata sobre las relaciones puede involucrar estándares altos o un enfoque en el compañerismo intelectual, lo que puede crear distancia. La estrella oficial que representa a la pareja está oculta y es extremadamente débil. Esto indica que el matrimonio puede llegar más tarde en la vida o requerir un esfuerzo consciente para nutrirse. Tu pareja ideal será probablemente alguien con un temperamento tranquilo, estructurado y racional (Agua/Metal), que pueda proporcionar la estabilidad y el enraizamiento que le falta a tu carta."
+  },
+  {
+    "type": "p",
+    "text": "Familia: El Pilar del Año representa a los ancestros y el entorno temprano. Madera Jia sobre Fuego Wu indica apoyo familiar inicial, aunque el Fuego añade algo de presión temprana para rendir. El Palacio de los Padres muestra Tierra y Fuego, lo que sugiere que los padres pueden ser cariñosos pero potencialmente ejercen altas expectativas. Las relaciones con los hermanos están influenciadas por la dinámica competitiva Tierra-Fuego, lo que indica la necesidad de una comunicación clara para evitar malentendidos. Tu relación con futuros hijos será una fuente significativa de alegría y equilibrio para ti, fomentando tu propio crecimiento personal y disciplina."
+  },
+  {
+    "type": "h2",
+    "text": "Grandes Ciclos y Tendencias Futuras"
+  },
+  {
+    "type": "p",
+    "text": "Gran Ciclo Actual de 10 Años: Edad 4-13: Ciclo Geng Wu. El Metal Geng aparece en la superficie, ofreciendo algo de alivio temprano y desarrollo intelectual, pero se asienta sobre el Fuego Wu creando un conflicto. Este es un período de aprendizaje y ajuste interno. Edad 14-23: Ciclo Xin Wei. El Metal Xin continúa brindando apoyo. Sin embargo, la rama de Tierra Wei es desfavorable, lo que indica desafíos continuos con los compañeros, los estudios y la autoexpresión. El enfoque en el desarrollo de habilidades es clave. Edad 24-33: Ciclo Ren Shen. Este es un ciclo crucial y altamente favorable. El Agua Ren y el Metal Shen llegan juntos. Esta década trae oportunidades profesionales, estructura, reconocimiento y un crecimiento personal significativo."
+  },
+  {
+    "type": "p",
+    "text": "Tendencias Anuales para los Próximos 10 Años (2024-2033): 2024: Madera Jia, Tierra Chen. Crecimiento constante en medio de algunas cargas mentales. 2025: Madera Yi, Fuego Si. Enfoque en estudios e intereses personales. 2026: Fuego Bing, Fuego Wu. Fuerte influencia de compañeros y actividad externa. 2027: Fuego Ding, Tierra Wei. Alta energía pero alto agotamiento. 2028: Tierra Wu, Metal Shen. Giro positivo, trayendo nuevas ideas o mentores. 2029: Tierra Ji, Metal You. Aprendizaje técnico y refinamiento. 2030: Metal Geng, Tierra Xu. Año complejo que requiere paciencia. 2031: Metal Xin, Agua Hai. Excelente año que aporta claridad y oportunidades. 2032: Agua Ren, Agua Zi. Año cumbre que beneficia la carrera y la disciplina. 2033: Agua Gui, Tierra Chou. Consolidar las ganancias de los años anteriores."
+  },
+  {
+    "type": "h2",
+    "text": "Guía de Estilo de Vida y Feng Shui"
+  },
+  {
+    "type": "p",
+    "text": "Sugerencias Auspiciosas: Colores: Blanco, tonos metálicos, dorado, plateado (Metal); Negro, azul marino, gris oscuro (Agua). Números: 4, 9 (Metal); 1, 6 (Agua). Evitar: Amarillo, marrón, rojo, púrpura (Tierra y Fuego)."
+  },
+  {
+    "type": "p",
+    "text": "Accesorios Beneficiosos: Uso: Joyería hecha de platino, oro blanco, plata o acero inoxidable. Cristales como cuarzo transparente, jade blanco o aguamarina. Formas relacionadas con círculos o metales. Evitar: Alfarería de barro excesiva, coral rojo o accesorios en tonos rojos o amarillos brillantes."
+  },
+  {
+    "type": "p",
+    "text": "Direcciones Espaciales: Orientación de la casa, dormitorio o cabecera: Las direcciones favorables son el Oeste (Metal) y el Norte (Agua). Dormir con la cabeza hacia el Norte es particularmente beneficioso. Dirección de desarrollo profesional: Geográficamente, busca oportunidades en ciudades o regiones al Oeste y Norte de tu lugar de nacimiento."
+  },
+  {
+    "type": "h2",
+    "text": "Reflexión Final"
+  },
+  {
+    "type": "p",
+    "text": "Tu camino de vida no se define por la limitación, sino por el equilibrio. Cuando te apoyas en los elementos correctos, tu inteligencia natural y tu fuego interior se convierten en herramientas poderosas para el crecimiento, el liderazgo y el éxito a largo plazo."
+  },
 
     {
       "type": "disclaimer",
