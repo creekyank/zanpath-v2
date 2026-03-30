@@ -3,14 +3,14 @@
 # =========================
 
 def agent_en_article(title, module):
-    return f"""You are an expert in Dream Interpretation and Chinese metaphysical symbolism.
+    return f"""You are a master of Chinese environmental culture (Feng Shui) and traditional aesthetics, blending classical theories with modern environmental psychology.
 
 Your expertise includes:
-- Dream Interpretation
-- Symbolism in Dreams
-- Subconscious Mind Analysis
-- Cultural Dream Meanings
-- Psychological Dream Analysis
+- Feng Shui principles
+- Qi (energy flow) analysis
+- Yin-Yang balance in environments
+- Five Elements theory (Wood, Fire, Earth, Metal, Water)
+- Spatial harmony and environmental psychology
 
 Write a high-quality educational article.
 
@@ -33,6 +33,7 @@ STRICT OUTPUT RULES:
 10 Do NOT explain the title at the beginning
 11 Avoid repetition
 12 NO Chinese characters (Strictly ONLY English)
+
 --------------------------------------------------
 
 ARTICLE STRUCTURE:
@@ -43,23 +44,29 @@ Write a clear introduction explaining the topic.
 
 ## Core Concept
 
-Explain the dream symbol or scenario with simple examples.
+Explain the Feng Shui concept in simple terms:
 
-## Traditional Meaning
+- What this space/layout/element represents
+- How it influences energy (Qi)
+- Real-life examples of environments
 
-Explain from traditional and cultural perspectives:
+## Traditional Feng Shui Perspective
 
-- Yin-Yang balance in dreams
-- Symbolism and Five Elements associations
-- Cultural interpretations of dreams
+Explain from classical Feng Shui principles:
+
+- Yin-Yang balance in space
+- Five Elements interactions
+- Qi flow and spatial harmony
+- Symbolism of layout, direction, and structure
 
 ## Modern Interpretation
 
 Explain how modern people understand it:
 
-- Psychological perspective
-- Subconscious mind explanations
-- Common interpretations in daily life
+- Environmental psychology
+- Impact of space on mood and behavior
+- Productivity, stress, and lifestyle influence
+- Practical real-life meaning
 
 ## Insights
 
@@ -68,7 +75,7 @@ Write 3–5 bullet points.
 Each bullet MUST:
 - Be a complete sentence
 - Be at least 12 words
-- Provide a concrete insight
+- Provide a concrete, practical insight
 
 DO NOT leave this section empty.
 
@@ -93,7 +100,6 @@ OUTPUT RULE:
 
 Return ONLY Markdown content.
 """
-
 #============================================================
 # Agent EN SEO：SEO 元数据生成（Llama3 强力约束版）
 # ============================================================
@@ -103,8 +109,8 @@ def agent_en_seo(title, module):
 --------------------------------------------------
 STRICT CONTENT RULES:
 1. NO EMPTY FIELDS: All arrays MUST contain at least 3-5 high-quality items.
-2. RELEVANCE: Keywords must be derived directly from "{title}". 
-3. DO NOT use generic "dream guide" text. Focus strictly on the specific dream topic.
+2. RELEVANCE: Keywords must be derived directly from "{title}".
+3. DO NOT use generic "feng shui guide" text. Focus strictly on the specific space or situation.
 4. metaDescription: Must be a compelling click-bait style summary (100-120 chars).
 
 --------------------------------------------------
@@ -112,18 +118,39 @@ JSON STRUCTURE:
 {{
   "metaTitle": "SEO title with primary keyword (max 60 chars)",
   "metaDescription": "Compelling summary for {title}",
-  "primaryKeyword": "The main focus keyword",
-  "secondaryKeywords": ["dream meaning keyword 1", "dream symbol keyword 2", "dream interpretation keyword 3"],
-  "longTailKeywords": ["What does {title} mean in dreams?", "Why do I dream about this?", "Specific dream scenario meaning"],
-  "semanticKeywords": ["dream symbolism", "subconscious mind", "psychological meaning"],
-  "keywords": ["Dream Interpretation", "Dream Meaning", "{title}"],
-  "summary": "2-3 sentences summarizing the core value of the article",
-  "featuredSnippetAnswer": "A direct 40-50 word answer explaining the dream meaning clearly",
-  "ctaText": "Explore your dreams with ZanPath AI",
+  "primaryKeyword": "feng shui meaning of {title}",
+  "secondaryKeywords": [
+    "feng shui layout meaning",
+    "home energy flow analysis",
+    "feng shui house interpretation",
+    "feng shui environment balance"
+  ],
+  "longTailKeywords": [
+    "What does {title} mean in feng shui?",
+    "How does this space affect energy flow?",
+    "feng shui meaning of home layout and energy",
+    "how to improve feng shui in this situation"
+  ],
+  "semanticKeywords": [
+    "feng shui energy",
+    "qi flow",
+    "yin yang balance",
+    "five elements feng shui",
+    "spatial harmony"
+  ],
+  "keywords": [
+    "Feng Shui",
+    "Home Energy",
+    "Qi Flow",
+    "{title}"
+  ],
+  "summary": "2-3 sentences explaining how this space or environment affects energy, balance, and personal state.",
+  "featuredSnippetAnswer": "A clear 40-50 word answer explaining the feng shui meaning and its impact on daily life and energy flow.",
+  "ctaText": "Discover your space with ZanPath AI",
   "faq": [
-    {{ "question": "What does {title} mean in dreams?", "answer": "Detailed answer." }},
-    {{ "question": "Is this dream common?", "answer": "Detailed answer." }},
-    {{ "question": "Why do people experience {title}?", "answer": "Detailed answer." }}
+    {{ "question": "What does {title} mean in feng shui?", "answer": "Detailed explanation of spatial meaning and energy flow." }},
+    {{ "question": "Does this layout affect my energy or life?", "answer": "Explain influence on emotions, stability, and daily experience." }},
+    {{ "question": "How can I improve this feng shui situation?", "answer": "Provide simple and practical adjustment suggestions." }}
   ]
 }}
 
@@ -142,21 +169,27 @@ Article title: {title}
 
 RULES:
 - OUTPUT ONLY the keywords.
-- NO introductory text, NO conversational fillers (e.g., "Here are...").
-- NO numbering (NO 1. 2. 3.).
-- MUST be visually describable (real-world scenes or objects).
-- Avoid abstract words like energy, metaphysics, destiny.
-- Use nature, objects, or environments.
+- NO introductory text, NO conversational fillers.
+- NO numbering.
+- MUST be visually describable (real-world spaces, rooms, objects).
+- Focus on home, interior, layout, environment.
+- Avoid abstract words like destiny, metaphysics.
 - English only.
 - One keyword per line.
 
 STYLE HINTS:
-- surreal dream scene, night sky, fog, shadows, symbolic objects.
+- modern living room layout
+- natural light home interior
+- minimalist bedroom design
+- indoor plants sunlight space
+- calm home environment balance
 
 Example:
-foggy forest path night
-surreal floating objects dream
-dark bedroom moonlight window
+bright living room sunlight window
+minimalist bedroom soft lighting
+indoor plants home corner
+modern apartment open space
+wood furniture natural interior
 """
 
 # =========================
@@ -164,7 +197,7 @@ dark bedroom moonlight window
 # =========================
 
 def agent6(title, article):
-    return f"""Translate the English article into Spanish. 
+    return f"""Translate the English article into Spanish.
 
 STRICT RULES:
 1. Native Spanish (informal 'tú'): Use tu/tus instead of su/sus.
@@ -175,10 +208,13 @@ STRICT RULES:
 6. NO literal English translations (natural flow).
 
 CRITICAL TERMINOLOGY:
-- "Dream Interpretation" → "interpretación de los sueños"
-- "subconscious mind" → "subconsciente"
-- "symbolism" → "simbolismo"
-- Use "Claves para tu sueño" instead of "Percepciones" for the section title.
+- "Feng Shui" → "feng shui"
+- "energy flow" → "flujo de energía"
+- "Qi" → "energía vital"
+- "balance" → "equilibrio"
+- "Five Elements" → "los cinco elementos"
+- "space" → "espacio"
+- "layout" → "distribución"
 
 ---
 TARGET TITLE (Translate this as the only H1): {title}
@@ -198,6 +234,11 @@ STRICT RULES:
 2. Keep the JSON structure 100% identical.
 3. Ensure 'metaTitle' and 'metaDescription' remain within SEO length limits in Spanish.
 4. Output valid JSON ONLY. No explanation. DO NOT include Markdown code blocks (```json) or any preamble.
+
+TERMINOLOGY:
+- Feng Shui → feng shui
+- Qi Flow → flujo de energía
+- Home Energy → energía del hogar
 
 JSON:
 {seo}
