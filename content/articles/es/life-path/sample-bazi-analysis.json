@@ -126,9 +126,12 @@
     "type": "p",
     "text": "Tu camino de vida no se define por la limitación, sino por el equilibrio. Cuando te apoyas en los elementos correctos, tu inteligencia natural y tu fuego interior se convierten en herramientas poderosas para el crecimiento, el liderazgo y el éxito a largo plazo."
     },
-
+      {
+    "type": "h2",
+    "text": "Descargo de Responsabilidad"
+  },
     {
-      "type": "disclaimer",
+      "type": "p",
       "text": "Este análisis es generado por IA para fines de exploración cultural y reflexión personal. No garantiza resultados específicos ni sustituye asesoramiento profesional."
     }
   ],
