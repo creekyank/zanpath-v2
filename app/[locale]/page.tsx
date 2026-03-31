@@ -354,18 +354,21 @@ export default function HomePage() {
           <DailyReflectionSection locale={locale} />
         </div>  去掉日卡 */}
         {/* 去掉日卡，改为显示 AI 说明和免责声明 */}
-        <div className="max-w-2xl mx-auto text-center mb-8 px-4">
-            <p className="text-sm text-[#356f5b] font-bold uppercase tracking-[0.15em] mb-2">
-              {locale === "es" 
-                ? "Reflexión cultural y personal generada por IA" 
-                : "AI-generated cultural and personal reflection"}
-            </p>
-            <p className="text-[11px] text-[#356f5b]/50 leading-relaxed max-w-md mx-auto italic">
-              {locale === "es"
-                ? "Solo para fines de entretenimiento y autoexploración. Este servicio no brinda asesoría médica, legal o financiera."
-                : "For entertainment and self-exploration purposes only. This service does not provide medical, legal, or financial advice."}
-            </p>
-          </div>
+        <div className="max-w-2xl mx-auto text-center mt-16 md:mt-24 mb-10 px-4"> 
+          {/* mt-16 是移动端间距，md:mt-24 是桌面端更大的间距 */}
+          
+          <p className="text-sm text-[#356f5b] font-bold uppercase tracking-[0.15em] mb-2">
+            {locale === "es" 
+              ? "Reflexión cultural y personal generada por IA" 
+              : "AI-generated cultural and personal reflection"}
+          </p>
+          
+          <p className="text-[11px] text-[#356f5b]/50 leading-relaxed max-w-md mx-auto italic">
+            {locale === "es"
+              ? "Solo para fines de entretenimiento y autoexploración. Este servicio no brinda asesoría médica, legal o financiera."
+              : "For entertainment and self-exploration purposes only. This service does not provide medical, legal, or financial advice."}
+          </p>
+        </div>
 
         <div className="flex justify-center mb-6">
           <Link
