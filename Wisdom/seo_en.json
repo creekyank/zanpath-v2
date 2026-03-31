@@ -32,8 +32,17 @@
   "featuredSnippetAnswer": "A stove's position in your home can either enhance or disrupt the flow of feng shui energy, influencing your mood, energy levels, and overall well-being. Balance the yin and yang energies around your stove for a harmonious home.",
   "ctaText": "Discover your space with ZanPath AI",
   "faq": [
-    { "question": "What does stove placement mean in feng shui for a harmonious home?", "answer": "A well-placed stove can enhance cooking energy and overall well-being, while a poorly placed stove can lead to stagnation and imbalance." },
-    { "question": "Does stove placement affect my energy or life?", "answer": "Yes, the position of your stove can influence your mood, energy levels, and overall well-being by affecting the flow of qi and balance of yin and yang energies." },
-    { "question": "How can I improve my stove's feng shui situation?", "answer": "Consider the five elements and yin yang balance when placing your stove, and make adjustments to create a harmonious flow of energy in your kitchen." }
+    {
+      "question": "What does stove placement mean in feng shui for a harmonious home?",
+      "answer": "A well-placed stove can enhance cooking energy and overall well-being, while a poorly placed stove can lead to stagnation and imbalance."
+    },
+    {
+      "question": "Does stove placement affect my energy or life?",
+      "answer": "Yes, the position of your stove can influence your mood, energy levels, and overall well-being by affecting the flow of qi and balance of yin and yang energies."
+    },
+    {
+      "question": "How can I improve my stove's feng shui situation?",
+      "answer": "Consider the five elements and yin yang balance when placing your stove, and make adjustments to create a harmonious flow of energy in your kitchen."
+    }
   ]
 }

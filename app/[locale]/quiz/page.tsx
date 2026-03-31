@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import { Brain, Wallet, Heart, Sparkles, ChevronRight } from "lucide-react";
+import { Brain, Wallet, Heart, Sparkles, ChevronRight, Briefcase} from "lucide-react";
 import { useParams } from "next/navigation";
 
 export default function QuizHome() {
