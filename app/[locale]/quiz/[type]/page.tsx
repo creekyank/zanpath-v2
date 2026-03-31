@@ -123,14 +123,7 @@ export default function QuizPage() {
         >
           {/* 2. 顶部徽章 */}
           {/* 顶部徽章 */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white shadow-sm border border-gray-100 text-[#0f3d2e] text-xs font-bold mb-6">
-            {type === "career" ? (
-              <Briefcase size={14} className="text-amber-500" />
-            ) : (
-              <ShieldCheck size={14} className="text-emerald-500" />
-            )}
-            {locale === "es" ? "ANÁLISIS DE IA COMPLETADO" : "AI ANALYSIS COMPLETE"}
-          </div>
+        
 
           <h2 className="text-5xl font-serif font-bold text-[#0f3d2e] mb-4 tracking-tight">
           {displayTitle} 
