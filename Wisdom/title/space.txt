@@ -129,7 +129,7 @@
 [DONE] What Layout Creates the Best Kitchen Energy?
 [DONE] How Can Feng Shui Improve Focus in a Home Office?
 [DONE] What Is the Best Feng Shui Desk Position?
-Can Office Feng Shui Improve Productivity?
+[RUNNING] Can Office Feng Shui Improve Productivity?
 Why Should Your Desk Face the Door?
 What Feng Shui Colors Improve Work Energy?
 How Can Feng Shui Help Career Growth?
