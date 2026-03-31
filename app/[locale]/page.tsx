@@ -349,9 +349,10 @@ export default function HomePage() {
   return (
 
           <>
+           {/* 
           <div className="mt-6 mb-5">
           <DailyReflectionSection locale={locale} />
-        </div>
+        </div>  去掉日卡 */}
 
         <div className="flex justify-center mb-6">
           <Link
