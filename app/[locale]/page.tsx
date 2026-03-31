@@ -353,10 +353,10 @@ export default function HomePage() {
           <DailyReflectionSection locale={locale} />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 max-w-5xl mx-auto px-4">
         <Link
           href="/quiz"
-          className="block rounded-2xl bg-gradient-to-r from-[#0f3d2e] to-[#1f6f54] text-white p-6 shadow-lg hover:opacity-95 transition"
+          className="block rounded-2xl bg-gradient-to-r from-[#0f3d2e] to-[#1f6f54] text-white p-5 shadow-md hover:opacity-95 transition"
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             
