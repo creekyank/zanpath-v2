@@ -60,10 +60,7 @@ export default function QuizHome() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0f3d2e]/10 text-[#0f3d2e] text-xs font-bold tracking-widest uppercase mb-4">
-            <Sparkles size={14} />
-            AI-Powered Analysis
-          </div>
+          
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#0f3d2e] mb-6">
             {locale === "es" ? "Análisis Gratuito de tu Camino de Vida" : "Free Life Path Analysis"}
           </h1>
