@@ -112,7 +112,7 @@
 [DONE] How Does the Stove Affect Feng Shui Energy?
 [DONE] What Is the Best Feng Shui Position for a Stove?
 [DONE] Can Kitchen Feng Shui Influence Family Health?
-What Colors Are Best for Kitchen Feng Shui?
+[RUNNING] What Colors Are Best for Kitchen Feng Shui?
 Why Should the Sink and Stove Not Face Each Other?
 How Does Kitchen Layout Affect Energy Flow?
 What Feng Shui Decor Works Well in a Kitchen?
