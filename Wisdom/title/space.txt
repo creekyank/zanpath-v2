@@ -101,11 +101,11 @@
 [DONE] How Does Furniture Placement Affect Energy Flow?
 [DONE] What Should Be Avoided in Living Room Feng Shui?
 [DONE] Can Feng Shui Improve Social Energy in the Living Room?
-Why Do Some Living Rooms Feel More Comfortable?
-What Is the Best Sofa Position in Feng Shui?
-How Do Rugs Affect Feng Shui Energy?
-What Feng Shui Symbols Work Well in Living Rooms?
-How Can Feng Shui Make Guests Feel More Welcome?
+[DONE] Why Do Some Living Rooms Feel More Comfortable?
+[DONE] What Is the Best Sofa Position in Feng Shui?
+[DONE] How Do Rugs Affect Feng Shui Energy?
+[DONE] What Feng Shui Symbols Work Well in Living Rooms?
+[RUNNING] How Can Feng Shui Make Guests Feel More Welcome?
 What Is the Ideal Feng Shui Balance in a Living Room?
 Why Is the Kitchen Important in Feng Shui?
 What Feng Shui Mistakes Are Common in Kitchens?

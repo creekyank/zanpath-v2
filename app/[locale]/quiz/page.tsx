@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import { Brain, Wallet, Heart, Sparkles, ChevronRight } from "lucide-react";
+import { Brain, Wallet, Heart, Sparkles, ChevronRight, Briefcase } from "lucide-react";
 import { useParams } from "next/navigation";
 
 export default function QuizHome() {
@@ -36,11 +36,20 @@ export default function QuizHome() {
       color: "from-rose-50 to-white",
       border: "hover:border-rose-200",
       link: "/quiz/love"
-    }
+    },
+     {
+      id: "career",
+      title: locale === "es" ? "Senda Profesional" : "Career Path",
+      desc: locale === "es" ? "Identifica tu vocación natural y potencial de liderazgo." : "Identify your natural vocation and leadership potential.",
+      icon: <Briefcase className="w-8 h-8 text-amber-500" />, // 记得从 lucide-react 引入 Briefcase
+      color: "from-amber-50 to-white",
+      border: "hover:border-amber-200",
+      link: "/quiz/career"
+}
   ];
 
   return (
-    <main className="min-h-screen bg-[#f8fcfb] py-20 px-6 relative overflow-hidden">
+    <main className="min-h-screen bg-[#fcfcf9] py-20 px-6 relative overflow-hidden">
       {/* 背景装饰（Zen Minimalist Style） */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-[#0f3d2e]/5 to-transparent -z-10 rounded-full blur-3xl opacity-50" />
 

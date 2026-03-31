@@ -4,10 +4,11 @@ import { useState, useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Wallet, Heart, Sparkles, ShieldCheck, Zap, ArrowRight, BarChart3 } from "lucide-react";
+import { Brain, Wallet, Heart, Sparkles, ShieldCheck, Zap, ArrowRight, BarChart3, Briefcase } from "lucide-react";
 import { personalityQuiz } from "@/config/quiz/personality";
 import { wealthQuiz } from "@/config/quiz/wealth";
 import { loveQuiz } from "@/config/quiz/love";
+import { careerQuiz } from "@/config/quiz/career";
 
 export default function QuizPage() {
   const params = useParams();
@@ -20,6 +21,7 @@ export default function QuizPage() {
     personality: personalityQuiz,
     wealth: wealthQuiz,
     love: loveQuiz,
+    career: careerQuiz,
   };
 
   const currentQuizData = useMemo(() => {
@@ -54,22 +56,39 @@ export default function QuizPage() {
     }
   };
 
-const generateResult = (ans: string[]) => {
-  // 触发手机震动 (仅限支持的移动设备浏览器)
-  if (typeof window !== "undefined" && window.navigator.vibrate) {
-    window.navigator.vibrate([30, 50, 30]); // 震动30ms, 停50ms, 再震动30ms
-  }
-
-  const count: any = {};
-  ans.forEach((a) => (count[a] = (count[a] || 0) + 1));
-  const top = Object.keys(count).sort((a, b) => count[b] - count[a])[0];
-  setResult(top);
-};
+  const generateResult = (ans: string[]) => {
+    if (typeof window !== "undefined" && window.navigator.vibrate) {
+      window.navigator.vibrate([30, 50, 30]);
+    }
+  
+    const count: any = {};
+    ans.forEach((a) => (count[a] = (count[a] || 0) + 1));
+    const top = Object.keys(count).sort((a, b) => count[b] - count[a])[0];
+    
+    // ✅ 统一只存原始 Key (例如 "STR" 或 "P")
+    setResult(top);
+  };
 
   const theme = getTheme(score);
 
   // 结果页逻辑
   if (result) {
+    // ✅ 定义不同测试的高级头衔显示名
+    const displayTitle = (() => {
+      if (type === "career") {
+        const titles: any = {
+          STR: locale === "es" ? "El Arquitecto Estratégico" : "The Strategic Architect",
+          LDR: locale === "es" ? "El Comandante Visionario" : "The Visionary Commander",
+          EMP: locale === "es" ? "El Guía Armónico" : "The Harmonic Guide",
+          CRE: locale === "es" ? "El Alquimista Creativo" : "The Creative Alchemist",
+          SPEC: locale === "es" ? "El Maestro Artesano" : "The Master Artisan",
+        };
+        return titles[result] || result;
+      }
+    // 其他测试（如 love, wealth）如果也有特定头衔，可以在此扩展
+    return result; 
+  })();
+
     return (
       <main className="relative max-w-2xl mx-auto px-6 py-12 min-h-screen overflow-visible">
         {/* 1. 优化后的粒子背景：确保它覆盖整个 main 区域 */}
@@ -103,17 +122,25 @@ const generateResult = (ans: string[]) => {
           className="text-center relative z-10" // 确保内容在粒子上方
         >
           {/* 2. 顶部徽章 */}
+          {/* 顶部徽章 */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white shadow-sm border border-gray-100 text-[#0f3d2e] text-xs font-bold mb-6">
-            <ShieldCheck size={14} className="text-emerald-500" />
-            AI ANALYSIS COMPLETE
+            {type === "career" ? (
+              <Briefcase size={14} className="text-amber-500" />
+            ) : (
+              <ShieldCheck size={14} className="text-emerald-500" />
+            )}
+            {locale === "es" ? "ANÁLISIS DE IA COMPLETADO" : "AI ANALYSIS COMPLETE"}
           </div>
 
           <h2 className="text-5xl font-serif font-bold text-[#0f3d2e] mb-4 tracking-tight">
-            {result}
+          {displayTitle} 
           </h2>
 
           <p className="text-[#356f5b]/60 italic font-medium mb-10">
-            {locale === "es" ? "Informe de Patrón Energético" : "Energy Pattern Report"}
+            {type === "career" 
+              ? (locale === "es" ? "Mapa de Alineación Profesional" : "Professional Alignment Map")
+              : (locale === "es" ? "Informe de Patrón Energético" : "Energy Pattern Report")
+            }
           </p>
 
           {/* 动态分数环/条 */}
