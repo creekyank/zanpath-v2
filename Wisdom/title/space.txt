@@ -61,17 +61,17 @@
 [DONE] What Decorations Symbolize Wealth in Feng Shui?
 [DONE] How Do Water Elements Influence Wealth Feng Shui?
 [DONE] Can Feng Shui Help Business Owners Earn More?
-[RUNNING] What Is the Wealth Corner in Feng Shui Explained Simply?
-[RUNNING] What Feng Shui Symbols Attract Prosperity?
-[RUNNING] How Do Plants Affect Wealth Feng Shui?
-[RUNNING] What Is the Best Feng Shui Placement for a Money Plant?
-[RUNNING] Why Do Some Homes Attract Financial Success?
-[RUNNING] How Can Feng Shui Improve Career and Wealth Together?
-[RUNNING] What Feng Shui Setup Helps Entrepreneurs Succeed?
-[RUNNING] Why Is the Front Door Called the Mouth of Qi?
-[RUNNING] What Feng Shui Rules Apply to the Main Entrance?
-[RUNNING] How Does the Front Door Affect Home Energy?
-[RUNNING] What Should Never Be Placed in Front of the Main Door?
+ What Is the Wealth Corner in Feng Shui Explained Simply?
+ What Feng Shui Symbols Attract Prosperity?
+ How Do Plants Affect Wealth Feng Shui?
+ What Is the Best Feng Shui Placement for a Money Plant?
+ Why Do Some Homes Attract Financial Success?
+ How Can Feng Shui Improve Career and Wealth Together?
+ What Feng Shui Setup Helps Entrepreneurs Succeed?
+ Why Is the Front Door Called the Mouth of Qi?
+ What Feng Shui Rules Apply to the Main Entrance?
+ How Does the Front Door Affect Home Energy?
+ What Should Never Be Placed in Front of the Main Door?
 [DONE] How Can Entrance Feng Shui Attract Good Luck?
 [DONE] What Feng Shui Mistakes at the Door Block Opportunities?
 [DONE] Why Is a Clean Entrance Important in Feng Shui?
@@ -129,49 +129,49 @@
 [DONE] What Layout Creates the Best Kitchen Energy?
 [DONE] How Can Feng Shui Improve Focus in a Home Office?
 [DONE] What Is the Best Feng Shui Desk Position?
-[RUNNING] Can Office Feng Shui Improve Productivity?
-Why Should Your Desk Face the Door?
-What Feng Shui Colors Improve Work Energy?
-How Can Feng Shui Help Career Growth?
-What Objects Improve Office Feng Shui?
-Why Do Some Workspaces Feel Unproductive?
-What Plants Are Best for Office Feng Shui?
-How Does Lighting Affect Work Energy?
-What Feng Shui Tips Help Entrepreneurs?
-Can Feng Shui Improve Decision Making?
-What Is the Command Position for a Desk?
-Why Should You Avoid Sitting With Your Back to the Door?
-How Can Feng Shui Reduce Work Stress?
-What Decor Improves Office Feng Shui?
-Why Does Desk Clutter Block Productivity?
-What Feng Shui Setup Helps Creative Thinking?
-How Can Feng Shui Improve Business Luck?
-What Layout Creates the Best Work Energy?
-How Do Directions Affect Feng Shui Energy?
-What Is the Bagua Map Explained Simply?
-How Can You Map Feng Shui Energy in Your Home?
-What Are the Five Elements in Feng Shui?
-How Do the Five Elements Balance Home Energy?
-Why Is Energy Flow Important in Feng Shui?
-What Happens When Feng Shui Energy Is Blocked?
-Can Feng Shui Influence Mental Health?
-What Is the Relationship Between Feng Shui and Architecture?
-How Does Natural Light Affect Feng Shui?
-What Role Does Air Flow Play in Feng Shui?
-Why Do Some Houses Feel Lucky?
-How Can Feng Shui Improve Emotional Well-Being?
-What Are the Signs of Balanced Feng Shui?
-How Do Colors Influence Energy in Feng Shui?
-What Is Yin and Yang in Home Design?
-Can Feng Shui Improve Creativity?
-What Are Subtle Signs of Good Feng Shui?
-How Can Feng Shui Support Personal Growth?
-Why Do Some Spaces Feel Energizing?
-Does Feng Shui Work in Small Apartments?
-How Can Feng Shui Improve Studio Apartment Energy?
-What Feng Shui Tips Work in Modern Homes?
-Can Minimalist Design Improve Feng Shui?
-How Do Smart Homes Affect Feng Shui?
+[DONE] Can Office Feng Shui Improve Productivity?
+[DONE] Why Should Your Desk Face the Door?
+[DONE] What Feng Shui Colors Improve Work Energy?
+[DONE] How Can Feng Shui Help Career Growth?
+[DONE] What Objects Improve Office Feng Shui?
+[DONE] Why Do Some Workspaces Feel Unproductive?
+[DONE] What Plants Are Best for Office Feng Shui?
+[DONE] How Does Lighting Affect Work Energy?
+[DONE] What Feng Shui Tips Help Entrepreneurs?
+[DONE] Can Feng Shui Improve Decision Making?
+[DONE] What Is the Command Position for a Desk?
+[DONE] Why Should You Avoid Sitting With Your Back to the Door?
+[DONE] How Can Feng Shui Reduce Work Stress?
+[DONE] What Decor Improves Office Feng Shui?
+[DONE] Why Does Desk Clutter Block Productivity?
+[DONE] What Feng Shui Setup Helps Creative Thinking?
+[DONE] How Can Feng Shui Improve Business Luck?
+[DONE] What Layout Creates the Best Work Energy?
+[DONE] How Do Directions Affect Feng Shui Energy?
+[DONE] What Is the Bagua Map Explained Simply?
+[DONE] How Can You Map Feng Shui Energy in Your Home?
+[DONE] What Are the Five Elements in Feng Shui?
+[DONE] How Do the Five Elements Balance Home Energy?
+[DONE] Why Is Energy Flow Important in Feng Shui?
+[DONE] What Happens When Feng Shui Energy Is Blocked?
+[DONE] Can Feng Shui Influence Mental Health?
+[DONE] What Is the Relationship Between Feng Shui and Architecture?
+[DONE] How Does Natural Light Affect Feng Shui?
+[DONE] What Role Does Air Flow Play in Feng Shui?
+[DONE] Why Do Some Houses Feel Lucky?
+[DONE] How Can Feng Shui Improve Emotional Well-Being?
+[DONE] What Are the Signs of Balanced Feng Shui?
+[DONE] How Do Colors Influence Energy in Feng Shui?
+[DONE] What Is Yin and Yang in Home Design?
+[DONE] Can Feng Shui Improve Creativity?
+[DONE] What Are Subtle Signs of Good Feng Shui?
+[DONE] How Can Feng Shui Support Personal Growth?
+[DONE] Why Do Some Spaces Feel Energizing?
+[DONE] Does Feng Shui Work in Small Apartments?
+[DONE] How Can Feng Shui Improve Studio Apartment Energy?
+[DONE] What Feng Shui Tips Work in Modern Homes?
+[DONE] Can Minimalist Design Improve Feng Shui?
+[DONE] How Do Smart Homes Affect Feng Shui?
 What Feng Shui Tips Work for Urban Living?
 Can Feng Shui Work in High-Rise Apartments?
 What Layout Works Best in Small Spaces?
