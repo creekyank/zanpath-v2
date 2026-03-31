@@ -353,6 +353,34 @@ export default function HomePage() {
           <DailyReflectionSection locale={locale} />
         </div>
 
+        <div className="mb-6">
+        <Link
+          href="/quiz"
+          className="block rounded-2xl bg-gradient-to-r from-[#0f3d2e] to-[#1f6f54] text-white p-6 shadow-lg hover:opacity-95 transition"
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+            <div>
+              <h2 className="text-xl font-bold mb-1">
+                {locale === "es"
+                  ? "🧠 Test de Personalidad Gratis"
+                  : "🧠 Free AI Personality Test"}
+              </h2>
+              <p className="text-sm opacity-90">
+                {locale === "es"
+                  ? "Descubre tu destino, riqueza y amor en 1 minuto"
+                  : "Discover your personality, wealth & love in 1 minute"}
+              </p >
+            </div>
+
+            <div className="text-sm font-semibold bg-white text-[#0f3d2e] px-4 py-2 rounded-xl text-center">
+              {locale === "es" ? "Comenzar" : "Start Test"}
+            </div>
+
+          </div>
+        </Link>
+      </div>
+
       <main id="calculator-form" className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
 

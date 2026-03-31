@@ -72,11 +72,11 @@
 [RUNNING] What Feng Shui Rules Apply to the Main Entrance?
 [RUNNING] How Does the Front Door Affect Home Energy?
 [RUNNING] What Should Never Be Placed in Front of the Main Door?
-[RUNNING] How Can Entrance Feng Shui Attract Good Luck?
-What Feng Shui Mistakes at the Door Block Opportunities?
-Why Is a Clean Entrance Important in Feng Shui?
-What Colors Are Best for a Feng Shui Front Door?
-Can Entrance Feng Shui Affect Career Success?
+[DONE] How Can Entrance Feng Shui Attract Good Luck?
+[DONE] What Feng Shui Mistakes at the Door Block Opportunities?
+[DONE] Why Is a Clean Entrance Important in Feng Shui?
+[DONE] What Colors Are Best for a Feng Shui Front Door?
+[DONE] Can Entrance Feng Shui Affect Career Success?
 What Symbols Bring Protection to the Front Door?
 Why Should Mirrors Not Face the Front Door?
 What Plants Are Good for Entrance Feng Shui?
