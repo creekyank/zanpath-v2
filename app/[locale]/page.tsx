@@ -354,7 +354,7 @@ export default function HomePage() {
           <DailyReflectionSection locale={locale} />
         </div>  去掉日卡 */}
         {/* 去掉日卡，改为显示 AI 说明和免责声明 */}
-        <div className="max-w-2xl mx-auto text-center mt-16 md:mt-24 mb-10 px-4"> 
+        <div className="max-w-2xl mx-auto text-center mt-6 mb-8 px-4">
           {/* mt-16 是移动端间距，md:mt-24 是桌面端更大的间距 */}
           
           <p className="text-sm text-[#356f5b] font-bold uppercase tracking-[0.15em] mb-2">
@@ -370,7 +370,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-4">
           <Link
             href="/quiz"
             className="px-12 py-4 border-2 border-[#0f3d2e]/40 text-[#0f3d2e] rounded-full text-lg font-bold text-center hover:bg-[#0f3d2e] hover:text-white transition-all duration-300 active:scale-95"
@@ -381,7 +381,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-      <main id="calculator-form" className="max-w-5xl mx-auto px-4 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+      <main id="calculator-form" className="max-w-5xl mx-auto px-4 py-4 lg:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
 
         <div className="lg:col-span-2 order-1">
