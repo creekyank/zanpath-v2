@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import { Brain, Wallet, Heart, Sparkles, ChevronRight, Briefcase } from "lucide-react";
+import { Brain, Wallet, Heart, Sparkles, ChevronRight } from "lucide-react";
 import { useParams } from "next/navigation";
 
 export default function QuizHome() {
@@ -38,13 +38,13 @@ export default function QuizHome() {
       link: "/quiz/love"
     },
      {
-      id: "career",
-      title: locale === "es" ? "Senda Profesional" : "Career Path",
-      desc: locale === "es" ? "Identifica tu vocación natural y potencial de liderazgo." : "Identify your natural vocation and leadership potential.",
-      icon: <Briefcase className="w-8 h-8 text-amber-500" />, // 记得从 lucide-react 引入 Briefcase
-      color: "from-amber-50 to-white",
-      border: "hover:border-amber-200",
-      link: "/quiz/career"
+  id: "career",
+  title: locale === "es" ? "Senda Profesional" : "Career Path",
+  desc: locale === "es" ? "Identifica tu vocación natural y potencial de liderazgo." : "Identify your natural vocation and leadership potential.",
+  icon: <Briefcase className="w-8 h-8 text-amber-500" />, // 记得从 lucide-react 引入 Briefcase
+  color: "from-amber-50 to-white",
+  border: "hover:border-amber-200",
+  link: "/quiz/career"
 }
   ];
 
@@ -69,8 +69,8 @@ export default function QuizHome() {
           </h1>
           <p className="text-lg text-[#356f5b]/70 max-w-xl mx-auto leading-relaxed">
             {locale === "es" 
-              ? "Utilizamos algoritmos avanzados para decodificar tu personalidad, amor y riqueza basándonos en patrones de energía." 
-              : "We use advanced algorithms to decode your personality, love, and wealth based on energy patterns."}
+              ? "Desbloquee el mapa oculto de su vida. Acceda a algoritmos especializados diseñados para analizar su frecuencia energética única en todos los dominios principales de la existencia." 
+              : "Unlock the hidden blueprint of your life. Access specialized algorithms designed to analyze your unique energy frequency across all major life domains."}
           </p>
         </motion.div>
 
