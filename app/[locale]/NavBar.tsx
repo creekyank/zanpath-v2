@@ -18,6 +18,7 @@ export default function NavBar({
       { name: "Dream", href: "/dream" },
       { name: "Space", href: "/fengshui" },
       { name: "Visual", href: "/face" },
+      { name: "Quiz", href: "/quiz" },
       { name: "Wisdom", href: "/wisdom" },
     ],
     es: [
@@ -26,6 +27,7 @@ export default function NavBar({
       { name: "Sueños", href: "/dream" },
       { name: "Espacio", href: "/fengshui" },
       { name: "Visual", href: "/face" },
+      { name: "Tests", href: "/quiz" },
       { name: "Sabiduría", href: "/wisdom" },
     ],
   };

@@ -105,9 +105,9 @@
 [DONE] What Is the Best Sofa Position in Feng Shui?
 [DONE] How Do Rugs Affect Feng Shui Energy?
 [DONE] What Feng Shui Symbols Work Well in Living Rooms?
-[RUNNING] How Can Feng Shui Make Guests Feel More Welcome?
-What Is the Ideal Feng Shui Balance in a Living Room?
-Why Is the Kitchen Important in Feng Shui?
+[DONE] How Can Feng Shui Make Guests Feel More Welcome?
+[DONE] What Is the Ideal Feng Shui Balance in a Living Room?
+[RUNNING] Why Is the Kitchen Important in Feng Shui?
 What Feng Shui Mistakes Are Common in Kitchens?
 How Does the Stove Affect Feng Shui Energy?
 What Is the Best Feng Shui Position for a Stove?
