@@ -111,22 +111,25 @@ export default function QuizHome() {
           ))}
         </div>
 
-        {/* 底部信任语 */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-16 text-center"
-        >
-          <p className="text-xs text-gray-400 font-medium tracking-wide uppercase">
-            Over 50,000+ Accurate Readings Generated
-          </p>
-          <div className="mt-4 flex justify-center gap-8 grayscale opacity-40">
-            <span className="text-[10px] font-bold">PSYCHOLOGY MODEL v2.0</span>
-            <span className="text-[10px] font-bold">DESTINY AI ENGINE</span>
-            <span className="text-[10px] font-bold">100% PRIVATE</span>
-          </div>
-        </motion.div>
+        {/* 底部信任语 - 优化后的专业版 */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-20 text-center border-t border-gray-100 pt-10" // 增加了一条浅浅的分割线
+          >
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 grayscale opacity-40">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase">
+                {locale === "es" ? "Rigor Analítico" : "Analytical Rigor"}
+              </span>
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase">
+                {locale === "es" ? "Reconocimiento de Patrones" : "Pattern Recognition"}
+              </span>
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase">
+                {locale === "es" ? "100% Privado" : "100% Private"}
+              </span>
+            </div>
+          </motion.div>
       </div>
     </main>
   );
