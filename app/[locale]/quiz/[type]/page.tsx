@@ -1,131 +1,252 @@
-
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
-
-const questions: any = {
-  personality: [
-    {
-      q: "You prefer to spend time:",
-      options: [
-        { text: "Alone", value: "I" },
-        { text: "With others", value: "E" }
-      ]
-    },
-    {
-      q: "You make decisions based on:",
-      options: [
-        { text: "Logic", value: "T" },
-        { text: "Feelings", value: "F" }
-      ]
-    }
-  ],
-
-  wealth: [
-    {
-      q: "Your attitude to money:",
-      options: [
-        { text: "Save carefully", value: "S" },
-        { text: "Spend freely", value: "R" }
-      ]
-    },
-    {
-      q: "You prefer:",
-      options: [
-        { text: "Stable job", value: "S" },
-        { text: "Risky opportunities", value: "R" }
-      ]
-    }
-  ],
-
-  love: [
-    {
-      q: "In relationships you are:",
-      options: [
-        { text: "Loyal", value: "L" },
-        { text: "Passionate", value: "P" }
-      ]
-    },
-    {
-      q: "You value:",
-      options: [
-        { text: "Security", value: "S" },
-        { text: "Excitement", value: "E" }
-      ]
-    }
-  ]
-};
+import { motion, AnimatePresence } from "framer-motion";
+import { Brain, Wallet, Heart, Sparkles, ShieldCheck, Zap, ArrowRight, BarChart3 } from "lucide-react";
+import { personalityQuiz } from "@/config/quiz/personality";
+import { wealthQuiz } from "@/config/quiz/wealth";
+import { loveQuiz } from "@/config/quiz/love";
 
 export default function QuizPage() {
   const params = useParams();
   const router = useRouter();
+
+  const locale = (params.locale as "en" | "es") || "en";
   const type = params.type as string;
+
+  const quizMap: any = {
+    personality: personalityQuiz,
+    wealth: wealthQuiz,
+    love: loveQuiz,
+  };
+
+  const currentQuizData = useMemo(() => {
+    const quiz = quizMap[type] || personalityQuiz;
+    return quiz[locale] || quiz["en"];
+  }, [type, locale]);
 
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [result, setResult] = useState("");
+  const [score, setScore] = useState(0);
 
-  const qs = questions[type] || [];
+  const questions = currentQuizData.questions;
+
+  // 根据分数获取颜色主题
+  const getTheme = (s: number) => {
+    if (s >= 90) return { text: "text-emerald-600", bg: "bg-emerald-600", light: "bg-emerald-50", border: "border-emerald-100" };
+    if (s >= 80) return { text: "text-blue-600", bg: "bg-blue-600", light: "bg-blue-50", border: "border-blue-100" };
+    return { text: "text-amber-600", bg: "bg-amber-600", light: "bg-amber-50", border: "border-amber-100" };
+  };
 
   const handleAnswer = (val: string) => {
     const next = [...answers, val];
     setAnswers(next);
 
-    if (step + 1 < qs.length) {
+    if (step + 1 < questions.length) {
       setStep(step + 1);
     } else {
+      // 模拟生成结果并随机分数
+      setScore(Math.floor(72 + Math.random() * 23));
       generateResult(next);
     }
   };
 
-  const generateResult = (ans: string[]) => {
-    if (type === "wealth") {
-      setResult("You have strong wealth potential, but a key decision will shape your future.");
-    } else if (type === "love") {
-      setResult("You are emotionally deep and value meaningful connections.");
-    } else {
-      setResult("You are a balanced and thoughtful personality.");
-    }
-  };
+const generateResult = (ans: string[]) => {
+  // 触发手机震动 (仅限支持的移动设备浏览器)
+  if (typeof window !== "undefined" && window.navigator.vibrate) {
+    window.navigator.vibrate([30, 50, 30]); // 震动30ms, 停50ms, 再震动30ms
+  }
 
-  // ✅ 结果页
+  const count: any = {};
+  ans.forEach((a) => (count[a] = (count[a] || 0) + 1));
+  const top = Object.keys(count).sort((a, b) => count[b] - count[a])[0];
+  setResult(top);
+};
+
+  const theme = getTheme(score);
+
+  // 结果页逻辑
   if (result) {
     return (
-      <div className="max-w-xl mx-auto p-6 text-center">
-        <h2 className="text-2xl font-bold mb-4">Your Result</h2>
-        <p className="mb-6">{result}</p >
+      <main className="relative max-w-2xl mx-auto px-6 py-12 min-h-screen overflow-visible">
+        {/* 1. 优化后的粒子背景：确保它覆盖整个 main 区域 */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute w-1.5 h-1.5 rounded-full ${theme.bg} opacity-30`}
+              initial={{ 
+                x: Math.random() * 100 + "%", 
+                y: Math.random() * 100 + "%",
+                scale: 0 
+              }}
+              animate={{ 
+                y: [null, "-25%", "25%"],
+                opacity: [0.1, 0.4, 0.1],
+                scale: [1, 2, 1]
+              }}
+              transition={{ 
+                duration: 4 + Math.random() * 6, 
+                repeat: Infinity,
+                ease: "easeInOut" 
+              }}
+            />
+          ))}
+        </div>
 
-        {/* 👉 引流到算命 */}
-        <button
-          onClick={() => router.push("/")}
-          className="w-full py-4 bg-[#0f3d2e] text-white rounded-xl font-bold"
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center relative z-10" // 确保内容在粒子上方
         >
-          🔮 Unlock Full AI Destiny Reading
-        </button>
-      </div>
+          {/* 2. 顶部徽章 */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white shadow-sm border border-gray-100 text-[#0f3d2e] text-xs font-bold mb-6">
+            <ShieldCheck size={14} className="text-emerald-500" />
+            AI ANALYSIS COMPLETE
+          </div>
+
+          <h2 className="text-5xl font-serif font-bold text-[#0f3d2e] mb-4 tracking-tight">
+            {result}
+          </h2>
+
+          <p className="text-[#356f5b]/60 italic font-medium mb-10">
+            {locale === "es" ? "Informe de Patrón Energético" : "Energy Pattern Report"}
+          </p>
+
+          {/* 动态分数环/条 */}
+          <div className={`p-8 rounded-[2.5rem] ${theme.light} border ${theme.border} mb-10 relative overflow-hidden`}>
+            <div className="relative z-10">
+              <div className="flex justify-between items-end mb-4">
+                <div className="text-left">
+                  <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#356f5b]/50">Destiny Alignment</span>
+                  <span className={`text-4xl font-black ${theme.text}`}>{score}%</span>
+                </div>
+                <BarChart3 className={theme.text} size={24} />
+              </div>
+              
+              <div className="h-4 w-full bg-white/50 rounded-full overflow-hidden p-1 shadow-inner">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${score}%` }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  className={`h-full ${theme.bg} rounded-full`}
+                />
+              </div>
+              <p className="mt-4 text-[11px] text-[#356f5b]/60 text-left leading-relaxed font-medium">
+                {locale === "es" 
+                  ? "* Tu resonancia es alta, pero existen bloqueos menores en tus ciclos de tiempo." 
+                  : "* High resonance detected, though minor blockages exist in your timing cycles."}
+              </p>
+            </div>
+            {/* 背景装饰球 */}
+            <div className={`absolute -right-10 -top-10 w-32 h-32 ${theme.bg} opacity-5 blur-3xl rounded-full`} />
+          </div>
+
+          {/* 核心深度分析内容 */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-50 text-left mb-10 relative"
+          >
+            <div className="absolute -top-4 left-8 bg-[#0f3d2e] text-white px-4 py-1 rounded-lg text-[10px] font-bold tracking-widest uppercase">
+              Deep Insight
+            </div>
+            <p className="text-[#0f3d2e] text-xl font-serif italic leading-relaxed mb-6">
+              "{currentQuizData.results[result]}"
+            </p>
+            <div className="h-px w-full bg-gray-100 mb-6" />
+            <div className="flex gap-4 items-start text-[#356f5b]/80">
+              <Zap className="shrink-0 text-amber-400" size={20} />
+              <p className="text-sm leading-relaxed">
+                {locale === "es" 
+                  ? "Esta frecuencia sugiere una alineación única con las fuerzas elementales. Tu patrón sugiere que tus mayores éxitos provienen de la armonización interna antes de la acción externa."
+                  : "This frequency suggests a unique alignment with elemental forces. Your pattern indicates your greatest successes stem from internal harmonization before external action."}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* 转化 CTA */}
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-[#0f3d2e] p-1 rounded-[2.2rem] shadow-2xl"
+          >
+            <div className="bg-[#0f3d2e] border border-white/20 rounded-[2rem] p-8 text-white">
+              <h4 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
+                <Sparkles size={24} className="text-amber-400" />
+                {locale === "es" ? "El 27% Restante" : "The Missing 27%"}
+              </h4>
+              <p className="text-white/70 text-sm mb-8 leading-relaxed px-4">
+                {locale === "es"
+                  ? "Este test gratuito analiza tendencias superficiales. Tu mapa de destino completo (BaZi) revela el momento EXACTO para actuar."
+                  : "This free test analyzes surface tendencies. Your complete destiny map (BaZi) reveals the EXACT timing for your next breakthrough."}
+              </p>
+              <button
+                onClick={() => router.push("/")}
+                className="group w-full bg-white text-[#0f3d2e] py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-[#fcfcf9] transition-all flex items-center justify-center gap-3"
+              >
+                {locale === "es" ? "DESBLOQUEAR MI MAPA COMPLETO" : "UNLOCK MY FULL DESTINY MAP"}
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      </main>
     );
   }
 
-  // ✅ 问题页
+  // 问题页
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <h2 className="text-xl font-semibold mb-6">
-        {qs[step]?.q}
-      </h2>
-
-      <div className="space-y-4">
-        {qs[step]?.options.map((o: any) => (
-          <button
-            key={o.text}
-            onClick={() => handleAnswer(o.value)}
-            className="w-full p-4 bg-white rounded-xl shadow hover:shadow-md"
-          >
-            {o.text}
-          </button>
-        ))}
+    <div className="max-w-xl mx-auto px-6 min-h-[80vh] flex flex-col justify-center py-12">
+      {/* 进度条 */}
+      <div className="mb-12">
+        <div className="flex justify-between items-end mb-3">
+          <span className="text-[10px] font-black tracking-widest text-[#0f3d2e]/40 uppercase">Analyzing Pattern...</span>
+          <span className="text-xs font-bold text-[#0f3d2e]">{step + 1} / {questions.length}</span>
+        </div>
+        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden p-0.5">
+          <motion.div 
+            initial={{ width: 0 }}
+            animate={{ width: `${((step + 1) / questions.length) * 100}%` }}
+            className="h-full bg-[#0f3d2e] rounded-full"
+          />
+        </div>
       </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          className="space-y-10"
+        >
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#0f3d2e] leading-tight">
+            {questions[step]?.q}
+          </h2>
+
+          <div className="grid gap-4">
+            {questions[step]?.options.map((o: any, i: number) => (
+              <motion.button
+                key={o.text}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => handleAnswer(o.value)}
+                className="group flex items-center justify-between w-full p-6 bg-white border border-gray-100 rounded-[1.5rem] shadow-sm hover:border-[#0f3d2e] hover:shadow-xl hover:-translate-y-0.5 transition-all text-left"
+              >
+                <span className="text-[#0f3d2e] font-semibold text-lg">{o.text}</span>
+                <div className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center group-hover:bg-[#0f3d2e] group-hover:text-white transition-colors">
+                  <ArrowRight size={14} />
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
