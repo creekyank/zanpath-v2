@@ -4124,5 +4124,26 @@
       "https://img.zanpath.com/face/why-are-high-cheekbones-considered-powerful-1.webp",
       "https://img.zanpath.com/face/why-are-high-cheekbones-considered-powerful-2.webp"
     ]
+  },
+  "what-does-nose-shape-reveal-about-personality": {
+    "module": "face",
+    "images": [
+      "https://img.zanpath.com/face/what-does-nose-shape-reveal-about-personality-1.webp",
+      "https://img.zanpath.com/face/what-does-nose-shape-reveal-about-personality-2.webp"
+    ]
+  },
+  "why-do-some-faces-appear-naturally-trustworthy": {
+    "module": "face",
+    "images": [
+      "https://img.zanpath.com/face/why-do-some-faces-appear-naturally-trustworthy-1.webp",
+      "https://img.zanpath.com/face/why-do-some-faces-appear-naturally-trustworthy-2.webp"
+    ]
+  },
+  "what-does-lip-shape-say-about-communication-style": {
+    "module": "face",
+    "images": [
+      "https://img.zanpath.com/face/what-does-lip-shape-say-about-communication-style-1.webp",
+      "https://img.zanpath.com/face/what-does-lip-shape-say-about-communication-style-2.webp"
+    ]
   }
 }
