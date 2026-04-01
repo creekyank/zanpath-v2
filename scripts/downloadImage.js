@@ -401,7 +401,7 @@ async function findImage(keyword, module = "default") {
   if (module === 'dream') {
     searchKeyword += " ethereal";
   } else if (module === 'face' || module === 'visual') {
-    searchKeyword += " minimal abstract face silhouette soft light";
+    searchKeyword += " clean detail close up natural light";
   } else if (module === 'fengshui' || module === 'space') {
     searchKeyword += " interior";
   }

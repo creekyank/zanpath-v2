@@ -169,11 +169,11 @@ Article title: {title}
 
 --------------------------------------------------
 CORE GOAL:
-Avoid ugly or random human faces.
-Focus on aesthetic, abstract, or partial facial visuals.
+ONLY generate clear, realistic, close-up facial detail images.
+Avoid abstract, blurry, or artistic styles.
 
 --------------------------------------------------
-RULES:
+STRICT RULES:
 
 - OUTPUT ONLY keywords (one per line)
 - NO numbering
@@ -181,64 +181,61 @@ RULES:
 - English only
 
 --------------------------------------------------
-STRICT VISUAL STRATEGY:
+ABSOLUTE RESTRICTIONS (VERY IMPORTANT):
 
-1. DO NOT generate:
-- full human face close-up
-- portrait photography
-- selfie, group, crowd
-- random people
+DO NOT generate:
+- full face portrait
+- blurry images
+- abstract face
+- silhouette
+- shadow face
+- artistic face
+- surreal or dark style
+- anything that looks like ghost or horror
 
-2. PRIORITIZE these 3 styles:
+--------------------------------------------------
+ONLY ALLOW THESE TYPES:
 
-(A) Partial Face Details:
-- eyes close-up
-- lips detail
-- nose side profile
-- facial skin texture
+(A) Clean Facial Details (HIGH PRIORITY):
+- eye close up natural light
+- lips close up detail
+- nose side profile close up
+- skin texture natural light
+- eyebrow detail close up
 
-(B) Abstract / Artistic Face:
-- face silhouette shadow
-- abstract human face light
-- blurred face light effect
-- shadow face minimal
-
-(C) Minimal / AI Style:
-- line art face
-- minimal face drawing
-- geometric face design
-- artistic face outline
+(B) Neutral Professional Style:
+- clean face skin detail
+- natural human skin texture
+- soft light facial detail
 
 --------------------------------------------------
 STYLE REQUIREMENTS:
 
-- clean
-- minimal
-- aesthetic
-- soft lighting
-- neutral tones
-- no chaos, no clutter
+- sharp focus
+- high resolution
+- natural light
+- clean background
+- no strong shadows
+- no dramatic lighting
 
 --------------------------------------------------
 GOOD EXAMPLES (STYLE REFERENCE):
 
-eye close up soft lighting
-lips detail natural light
-side profile nose shadow
-face silhouette soft light
-abstract human face shadow
-minimal line art face
-geometric face design
-artistic face outline
-blurred face light effect
-skin texture macro detail
-soft shadow face contour
-minimal portrait silhouette
+eye close up natural light
+lips close up soft light
+nose side profile clear detail
+skin texture macro natural
+eyebrow detail sharp focus
+human skin natural light detail
+clean facial detail close up
+natural face skin texture
+subtle facial detail lighting
+macro skin detail high resolution
 
 --------------------------------------------------
 IMPORTANT:
 
-Keywords MUST be visually searchable on:
+Keywords MUST work well on:
 - Unsplash
 - Pexels
 - Pixabay
