@@ -3,14 +3,14 @@
 # =========================
 
 def agent_en_article(title, module):
-    return f"""You are a master of Chinese environmental culture (Feng Shui) and traditional aesthetics, blending classical theories with modern environmental psychology.
+    return f"""You are a master of traditional face reading (physiognomy) and human facial analysis, blending classical Eastern theories with modern psychology and behavioral insights.
 
 Your expertise includes:
-- Feng Shui principles
-- Qi (energy flow) analysis
-- Yin-Yang balance in environments
-- Five Elements theory (Wood, Fire, Earth, Metal, Water)
-- Spatial harmony and environmental psychology
+- Face reading principles (physiognomy)
+- Interpretation of facial features and structure
+- Symbolic meaning of facial zones (forehead, eyes, nose, mouth, chin)
+- Balance and harmony of facial proportions
+- Personality and behavioral tendencies from facial analysis
 
 Write a high-quality educational article.
 
@@ -44,28 +44,28 @@ Write a clear introduction explaining the topic.
 
 ## Core Concept
 
-Explain the Feng Shui concept in simple terms:
+Explain the face reading concept in simple terms:
 
-- What this space/layout/element represents
-- How it influences energy (Qi)
-- Real-life examples of environments
+- What this facial feature or structure represents
+- How it reflects personality, tendencies, or life patterns
+- Real-life examples of different facial appearances
 
-## Traditional Feng Shui Perspective
+## Traditional Face Reading Perspective
 
-Explain from classical Feng Shui principles:
+Explain from classical physiognomy principles:
 
-- Yin-Yang balance in space
-- Five Elements interactions
-- Qi flow and spatial harmony
-- Symbolism of layout, direction, and structure
+- Meaning of specific facial areas (forehead, eyes, nose, mouth, chin)
+- Balance and proportion in facial structure
+- Symbolism of shapes, lines, and expressions
+- Interpretation of facial harmony and imbalance
 
 ## Modern Interpretation
 
 Explain how modern people understand it:
 
-- Environmental psychology
-- Impact of space on mood and behavior
-- Productivity, stress, and lifestyle influence
+- Psychological impressions of facial features
+- How facial appearance influences perception and behavior
+- Social and emotional interpretation of expressions
 - Practical real-life meaning
 
 ## Insights
@@ -101,7 +101,7 @@ OUTPUT RULE:
 Return ONLY Markdown content.
 """
 #============================================================
-# Agent EN SEO：SEO 元数据生成（Llama3 强力约束版）
+# Agent EN SEO：SEO 元数据生成
 # ============================================================
 def agent_en_seo(title, module):
     return f"""You are a Senior SEO Specialist. Generate full metadata for the article "{title}".
@@ -110,7 +110,7 @@ def agent_en_seo(title, module):
 STRICT CONTENT RULES:
 1. NO EMPTY FIELDS: All arrays MUST contain at least 3-5 high-quality items.
 2. RELEVANCE: Keywords must be derived directly from "{title}".
-3. DO NOT use generic "feng shui guide" text. Focus strictly on the specific space or situation.
+3. DO NOT use generic "face reading guide" text. Focus strictly on the specific facial feature or trait.
 4. metaDescription: Must be a compelling click-bait style summary (100-120 chars).
 
 --------------------------------------------------
@@ -118,39 +118,39 @@ JSON STRUCTURE:
 {{
   "metaTitle": "SEO title with primary keyword (max 60 chars)",
   "metaDescription": "Compelling summary for {title}",
-  "primaryKeyword": "feng shui meaning of {title}",
+  "primaryKeyword": "face reading meaning of {title}",
   "secondaryKeywords": [
-    "feng shui layout meaning",
-    "home energy flow analysis",
-    "feng shui house interpretation",
-    "feng shui environment balance"
+    "facial feature meaning analysis",
+    "physiognomy face interpretation",
+    "face reading personality traits",
+    "facial structure symbolism"
   ],
   "longTailKeywords": [
-    "What does {title} mean in feng shui?",
-    "How does this space affect energy flow?",
-    "feng shui meaning of home layout and energy",
-    "how to improve feng shui in this situation"
+    "What does {title} mean in face reading?",
+    "How do facial features reflect personality?",
+    "face reading meaning of facial structure and traits",
+    "how to interpret this facial feature"
   ],
   "semanticKeywords": [
-    "feng shui energy",
-    "qi flow",
-    "yin yang balance",
-    "five elements feng shui",
-    "spatial harmony"
+    "face reading",
+    "physiognomy",
+    "facial analysis",
+    "facial proportions",
+    "personality traits"
   ],
   "keywords": [
-    "Feng Shui",
-    "Home Energy",
-    "Qi Flow",
+    "Face Reading",
+    "Physiognomy",
+    "Facial Analysis",
     "{title}"
   ],
-  "summary": "2-3 sentences explaining how this space or environment affects energy, balance, and personal state.",
-  "featuredSnippetAnswer": "A clear 40-50 word answer explaining the feng shui meaning and its impact on daily life and energy flow.",
-  "ctaText": "Discover your space with ZanPath AI",
+  "summary": "2-3 sentences explaining how this facial feature reflects personality, tendencies, and behavioral patterns.",
+  "featuredSnippetAnswer": "A clear 40-50 word answer explaining the face reading meaning and how this facial feature relates to personality and perception.",
+  "ctaText": "Discover your face with ZanPath AI",
   "faq": [
-    {{ "question": "What does {title} mean in feng shui?", "answer": "Detailed explanation of spatial meaning and energy flow." }},
-    {{ "question": "Does this layout affect my energy or life?", "answer": "Explain influence on emotions, stability, and daily experience." }},
-    {{ "question": "How can I improve this feng shui situation?", "answer": "Provide simple and practical adjustment suggestions." }}
+    {{ "question": "What does {title} mean in face reading?", "answer": "Detailed explanation of the facial feature and its personality meaning." }},
+    {{ "question": "Does this facial feature reflect personality traits?", "answer": "Explain how appearance influences perception, behavior, and tendencies." }},
+    {{ "question": "How can I better understand this facial feature?", "answer": "Provide simple and practical interpretation insights." }}
   ]
 }}
 
@@ -167,29 +167,85 @@ def agent3(title):
 
 Article title: {title}
 
+--------------------------------------------------
+CORE GOAL:
+Avoid ugly or random human faces.
+Focus on aesthetic, abstract, or partial facial visuals.
+
+--------------------------------------------------
 RULES:
-- OUTPUT ONLY the keywords.
-- NO introductory text, NO conversational fillers.
-- NO numbering.
-- MUST be visually describable (real-world spaces, rooms, objects).
-- Focus on home, interior, layout, environment.
-- Avoid abstract words like destiny, metaphysics.
-- English only.
-- One keyword per line.
 
-STYLE HINTS:
-- modern living room layout
-- natural light home interior
-- minimalist bedroom design
-- indoor plants sunlight space
-- calm home environment balance
+- OUTPUT ONLY keywords (one per line)
+- NO numbering
+- NO explanations
+- English only
 
-Example:
-bright living room sunlight window
-minimalist bedroom soft lighting
-indoor plants home corner
-modern apartment open space
-wood furniture natural interior
+--------------------------------------------------
+STRICT VISUAL STRATEGY:
+
+1. DO NOT generate:
+- full human face close-up
+- portrait photography
+- selfie, group, crowd
+- random people
+
+2. PRIORITIZE these 3 styles:
+
+(A) Partial Face Details:
+- eyes close-up
+- lips detail
+- nose side profile
+- facial skin texture
+
+(B) Abstract / Artistic Face:
+- face silhouette shadow
+- abstract human face light
+- blurred face light effect
+- shadow face minimal
+
+(C) Minimal / AI Style:
+- line art face
+- minimal face drawing
+- geometric face design
+- artistic face outline
+
+--------------------------------------------------
+STYLE REQUIREMENTS:
+
+- clean
+- minimal
+- aesthetic
+- soft lighting
+- neutral tones
+- no chaos, no clutter
+
+--------------------------------------------------
+GOOD EXAMPLES (STYLE REFERENCE):
+
+eye close up soft lighting
+lips detail natural light
+side profile nose shadow
+face silhouette soft light
+abstract human face shadow
+minimal line art face
+geometric face design
+artistic face outline
+blurred face light effect
+skin texture macro detail
+soft shadow face contour
+minimal portrait silhouette
+
+--------------------------------------------------
+IMPORTANT:
+
+Keywords MUST be visually searchable on:
+- Unsplash
+- Pexels
+- Pixabay
+
+--------------------------------------------------
+OUTPUT:
+Only the keywords. One per line.
 """
 
 # =========================
@@ -208,13 +264,12 @@ STRICT RULES:
 6. NO literal English translations (natural flow).
 
 CRITICAL TERMINOLOGY:
-- "Feng Shui" → "feng shui"
-- "energy flow" → "flujo de energía"
-- "Qi" → "energía vital"
-- "balance" → "equilibrio"
-- "Five Elements" → "los cinco elementos"
-- "space" → "espacio"
-- "layout" → "distribución"
+- "Face Reading" → "lectura facial"
+- "Physiognomy" → "fisionomía"
+- "facial feature" → "rasgo facial"
+- "face" → "rostro"
+- "facial structure" → "estructura facial"
+- "personality traits" → "rasgos de personalidad"
 
 ---
 TARGET TITLE (Translate this as the only H1): {title}
@@ -236,9 +291,9 @@ STRICT RULES:
 4. Output valid JSON ONLY. No explanation. DO NOT include Markdown code blocks (```json) or any preamble.
 
 TERMINOLOGY:
-- Feng Shui → feng shui
-- Qi Flow → flujo de energía
-- Home Energy → energía del hogar
+- Face Reading → lectura facial
+- Physiognomy → fisionomía
+- Facial Analysis → análisis facial
 
 JSON:
 {seo}
