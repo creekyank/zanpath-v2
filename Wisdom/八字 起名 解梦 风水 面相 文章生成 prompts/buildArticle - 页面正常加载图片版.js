@@ -665,16 +665,14 @@ const img2 = images[1] || null;
 const hasImg1 = !!img1;
 const hasImg2 = !!img2;
 
-let finalCoverImage = null;
- // 👈 根据分类显示默认图// 设一个默认图，防止全空
- /* 
+  let finalCoverImage = `/images/default-${imageFolder}.webp`; // 👈 根据分类显示默认图// 设一个默认图，防止全空
   if (hasImg1 && hasImg2) {
     finalCoverImage = Math.random() > 0.5 ? img1 : img2;
   } else if (hasImg1) {
     finalCoverImage = img1;
   } else if (hasImg2) {
     finalCoverImage = img2;
-  }   */
+  }
 
   // 2. 西语标题处理
   let displayTitle = title;
@@ -683,7 +681,7 @@ let finalCoverImage = null;
   }
 
   // 3. 生成 HTML 内容 (传入参数，内部会自动处理第 2 张图的插入)
-  let blocks = mdToBlocks(article, imageFolder, slug, displayTitle, locale, []);
+  let blocks = mdToBlocks(article, imageFolder, slug, displayTitle, locale, images);
 
   return {
   
@@ -724,8 +722,8 @@ let finalCoverImage = null;
     canonical:
       `${SITE_URL}/${locale}/wisdom/${moduleName}/${slug}`,
   
-    // coverImage: finalCoverImage,
-    // ogImage: finalCoverImage,
+    coverImage: finalCoverImage,
+    ogImage: finalCoverImage,
   
     faq: seo.faq || [],
   
