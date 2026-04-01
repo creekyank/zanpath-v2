@@ -31,8 +31,17 @@
   "featuredSnippetAnswer": "Feng shui for apartment living involves analyzing and optimizing the layout, decor, and energy flow to create a harmonious and balanced space that promotes positive relationships, improves energy, and enhances overall well-being.",
   "ctaText": "Discover your space with ZanPath AI",
   "faq": [
-    { "question": "What is the importance of feng shui in apartment living?", "answer": "Feng shui helps to create a harmonious and balanced environment by balancing energy flow, improving relationships, and enhancing overall well-being." },
-    { "question": "How can I apply feng shui principles in my apartment?", "answer": "Apply feng shui principles by analyzing and optimizing the layout, decor, and energy flow in your apartment to create a harmonious and balanced space." },
-    { "question": "What are some tips for creating a balanced and harmonious apartment space with feng shui?", "answer": "Some tips for creating a balanced and harmonious apartment space with feng shui include using calming colors, adding plants, and decluttering to improve energy flow." }
+    {
+      "question": "What is the importance of feng shui in apartment living?",
+      "answer": "Feng shui helps to create a harmonious and balanced environment by balancing energy flow, improving relationships, and enhancing overall well-being."
+    },
+    {
+      "question": "How can I apply feng shui principles in my apartment?",
+      "answer": "Apply feng shui principles by analyzing and optimizing the layout, decor, and energy flow in your apartment to create a harmonious and balanced space."
+    },
+    {
+      "question": "What are some tips for creating a balanced and harmonious apartment space with feng shui?",
+      "answer": "Some tips for creating a balanced and harmonious apartment space with feng shui include using calming colors, adding plants, and decluttering to improve energy flow."
+    }
   ]
 }

@@ -83,7 +83,7 @@ export default function QuizHome() {
             >
               <Link 
                 href={test.link} 
-                className={`group relative flex items-center p-8 bg-white/60  border border-gray-100 rounded-3xl shadow-sm transition-all duration-300 hover:shadow-[0_10px_40px_rgba(15,61,46,0.08)] hover:-translate-y-1 ${test.border}`}
+                className={`group relative flex items-center p-8 bg-[#f8fcfb]  border border-gray-100 rounded-3xl shadow-sm transition-all duration-300 hover:shadow-[0_10px_40px_rgba(15,61,46,0.08)] hover:-translate-y-1 ${test.border}`}
               >
                 {/* 左侧图标 */}
                 <div className={`p-4 rounded-2xl bg-gradient-to-br ${test.color} group-hover:scale-110 transition-transform`}>
