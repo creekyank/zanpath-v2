@@ -194,71 +194,69 @@ export default function QuizPage() {
             <div className={`absolute -right-10 -top-10 w-32 h-32 ${theme.bg} opacity-5 blur-3xl rounded-full`} />
           </div>
 
-          {/* 核心深度分析内容 */}
- {/* 转化 CTA - 强调从通用到精准的跨越 */}
-          <motion.div 
-            whileHover={{ scale: 1.01 }}
-            className="bg-[#0f3d2e] p-1 rounded-[2.2rem] shadow-2xl mt-12"
-          >
-            <div className="bg-[#0f3d2e] border border-white/20 rounded-[2rem] p-8 text-white relative overflow-hidden">
-              <h4 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
-                <Sparkles size={24} className="text-amber-400" />
-                {locale === "es" ? "Más allá de las tendencias" : "Beyond Surface Patterns"}
-              </h4>
-              
-              <p className="text-white/80 text-sm mb-8 leading-relaxed px-4 text-center">
-                {locale === "es"
-                  ? "Este test gratuito analiza tendencias generales. Un análisis basado en su hora exacta de nacimiento (BaZi) proporciona una alineación mucho más personalizada y una guía de tiempo precisa para su próximo gran avance."
-                  : "This assessment identifies general tendencies. A precise analysis based on your exact birth time (BaZi) provides a significantly more personalized alignment and a specific timing roadmap for your next breakthrough."}
-              </p>
+       {/* 核心深度分析内容 */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-50 text-left mb-10 relative"
+          >
+            <div className="absolute -top-4 left-8 bg-[#0f3d2e] text-white px-4 py-1 rounded-lg text-[10px] font-bold tracking-widest uppercase">
+              Deep Insight
+            </div>
+            <p className="text-[#0f3d2e] text-xl font-serif italic leading-relaxed mb-6">
+              "{currentQuizData.results[result]}"
+            </p>
+            <div className="h-px w-full bg-gray-100 mb-6" />
+            <div className="flex gap-4 items-start text-[#356f5b]/80">
+              <Zap className="shrink-0 text-amber-400" size={20} />
+              <p className="text-sm leading-relaxed">
+                {locale === "es" 
+                  ? "Esta frecuencia sugiere una alineación única con las fuerzas elementales. Tu patrón sugiere que tus mayores éxitos provienen de la armonización interna antes de la acción externa."
+                  : "This frequency suggests a unique alignment with elemental forces. Your pattern indicates your greatest successes stem from internal harmonization before external action."}
+              </p>
+            </div>
+          </motion.div>
 
-              <button
-                onClick={() => router.push("/")}
-                className="group w-full bg-white text-[#0f3d2e] py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-[#fcfcf9] transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
-              >
-                {locale === "es" ? "OBTENER MI MAPA PERSONALIZADO" : "GET MY TIME-BASED ANALYSIS"}
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
+         {/* 转化 CTA - 强调从通用到精准的跨越 */}
+<motion.div 
+  whileHover={{ scale: 1.01 }}
+  className="bg-[#0f3d2e] p-1 rounded-[2.2rem] shadow-2xl mt-12"
+>
+  <div className="bg-[#0f3d2e] border border-white/20 rounded-[2rem] p-8 text-white relative overflow-hidden">
+    <h4 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
+      <Sparkles size={24} className="text-amber-400" />
+      {locale === "es" ? "Más allá de las tendencias" : "Beyond Surface Patterns"}
+    </h4>
+    
+    <p className="text-white/80 text-sm mb-8 leading-relaxed px-4 text-center">
+      {locale === "es"
+        ? "Este test gratuito analiza tendencias generales. Un análisis basado en su hora exacta de nacimiento (BaZi) proporciona una alineación mucho más personalizada y una guía de tiempo precisa para su próximo gran avance."
+        : "This assessment identifies general tendencies. A precise analysis based on your exact birth time (BaZi) provides a significantly more personalized alignment and a specific timing roadmap for your next breakthrough."}
+    </p>
 
-              {/* 增加专业背书标识：Analytical Rigor & 100% Private */}
-              <div className="mt-6 flex items-center justify-center gap-6 opacity-40">
-                <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold">
-                  <ShieldCheck size={10} /> {locale === "es" ? "RIGOR ANALÍTICO" : "Analytical Rigor"}
-                </div>
-                <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold">
-                  <Zap size={10} /> {locale === "es" ? "RECONOCIMIENTO DE PATRONES" : "Pattern Recognition"}
-                </div>
-                <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold">
-                  <Briefcase size={10} /> 100% PRIVATE
-                </div>
-              </div>
-            </div>
-          </motion.div>
+    <button
+      onClick={() => router.push("/")}
+      className="group w-full bg-white text-[#0f3d2e] py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-[#fcfcf9] transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+    >
+      {locale === "es" ? "OBTENER MI MAPA PERSONALIZADO" : "GET MY TIME-BASED ANALYSIS"}
+      <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+    </button>
 
-          {/* 转化 CTA */}
-          <motion.div 
-            whileHover={{ scale: 1.02 }}
-            className="bg-[#0f3d2e] p-1 rounded-[2.2rem] shadow-2xl"
-          >
-            <div className="bg-[#0f3d2e] border border-white/20 rounded-[2rem] p-8 text-white">
-              <h4 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
-                <Sparkles size={24} className="text-amber-400" />
-                {locale === "es" ? "El 27% Restante" : "The Missing 27%"}
-              </h4>
-              <p className="text-white/70 text-sm mb-8 leading-relaxed px-4">
-                {locale === "es"
-                  ? "Este test gratuito analiza tendencias superficiales. Tu mapa de destino completo (BaZi) revela el momento EXACTO para actuar."
-                  : "This free test analyzes surface tendencies. Your complete destiny map (BaZi) reveals the EXACT timing for your next breakthrough."}
-              </p>
-              <button
-                onClick={() => router.push("/")}
-                className="group w-full bg-white text-[#0f3d2e] py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-[#fcfcf9] transition-all flex items-center justify-center gap-3"
-              >
-                {locale === "es" ? "DESBLOQUEAR MI MAPA COMPLETO" : "UNLOCK MY FULL DESTINY MAP"}
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </motion.div>
+    {/* 增加专业背书标识：Analytical Rigor & 100% Private */}
+    <div className="mt-6 flex items-center justify-center gap-6 opacity-40">
+       <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold">
+         <ShieldCheck size={10} /> {locale === "es" ? "RIGOR ANALÍTICO" : "Analytical Rigor"}
+       </div>
+       <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold">
+         <Zap size={10} /> {locale === "es" ? "RECONOCIMIENTO DE PATRONES" : "Pattern Recognition"}
+       </div>
+       <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest font-bold">
+         <Briefcase size={10} /> 100% PRIVATE
+       </div>
+    </div>
+  </div>
+</motion.div>
         </motion.div>
       </main>
     );

@@ -175,9 +175,9 @@
 [DONE] What Feng Shui Tips Work for Urban Living?
 [DONE] Can Feng Shui Work in High-Rise Apartments?
 [DONE] What Layout Works Best in Small Spaces?
-[RUNNING] How Do Open Floor Plans Affect Feng Shui?
-What Feng Shui Rules Still Apply in Modern Design?
-Can Feng Shui Improve Work-From-Home Life?
+[DONE] How Do Open Floor Plans Affect Feng Shui?
+[DONE] What Feng Shui Rules Still Apply in Modern Design?
+[DONE] Can Feng Shui Improve Work-From-Home Life?
 What Feng Shui Tips Help Remote Workers?
 How Can Feng Shui Improve Apartment Living?
 What Decor Combines Modern Style With Feng Shui?
