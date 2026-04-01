@@ -178,8 +178,8 @@
 [DONE] How Do Open Floor Plans Affect Feng Shui?
 [DONE] What Feng Shui Rules Still Apply in Modern Design?
 [DONE] Can Feng Shui Improve Work-From-Home Life?
-What Feng Shui Tips Help Remote Workers?
-How Can Feng Shui Improve Apartment Living?
+[DONE] What Feng Shui Tips Help Remote Workers?
+[RUNNING] How Can Feng Shui Improve Apartment Living?
 What Decor Combines Modern Style With Feng Shui?
 Why Do Some Modern Homes Feel Cold?
 How Can Feng Shui Warm Up a Space?
