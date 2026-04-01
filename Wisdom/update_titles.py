@@ -4,7 +4,7 @@ import re
 
 # 配置路径
 txt_path = r'E:\zanpath v2\Wisdom\en-to-es-title.txt'
-json_dir = r'E:\zanpath v2\Wisdom\content\articles\es\space'
+json_dir = r'E:\zanpath v2\Wisdom\content\articles\es\visual'
 
 def slugify(text):
     """将标题转换为 slug 格式用于匹配文件名/ID"""
