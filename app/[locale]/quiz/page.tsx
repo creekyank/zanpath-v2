@@ -49,12 +49,12 @@ export default function QuizHome() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#f8fcfb] to-white py-20 px-6 relative overflow-hidden">
-      
-      {/* 背景装饰（Zen Minimalist Style） */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-[#0f3d2e]/2 to-transparent -z-10 rounded-full blur-3xl opacity-50" />
-
-      <div className="max-w-3xl mx-auto">
+    <main className="min-h-screen py-12 lg:py-20 px-4 relative overflow-hidden bg-transparent">
+    
+    {/* 2. 背景装饰：参考页面的那种灵动感，来自于这些模糊的圆影 */}
+    <div className="absolute top-[-5%] left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#dff3ee]/40 -z-20 rounded-full blur-[120px]" />
+    
+    <div className="max-w-4xl mx-auto relative z-10">
         {/* 顶部标题区 */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
