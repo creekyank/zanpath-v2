@@ -3865,5 +3865,26 @@
       "https://img.zanpath.com/fengshui/how-does-the-front-door-affect-home-energy-1.webp",
       "https://img.zanpath.com/fengshui/how-does-the-front-door-affect-home-energy-2.webp"
     ]
+  },
+  "what-should-never-be-placed-in-front-of-the-main-door": {
+    "module": "fengshui",
+    "images": [
+      "https://img.zanpath.com/fengshui/what-should-never-be-placed-in-front-of-the-main-door-1.webp",
+      "https://img.zanpath.com/fengshui/what-should-never-be-placed-in-front-of-the-main-door-2.webp"
+    ]
+  },
+  "can-feng-shui-work-in-high-rise-apartments": {
+    "module": "fengshui",
+    "images": [
+      "https://img.zanpath.com/fengshui/can-feng-shui-work-in-high-rise-apartments-1.webp",
+      "https://img.zanpath.com/fengshui/can-feng-shui-work-in-high-rise-apartments-2.webp"
+    ]
+  },
+  "what-layout-works-best-in-small-spaces": {
+    "module": "fengshui",
+    "images": [
+      "https://img.zanpath.com/fengshui/what-layout-works-best-in-small-spaces-1.webp",
+      "https://img.zanpath.com/fengshui/what-layout-works-best-in-small-spaces-2.webp"
+    ]
   }
 }

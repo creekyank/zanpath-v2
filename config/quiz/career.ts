@@ -50,11 +50,11 @@ export const careerQuiz = {
       }
     ],
     results: {
-      STR: "The Strategic Architect. You possess a rare cognitive ability to see the 'Whole Map'. You excel in high-complexity roles like System Design, Finance Strategy, or Advisory, where foresight is the ultimate currency.",
-      LDR: "The Visionary Commander. You carry a natural gravitational pull. Your vocation lies in scaling impact, leading large-scale operations, or entrepreneurship where your decisiveness defines the future.",
-      EMP: "The Harmonic Guide. You are the glue of any ecosystem. Your career resonance is highest in Psychology, Human Resources, or Diplomatic roles, where your emotional intelligence transforms chaos into harmony.",
-      CRE: "The Creative Alchemist. You thrive on the edge of the unknown. You are destined for Art, Innovation, or Disruptive Tech—any field where the 'impossible' needs a pioneer to make it real.",
-      SPEC: "The Master Artisan. Your path is defined by depth and precision. You find your peak in Research, Software Engineering, or Craftsmanship, where being 'The Best' is more important than being 'The Boss'."
+      STR: "The Strategic Architect. You possess a rare cognitive ability to see the 'Whole Map'. You excel in high-complexity roles like System Design or Advisory, where foresight is the ultimate currency. *Path: Mastery of logic and structure.*",
+      LDR: "The Visionary Leader. You carry a natural gravitational pull. Your vocation lies in scaling impact and entrepreneurship where your decisiveness defines the future. *Path: Leading through vision and action.*",
+      EMP: "The Harmonic Connector. You are the glue of any ecosystem. Your career resonance is highest in environments where emotional intelligence transforms chaos into harmony. *Path: Empowering human potential.*",
+      CRE: "The Disruptive Innovator. You thrive on the edge of the unknown. You are destined for fields where the 'impossible' needs a pioneer to make it real. *Path: Constant evolution and breakthrough.*",
+      SPEC: "The Master Specialist. Your path is defined by depth and precision. You find your peak in Research or Craftsmanship, where being 'The Best' is the highest honor. *Path: Deep focus and technical excellence.*"
     }
   },
   es: {
@@ -108,11 +108,11 @@ export const careerQuiz = {
       }
     ],
     results: {
-      STR: "El Arquitecto Estratégico. Posees una habilidad cognitiva excepcional para ver el 'Mapa Completo'. Destacas en roles de Diseño de Sistemas o Estrategia Financiera.",
-      LDR: "El Comandante Visionario. Posees un carisma natural. Tu vocación está en liderar grandes operaciones o en el emprendimiento donde tu decisión define el futuro.",
-      EMP: "El Guía Armónico. Eres el pegamento de cualquier ecosistema. Tu resonancia es mayor en Psicología, RR.HH. o roles diplomáticos.",
-      CRE: "El Alquimista Creativo. Prosperas en el límite de lo desconocido. Estás destinado al Arte, la Innovación o la Tecnología Disruptiva.",
-      SPEC: "El Maestro Artesano. Tu camino se define por la profundidad y precisión. Encuentras tu cima en la Investigación o Ingeniería de Software."
+      STR: "El Arquitecto de Sistemas. Posees una habilidad cognitiva excepcional para ver el 'Mapa Completo'. Destacas en roles de Diseño de Sistemas o Estrategia, donde la previsión es tu mayor activo.",
+      LDR: "El Líder Visionario. Posees un carisma natural. Tu vocación está en liderar grandes operaciones o en el emprendimiento donde tu decisión define el futuro.",
+      EMP: "El Conector de Armonía. Eres el pegamento de cualquier ecosistema. Tu resonancia es mayor en roles donde tu inteligencia emocional transforma el caos en sinergia.",
+      CRE: "El Innovador Disruptivo. Prosperas en el límite de lo desconocido. Estás destinado a la Innovación o Tecnología donde lo 'imposible' necesita un pionero.",
+      SPEC: "El Maestro Especialista. Tu camino se define por la profundidad y precisión. Encuentras tu cima en la Investigación o Maestría técnica donde la excelencia es la meta."
     }
   }
 };

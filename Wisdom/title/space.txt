@@ -71,7 +71,7 @@
 [DONE] Why Is the Front Door Called the Mouth of Qi?
 [DONE] What Feng Shui Rules Apply to the Main Entrance?
 [DONE] How Does the Front Door Affect Home Energy?
-[RUNNING] What Should Never Be Placed in Front of the Main Door?
+[DONE] What Should Never Be Placed in Front of the Main Door?
 [DONE] How Can Entrance Feng Shui Attract Good Luck?
 [DONE] What Feng Shui Mistakes at the Door Block Opportunities?
 [DONE] Why Is a Clean Entrance Important in Feng Shui?
@@ -172,10 +172,10 @@
 [DONE] What Feng Shui Tips Work in Modern Homes?
 [DONE] Can Minimalist Design Improve Feng Shui?
 [DONE] How Do Smart Homes Affect Feng Shui?
-What Feng Shui Tips Work for Urban Living?
-Can Feng Shui Work in High-Rise Apartments?
-What Layout Works Best in Small Spaces?
-How Do Open Floor Plans Affect Feng Shui?
+[DONE] What Feng Shui Tips Work for Urban Living?
+[DONE] Can Feng Shui Work in High-Rise Apartments?
+[DONE] What Layout Works Best in Small Spaces?
+[RUNNING] How Do Open Floor Plans Affect Feng Shui?
 What Feng Shui Rules Still Apply in Modern Design?
 Can Feng Shui Improve Work-From-Home Life?
 What Feng Shui Tips Help Remote Workers?
