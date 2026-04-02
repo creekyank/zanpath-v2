@@ -5,92 +5,135 @@ import { useRadioStore } from "@/store/radioStore";
 import { extractPlayableText, saveProgress, loadProgress } from "@/lib/tts";
 
 export default function RadioPlayer() {
-  const { isPlaying, queue, currentIndex, next, locale, rate, pause } = useRadioStore();
-
+  const { isPlaying, queue, currentIndex, next, locale, rate, pause, play } = useRadioStore();
   const current = queue[currentIndex];
+  
   const keepAliveTimer = useRef<NodeJS.Timeout | null>(null);
+  const lastTaskRef = useRef<string>("");
+  const chunkIndexRef = useRef<number>(0);
+  const chunksRef = useRef<string[]>([]);
+  const retryCountRef = useRef<number>(0);
 
-  useEffect(() => {
-    // 1. 基本安全检查
-    if (typeof window === "undefined" || !('speechSynthesis' in window)) return;
-    if (!current) return;
-
-    // 2. 处理暂停逻辑
-    if (!isPlaying) {
-      speechSynthesis.pause();
-      return;
-    }
-
-    // 3. 处理从【浏览器原生暂停】中恢复
-    if (speechSynthesis.paused) {
-      speechSynthesis.resume();
-      return;
-    }
-
-    // 4. 开始新的朗读前，彻底清空之前的任务
-    speechSynthesis.cancel();
-    if (keepAliveTimer.current) clearTimeout(keepAliveTimer.current);
-
-    // 5. 提取文本并定位进度
-    const fullText = extractPlayableText(current.content);
-    const startIndex = loadProgress(current.slug);
-    const textToPlay = fullText.slice(startIndex);
-
-    if (!textToPlay.trim()) {
-      next(); // 如果这段没内容了，跳下一篇
-      return;
-    }
-
-    const utter = new SpeechSynthesisUtterance(textToPlay);
-    utter.lang = locale === "es" ? "es-ES" : "en-US";
-    utter.rate = rate;
-
-    // 💡 核心 Hack：防止长文本静音中断
-    const keepAlive = () => {
-      if (speechSynthesis.speaking && !speechSynthesis.paused) {
-        speechSynthesis.pause();
-        speechSynthesis.resume();
-      }
-      keepAliveTimer.current = setTimeout(keepAlive, 14000); // 14秒执行一次
-    };
-
-    // 记录进度：保存的是在原全文中的绝对索引
-    utter.onboundary = (e) => {
-      saveProgress(current.slug, startIndex + e.charIndex);
-    };
-
-    // 播放结束
-    utter.onend = () => {
-      if (keepAliveTimer.current) clearTimeout(keepAliveTimer.current);
-      saveProgress(current.slug, 0); // 清除该篇进度
-      next();
-    };
-
-    // 错误处理（如系统杀掉进程）
-    utter.onerror = (e) => {
-      console.error("TTS Error:", e);
-      if (keepAliveTimer.current) clearTimeout(keepAliveTimer.current);
-      // 如果是非手动停止导致的错误，可以在这里尝试稍后重启
-    };
-
-    speechSynthesis.speak(utter);
-    keepAlive();
-
-    // 🎧 MediaSession (锁屏控制)
-    if ("mediaSession" in navigator) {
+  // --- 核心优化 1：配置 Media Session (手机锁屏控制) ---
+  const updateMediaSession = () => {
+    if ("mediaSession" in navigator && current) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: current.title,
         artist: "Zanpath Radio",
+        album: "Wisdom Station",
+        artwork: [
+          { src: "/logo.png", sizes: "512x512", type: "image/png" }
+        ]
+      });
+
+      // 允许用户在锁屏界面操作
+      navigator.mediaSession.setActionHandler("play", () => play());
+      navigator.mediaSession.setActionHandler("pause", () => pause());
+      navigator.mediaSession.setActionHandler("nexttrack", () => next());
+      // 停止时清理
+      navigator.mediaSession.setActionHandler("stop", () => {
+        pause();
+        speechSynthesis.cancel();
       });
     }
+  };
 
-    // 清理函数
+  useEffect(() => {
+    if (typeof window === "undefined" || !('speechSynthesis' in window)) return;
+    if (!current) return;
+
+    if (!isPlaying) {
+      speechSynthesis.pause();
+      if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "paused";
+      return;
+    }
+
+    const currentTaskIdentifier = `${current.slug}-${rate}-${locale}`;
+    
+    if (speechSynthesis.paused && lastTaskRef.current === currentTaskIdentifier) {
+      speechSynthesis.resume();
+      if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "playing";
+      return;
+    }
+
+    if (lastTaskRef.current !== currentTaskIdentifier) {
+      speechSynthesis.cancel();
+      if (keepAliveTimer.current) clearTimeout(keepAliveTimer.current);
+
+      const fullText = extractPlayableText(current.content);
+      const startIndex = loadProgress(current.slug);
+      
+      const rawChunks = fullText.slice(startIndex)
+        .match(/[^。！？；.!?]+[。！？；.!?]*/g)
+        ?.map(s => s.trim())
+        .filter(s => s.length > 0) || [];
+      
+      chunksRef.current = rawChunks.length > 0 ? rawChunks : [fullText.slice(startIndex)];
+      chunkIndexRef.current = 0;
+      retryCountRef.current = 0;
+      lastTaskRef.current = currentTaskIdentifier;
+
+      // 更新锁屏信息
+      updateMediaSession();
+      if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "playing";
+
+      const playNextChunk = () => {
+        if (!useRadioStore.getState().isPlaying) return;
+
+        const idx = chunkIndexRef.current;
+        const total = chunksRef.current.length;
+
+        if (idx >= total) {
+          saveProgress(current.slug, 0);
+          lastTaskRef.current = "";
+          next();
+          return;
+        }
+
+        const utter = new SpeechSynthesisUtterance(chunksRef.current[idx]);
+        utter.lang = locale === "es" ? "es-ES" : "en-US";
+        utter.rate = rate;
+
+        utter.onend = () => {
+          chunkIndexRef.current++;
+          window.speechSynthesis.resume(); 
+          setTimeout(playNextChunk, 250); 
+        };
+
+        utter.onerror = (e) => {
+          if (e.error === 'interrupted') return;
+          if (retryCountRef.current < 3) {
+            retryCountRef.current++;
+            setTimeout(playNextChunk, 1000);
+          } else {
+            chunkIndexRef.current++;
+            retryCountRef.current = 0;
+            setTimeout(playNextChunk, 500);
+          }
+        };
+
+        window.speechSynthesis.resume();
+        speechSynthesis.speak(utter);
+      };
+
+      playNextChunk();
+
+      // --- 核心优化 2：增强型 Keep-Alive (针对手机后台) ---
+      const keepAlive = () => {
+        if (speechSynthesis.speaking && !speechSynthesis.paused) {
+          // 很多浏览器检测到“静默”会杀掉进程，频繁 resume 能告诉系统页面还在活动
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+        keepAliveTimer.current = setTimeout(keepAlive, 10000); // 缩短到 10 秒一次更安全
+      };
+      keepAlive();
+    }
+
     return () => {
       if (keepAliveTimer.current) clearTimeout(keepAliveTimer.current);
-      // 注意：这里不建议直接 cancel()，否则切换语速时会突变，
-      // 但为了防止重叠，切换文章时我们已经在开头 cancel 了。
     };
-  }, [isPlaying, currentIndex, rate, current, locale, next]);
+  }, [isPlaying, currentIndex, rate, current?.slug, locale, next]);
 
   return null;
 }
