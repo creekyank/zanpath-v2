@@ -35,10 +35,10 @@ export function extractPlayableText(content: any[]) {
       // 如果是列表项 (ul/ol)
       if (block.items && Array.isArray(block.items)) {
         return block.items
-          .map(item => item.trim())
-          .filter(item => item.length > 0)
-          .join(". "); // 列表项之间用句号隔开，产生停顿
-      }
+          .map((item: string) => item.trim()) // ✨ 显式加上 : string
+          .filter((item: string) => item.length > 0) // ✨ 显式加上 : string
+          .join(". ");
+       }
 
       // 普通段落
       return block.text?.trim() || "";
