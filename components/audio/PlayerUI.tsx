@@ -93,29 +93,31 @@ export default function PlayerUI() {
             </button>
           </div>
 
-          {/* 右侧功能区 */}
-          <div className="flex-1 flex justify-end items-center gap-3 shrink-0">
-            <button
-              onClick={() => toggleLyrics()}
-              className={`p-2 rounded-xl transition-all ${
-                showLyrics 
-                ? "text-emerald-700 bg-white/60 shadow-sm" 
-                : "text-slate-500 hover:bg-white/40"
-              }`}
-            >
-              <BookOpenText size={18} />
-            </button>
+        {/* 右侧功能区 */}
+        <div className="flex-1 flex justify-end items-center gap-1.5 sm:gap-3 shrink-0">
+          <button
+            onClick={() => toggleLyrics()}
+            className={`p-2 rounded-xl transition-all ${
+              showLyrics 
+              ? "text-emerald-700 bg-white/60 shadow-sm" 
+              : "text-slate-500 hover:bg-white/40"
+            }`}
+          >
+            <BookOpenText size={18} />
+          </button>
 
-            <div className="hidden sm:flex items-center bg-white/40 px-2 py-1 rounded-lg border border-white/50">
-              <select
-                value={rate}
-                onChange={(e) => setRate(Number(e.target.value))}
-                className="bg-transparent border-none text-slate-700 text-[10px] font-bold outline-none cursor-pointer"
-              >
-                {[0.8, 1, 1.2, 1.5, 2].map(r => <option key={r} value={r}>{r}x</option>)}
-              </select>
-            </div>
+          {/* 💡 关键改动：删掉 hidden sm:flex，改为 flex。并添加 gap 以适配小屏幕 */}
+          <div className="flex items-center bg-white/40 px-1.5 py-1 rounded-lg border border-white/50">
+            <Gauge size={14} className="text-slate-400 mr-1 hidden xs:block" /> {/* 可选：加个图标更有质感 */}
+            <select
+              value={rate}
+              onChange={(e) => setRate(Number(e.target.value))}
+              className="bg-transparent border-none text-slate-700 text-[10px] sm:text-[11px] font-bold outline-none cursor-pointer appearance-none px-1"
+            >
+              {[0.8, 1, 1.2, 1.5, 2].map(r => <option key={r} value={r}>{r}x</option>)}
+            </select>
           </div>
+        </div>
         </div>
       </div>
     </div>
