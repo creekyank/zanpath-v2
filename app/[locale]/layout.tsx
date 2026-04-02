@@ -11,6 +11,9 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 
 import "../globals.css";
 
+import RadioPlayer from "@/components/audio/RadioPlayer";
+import PlayerUI from "@/components/audio/PlayerUI";
+
 export default async function LocaleLayout({
   children,
   params,
@@ -43,7 +46,8 @@ export default async function LocaleLayout({
   <NavBar locale={locale as "en" | "es"} />
 
     {children}
-
+    <RadioPlayer />
+    <PlayerUI />
     <Footer locale={locale as "en" | "es"} />
 
   </div>

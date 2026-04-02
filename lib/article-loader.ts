@@ -34,6 +34,11 @@ export type Article = {
 
 export function getAllArticles(locale?: string): Article[] {
   // 如果傳了 locale，就只讀那個目錄；沒傳就讀取 en 和 es
+  if (!fs.existsSync(CONTENT_PATH)) {
+    console.warn(`Content path not found: ${CONTENT_PATH}`);
+    return [];
+  }
+  
   const locales = locale ? [locale] : ["en", "es"];
   let allArticles: Article[] = [];
 

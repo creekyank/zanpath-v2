@@ -7,6 +7,7 @@ import { generateSnippet } from "@/lib/snippet-engine";
 import { generateFAQ } from "@/lib/faq-engine";
 import { generateAnchorText } from "@/lib/anchor-engine";
 import { Article } from "@/content/articles"; // 确保导入了接口
+import PlayButton from "@/components/audio/PlayButton";
 
 const baseUrl = "https://zanpath.com";
 
@@ -350,6 +351,18 @@ const ctaUrl =
         <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#0f3d2e]">
           {article.title}
         </h1>
+         
+        <div className="mb-8">
+          <PlayButton 
+  article={article} 
+  allArticles={all} 
+  locale={locale} 
+/>
+          {/* 可选：加一行极简的提示语 */}
+          <p className="text-[10px] text-[#4a7c6d] uppercase tracking-widest opacity-60 mt-2">
+            {locale === "es" ? "Audio generado por IA" : "AI Generated Audio"}
+          </p>
+        </div>
 
         <div className="bg-white rounded-3xl shadow-lg p-8 max-w-2xl mx-auto border border-white">
           <p className="text-[#4a7c6d] text-[15px] leading-relaxed">
