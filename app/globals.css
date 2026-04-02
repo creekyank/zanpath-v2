@@ -66,3 +66,34 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* --- 在这里添加你的自定义功能类 --- */
+@layer utilities {
+  /* 隐藏滚动条但保留滚动功能（用于歌词面板） */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* 💡 核心：歌词渐隐效果，让上下边缘变淡 */
+  /* 使用 mask-image 实现文字在边缘处自动透明 */
+  .mask-fade-edge {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 20%,
+      black 80%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 20%,
+      black 80%,
+      transparent 100%
+    );
+  }
+}

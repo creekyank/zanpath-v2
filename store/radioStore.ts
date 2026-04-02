@@ -16,13 +16,22 @@ interface RadioState {
   mode: Mode;
   locale: string;
   rate: number;
-
+  
+  // --- 歌词/播放状态 ---
+  showLyrics: boolean;
+  currentChunkIndex: number;
+  currentChunks: string[];
+  
+  // --- 方法 ---
   setQueue: (q: Article[], mode: Mode, locale: string) => void;
   play: () => void;
   pause: () => void;
   next: () => void;
   prev: () => void;
   setRate: (r: number) => void;
+  toggleLyrics: () => void;
+  setCurrentChunkIndex: (index: number) => void;
+  setCurrentChunks: (chunks: string[]) => void;
 }
 
 export const useRadioStore = create<RadioState>((set, get) => ({
@@ -32,14 +41,20 @@ export const useRadioStore = create<RadioState>((set, get) => ({
   mode: "sequential",
   locale: "en",
   rate: 1,
+  
+  showLyrics: false,
+  currentChunkIndex: 0,
+  currentChunks: [],
 
+  /**
+   * 设置播放队列
+   * 优化：如果队列相同则仅继续播放；如果不同则重置索引并清空旧歌词
+   */
   setQueue: (q, mode, locale) => {
     const currentQueue = get().queue;
-    // 检查新队列是否和当前队列一样（比较 slug 列表）
     const isSame = JSON.stringify(currentQueue.map(a => a.slug)) === JSON.stringify(q.map(a => a.slug));
     
     if (isSame) {
-      // 如果一样，只确保它在播放，不重置进度
       set({ isPlaying: true });
       return;
     }
@@ -50,12 +65,13 @@ export const useRadioStore = create<RadioState>((set, get) => ({
       currentIndex: 0, 
       mode, 
       locale, 
-      isPlaying: true 
+      isPlaying: true,
+      currentChunkIndex: 0,
+      currentChunks: [] // ✨ 清空旧歌词，等待 RadioPlayer 重新生成
     });
   },
 
   play: () => {
-    // 如果系统引擎处于暂停状态，恢复它
     if (typeof window !== "undefined" && window.speechSynthesis.paused) {
       window.speechSynthesis.resume();
     }
@@ -63,32 +79,64 @@ export const useRadioStore = create<RadioState>((set, get) => ({
   },
 
   pause: () => {
-    // 告诉系统引擎暂停
     if (typeof window !== "undefined") {
       window.speechSynthesis.pause();
     }
     set({ isPlaying: false });
   },
 
+  /**
+   * 下一首
+   * 优化：切换文章瞬间清空进度和歌词数据
+   */
   next: () => {
     const { currentIndex, queue } = get();
     if (currentIndex < queue.length - 1) {
-      set({ currentIndex: currentIndex + 1, isPlaying: true });
+      set({ 
+        currentIndex: currentIndex + 1, 
+        isPlaying: true, 
+        currentChunkIndex: 0,
+        currentChunks: [] // ✨ 切换时重置歌词
+      });
     } else {
-      // 播完了，重置并停止
-      set({ isPlaying: false, currentIndex: 0 });
+      set({ isPlaying: false, currentIndex: 0, currentChunkIndex: 0 });
     }
   },
 
+  /**
+   * 上一首
+   */
   prev: () => {
     const { currentIndex } = get();
     if (currentIndex > 0) {
-      set({ currentIndex: currentIndex - 1, isPlaying: true });
+      set({ 
+        currentIndex: currentIndex - 1, 
+        isPlaying: true, 
+        currentChunkIndex: 0,
+        currentChunks: [] // ✨ 切换时重置歌词
+      });
     }
   },
 
   setRate: (r) => {
+    console.log("Store: 语速调整为", r);
     set({ rate: r });
-    // 注意：语速改变时，RadioPlayer.tsx 会因为依赖 [rate] 自动触发 cancel 和重新播放
+  },
+  
+  /**
+   * 切换歌词显示
+   */
+  toggleLyrics: () => {
+    set((state) => ({ showLyrics: !state.showLyrics }));
+  },
+
+  setCurrentChunkIndex: (index) => set({ currentChunkIndex: index }),
+  
+  /**
+   * 接收来自 RadioPlayer 的新歌词块
+   */
+  setCurrentChunks: (chunks) => {
+    console.log("Store: 接收到新歌词，行数:", chunks.length);
+    set({ currentChunks: chunks });
   },
 }));
