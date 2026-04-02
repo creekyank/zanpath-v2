@@ -23,7 +23,7 @@ function getCtaUrl(locale: string, module: string) {
     dream: "/dream",
     naming: "/naming",
     space: "/fengshui",
-    visual: "/visual"
+    visual: "/face"
 
   };
 
