@@ -13,6 +13,8 @@ import "../globals.css";
 
 import RadioPlayer from "@/components/audio/RadioPlayer";
 import PlayerUI from "@/components/audio/PlayerUI";
+export const revalidate = 86400; // 24小时静态化一次，单位是秒
+export const dynamic = 'force-static'; // 强制把动态请求转为静态，极大节省流量
 
 export default async function LocaleLayout({
   children,
