@@ -155,37 +155,43 @@ export default function NamingPage() {
   const pollOrderStatus = async (email: string) => {
     if (pollingRef.current) return;
     pollingRef.current = true;
-
-    for (let i = 0; i < 90; i++) {
-      const res = await fetch("/api/orders/status", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, moduleType: MODULE_TYPE })
-      });
-
-      const data = await res.json();
-
-      if (data.status === "DONE") {
-        localStorage.removeItem("pending_payment_email");
-        localStorage.removeItem("pending_payment_module");
-        localStorage.removeItem("pending_payment_form");
-        
-        setResult(data.result || "");
-        setShowResult(true);
-        setFlowState("DONE");
-        pollingRef.current = false;
-        return;
+  
+    for (let i = 0; i < 10; i++) {
+      try {
+        const res = await fetch("/api/orders/status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+        });
+  
+        const data = await res.json();
+  
+        if (data.status === "DONE") {
+          localStorage.removeItem("pending_payment_email");
+          localStorage.removeItem("pending_payment_module");
+          localStorage.removeItem("pending_payment_form");
+  
+          setResult(data.result || "");
+          setShowResult(true);
+          setFlowState("DONE");
+          pollingRef.current = false;
+          return;
+        }
+  
+        if (data.status === "PAID") {
+          pollingRef.current = false;
+          await startGeneration(email);
+          return;
+        }
+  
+      } catch (err) {
+        console.error("Polling error:", err);
       }
-
-      if (data.status === "PAID") {
-        pollingRef.current = false;
-        await startGeneration(email);
-        return;
-      }
-
-      await new Promise(r => setTimeout(r, 2000));
+  
+      // ❗ 改为 5秒一次（原来2秒）
+      await new Promise(r => setTimeout(r, 5000));
     }
-
+  
     pollingRef.current = false;
   };
 

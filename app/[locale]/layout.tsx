@@ -13,7 +13,7 @@ import "../globals.css";
 
 import RadioPlayer from "@/components/audio/RadioPlayer";
 import PlayerUI from "@/components/audio/PlayerUI";
-export const revalidate = 86400; // 24小时静态化一次，单位是秒
+export const revalidate = false;
 export const dynamic = 'force-static'; // 强制把动态请求转为静态，极大节省流量
 
 export default async function LocaleLayout({
@@ -24,7 +24,12 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const messages = await getMessages();
+  const messagesMap = {
+    en: (await import('@/messages/en.json')).default,
+    es: (await import('@/messages/es.json')).default,
+  };
+  
+  const messages = messagesMap[locale as "en" | "es"];
 
   return (
     <html lang={locale} suppressHydrationWarning>

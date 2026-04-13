@@ -70,49 +70,55 @@ export default function HomePage() {
   /* =============================
      页面恢复
   ============================= */
-
   useEffect(() => {
     const restoreSession = async () => {
       const email = localStorage.getItem("pending_payment_email");
       const module = localStorage.getItem("pending_payment_module");
-
+  
+      // ✅ 第一层保护（关键）
       if (!email || module !== MODULE_TYPE) return;
-
+  
+      const cleanEmail = email.toLowerCase().trim();
+  
+      // ✅ 第二层保护（防空字符串）
+      if (!cleanEmail) return;
+  
       try {
         const res = await fetch("/api/orders/status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: email.toLowerCase().trim(),
+            email: cleanEmail,
             moduleType: MODULE_TYPE
           })
         });
-
+  
         const data = await res.json();
-
+  
         if (data.status === "PAID") {
           setFlowState("WAITING_PAYMENT");
         }
-
+  
         if (data.status === "GENERATING") {
           setShowResult(true);
           setFlowState("GENERATING");
-          pollOrderStatus(email);
+          pollOrderStatus(cleanEmail);
         }
-
+  
         if (data.status === "DONE") {
           localStorage.removeItem("pending_payment_email");
           localStorage.removeItem("pending_payment_module");
           localStorage.removeItem("pending_payment_form");
         }
+  
       } catch (err) {
         console.error("Session restore failed:", err);
       }
     };
-
+  
     restoreSession();
   }, []);
-
+  
   /* =============================
      状态检查
   ============================= */
@@ -156,37 +162,43 @@ export default function HomePage() {
   const pollOrderStatus = async (email: string) => {
     if (pollingRef.current) return;
     pollingRef.current = true;
-
-    for (let i = 0; i < 90; i++) {
-      const res = await fetch("/api/orders/status", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, moduleType: MODULE_TYPE })
-      });
-
-      const data = await res.json();
-
-      if (data.status === "DONE") {
-        localStorage.removeItem("pending_payment_email");
-        localStorage.removeItem("pending_payment_module");
-        localStorage.removeItem("pending_payment_form");
-
-        setResult(data.result || "");
-        setShowResult(true);
-        setFlowState("DONE");
-        pollingRef.current = false;
-        return;
+  
+    for (let i = 0; i < 10; i++) {
+      try {
+        const res = await fetch("/api/orders/status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, moduleType: MODULE_TYPE })
+        });
+  
+        const data = await res.json();
+  
+        if (data.status === "DONE") {
+          localStorage.removeItem("pending_payment_email");
+          localStorage.removeItem("pending_payment_module");
+          localStorage.removeItem("pending_payment_form");
+  
+          setResult(data.result || "");
+          setShowResult(true);
+          setFlowState("DONE");
+          pollingRef.current = false;
+          return;
+        }
+  
+        if (data.status === "PAID") {
+          pollingRef.current = false;
+          await startGeneration(email);
+          return;
+        }
+  
+      } catch (err) {
+        console.error("Polling error:", err);
       }
-
-      if (data.status === "PAID") {
-        pollingRef.current = false;
-        await startGeneration(email);
-        return;
-      }
-
-      await new Promise(r => setTimeout(r, 2000));
+  
+      // ❗ 改为 5秒一次（原来2秒）
+      await new Promise(r => setTimeout(r, 5000));
     }
-
+  
     pollingRef.current = false;
   };
 
