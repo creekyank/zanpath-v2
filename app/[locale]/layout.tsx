@@ -2,6 +2,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
+import en from '@/messages/en.json';
+import es from '@/messages/es.json';
 
 import NavBar from "./NavBar";
 import Footer from "./Footer";
@@ -24,12 +26,7 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const messagesMap = {
-    en: (await import('@/messages/en.json')).default,
-    es: (await import('@/messages/es.json')).default,
-  };
-  
-  const messages = messagesMap[locale as "en" | "es"];
+  const messages = locale === 'es' ? es : en;
 
   return (
     <html lang={locale} suppressHydrationWarning>
